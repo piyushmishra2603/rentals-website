@@ -67,10 +67,9 @@ margin-top:10px;
 padding:8px 12px;
 background:#0f4c81;
 color:white;
-text-decoration:none;
+border:none;
 border-radius:5px;
 cursor:pointer;
-border:none;
 }
 
 .favorite{
@@ -144,4 +143,211 @@ background:#eee;
 <option value="20000">₹20,000</option>
 </select>
 
-<select id="sortPrice" onchange="sort
+<select id="sortPrice">
+<option value="">Sort Price</option>
+<option value="low">Low to High</option>
+<option value="high">High to Low</option>
+</select>
+
+<button onclick="filterProperties()">Search</button>
+
+</div>
+
+<div class="properties" id="propertyList">
+
+<div class="card" data-location="hyderabad" data-bhk="1" data-price="12000">
+
+<img src="https://via.placeholder.com/400x250">
+
+<div class="card-content">
+
+<span class="favorite">♡</span>
+
+<h3>1BHK Apartment</h3>
+<p>Hyderabad</p>
+<p class="price">₹12,000/month</p>
+
+<button class="btn viewBtn">View Details</button>
+
+</div>
+</div>
+
+<div class="card" data-location="kota" data-bhk="1" data-price="8000">
+
+<img src="https://via.placeholder.com/400x250">
+
+<div class="card-content">
+
+<span class="favorite">♡</span>
+
+<h3>PG for Students</h3>
+<p>Kota</p>
+<p class="price">₹8,000/month</p>
+
+<button class="btn viewBtn">View Details</button>
+
+</div>
+</div>
+
+</div>
+
+<div class="add-section">
+
+<h2>Add Property</h2>
+
+<input id="title" placeholder="Property Title">
+<input id="city" placeholder="City">
+<input id="bhk" placeholder="BHK">
+<input id="price" placeholder="Price">
+<input id="image" placeholder="Image URL">
+
+<button class="btn" onclick="addProperty()">Add Property</button>
+
+</div>
+
+<div class="modal" id="propertyModal">
+
+<div class="modal-content">
+
+<h2 id="modalTitle"></h2>
+<p id="modalCity"></p>
+<p id="modalPrice"></p>
+
+<a class="btn" href="mailto:owner@email.com">Contact Owner</a>
+
+<br><br>
+
+<button class="btn" onclick="closeModal()">Close</button>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Rental Property Finder</p>
+</footer>
+
+<script>
+
+function filterProperties(){
+
+let location=document.getElementById("locationInput").value.toLowerCase()
+let bhk=document.getElementById("bhkFilter").value
+let price=document.getElementById("priceFilter").value
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+let cardLocation=card.getAttribute("data-location")
+let cardBhk=card.getAttribute("data-bhk")
+let cardPrice=card.getAttribute("data-price")
+
+let show=true
+
+if(location && !cardLocation.includes(location)) show=false
+if(bhk && cardBhk!==bhk) show=false
+if(price && parseInt(cardPrice)>parseInt(price)) show=false
+
+card.style.display=show ? "" : "none"
+
+})
+
+}
+
+function openDetails(title,city,price){
+
+document.getElementById("modalTitle").innerText=title
+document.getElementById("modalCity").innerText="Location: "+city
+document.getElementById("modalPrice").innerText="Rent: ₹"+price
+
+document.getElementById("propertyModal").style.display="flex"
+
+}
+
+function closeModal(){
+document.getElementById("propertyModal").style.display="none"
+}
+
+function toggleFav(el){
+
+if(el.innerHTML=="♡"){
+el.innerHTML="❤️"
+}else{
+el.innerHTML="♡"
+}
+
+}
+
+function attachEvents(card){
+
+let title=card.querySelector("h3").innerText
+let city=card.querySelector("p").innerText
+let price=card.getAttribute("data-price")
+
+card.querySelector(".viewBtn").onclick=function(){
+openDetails(title,city,price)
+}
+
+card.querySelector(".favorite").onclick=function(){
+toggleFav(this)
+}
+
+}
+
+document.querySelectorAll(".card").forEach(attachEvents)
+
+function addProperty(){
+
+let title=document.getElementById("title").value
+let city=document.getElementById("city").value
+let bhk=document.getElementById("bhk").value
+let price=document.getElementById("price").value
+let image=document.getElementById("image").value
+
+if(!title || !city || !bhk || !price || !image){
+alert("Please fill all fields")
+return
+}
+
+let container=document.getElementById("propertyList")
+
+let card=document.createElement("div")
+card.className="card"
+
+card.setAttribute("data-location",city.toLowerCase())
+card.setAttribute("data-bhk",bhk)
+card.setAttribute("data-price",price)
+
+card.innerHTML=`
+
+<img src="${image}" onerror="this.src='https://via.placeholder.com/400x250'">
+
+<div class="card-content">
+
+<span class="favorite">♡</span>
+
+<h3>${title}</h3>
+<p>${city}</p>
+<p class="price">₹${price}/month</p>
+
+<button class="btn viewBtn">View Details</button>
+
+</div>
+`
+
+container.appendChild(card)
+
+attachEvents(card)
+
+document.getElementById("title").value=""
+document.getElementById("city").value=""
+document.getElementById("bhk").value=""
+document.getElementById("price").value=""
+document.getElementById("image").value=""
+
+}
+
+</script>
+
+</body>
+</html>

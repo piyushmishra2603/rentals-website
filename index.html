@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Find Rental Properties</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rental Property Finder</title>
 
 <style>
 
 body{
-font-family: Arial, sans-serif;
+font-family: Arial;
 margin:0;
-background:#f5f7fb;
+background:#f5f5f5;
 }
-
-/* HEADER */
 
 header{
 background:#0f4c81;
@@ -24,64 +18,34 @@ padding:20px;
 text-align:center;
 }
 
-/* SEARCH BAR */
-
-.search-section{<select id="sortPrice">
-
-<option value="">Sort Price</option>
-
-<option value="low">Low to High</option>
-
-<option value="high">High to Low</option>
-
-</select>
+.filters{
 background:white;
 padding:20px;
 display:flex;
+gap:10px;
 justify-content:center;
 flex-wrap:wrap;
-gap:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-.search-section input,
-.search-section select{
+.filters input,
+.filters select,
+.filters button{
 padding:10px;
-width:180px;
-border:1px solid #ccc;
-border-radius:5px;
+font-size:16px;
 }
-
-<button onclick="filterProperties();sortProperties()">Search</button>{
-padding:10px 15px;
-background:#ff6b00;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
-/* PROPERTY GRID */
 
 .properties{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
-padding:30px;
+padding:20px;
 }
-
-/* PROPERTY CARD */
 
 .card{
 background:white;
-border-radius:10px;
+border-radius:8px;
 overflow:hidden;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
 .card img{
@@ -95,7 +59,7 @@ padding:15px;
 }
 
 .price{
-color:#ff6b00;
+color:green;
 font-weight:bold;
 }
 
@@ -112,24 +76,22 @@ border-radius:5px;
 footer{
 text-align:center;
 padding:20px;
-background:#0f4c81;
-color:white;
+background:#eee;
+margin-top:30px;
 }
 
 </style>
-
 </head>
 
 <body>
 
 <header>
 <h1>Rental Property Finder</h1>
-<p>Find the best apartments and PGs</p>
 </header>
 
-<!-- SEARCH + FILTER -->
+<!-- FILTER SECTION -->
 
-<div class="search-section">
+<div class="filters">
 
 <input type="text" id="locationInput" placeholder="Location">
 
@@ -147,6 +109,12 @@ color:white;
 <option value="20000">₹20,000</option>
 </select>
 
+<select id="sortPrice" onchange="sortProperties()">
+<option value="">Sort Price</option>
+<option value="low">Low to High</option>
+<option value="high">High to Low</option>
+</select>
+
 <button onclick="filterProperties()">Search</button>
 
 </div>
@@ -162,16 +130,14 @@ color:white;
 <div class="card-content">
 
 <h3>1BHK Apartment</h3>
-
 <p>Hyderabad</p>
-
 <p class="price">₹12,000/month</p>
 
 <a class="btn" href="property.html?id=1">View Details</a>
 
 </div>
-
 </div>
+
 
 <div class="card" data-location="kota" data-bhk="1" data-price="8000">
 
@@ -180,16 +146,14 @@ color:white;
 <div class="card-content">
 
 <h3>PG for Students</h3>
-
 <p>Kota</p>
-
 <p class="price">₹8,000/month</p>
 
 <a class="btn" href="property.html?id=2">View Details</a>
 
 </div>
-
 </div>
+
 
 <div class="card" data-location="delhi" data-bhk="2" data-price="18000">
 
@@ -198,55 +162,26 @@ color:white;
 <div class="card-content">
 
 <h3>2BHK Apartment</h3>
-
 <p>Delhi</p>
-
 <p class="price">₹18,000/month</p>
 
 <a class="btn" href="property.html?id=3">View Details</a>
 
 </div>
-
 </div>
 
 </div>
 
 <footer>
-
 <p>© 2026 Rental Property Finder</p>
-
 </footer>
 
-<function sortProperties(){
-
-let container=document.getElementById("propertyList")
-
-let cards=[...container.querySelectorAll(".card")]
-
-let sort=document.getElementById("sortPrice").value
-
-cards.sort((a,b)=>{
-
-let priceA=parseInt(a.getAttribute("data-price"))
-
-let priceB=parseInt(b.getAttribute("data-price"))
-
-if(sort=="low") return priceA-priceB
-
-if(sort=="high") return priceB-priceA
-
-})
-
-cards.forEach(card=>container.appendChild(card))
-
-}>
+<script>
 
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
-
 let bhk=document.getElementById("bhkFilter").value
-
 let price=document.getElementById("priceFilter").value
 
 let cards=document.querySelectorAll(".card")
@@ -254,9 +189,7 @@ let cards=document.querySelectorAll(".card")
 cards.forEach(card=>{
 
 let cardLocation=card.getAttribute("data-location")
-
 let cardBhk=card.getAttribute("data-bhk")
-
 let cardPrice=card.getAttribute("data-price")
 
 let show=true
@@ -269,18 +202,39 @@ if(bhk && cardBhk!==bhk){
 show=false
 }
 
-if(price && cardPrice>price){
+if(price && parseInt(cardPrice)>parseInt(price)){
 show=false
 }
 
-card.style.display=show ? "block" : "none"
+card.style.display=show ? "" : "none"
 
 })
+
+}
+
+function sortProperties(){
+
+let container=document.getElementById("propertyList")
+
+let cards=[...container.querySelectorAll(".card")]
+
+let sort=document.getElementById("sortPrice").value
+
+cards.sort((a,b)=>{
+
+let priceA=parseInt(a.getAttribute("data-price"))
+let priceB=parseInt(b.getAttribute("data-price"))
+
+if(sort=="low") return priceA-priceB
+if(sort=="high") return priceB-priceA
+
+})
+
+cards.forEach(card=>container.appendChild(card))
 
 }
 
 </script>
 
 </body>
-
 </html>

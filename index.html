@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Find Rental Properties</title>
@@ -9,61 +10,102 @@
 <style>
 
 body{
-font-family: Arial;
+font-family: Arial, sans-serif;
 margin:0;
-background:#f2f2f2;
+background:#f5f7fb;
 }
+
+/* HEADER */
 
 header{
-background:#2c3e50;
+background:#0f4c81;
 color:white;
-padding:15px;
+padding:20px;
 text-align:center;
 }
 
-.search-box{
+/* SEARCH BAR */
+
+.search-section{
 background:white;
-padding:15px;
-text-align:center;
+padding:20px;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
+gap:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-input{
-padding:8px;
-width:200px;
+.search-section input,
+.search-section select{
+padding:10px;
+width:180px;
+border:1px solid #ccc;
+border-radius:5px;
 }
 
-button{
-padding:8px 15px;
+.search-section button{
+padding:10px 15px;
+background:#ff6b00;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
+
+/* PROPERTY GRID */
 
 .properties{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:30px;
 }
+
+/* PROPERTY CARD */
 
 .card{
 background:white;
-width:260px;
-margin:15px;
-padding:10px;
-border-radius:8px;
-box-shadow:0 0 10px #ccc;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .card img{
 width:100%;
-border-radius:6px;
+height:180px;
+object-fit:cover;
+}
+
+.card-content{
+padding:15px;
+}
+
+.price{
+color:#ff6b00;
+font-weight:bold;
 }
 
 .btn{
 display:inline-block;
-background:green;
-color:white;
+margin-top:10px;
 padding:8px 12px;
+background:#0f4c81;
+color:white;
 text-decoration:none;
 border-radius:5px;
-margin-top:5px;
+}
+
+footer{
+text-align:center;
+padding:20px;
+background:#0f4c81;
+color:white;
 }
 
 </style>
@@ -74,37 +116,66 @@ margin-top:5px;
 
 <header>
 <h1>Rental Property Finder</h1>
+<p>Find the best apartments and PGs</p>
 </header>
 
-<div class="search-box">
+<!-- SEARCH + FILTER -->
 
-<input id="searchInput" placeholder="Search location">
+<div class="search-section">
 
-<button onclick="search()">Search</button>
+<input type="text" id="locationInput" placeholder="Location">
+
+<select id="bhkFilter">
+<option value="">BHK</option>
+<option value="1">1 BHK</option>
+<option value="2">2 BHK</option>
+<option value="3">3 BHK</option>
+</select>
+
+<select id="priceFilter">
+<option value="">Max Price</option>
+<option value="10000">₹10,000</option>
+<option value="15000">₹15,000</option>
+<option value="20000">₹20,000</option>
+</select>
+
+<button onclick="filterProperties()">Search</button>
 
 </div>
 
+<!-- PROPERTY LIST -->
+
 <div class="properties" id="propertyList">
 
-<div class="card" data-location="hyderabad">
+<div class="card" data-location="hyderabad" data-bhk="1" data-price="12000">
 
-<img src="https://via.placeholder.com/300x200">
+<img src="https://via.placeholder.com/400x250">
 
-<h3>1BHK Hyderabad</h3>
+<div class="card-content">
 
-<p>₹12,000/month</p>
+<h3>1BHK Apartment</h3>
+
+<p>Hyderabad</p>
+
+<p class="price">₹12,000/month</p>
 
 <a class="btn" href="property.html?id=1">View Details</a>
 
 </div>
 
-<div class="card" data-location="kota">
+</div>
 
-<img src="https://via.placeholder.com/300x200">
+<div class="card" data-location="kota" data-bhk="1" data-price="8000">
 
-<h3>PG Kota</h3>
+<img src="https://via.placeholder.com/400x250">
 
-<p>₹8,000/month</p>
+<div class="card-content">
+
+<h3>PG for Students</h3>
+
+<p>Kota</p>
+
+<p class="price">₹8,000/month</p>
 
 <a class="btn" href="property.html?id=2">View Details</a>
 
@@ -112,29 +183,67 @@ margin-top:5px;
 
 </div>
 
+<div class="card" data-location="delhi" data-bhk="2" data-price="18000">
+
+<img src="https://via.placeholder.com/400x250">
+
+<div class="card-content">
+
+<h3>2BHK Apartment</h3>
+
+<p>Delhi</p>
+
+<p class="price">₹18,000/month</p>
+
+<a class="btn" href="property.html?id=3">View Details</a>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>© 2026 Rental Property Finder</p>
+
+</footer>
+
 <script>
 
-function search(){
+function filterProperties(){
 
-let input=document.getElementById("searchInput").value.toLowerCase()
+let location=document.getElementById("locationInput").value.toLowerCase()
+
+let bhk=document.getElementById("bhkFilter").value
+
+let price=document.getElementById("priceFilter").value
 
 let cards=document.querySelectorAll(".card")
 
 cards.forEach(card=>{
 
-let location=card.getAttribute("data-location")
+let cardLocation=card.getAttribute("data-location")
 
-if(location.includes(input)){
+let cardBhk=card.getAttribute("data-bhk")
 
-card.style.display="block"
+let cardPrice=card.getAttribute("data-price")
 
+let show=true
+
+if(location && !cardLocation.includes(location)){
+show=false
 }
 
-else{
-
-card.style.display="none"
-
+if(bhk && cardBhk!==bhk){
+show=false
 }
+
+if(price && cardPrice>price){
+show=false
+}
+
+card.style.display=show ? "block" : "none"
 
 })
 
@@ -143,4 +252,5 @@ card.style.display="none"
 </script>
 
 </body>
+
 </html>

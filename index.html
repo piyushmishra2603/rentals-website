@@ -26,7 +26,15 @@ text-align:center;
 
 /* SEARCH BAR */
 
-.search-section{
+.search-section{<select id="sortPrice">
+
+<option value="">Sort Price</option>
+
+<option value="low">Low to High</option>
+
+<option value="high">High to Low</option>
+
+</select>
 background:white;
 padding:20px;
 display:flex;
@@ -44,7 +52,7 @@ border:1px solid #ccc;
 border-radius:5px;
 }
 
-.search-section button{
+<button onclick="filterProperties();sortProperties()">Search</button>{
 padding:10px 15px;
 background:#ff6b00;
 color:white;
@@ -209,7 +217,29 @@ color:white;
 
 </footer>
 
-<script>
+<function sortProperties(){
+
+let container=document.getElementById("propertyList")
+
+let cards=[...container.querySelectorAll(".card")]
+
+let sort=document.getElementById("sortPrice").value
+
+cards.sort((a,b)=>{
+
+let priceA=parseInt(a.getAttribute("data-price"))
+
+let priceB=parseInt(b.getAttribute("data-price"))
+
+if(sort=="low") return priceA-priceB
+
+if(sort=="high") return priceB-priceA
+
+})
+
+cards.forEach(card=>container.appendChild(card))
+
+}>
 
 function filterProperties(){
 

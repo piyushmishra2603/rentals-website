@@ -70,6 +70,7 @@ color:white;
 text-decoration:none;
 border-radius:5px;
 cursor:pointer;
+border:none;
 }
 
 .favorite{
@@ -105,7 +106,8 @@ align-items:center;
 .modal-content{
 background:white;
 padding:20px;
-width:400px;
+width:90%;
+max-width:400px;
 border-radius:8px;
 }
 
@@ -123,8 +125,6 @@ background:#eee;
 <header>
 <h1>Rental Property Finder</h1>
 </header>
-
-<!-- FILTERS -->
 
 <div class="filters">
 
@@ -144,237 +144,4 @@ background:#eee;
 <option value="20000">₹20,000</option>
 </select>
 
-<select id="sortPrice" onchange="sortProperties()">
-<option value="">Sort Price</option>
-<option value="low">Low to High</option>
-<option value="high">High to Low</option>
-</select>
-
-<button onclick="filterProperties()">Search</button>
-
-</div>
-
-<!-- PROPERTY LIST -->
-
-<div class="properties" id="propertyList">
-
-<div class="card" data-location="hyderabad" data-bhk="1" data-price="12000">
-
-<img src="https://via.placeholder.com/400x250">
-
-<div class="card-content">
-
-<span class="favorite" onclick="toggleFav(this)">♡</span>
-
-<h3>1BHK Apartment</h3>
-<p>Hyderabad</p>
-<p class="price">₹12,000/month</p>
-
-<button class="btn" onclick="openDetails('1BHK Apartment','Hyderabad','12000')">View Details</button>
-
-</div>
-</div>
-
-<div class="card" data-location="kota" data-bhk="1" data-price="8000">
-
-<img src="https://via.placeholder.com/400x250">
-
-<div class="card-content">
-
-<span class="favorite" onclick="toggleFav(this)">♡</span>
-
-<h3>PG for Students</h3>
-<p>Kota</p>
-<p class="price">₹8,000/month</p>
-
-<button class="btn" onclick="openDetails('PG for Students','Kota','8000')">View Details</button>
-
-</div>
-</div>
-
-<div class="card" data-location="delhi" data-bhk="2" data-price="18000">
-
-<img src="https://via.placeholder.com/400x250">
-
-<div class="card-content">
-
-<span class="favorite" onclick="toggleFav(this)">♡</span>
-
-<h3>2BHK Apartment</h3>
-<p>Delhi</p>
-<p class="price">₹18,000/month</p>
-
-<button class="btn" onclick="openDetails('2BHK Apartment','Delhi','18000')">View Details</button>
-
-</div>
-</div>
-
-</div>
-
-<!-- ADD PROPERTY -->
-
-<div class="add-section">
-
-<h2>Add Property</h2>
-
-<input id="title" placeholder="Property Title">
-
-<input id="city" placeholder="City">
-
-<input id="bhk" placeholder="BHK">
-
-<input id="price" placeholder="Price">
-
-<input id="image" placeholder="Image URL">
-
-<button class="btn" onclick="addProperty()">Add Property</button>
-
-</div>
-
-<!-- PROPERTY MODAL -->
-
-<div class="modal" id="propertyModal">
-
-<div class="modal-content">
-
-<h2 id="modalTitle"></h2>
-
-<p id="modalCity"></p>
-
-<p id="modalPrice"></p>
-
-<a class="btn" href="mailto:owner@email.com">Contact Owner</a>
-
-<br><br>
-
-<button onclick="closeModal()">Close</button>
-
-</div>
-
-</div>
-
-<footer>
-
-<p>© 2026 Rental Property Finder</p>
-
-</footer>
-
-<script>
-
-function filterProperties(){
-
-let location=document.getElementById("locationInput").value.toLowerCase()
-let bhk=document.getElementById("bhkFilter").value
-let price=document.getElementById("priceFilter").value
-
-let cards=document.querySelectorAll(".card")
-
-cards.forEach(card=>{
-
-let cardLocation=card.getAttribute("data-location")
-let cardBhk=card.getAttribute("data-bhk")
-let cardPrice=card.getAttribute("data-price")
-
-let show=true
-
-if(location && !cardLocation.includes(location)) show=false
-if(bhk && cardBhk!==bhk) show=false
-if(price && parseInt(cardPrice)>parseInt(price)) show=false
-
-card.style.display=show ? "" : "none"
-
-})
-
-}
-
-function sortProperties(){
-
-let container=document.getElementById("propertyList")
-let cards=[...container.querySelectorAll(".card")]
-let sort=document.getElementById("sortPrice").value
-
-cards.sort((a,b)=>{
-
-let priceA=parseInt(a.getAttribute("data-price"))
-let priceB=parseInt(b.getAttribute("data-price"))
-
-if(sort=="low") return priceA-priceB
-if(sort=="high") return priceB-priceA
-
-})
-
-cards.forEach(card=>container.appendChild(card))
-
-}
-
-function toggleFav(el){
-
-if(el.innerHTML=="♡"){
-el.innerHTML="❤️"
-}else{
-el.innerHTML="♡"
-}
-
-}
-
-function openDetails(title,city,price){
-
-document.getElementById("modalTitle").innerText=title
-document.getElementById("modalCity").innerText="Location: "+city
-document.getElementById("modalPrice").innerText="Rent: ₹"+price
-
-document.getElementById("propertyModal").style.display="flex"
-
-}
-
-function closeModal(){
-
-document.getElementById("propertyModal").style.display="none"
-
-}
-
-function addProperty(){
-
-let title=document.getElementById("title").value
-let city=document.getElementById("city").value
-let bhk=document.getElementById("bhk").value
-let price=document.getElementById("price").value
-let image=document.getElementById("image").value
-
-let container=document.getElementById("propertyList")
-
-let card=document.createElement("div")
-
-card.className="card"
-
-card.setAttribute("data-location",city.toLowerCase())
-card.setAttribute("data-bhk",bhk)
-card.setAttribute("data-price",price)
-
-card.innerHTML=`
-
-<img src="${image}">
-
-<div class="card-content">
-
-<span class="favorite" onclick="toggleFav(this)">♡</span>
-
-<h3>${title}</h3>
-
-<p>${city}</p>
-
-<p class="price">₹${price}/month</p>
-
-<button class="btn" onclick="openDetails('${title}','${city}','${price}')">View Details</button>
-
-</div>
-`
-
-container.appendChild(card)
-
-}
-
-</script>
-
-</body>
-</html>
+<select id="sortPrice" onchange="sort

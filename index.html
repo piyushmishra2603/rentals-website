@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Find Rental Properties</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+font-family: Arial;
+margin:0;
+background:#f2f2f2;
+}
+
+header{
+background:#2c3e50;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.search-box{
+background:white;
+padding:15px;
+text-align:center;
+}
+
+input{
+padding:8px;
+width:200px;
+}
+
+button{
+padding:8px 15px;
+}
+
+.properties{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.card{
+background:white;
+width:260px;
+margin:15px;
+padding:10px;
+border-radius:8px;
+box-shadow:0 0 10px #ccc;
+}
+
+.card img{
+width:100%;
+border-radius:6px;
+}
+
+.btn{
+display:inline-block;
+background:green;
+color:white;
+padding:8px 12px;
+text-decoration:none;
+border-radius:5px;
+margin-top:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h1>Rental Property Finder</h1>
+</header>
+
+<div class="search-box">
+
+<input id="searchInput" placeholder="Search location">
+
+<button onclick="search()">Search</button>
+
+</div>
+
+<div class="properties" id="propertyList">
+
+<div class="card" data-location="hyderabad">
+
+<img src="https://via.placeholder.com/300x200">
+
+<h3>1BHK Hyderabad</h3>
+
+<p>₹12,000/month</p>
+
+<a class="btn" href="property.html?id=1">View Details</a>
+
+</div>
+
+<div class="card" data-location="kota">
+
+<img src="https://via.placeholder.com/300x200">
+
+<h3>PG Kota</h3>
+
+<p>₹8,000/month</p>
+
+<a class="btn" href="property.html?id=2">View Details</a>
+
+</div>
+
+</div>
+
+<script>
+
+function search(){
+
+let input=document.getElementById("searchInput").value.toLowerCase()
+
+let cards=document.querySelectorAll(".card")
+
+cards.forEach(card=>{
+
+let location=card.getAttribute("data-location")
+
+if(location.includes(input)){
+
+card.style.display="block"
+
+}
+
+else{
+
+card.style.display="none"
+
+}
+
+})
+
+}
+
+</script>
+
+</body>
+</html>

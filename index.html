@@ -20,10 +20,6 @@ padding:20px;
 text-align:center;
 }
 
-.header-btn{
-margin-top:10px;
-}
-
 .header-btn a{
 background:white;
 color:#0f4c81;
@@ -87,12 +83,6 @@ border-radius:5px;
 cursor:pointer;
 }
 
-.favorite{
-float:right;
-cursor:pointer;
-font-size:18px;
-}
-
 footer{
 text-align:center;
 padding:20px;
@@ -100,6 +90,7 @@ background:#eee;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -108,9 +99,9 @@ background:#eee;
 
 <h1>Rental Property Finder</h1>
 
-<div class="header-btn">
-<a href="submit.html">Post Property</a>
-</div>
+<br>
+
+<a href="submit.html" class="btn">Post Property</a>
 
 </header>
 
@@ -118,24 +109,11 @@ background:#eee;
 
 <input type="text" id="locationInput" placeholder="Location">
 
-<select id="bhkFilter">
-<option value="">BHK</option>
-<option value="1">1 BHK</option>
-<option value="2">2 BHK</option>
-<option value="3">3 BHK</option>
-</select>
-
 <select id="priceFilter">
 <option value="">Max Price</option>
 <option value="10000">₹10,000</option>
 <option value="15000">₹15,000</option>
 <option value="20000">₹20,000</option>
-</select>
-
-<select id="sortPrice" onchange="sortProperties()">
-<option value="">Sort Price</option>
-<option value="low">Low to High</option>
-<option value="high">High to Low</option>
 </select>
 
 <button onclick="filterProperties()">Search</button>
@@ -154,10 +132,59 @@ background:#eee;
 
 <script>
 
+const sheetURL = "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv";
+
+fetch(sheetURL)
+.then(response => response.text())
+.then(data => {
+
+let rows = data.split("\n").slice(1);
+
+let container = document.getElementById("propertyList");
+
+rows.forEach(row => {
+
+let cols = row.split(",");
+
+let title = cols[0];
+let city = cols[1];
+let price = cols[2];
+let image = cols[3];
+let description = cols[4];
+
+let card = document.createElement("div");
+
+card.className="card";
+card.setAttribute("data-location",city.toLowerCase());
+card.setAttribute("data-price",price);
+
+card.innerHTML=`
+
+<img src="${image}">
+
+<div class="card-content">
+
+<h3>${title}</h3>
+
+<p>${city}</p>
+
+<p class="price">₹${price}/month</p>
+
+<button class="btn" onclick="alert('${description}')">View Details</button>
+
+</div>
+
+`;
+
+container.appendChild(card);
+
+});
+
+});
+
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
-let bhk=document.getElementById("bhkFilter").value
 let price=document.getElementById("priceFilter").value
 
 let cards=document.querySelectorAll(".card")
@@ -165,48 +192,16 @@ let cards=document.querySelectorAll(".card")
 cards.forEach(card=>{
 
 let cardLocation=card.getAttribute("data-location")
-let cardBhk=card.getAttribute("data-bhk")
 let cardPrice=card.getAttribute("data-price")
 
 let show=true
 
 if(location && !cardLocation.includes(location)) show=false
-if(bhk && cardBhk!==bhk) show=false
 if(price && parseInt(cardPrice)>parseInt(price)) show=false
 
 card.style.display=show ? "" : "none"
 
 })
-
-}
-
-function sortProperties(){
-
-let container=document.getElementById("propertyList")
-let cards=[...container.querySelectorAll(".card")]
-let sort=document.getElementById("sortPrice").value
-
-cards.sort((a,b)=>{
-
-let priceA=parseInt(a.getAttribute("data-price"))
-let priceB=parseInt(b.getAttribute("data-price"))
-
-if(sort=="low") return priceA-priceB
-if(sort=="high") return priceB-priceA
-
-})
-
-cards.forEach(card=>container.appendChild(card))
-
-}
-
-function toggleFav(el){
-
-if(el.innerHTML=="♡"){
-el.innerHTML="❤️"
-}else{
-el.innerHTML="♡"
-}
 
 }
 

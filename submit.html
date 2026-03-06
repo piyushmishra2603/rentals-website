@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Submit Property</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+margin:0;
+}
+
+.container{
+max-width:600px;
+margin:auto;
+background:white;
+padding:25px;
+margin-top:40px;
+border-radius:8px;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin:8px 0;
+font-size:15px;
+}
+
+button{
+background:#0f4c81;
+color:white;
+padding:12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+width:100%;
+font-size:16px;
+}
+
+button:hover{
+background:#08355d;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>List Your Property</h2>
+
+<form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+<input type="text" name="owner_name" placeholder="Your Name" required>
+
+<input type="email" name="email" placeholder="Your Email" required>
+
+<input type="text" name="phone" placeholder="Phone Number" required>
+
+<input type="text" name="title" placeholder="Property Title" required>
+
+<input type="text" name="city" placeholder="City" required>
+
+<input type="number" name="price" placeholder="Monthly Rent" required>
+
+<input type="text" name="image" placeholder="Image URL">
+
+<textarea name="description" placeholder="Property Description"></textarea>
+
+<button type="submit">Submit Property</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

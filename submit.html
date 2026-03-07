@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Submit Property</title>
@@ -11,37 +12,51 @@ body{
 font-family:Arial;
 background:#f2f2f2;
 margin:0;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
-.container{
-max-width:600px;
-margin:auto;
+.form-box{
 background:white;
-padding:25px;
-margin-top:40px;
-border-radius:8px;
+padding:30px;
+border-radius:10px;
+width:350px;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
 }
 
 input,textarea{
 width:100%;
 padding:10px;
 margin:8px 0;
-font-size:15px;
+border:1px solid #ccc;
+border-radius:5px;
 }
 
 button{
+width:100%;
+padding:10px;
 background:#0f4c81;
 color:white;
-padding:12px;
 border:none;
-border-radius:6px;
+border-radius:5px;
 cursor:pointer;
-width:100%;
 font-size:16px;
 }
 
 button:hover{
-background:#08355d;
+background:#09345a;
+}
+
+.success{
+text-align:center;
+color:green;
+margin-top:10px;
 }
 
 </style>
@@ -50,33 +65,78 @@ background:#08355d;
 
 <body>
 
-<div class="container">
+<div class="form-box">
 
-<h2>List Your Property</h2>
+<h2>Post Property</h2>
 
-<form action="https://formspree.io/f/xwvrkvyn" method="POST">
+<form id="propertyForm">
 
-<input type="text" name="owner_name" placeholder="Your Name" required>
+<input id="title" placeholder="Property Title" required>
 
-<input type="email" name="email" placeholder="Your Email" required>
+<input id="city" placeholder="City" required>
 
-<input type="text" name="phone" placeholder="Phone Number" required>
+<input id="price" placeholder="Monthly Rent" required>
 
-<input type="text" name="title" placeholder="Property Title" required>
+<input id="image" placeholder="Image URL" required>
 
-<input type="text" name="city" placeholder="City" required>
+<textarea id="description" placeholder="Description" required></textarea>
 
-<input type="number" name="price" placeholder="Monthly Rent" required>
-
-<input type="text" name="image" placeholder="Image URL">
-
-<textarea name="description" placeholder="Property Description"></textarea>
+<input type="hidden" id="ownerEmail">
 
 <button type="submit">Submit Property</button>
 
 </form>
 
+<p class="success" id="successMsg"></p>
+
 </div>
 
+
+<script>
+
+document.getElementById("ownerEmail").value = localStorage.getItem("ownerEmail") || "";
+
+document.getElementById("propertyForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let title=document.getElementById("title").value;
+let city=document.getElementById("city").value;
+let price=document.getElementById("price").value;
+let image=document.getElementById("image").value;
+let description=document.getElementById("description").value;
+let email=document.getElementById("ownerEmail").value;
+
+
+/* GOOGLE FORM URL */
+let formURL="https://docs.google.com/forms/d/e/FORM_ID/formResponse";
+
+
+let formData=new FormData();
+
+formData.append("entry.TITLE_ID",title);
+formData.append("entry.CITY_ID",city);
+formData.append("entry.PRICE_ID",price);
+formData.append("entry.IMAGE_ID",image);
+formData.append("entry.DESC_ID",description);
+formData.append("entry.EMAIL_ID",email);
+
+
+fetch(formURL,{
+method:"POST",
+mode:"no-cors",
+body:formData
+});
+
+
+document.getElementById("propertyForm").reset();
+
+document.getElementById("successMsg").innerText="Property submitted successfully!";
+
+});
+
+</script>
+
 </body>
+
 </html>

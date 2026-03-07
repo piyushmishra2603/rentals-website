@@ -24,12 +24,19 @@ text-align:center;
 padding:20px;
 }
 
+.card{
+background:white;
+padding:15px;
+margin:10px 0;
+border-radius:6px;
+}
+
 .btn{
-padding:10px 15px;
+padding:8px 12px;
 background:#0f4c81;
 color:white;
-text-decoration:none;
-border-radius:5px;
+border:none;
+cursor:pointer;
 }
 
 </style>
@@ -46,19 +53,62 @@ border-radius:5px;
 
 <div class="container">
 
-<h3>Post New Property</h3>
+<button class="btn" onclick="location.href='submit.html'">Add Property</button>
 
-<p>Use the form below to add property.</p>
+<h3>Your Properties</h3>
 
-<a class="btn" href="submit.html">Add Property</a>
-
-<br><br>
-
-<h3>View Website</h3>
-
-<a class="btn" href="index.html">Go to Listings</a>
+<div id="myProperties"></div>
 
 </div>
+
+<script>
+
+const sheetURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
+
+let ownerEmail=localStorage.getItem("ownerEmail")
+
+fetch(sheetURL)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let container=document.getElementById("myProperties")
+
+rows.forEach(row=>{
+
+let cols=row.split(",")
+
+let title=cols[0]
+let city=cols[1]
+let price=cols[2]
+let email=cols[5]
+
+if(email===ownerEmail){
+
+container.innerHTML+=`
+
+<div class="card">
+
+<h4>${title}</h4>
+
+<p>${city}</p>
+
+<p>₹${price}</p>
+
+</div>
+
+`
+
+}
+
+})
+
+})
+
+</script>
 
 </body>
 

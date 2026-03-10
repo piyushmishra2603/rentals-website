@@ -4,6 +4,7 @@
 <head>
 
 <title>Submit Property</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -12,49 +13,35 @@ body{
 font-family:Arial;
 background:#f2f2f2;
 margin:0;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
 }
 
-.form-box{
+.container{
+max-width:600px;
+margin:auto;
 background:white;
-padding:30px;
-border-radius:10px;
-width:350px;
-box-shadow:0 4px 10px rgba(0,0,0,0.2);
+padding:20px;
+margin-top:30px;
+border-radius:8px;
 }
 
-h2{
-text-align:center;
-}
-
-input,textarea{
+input, textarea{
 width:100%;
 padding:10px;
-margin:8px 0;
-border:1px solid #ccc;
-border-radius:5px;
+margin-top:10px;
+font-size:15px;
 }
 
 button{
-width:100%;
+margin-top:10px;
 padding:10px;
 background:#0f4c81;
 color:white;
 border:none;
-border-radius:5px;
 cursor:pointer;
-font-size:16px;
-}
-
-button:hover{
-background:#09345a;
+border-radius:5px;
 }
 
 .success{
-text-align:center;
 color:green;
 margin-top:10px;
 }
@@ -65,9 +52,9 @@ margin-top:10px;
 
 <body>
 
-<div class="form-box">
+<div class="container">
 
-<h2>Post Property</h2>
+<h2>Submit Your Property</h2>
 
 <form id="propertyForm">
 
@@ -75,65 +62,105 @@ margin-top:10px;
 
 <input id="city" placeholder="City" required>
 
-<input id="price" placeholder="Monthly Rent" required>
+<input id="bhk" placeholder="BHK (1,2,3)" required>
+
+<input id="price" placeholder="Price per month" required>
 
 <input id="image" placeholder="Image URL" required>
 
-<textarea id="description" placeholder="Description" required></textarea>
+<input id="email" placeholder="Owner Email" required>
 
-<input type="hidden" id="ownerEmail">
+<textarea id="description" placeholder="Property Description"></textarea>
 
-<button type="submit">Submit Property</button>
+<button type="button" onclick="generateDescription()">
+Generate AI Description
+</button>
+
+<button type="submit">
+Submit Property
+</button>
 
 </form>
 
-<p class="success" id="successMsg"></p>
+<p id="successMsg" class="success"></p>
 
 </div>
 
-
 <script>
 
-document.getElementById("ownerEmail").value = localStorage.getItem("ownerEmail") || "";
+/* AI DESCRIPTION GENERATOR */
+
+function generateDescription(){
+
+let title=document.getElementById("title").value
+let city=document.getElementById("city").value
+let bhk=document.getElementById("bhk").value
+let price=document.getElementById("price").value
+
+if(!title || !city || !bhk || !price){
+
+alert("Please fill title, city, BHK and price first")
+
+return
+
+}
+
+let description=
+"A spacious "+bhk+"BHK property located in "+city+
+" available for rent at ₹"+price+
+" per month. This "+title+
+" is ideal for families, students, or working professionals. "+
+"It offers comfortable living with good ventilation and "+
+"easy access to markets, transport, and daily amenities."
+
+document.getElementById("description").value=description
+
+}
+
+
+/* PROPERTY SUBMISSION */
+
+const scriptURL="PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE"
 
 document.getElementById("propertyForm").addEventListener("submit",function(e){
 
-e.preventDefault();
+e.preventDefault()
 
-let title=document.getElementById("title").value;
-let city=document.getElementById("city").value;
-let price=document.getElementById("price").value;
-let image=document.getElementById("image").value;
-let description=document.getElementById("description").value;
-let email=document.getElementById("ownerEmail").value;
+let data={
 
+title:document.getElementById("title").value,
+city:document.getElementById("city").value,
+bhk:document.getElementById("bhk").value,
+price:document.getElementById("price").value,
+image:document.getElementById("image").value,
+description:document.getElementById("description").value,
+email:document.getElementById("email").value
 
-/* GOOGLE FORM URL */
-let formURL="https://docs.google.com/forms/d/e/FORM_ID/formResponse";
+}
 
+fetch(scriptURL,{
 
-let formData=new FormData();
-
-formData.append("entry.TITLE_ID",title);
-formData.append("entry.CITY_ID",city);
-formData.append("entry.PRICE_ID",price);
-formData.append("entry.IMAGE_ID",image);
-formData.append("entry.DESC_ID",description);
-formData.append("entry.EMAIL_ID",email);
-
-
-fetch(formURL,{
 method:"POST",
-mode:"no-cors",
-body:formData
-});
+body:JSON.stringify(data)
 
+})
 
-document.getElementById("propertyForm").reset();
+.then(response=>{
 
-document.getElementById("successMsg").innerText="Property submitted successfully!";
+document.getElementById("successMsg").innerText=
+"Property submitted successfully!"
 
-});
+document.getElementById("propertyForm").reset()
+
+})
+
+.catch(error=>{
+
+alert("Submission failed. Try again.")
+
+})
+
+})
 
 </script>
 

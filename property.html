@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Property Details</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -20,34 +22,32 @@ background:white;
 padding:20px;
 }
 
-.gallery{
-text-align:center;
-}
-
-.gallery img{
+img{
 width:100%;
 border-radius:8px;
 }
 
-.thumbnails{
-display:flex;
-gap:10px;
-margin-top:10px;
-}
-
-.thumbnails img{
-width:100px;
-cursor:pointer;
+.price{
+color:green;
+font-size:22px;
+font-weight:bold;
 }
 
 .btn{
 display:inline-block;
-background:green;
+background:#0f4c81;
 color:white;
 padding:10px 15px;
 text-decoration:none;
 border-radius:6px;
 margin-top:10px;
+}
+
+footer{
+text-align:center;
+padding:20px;
+background:#eee;
+margin-top:30px;
 }
 
 </style>
@@ -58,60 +58,72 @@ margin-top:10px;
 
 <div class="container">
 
-<h2 id="title"></h2>
+<h2 id="title">Loading...</h2>
 
-<div class="gallery">
-<img id="mainImage" src="">
-</div>
+<img id="image">
 
-<h3 id="price"></h3>
+<p id="city"></p>
+
+<p class="price" id="price"></p>
 
 <p id="description"></p>
 
-<a class="btn" href="mailto:piyushmishra1903@gmail.com">Email Owner</a>
+<a id="contactBtn" class="btn">Contact Owner</a>
 
 </div>
 
+<footer>
+
+<p>© 2026 Rental Property Finder</p>
+
+</footer>
+
+
 <script>
 
-function changeImage(img){
-document.getElementById("mainImage").src = img.src;
-}
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:json"
 
-const properties={
+const params = new URLSearchParams(window.location.search)
+const id = params.get("id")
 
-1:{
-title:"1BHK Hyderabad",
-image:"https://via.placeholder.com/800x400",
-price:"₹12,000/month",
-description:"Nice 1BHK apartment near metro."
-},
+fetch(sheetURL)
+.then(res => res.text())
+.then(data => {
 
-2:{
-title:"PG Kota",
-image:"https://via.placeholder.com/800x400",
-price:"₹8,000/month",
-description:"PG accommodation for students."
-}
+let json = JSON.parse(data.substring(47).slice(0,-2))
 
-};
+let rows = json.table.rows
 
-const params=new URLSearchParams(window.location.search);
+if(!id || !rows[id]){
 
-const id=params.get("id");
-
-const property=properties[id];
-
-if(property){
-
-document.getElementById("title").innerText=property.title;
-document.getElementById("mainImage").src=property.image;
-document.getElementById("price").innerText=property.price;
-document.getElementById("description").innerText=property.description;
+document.getElementById("title").innerText="Property not found"
+return
 
 }
+
+let row = rows[id]
+
+let title = row.c[0]?.v || ""
+let city = row.c[1]?.v || ""
+let price = row.c[2]?.v || ""
+let image = row.c[3]?.v || ""
+let description = row.c[4]?.v || ""
+let email = row.c[5]?.v || ""
+
+document.getElementById("title").innerText = title
+document.getElementById("city").innerText = "Location: " + city
+document.getElementById("price").innerText = "₹" + price + "/month"
+document.getElementById("image").src = image
+document.getElementById("description").innerText = description
+
+document.getElementById("contactBtn").href =
+"mailto:"+email
+
+})
 
 </script>
 
 </body>
+
 </html>

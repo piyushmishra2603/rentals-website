@@ -38,21 +38,27 @@ font-size:15px;
 
 .properties{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
 padding:20px;
 }
 
 .card{
 background:white;
-border-radius:8px;
+border-radius:12px;
 overflow:hidden;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
+box-shadow:0 6px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 12px 25px rgba(0,0,0,0.15);
 }
 
 .card img{
 width:100%;
-height:180px;
+height:200px;
 object-fit:cover;
 }
 
@@ -60,26 +66,43 @@ object-fit:cover;
 padding:15px;
 }
 
+.card-content h3{
+margin:0;
+font-size:18px;
+}
+
 .price{
-color:green;
+color:#1a7f37;
+font-size:18px;
 font-weight:bold;
+margin-top:5px;
+}
+
+.buttons{
+margin-top:10px;
+display:flex;
+gap:8px;
+flex-wrap:wrap;
 }
 
 .btn{
-display:inline-block;
-margin-top:10px;
-padding:8px 12px;
 background:#0f4c81;
 color:white;
+padding:8px 12px;
+border-radius:6px;
 text-decoration:none;
-border-radius:5px;
+font-size:14px;
 cursor:pointer;
+}
+
+.map-btn{
+background:#2d9c5b;
 }
 
 .favorite{
 float:right;
+font-size:20px;
 cursor:pointer;
-font-size:18px;
 }
 
 footer{
@@ -99,8 +122,6 @@ background:#eee;
 <h1>Rental Property Finder</h1>
 
 </header>
-
-<!-- FILTERS -->
 
 <div class="filters">
 
@@ -127,11 +148,9 @@ background:#eee;
 <option value="high">High to Low</option>
 </select>
 
-<button onclick="applyFilters()">Search</button>
+<button onclick="filterProperties()">Search</button>
 
 </div>
-
-<!-- PROPERTY LIST -->
 
 <div class="properties" id="propertyList">
 
@@ -143,137 +162,165 @@ background:#eee;
 
 </footer>
 
-
 <script>
 
-const sheetURL =
-"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:json"
+/* ==============================
+GOOGLE SHEETS CSV LINK
+============================== */
 
-let allProperties = []
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vTyourcsvlink/pub?output=csv"
+
+
+
+/* ==============================
+LOAD PROPERTIES FROM SHEET
+============================== */
 
 fetch(sheetURL)
-
 .then(res => res.text())
-
 .then(data => {
 
-let json = JSON.parse(data.substring(47).slice(0,-2))
+let rows = data.split("\n").slice(1)
 
-let rows = json.table.rows
+rows.forEach((row,index)=>{
 
-rows.forEach((r,index)=>{
+let cols=row.split(",")
 
-let property={
+let title=cols[0]
+let city=cols[1]
+let bhk=cols[2]
+let price=cols[3]
+let image=cols[4]
+let description=cols[5]
 
-id:index,
-title:r.c[0]?.v || "",
-city:r.c[1]?.v || "",
-price:parseInt(r.c[2]?.v) || 0,
-image:r.c[3]?.v || "",
-description:r.c[4]?.v || "",
-email:r.c[5]?.v || "",
-bhk:r.c[6]?.v || ""
-
-}
-
-allProperties.push(property)
+createCard(index,title,city,bhk,price,image)
 
 })
 
-displayProperties(allProperties)
-
 })
 
-function displayProperties(list){
+
+
+function createCard(id,title,city,bhk,price,image){
 
 let container=document.getElementById("propertyList")
-
-container.innerHTML=""
-
-list.forEach(p=>{
 
 let card=document.createElement("div")
 
 card.className="card"
 
+card.setAttribute("data-location",city.toLowerCase())
+card.setAttribute("data-bhk",bhk)
+card.setAttribute("data-price",price)
+
 card.innerHTML=`
 
-<img src="${p.image}">
+<img src="${image}">
 
 <div class="card-content">
 
 <span class="favorite" onclick="toggleFav(this)">♡</span>
 
-<h3>${p.title}</h3>
+<h3>${title}</h3>
 
-<p>${p.city}</p>
+<p>${city}</p>
 
-<p class="price">₹${p.price}/month</p>
+<p class="price">₹${price}/month</p>
 
-<a class="btn" href="property.html?id=${p.id}">View Details</a>
+<div class="buttons">
 
-<br>
+<a class="btn" href="property.html?id=${id}">
+View Details
+</a>
 
-<a class="btn" target="_blank"
-href="https://wa.me/?text=Check this property: ${location.href}property.html?id=${p.id}">
-Share
+<a class="btn map-btn" target="_blank"
+href="https://www.google.com/maps/search/?api=1&query=${city}">
+View Map
 </a>
 
 </div>
 
+</div>
 `
 
 container.appendChild(card)
 
-})
-
 }
 
-function applyFilters(){
+
+
+/* ==============================
+FILTER PROPERTIES
+============================== */
+
+function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
-
 let bhk=document.getElementById("bhkFilter").value
-
 let price=document.getElementById("priceFilter").value
 
-let sort=document.getElementById("sortPrice").value
+let cards=document.querySelectorAll(".card")
 
-let filtered=allProperties.filter(p=>{
+cards.forEach(card=>{
 
-let match=true
+let cardLocation=card.getAttribute("data-location")
+let cardBhk=card.getAttribute("data-bhk")
+let cardPrice=card.getAttribute("data-price")
 
-if(location && !p.city.toLowerCase().includes(location))
-match=false
+let show=true
 
-if(bhk && p.bhk!=bhk)
-match=false
+if(location && !cardLocation.includes(location)) show=false
+if(bhk && cardBhk!==bhk) show=false
+if(price && parseInt(cardPrice)>parseInt(price)) show=false
 
-if(price && p.price>price)
-match=false
-
-return match
+card.style.display=show ? "" : "none"
 
 })
 
-if(sort=="low") filtered.sort((a,b)=>a.price-b.price)
-
-if(sort=="high") filtered.sort((a,b)=>b.price-a.price)
-
-displayProperties(filtered)
+sortProperties()
 
 }
+
+
+
+/* ==============================
+SORT PROPERTIES
+============================== */
+
+function sortProperties(){
+
+let container=document.getElementById("propertyList")
+let cards=[...container.querySelectorAll(".card")]
+let sort=document.getElementById("sortPrice").value
+
+cards.sort((a,b)=>{
+
+let priceA=parseInt(a.getAttribute("data-price"))
+let priceB=parseInt(b.getAttribute("data-price"))
+
+if(sort=="low") return priceA-priceB
+if(sort=="high") return priceB-priceA
+return 0
+
+})
+
+cards.forEach(card=>container.appendChild(card))
+
+}
+
+
+
+/* ==============================
+FAVORITE BUTTON
+============================== */
 
 function toggleFav(el){
 
 if(el.innerHTML=="♡"){
-
 el.innerHTML="❤️"
-
 }else{
-
 el.innerHTML="♡"
-
 }
 
 }

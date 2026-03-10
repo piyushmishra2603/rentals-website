@@ -22,13 +22,16 @@ background:white;
 padding:20px;
 margin-top:30px;
 border-radius:8px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
 }
 
-input, textarea{
+input,textarea{
 width:100%;
 padding:10px;
 margin-top:10px;
 font-size:15px;
+border:1px solid #ccc;
+border-radius:5px;
 }
 
 button{
@@ -37,13 +40,18 @@ padding:10px;
 background:#0f4c81;
 color:white;
 border:none;
-cursor:pointer;
 border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0c3b63;
 }
 
 .success{
 color:green;
 margin-top:10px;
+font-weight:bold;
 }
 
 </style>
@@ -66,9 +74,10 @@ margin-top:10px;
 
 <input id="price" placeholder="Price per month" required>
 
-<input id="image" placeholder="Image URL" required>
-
 <input id="email" placeholder="Owner Email" required>
+
+<label>Upload Property Image</label>
+<input type="file" id="imageFile" accept="image/*">
 
 <textarea id="description" placeholder="Property Description"></textarea>
 
@@ -88,7 +97,17 @@ Submit Property
 
 <script>
 
-/* AI DESCRIPTION GENERATOR */
+/* ===========================
+PASTE YOUR APPS SCRIPT URL
+=========================== */
+
+const scriptURL="https://script.google.com/macros/s/AKfycbyWHVa3u0Miiwm7UmzyL7RLxVCYsz-cDwsbhGefLxvHpu02mbg3N6tG1jOcthV5b_qlkg/exec"
+
+
+
+/* ===========================
+AI DESCRIPTION GENERATOR
+=========================== */
 
 function generateDescription(){
 
@@ -105,26 +124,37 @@ return
 
 }
 
-let description=
-"A spacious "+bhk+"BHK property located in "+city+
+let text=
+"A spacious "+bhk+" BHK property located in "+city+
 " available for rent at ₹"+price+
 " per month. This "+title+
-" is ideal for families, students, or working professionals. "+
-"It offers comfortable living with good ventilation and "+
-"easy access to markets, transport, and daily amenities."
+" offers comfortable living with good ventilation and easy access to nearby markets, transport and daily amenities. Ideal for families, students and working professionals."
 
-document.getElementById("description").value=description
+document.getElementById("description").value=text
 
 }
 
 
-/* PROPERTY SUBMISSION */
 
-const scriptURL="https://script.google.com/macros/s/AKfycbwaYTAnJVfAdI312CP5NNqos9TDbbZjWyYh4oXPH_O-qyjlzy3uM2NnsubRNDE4lfi72w/exec"
+/* ===========================
+FORM SUBMISSION
+=========================== */
 
-document.getElementById("propertyForm").addEventListener("submit",function(e){
+document.getElementById("propertyForm").addEventListener("submit",async function(e){
 
 e.preventDefault()
+
+let file=document.getElementById("imageFile").files[0]
+
+let reader=new FileReader()
+
+reader.onload=async function(){
+
+let base64Image=""
+
+if(file){
+base64Image=reader.result.split(",")[1]
+}
 
 let data={
 
@@ -132,19 +162,17 @@ title:document.getElementById("title").value,
 city:document.getElementById("city").value,
 bhk:document.getElementById("bhk").value,
 price:document.getElementById("price").value,
-image:document.getElementById("image").value,
 description:document.getElementById("description").value,
-email:document.getElementById("email").value
+email:document.getElementById("email").value,
+image:base64Image
 
 }
 
 fetch(scriptURL,{
-
 method:"POST",
 body:JSON.stringify(data)
-
 })
-
+.then(res=>res.json())
 .then(response=>{
 
 document.getElementById("successMsg").innerText=
@@ -153,12 +181,19 @@ document.getElementById("successMsg").innerText=
 document.getElementById("propertyForm").reset()
 
 })
-
 .catch(error=>{
 
-alert("Submission failed. Try again.")
+alert("Submission failed. Please try again.")
 
 })
+
+}
+
+if(file){
+reader.readAsDataURL(file)
+}else{
+reader.onload()
+}
 
 })
 

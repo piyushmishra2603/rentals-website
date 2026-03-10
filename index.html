@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Rental Property Finder</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -18,15 +20,6 @@ background:#0f4c81;
 color:white;
 padding:20px;
 text-align:center;
-}
-
-.header-btn a{
-background:white;
-color:#0f4c81;
-padding:10px 15px;
-text-decoration:none;
-border-radius:6px;
-font-weight:bold;
 }
 
 .filters{
@@ -83,6 +76,12 @@ border-radius:5px;
 cursor:pointer;
 }
 
+.favorite{
+float:right;
+cursor:pointer;
+font-size:18px;
+}
+
 footer{
 text-align:center;
 padding:20px;
@@ -99,26 +98,40 @@ background:#eee;
 
 <h1>Rental Property Finder</h1>
 
-<br>
-
-<a href="submit.html" class="btn">Post Property</a>
-
 </header>
+
+<!-- FILTERS -->
 
 <div class="filters">
 
 <input type="text" id="locationInput" placeholder="Location">
+
+<select id="bhkFilter">
+<option value="">BHK</option>
+<option value="1">1 BHK</option>
+<option value="2">2 BHK</option>
+<option value="3">3 BHK</option>
+</select>
 
 <select id="priceFilter">
 <option value="">Max Price</option>
 <option value="10000">₹10,000</option>
 <option value="15000">₹15,000</option>
 <option value="20000">₹20,000</option>
+<option value="30000">₹30,000</option>
 </select>
 
-<button onclick="filterProperties()">Search</button>
+<select id="sortPrice">
+<option value="">Sort Price</option>
+<option value="low">Low to High</option>
+<option value="high">High to Low</option>
+</select>
+
+<button onclick="applyFilters()">Search</button>
 
 </div>
+
+<!-- PROPERTY LIST -->
 
 <div class="properties" id="propertyList">
 
@@ -130,82 +143,143 @@ background:#eee;
 
 </footer>
 
+
 <script>
 
-const sheetURL = "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv";
+const sheetURL =
+"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:json"
+
+let allProperties = []
 
 fetch(sheetURL)
-.then(response => response.text())
+
+.then(res => res.text())
+
 .then(data => {
 
-let rows = data.split("\n").slice(1);
+let json = JSON.parse(data.substring(47).slice(0,-2))
 
-let container = document.getElementById("propertyList");
+let rows = json.table.rows
 
-rows.forEach(row => {
+rows.forEach((r,index)=>{
 
-let cols = row.split(",");
+let property={
 
-let title = cols[0];
-let city = cols[1];
-let price = cols[2];
-let image = cols[3];
-let description = cols[4];
+id:index,
+title:r.c[0]?.v || "",
+city:r.c[1]?.v || "",
+price:parseInt(r.c[2]?.v) || 0,
+image:r.c[3]?.v || "",
+description:r.c[4]?.v || "",
+email:r.c[5]?.v || "",
+bhk:r.c[6]?.v || ""
 
-let card = document.createElement("div");
+}
 
-card.className="card";
-card.setAttribute("data-location",city.toLowerCase());
-card.setAttribute("data-price",price);
+allProperties.push(property)
+
+})
+
+displayProperties(allProperties)
+
+})
+
+function displayProperties(list){
+
+let container=document.getElementById("propertyList")
+
+container.innerHTML=""
+
+list.forEach(p=>{
+
+let card=document.createElement("div")
+
+card.className="card"
 
 card.innerHTML=`
 
-<img src="${image}">
+<img src="${p.image}">
 
 <div class="card-content">
 
-<h3>${title}</h3>
+<span class="favorite" onclick="toggleFav(this)">♡</span>
 
-<p>${city}</p>
+<h3>${p.title}</h3>
 
-<p class="price">₹${price}/month</p>
+<p>${p.city}</p>
 
-<button class="btn" onclick="alert('${description}')">View Details</button>
+<p class="price">₹${p.price}/month</p>
+
+<a class="btn" href="property.html?id=${p.id}">View Details</a>
+
+<br>
+
+<a class="btn" target="_blank"
+href="https://wa.me/?text=Check this property: ${location.href}property.html?id=${p.id}">
+Share
+</a>
 
 </div>
 
-`;
+`
 
-container.appendChild(card);
-
-});
-
-});
-
-function filterProperties(){
-
-let location=document.getElementById("locationInput").value.toLowerCase()
-let price=document.getElementById("priceFilter").value
-
-let cards=document.querySelectorAll(".card")
-
-cards.forEach(card=>{
-
-let cardLocation=card.getAttribute("data-location")
-let cardPrice=card.getAttribute("data-price")
-
-let show=true
-
-if(location && !cardLocation.includes(location)) show=false
-if(price && parseInt(cardPrice)>parseInt(price)) show=false
-
-card.style.display=show ? "" : "none"
+container.appendChild(card)
 
 })
+
+}
+
+function applyFilters(){
+
+let location=document.getElementById("locationInput").value.toLowerCase()
+
+let bhk=document.getElementById("bhkFilter").value
+
+let price=document.getElementById("priceFilter").value
+
+let sort=document.getElementById("sortPrice").value
+
+let filtered=allProperties.filter(p=>{
+
+let match=true
+
+if(location && !p.city.toLowerCase().includes(location))
+match=false
+
+if(bhk && p.bhk!=bhk)
+match=false
+
+if(price && p.price>price)
+match=false
+
+return match
+
+})
+
+if(sort=="low") filtered.sort((a,b)=>a.price-b.price)
+
+if(sort=="high") filtered.sort((a,b)=>b.price-a.price)
+
+displayProperties(filtered)
+
+}
+
+function toggleFav(el){
+
+if(el.innerHTML=="♡"){
+
+el.innerHTML="❤️"
+
+}else{
+
+el.innerHTML="♡"
+
+}
 
 }
 
 </script>
 
 </body>
+
 </html>

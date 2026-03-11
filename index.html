@@ -24,6 +24,26 @@ padding:20px;
 text-align:center;
 }
 
+.top-buttons{
+margin-top:10px;
+}
+
+.top-buttons .btn{
+margin:5px;
+background:white;
+color:#0f4c81;
+border:2px solid white;
+font-weight:bold;
+padding:8px 12px;
+border-radius:6px;
+text-decoration:none;
+}
+
+.top-buttons .btn:hover{
+background:#0c3b63;
+color:white;
+}
+
 .filters{
 background:white;
 padding:15px;
@@ -123,6 +143,14 @@ background:#eee;
 
 <h1>Rental Property Finder</h1>
 
+<div class="top-buttons">
+
+<a href="signup.html" class="btn">Owner Signup</a>
+
+<a href="submit.html" class="btn">Post Property</a>
+
+</div>
+
 </header>
 
 <div class="filters">
@@ -164,18 +192,10 @@ background:#eee;
 
 <script>
 
-/* ==============================
-GOOGLE SHEETS CSV LINK
-============================== */
-
 const sheetURL =
 "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
 
-
-/* ==============================
-LOAD PROPERTIES FROM SHEET
-============================== */
 
 function loadProperties(){
 
@@ -207,10 +227,6 @@ createCard(index,title,city,bhk,price,image)
 }
 
 
-
-/* ==============================
-CREATE PROPERTY CARD
-============================== */
 
 function createCard(id,title,city,bhk,price,image){
 
@@ -260,10 +276,6 @@ container.appendChild(card)
 
 
 
-/* ==============================
-FILTER PROPERTIES
-============================== */
-
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
@@ -294,10 +306,6 @@ sortProperties()
 
 
 
-/* ==============================
-SORT PROPERTIES
-============================== */
-
 function sortProperties(){
 
 let container=document.getElementById("propertyList")
@@ -321,10 +329,6 @@ cards.forEach(card=>container.appendChild(card))
 
 
 
-/* ==============================
-FAVORITE BUTTON
-============================== */
-
 function toggleFav(el){
 
 if(el.innerHTML=="♡"){
@@ -336,10 +340,6 @@ el.innerHTML="♡"
 }
 
 
-
-/* ==============================
-AUTO LOAD + AUTO REFRESH
-============================== */
 
 loadProperties()
 

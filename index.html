@@ -7,6 +7,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<meta name="description" content="Find rental houses, apartments and PG accommodation easily.">
+
 <style>
 
 body{
@@ -152,9 +154,7 @@ background:#eee;
 
 </div>
 
-<div class="properties" id="propertyList">
-
-</div>
+<div class="properties" id="propertyList"></div>
 
 <footer>
 
@@ -177,11 +177,16 @@ const sheetURL =
 LOAD PROPERTIES FROM SHEET
 ============================== */
 
+function loadProperties(){
+
 fetch(sheetURL)
 .then(res => res.text())
 .then(data => {
 
-let rows = data.split("\n").slice(1)
+let container=document.getElementById("propertyList")
+container.innerHTML=""
+
+let rows=data.split("\n").slice(1)
 
 rows.forEach((row,index)=>{
 
@@ -192,7 +197,6 @@ let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]
 let image=cols[4]
-let description=cols[5]
 
 createCard(index,title,city,bhk,price,image)
 
@@ -200,7 +204,13 @@ createCard(index,title,city,bhk,price,image)
 
 })
 
+}
 
+
+
+/* ==============================
+CREATE PROPERTY CARD
+============================== */
 
 function createCard(id,title,city,bhk,price,image){
 
@@ -325,8 +335,17 @@ el.innerHTML="♡"
 
 }
 
+
+
+/* ==============================
+AUTO LOAD + AUTO REFRESH
+============================== */
+
+loadProperties()
+
+setInterval(loadProperties,15000)
+
 </script>
 
 </body>
-
 </html>

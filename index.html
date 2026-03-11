@@ -7,7 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="description" content="Find rental houses, apartments and PG accommodation easily.">
+<meta name="description" content="Find rental houses, apartments and PG accommodation easily">
 
 <style>
 
@@ -16,6 +16,8 @@ font-family:Arial;
 margin:0;
 background:#f2f2f2;
 }
+
+/* HEADER */
 
 header{
 background:#0f4c81;
@@ -28,35 +30,78 @@ text-align:center;
 margin-top:10px;
 }
 
-.top-buttons .btn{
-margin:5px;
+.top-buttons a{
 background:white;
 color:#0f4c81;
-border:2px solid white;
-font-weight:bold;
-padding:8px 12px;
+padding:8px 14px;
+margin:5px;
 border-radius:6px;
 text-decoration:none;
+font-weight:bold;
 }
 
-.top-buttons .btn:hover{
-background:#0c3b63;
+/* HERO SEARCH */
+
+.hero{
+background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
+background-size:cover;
+background-position:center;
+padding:80px 20px;
+text-align:center;
 color:white;
 }
 
-.filters{
-background:white;
-padding:15px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-justify-content:center;
+.hero h1{
+font-size:40px;
+margin-bottom:10px;
 }
 
-.filters input,.filters select,.filters button{
+.hero p{
+font-size:18px;
+margin-bottom:20px;
+}
+
+.search-box{
+background:white;
+padding:15px;
+border-radius:10px;
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+justify-content:center;
+max-width:800px;
+margin:auto;
+}
+
+.search-box input,
+.search-box select{
 padding:10px;
 font-size:15px;
+border-radius:5px;
+border:1px solid #ccc;
 }
+
+.search-box button{
+background:#0f4c81;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:5px;
+cursor:pointer;
+}
+
+/* SORT */
+
+.sort-box{
+text-align:center;
+margin-top:20px;
+}
+
+.sort-box select{
+padding:10px;
+}
+
+/* PROPERTY GRID */
 
 .properties{
 display:grid;
@@ -65,17 +110,18 @@ gap:25px;
 padding:20px;
 }
 
+/* PROPERTY CARD */
+
 .card{
 background:white;
-border-radius:12px;
+border-radius:10px;
 overflow:hidden;
-box-shadow:0 6px 15px rgba(0,0,0,0.1);
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 12px 25px rgba(0,0,0,0.15);
+transform:translateY(-5px);
 }
 
 .card img{
@@ -88,23 +134,22 @@ object-fit:cover;
 padding:15px;
 }
 
-.card-content h3{
-margin:0;
+.price{
+color:green;
+font-weight:bold;
 font-size:18px;
 }
 
-.price{
-color:#1a7f37;
-font-size:18px;
-font-weight:bold;
-margin-top:5px;
+.favorite{
+float:right;
+cursor:pointer;
+font-size:20px;
 }
 
 .buttons{
 margin-top:10px;
 display:flex;
 gap:8px;
-flex-wrap:wrap;
 }
 
 .btn{
@@ -114,17 +159,10 @@ padding:8px 12px;
 border-radius:6px;
 text-decoration:none;
 font-size:14px;
-cursor:pointer;
 }
 
 .map-btn{
 background:#2d9c5b;
-}
-
-.favorite{
-float:right;
-font-size:20px;
-cursor:pointer;
 }
 
 footer{
@@ -141,21 +179,29 @@ background:#eee;
 
 <header>
 
-<h1>Rental Property Finder</h1>
+<h2>Rental Property Finder</h2>
 
 <div class="top-buttons">
 
-<a href="signup.html" class="btn">Owner Signup</a>
+<a href="signup.html">Owner Signup</a>
 
-<a href="submit.html" class="btn">Post Property</a>
+<a href="submit.html">Post Property</a>
 
 </div>
 
 </header>
 
-<div class="filters">
+<!-- HERO SEARCH -->
 
-<input type="text" id="locationInput" placeholder="Location">
+<div class="hero">
+
+<h1>Find Your Perfect Rental Home</h1>
+
+<p>Apartments, PGs and Houses at the best prices</p>
+
+<div class="search-box">
+
+<input type="text" id="locationInput" placeholder="City">
 
 <select id="bhkFilter">
 <option value="">BHK</option>
@@ -172,15 +218,23 @@ background:#eee;
 <option value="30000">₹30,000</option>
 </select>
 
-<select id="sortPrice">
-<option value="">Sort Price</option>
-<option value="low">Low to High</option>
-<option value="high">High to Low</option>
-</select>
-
 <button onclick="filterProperties()">Search</button>
 
 </div>
+
+</div>
+
+<div class="sort-box">
+
+<select id="sortPrice" onchange="sortProperties()">
+<option value="">Sort Price</option>
+<option value="low">Low → High</option>
+<option value="high">High → Low</option>
+</select>
+
+</div>
+
+<!-- PROPERTY LIST -->
 
 <div class="properties" id="propertyList"></div>
 
@@ -196,17 +250,19 @@ const sheetURL =
 "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
 
-
 function loadProperties(){
 
 fetch(sheetURL)
-.then(res => res.text())
-.then(data => {
 
-let container=document.getElementById("propertyList")
-container.innerHTML=""
+.then(res=>res.text())
+
+.then(data=>{
 
 let rows=data.split("\n").slice(1)
+
+let container=document.getElementById("propertyList")
+
+container.innerHTML=""
 
 rows.forEach((row,index)=>{
 
@@ -260,9 +316,10 @@ card.innerHTML=`
 View Details
 </a>
 
-<a class="btn map-btn" target="_blank"
+<a class="btn map-btn"
+target="_blank"
 href="https://www.google.com/maps/search/?api=1&query=${city}">
-View Map
+Map
 </a>
 
 </div>
@@ -279,21 +336,27 @@ container.appendChild(card)
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
+
 let bhk=document.getElementById("bhkFilter").value
+
 let price=document.getElementById("priceFilter").value
 
 let cards=document.querySelectorAll(".card")
 
 cards.forEach(card=>{
 
-let cardLocation=card.getAttribute("data-location")
-let cardBhk=card.getAttribute("data-bhk")
-let cardPrice=card.getAttribute("data-price")
+let cardLocation=card.dataset.location
+
+let cardBhk=card.dataset.bhk
+
+let cardPrice=card.dataset.price
 
 let show=true
 
 if(location && !cardLocation.includes(location)) show=false
+
 if(bhk && cardBhk!==bhk) show=false
+
 if(price && parseInt(cardPrice)>parseInt(price)) show=false
 
 card.style.display=show ? "" : "none"
@@ -309,16 +372,21 @@ sortProperties()
 function sortProperties(){
 
 let container=document.getElementById("propertyList")
+
 let cards=[...container.querySelectorAll(".card")]
+
 let sort=document.getElementById("sortPrice").value
 
 cards.sort((a,b)=>{
 
-let priceA=parseInt(a.getAttribute("data-price"))
-let priceB=parseInt(b.getAttribute("data-price"))
+let priceA=parseInt(a.dataset.price)
+
+let priceB=parseInt(b.dataset.price)
 
 if(sort=="low") return priceA-priceB
+
 if(sort=="high") return priceB-priceA
+
 return 0
 
 })
@@ -348,4 +416,5 @@ setInterval(loadProperties,15000)
 </script>
 
 </body>
+
 </html>

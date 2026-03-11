@@ -26,11 +26,11 @@ padding:20px;
 text-align:center;
 }
 
-.top-buttons{
+.nav-buttons{
 margin-top:10px;
 }
 
-.top-buttons a{
+.nav-buttons a{
 background:white;
 color:#0f4c81;
 padding:8px 14px;
@@ -40,7 +40,7 @@ text-decoration:none;
 font-weight:bold;
 }
 
-/* HERO SEARCH */
+/* HERO */
 
 .hero{
 background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
@@ -52,13 +52,8 @@ color:white;
 }
 
 .hero h1{
-font-size:40px;
+font-size:38px;
 margin-bottom:10px;
-}
-
-.hero p{
-font-size:18px;
-margin-bottom:20px;
 }
 
 .search-box{
@@ -95,10 +90,6 @@ cursor:pointer;
 .sort-box{
 text-align:center;
 margin-top:20px;
-}
-
-.sort-box select{
-padding:10px;
 }
 
 /* PROPERTY GRID */
@@ -142,8 +133,8 @@ font-size:18px;
 
 .favorite{
 float:right;
-cursor:pointer;
 font-size:20px;
+cursor:pointer;
 }
 
 .buttons{
@@ -181,11 +172,13 @@ background:#eee;
 
 <h2>Rental Property Finder</h2>
 
-<div class="top-buttons">
+<div class="nav-buttons">
 
 <a href="signup.html">Owner Signup</a>
 
 <a href="submit.html">Post Property</a>
+
+<a href="favorites.html">Saved Properties</a>
 
 </div>
 
@@ -196,8 +189,6 @@ background:#eee;
 <div class="hero">
 
 <h1>Find Your Perfect Rental Home</h1>
-
-<p>Apartments, PGs and Houses at the best prices</p>
 
 <div class="search-box">
 
@@ -250,6 +241,9 @@ const sheetURL =
 "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
 
+
+/* LOAD PROPERTIES */
+
 function loadProperties(){
 
 fetch(sheetURL)
@@ -284,9 +278,15 @@ createCard(index,title,city,bhk,price,image)
 
 
 
+/* CREATE PROPERTY CARD */
+
 function createCard(id,title,city,bhk,price,image){
 
 let container=document.getElementById("propertyList")
+
+let favorites = JSON.parse(localStorage.getItem("favorites")) || []
+
+let favIcon = favorites.includes(id) ? "❤️" : "♡"
 
 let card=document.createElement("div")
 
@@ -298,11 +298,11 @@ card.setAttribute("data-price",price)
 
 card.innerHTML=`
 
-<img src="${image}">
+<img src="${image.split("|")[0]}">
 
 <div class="card-content">
 
-<span class="favorite" onclick="toggleFav(this)">♡</span>
+<span class="favorite" onclick="toggleFav(this,${id})">${favIcon}</span>
 
 <h3>${title}</h3>
 
@@ -332,6 +332,34 @@ container.appendChild(card)
 }
 
 
+
+/* FAVORITES SYSTEM */
+
+function toggleFav(el,id){
+
+let favorites = JSON.parse(localStorage.getItem("favorites")) || []
+
+if(favorites.includes(id)){
+
+favorites = favorites.filter(f => f !== id)
+
+el.innerHTML="♡"
+
+}else{
+
+favorites.push(id)
+
+el.innerHTML="❤️"
+
+}
+
+localStorage.setItem("favorites",JSON.stringify(favorites))
+
+}
+
+
+
+/* FILTER */
 
 function filterProperties(){
 
@@ -369,6 +397,8 @@ sortProperties()
 
 
 
+/* SORT */
+
 function sortProperties(){
 
 let container=document.getElementById("propertyList")
@@ -392,18 +422,6 @@ return 0
 })
 
 cards.forEach(card=>container.appendChild(card))
-
-}
-
-
-
-function toggleFav(el){
-
-if(el.innerHTML=="♡"){
-el.innerHTML="❤️"
-}else{
-el.innerHTML="♡"
-}
 
 }
 

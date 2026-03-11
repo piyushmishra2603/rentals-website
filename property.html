@@ -21,32 +21,26 @@ margin:auto;
 background:white;
 padding:20px;
 margin-top:20px;
-border-radius:8px;
+border-radius:10px;
 }
-
-h2{
-margin-top:0;
-}
-
-/* IMAGE GALLERY */
 
 .gallery{
 text-align:center;
 }
 
-.gallery img{
+#mainImage{
 width:100%;
-max-height:400px;
+max-height:420px;
 object-fit:cover;
-border-radius:8px;
+border-radius:10px;
 }
 
 .thumbnails{
 display:flex;
 gap:10px;
 margin-top:10px;
-justify-content:center;
 flex-wrap:wrap;
+justify-content:center;
 }
 
 .thumbnails img{
@@ -61,8 +55,6 @@ border:2px solid transparent;
 .thumbnails img:hover{
 border-color:#0f4c81;
 }
-
-/* DETAILS */
 
 .price{
 color:green;
@@ -99,13 +91,7 @@ margin-left:10px;
 
 <img id="mainImage">
 
-<div class="thumbnails">
-
-<img id="thumb1" onclick="changeImage(this)">
-<img id="thumb2" onclick="changeImage(this)">
-<img id="thumb3" onclick="changeImage(this)">
-
-</div>
+<div class="thumbnails" id="thumbnailContainer"></div>
 
 </div>
 
@@ -124,13 +110,11 @@ margin-left:10px;
 const sheetURL =
 "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
+function changeImage(src){
 
-function changeImage(img){
-
-document.getElementById("mainImage").src = img.src
+document.getElementById("mainImage").src = src
 
 }
-
 
 function loadProperty(){
 
@@ -144,42 +128,46 @@ fetch(sheetURL)
 
 .then(data=>{
 
-let rows = data.split("\n").slice(1)
+let rows=data.split("\n").slice(1)
 
-let cols = rows[id].split(",")
+let cols=rows[id].split(",")
 
-let title = cols[0]
-
-let city = cols[1]
-
-let bhk = cols[2]
-
-let price = cols[3]
-
-let image = cols[4]
-
-let description = cols[5]
-
-let email = cols[6]
+let title=cols[0]
+let city=cols[1]
+let bhk=cols[2]
+let price=cols[3]
+let images=cols[4]
+let description=cols[5]
+let email=cols[6]
 
 document.getElementById("title").innerText = title + " - " + city
-
-document.getElementById("price").innerText = "₹" + price + "/month"
-
+document.getElementById("price").innerText = "₹"+price+"/month"
 document.getElementById("description").innerText = description
-
-document.getElementById("mainImage").src = image
-
-document.getElementById("thumb1").src = image
-
-document.getElementById("thumb2").src = image
-
-document.getElementById("thumb3").src = image
-
-document.getElementById("emailBtn").href = "mailto:"+email
-
+document.getElementById("emailBtn").href="mailto:"+email
 document.getElementById("mapBtn").href =
 "https://www.google.com/maps/search/?api=1&query="+city
+
+let imageArray = images.split("|")
+
+document.getElementById("mainImage").src = imageArray[0]
+
+let thumbContainer=document.getElementById("thumbnailContainer")
+
+thumbContainer.innerHTML=""
+
+imageArray.forEach(img=>{
+
+let thumb=document.createElement("img")
+
+thumb.src=img
+
+thumb.onclick=function(){
+changeImage(img)
+}
+
+thumbContainer.appendChild(thumb)
+
+})
 
 })
 

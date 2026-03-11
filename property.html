@@ -20,12 +20,49 @@ max-width:900px;
 margin:auto;
 background:white;
 padding:20px;
-}
-
-img{
-width:100%;
+margin-top:20px;
 border-radius:8px;
 }
+
+h2{
+margin-top:0;
+}
+
+/* IMAGE GALLERY */
+
+.gallery{
+text-align:center;
+}
+
+.gallery img{
+width:100%;
+max-height:400px;
+object-fit:cover;
+border-radius:8px;
+}
+
+.thumbnails{
+display:flex;
+gap:10px;
+margin-top:10px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.thumbnails img{
+width:120px;
+height:80px;
+object-fit:cover;
+cursor:pointer;
+border-radius:6px;
+border:2px solid transparent;
+}
+
+.thumbnails img:hover{
+border-color:#0f4c81;
+}
+
+/* DETAILS */
 
 .price{
 color:green;
@@ -35,19 +72,17 @@ font-weight:bold;
 
 .btn{
 display:inline-block;
+margin-top:15px;
 background:#0f4c81;
 color:white;
 padding:10px 15px;
 text-decoration:none;
 border-radius:6px;
-margin-top:10px;
 }
 
-footer{
-text-align:center;
-padding:20px;
-background:#eee;
-margin-top:30px;
+.map-btn{
+background:#2d9c5b;
+margin-left:10px;
 }
 
 </style>
@@ -58,69 +93,99 @@ margin-top:30px;
 
 <div class="container">
 
-<h2 id="title">Loading...</h2>
+<h2 id="title"></h2>
 
-<img id="image">
+<div class="gallery">
 
-<p id="city"></p>
+<img id="mainImage">
 
-<p class="price" id="price"></p>
+<div class="thumbnails">
 
-<p id="description"></p>
-
-<a id="contactBtn" class="btn">Contact Owner</a>
+<img id="thumb1" onclick="changeImage(this)">
+<img id="thumb2" onclick="changeImage(this)">
+<img id="thumb3" onclick="changeImage(this)">
 
 </div>
 
-<footer>
+</div>
 
-<p>© 2026 Rental Property Finder</p>
+<h3 id="price"></h3>
 
-</footer>
+<p id="description"></p>
 
+<a class="btn" id="emailBtn">Email Owner</a>
+
+<a class="btn map-btn" id="mapBtn" target="_blank">View Map</a>
+
+</div>
 
 <script>
 
 const sheetURL =
-"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:json"
+"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
-const params = new URLSearchParams(window.location.search)
-const id = params.get("id")
 
-fetch(sheetURL)
-.then(res => res.text())
-.then(data => {
+function changeImage(img){
 
-let json = JSON.parse(data.substring(47).slice(0,-2))
-
-let rows = json.table.rows
-
-if(!id || !rows[id]){
-
-document.getElementById("title").innerText="Property not found"
-return
+document.getElementById("mainImage").src = img.src
 
 }
 
-let row = rows[id]
 
-let title = row.c[0]?.v || ""
-let city = row.c[1]?.v || ""
-let price = row.c[2]?.v || ""
-let image = row.c[3]?.v || ""
-let description = row.c[4]?.v || ""
-let email = row.c[5]?.v || ""
+function loadProperty(){
 
-document.getElementById("title").innerText = title
-document.getElementById("city").innerText = "Location: " + city
+const params = new URLSearchParams(window.location.search)
+
+const id = params.get("id")
+
+fetch(sheetURL)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+let rows = data.split("\n").slice(1)
+
+let cols = rows[id].split(",")
+
+let title = cols[0]
+
+let city = cols[1]
+
+let bhk = cols[2]
+
+let price = cols[3]
+
+let image = cols[4]
+
+let description = cols[5]
+
+let email = cols[6]
+
+document.getElementById("title").innerText = title + " - " + city
+
 document.getElementById("price").innerText = "₹" + price + "/month"
-document.getElementById("image").src = image
+
 document.getElementById("description").innerText = description
 
-document.getElementById("contactBtn").href =
-"mailto:"+email
+document.getElementById("mainImage").src = image
+
+document.getElementById("thumb1").src = image
+
+document.getElementById("thumb2").src = image
+
+document.getElementById("thumb3").src = image
+
+document.getElementById("emailBtn").href = "mailto:"+email
+
+document.getElementById("mapBtn").href =
+"https://www.google.com/maps/search/?api=1&query="+city
 
 })
+
+}
+
+loadProperty()
 
 </script>
 

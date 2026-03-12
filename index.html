@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <title>Rental Property Finder</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Leaflet Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 
@@ -42,8 +43,7 @@ max-width:900px;
 margin:auto;
 }
 
-.search-box input,
-.search-box select{
+.search-box input,.search-box select{
 padding:10px;
 border-radius:5px;
 border:1px solid #ccc;
@@ -116,7 +116,10 @@ padding:20px;
 background:#eee;
 }
 
-/* CHATBOT */
+#map{
+height:500px;
+margin:20px;
+}
 
 #chatbotBtn{
 position:fixed;
@@ -174,7 +177,6 @@ padding:10px;
 }
 
 </style>
-
 </head>
 
 <body>
@@ -184,7 +186,6 @@ padding:10px;
 </header>
 
 <div class="hero">
-
 <h1>Find Your Perfect Rental Home</h1>
 
 <div class="search-box">
@@ -214,100 +215,63 @@ padding:10px;
 <button onclick="filterProperties()">Search</button>
 
 </div>
-
 </div>
 
-<!-- AI SEARCH -->
-
 <div class="ai-box">
-
 <h2>AI Property Assistant</h2>
-
 <input type="text" id="aiSearch" placeholder="Example: 2BHK under 15000 in Delhi">
-
 <button onclick="aiSearch()">Find Properties</button>
-
 </div>
 
-<!-- RENT ESTIMATOR -->
-
 <div class="ai-box">
-
 <h2>AI Rent Estimator</h2>
-
 <input id="rentCity" placeholder="City">
-
 <select id="rentBhk">
 <option value="1">1 BHK</option>
 <option value="2">2 BHK</option>
 <option value="3">3 BHK</option>
 </select>
-
 <input id="rentArea" placeholder="Area (sqft)">
-
 <button onclick="estimateRent()">Estimate</button>
-
 <p id="rentResult"></p>
-
 </div>
-
-<!-- PHOTO ESTIMATION -->
 
 <div class="ai-box">
-
 <h2>Estimate Rent by Photo</h2>
-
 <input type="file" id="photoUpload">
-
 <button onclick="photoEstimate()">Estimate</button>
-
 <p id="photoResult"></p>
-
 </div>
-
-<!-- PROPERTY LIST -->
 
 <div class="properties" id="propertyList"></div>
 
-<!-- MAP -->
-
-<h2 style="text-align:center">Property Map</h2>
-
-<iframe
-width="100%"
-height="400"
-style="border:0"
-loading="lazy"
-allowfullscreen
-src="https://www.google.com/maps?q=india&output=embed">
-</iframe>
+<h2 style="text-align:center">Properties on Map</h2>
+<div id="map"></div>
 
 <footer>
 <p>© 2026 Rental Property Finder</p>
 </footer>
 
-<!-- CHATBOT -->
-
 <button id="chatbotBtn" onclick="toggleChat()">AI Chat</button>
 
 <div id="chatbox">
-
-<div id="chatHeader">
-AI Property Assistant
-</div>
-
+<div id="chatHeader">AI Property Assistant</div>
 <div id="chatMessages"></div>
-
 <div id="chatInput">
 <input id="chatText" placeholder="Ask about rentals...">
 <button onclick="sendMessage()">Send</button>
 </div>
-
 </div>
 
 <script>
 
 const sheetURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
+
+let map=L.map('map').setView([20.5937,78.9629],5)
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+maxZoom:18
+}).addTo(map)
 
 function loadProperties(){
 
@@ -329,6 +293,8 @@ let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]
 let image=cols[4]
+let lat=cols[7]
+let lng=cols[8]
 
 let card=document.createElement("div")
 card.className="card"
@@ -355,6 +321,14 @@ card.innerHTML=`
 `
 
 container.appendChild(card)
+
+if(lat && lng){
+
+L.marker([lat,lng])
+.addTo(map)
+.bindPopup("<b>"+title+"</b><br>₹"+price)
+
+}
 
 })
 
@@ -405,9 +379,7 @@ sortProperties()
 function sortProperties(){
 
 let sort=document.getElementById("sortPrice").value
-
 let container=document.getElementById("propertyList")
-
 let cards=[...container.querySelectorAll(".card")]
 
 cards.sort((a,b)=>{
@@ -478,10 +450,8 @@ function photoEstimate(){
 let file=document.getElementById("photoUpload").files[0]
 
 if(!file){
-
 alert("Upload a photo")
 return
-
 }
 
 document.getElementById("photoResult").innerText="Estimated Rent: ₹15000"
@@ -499,7 +469,6 @@ box.style.display = box.style.display=="flex" ? "none" : "flex"
 function sendMessage(){
 
 let input=document.getElementById("chatText")
-
 let text=input.value.toLowerCase()
 
 if(!text) return
@@ -508,7 +477,7 @@ let messages=document.getElementById("chatMessages")
 
 messages.innerHTML += `<div style="text-align:right">${text}</div>`
 
-let reply="Try using city, BHK and price filters."
+let reply="Try searching by city, BHK, or price."
 
 messages.innerHTML += `<div>${reply}</div>`
 

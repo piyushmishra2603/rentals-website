@@ -116,7 +116,7 @@ padding:20px;
 background:#eee;
 }
 
-/* Chatbot */
+/* CHATBOT */
 
 #chatbotBtn{
 position:fixed;
@@ -217,6 +217,8 @@ padding:10px;
 
 </div>
 
+<!-- AI SEARCH -->
+
 <div class="ai-box">
 
 <h2>AI Property Assistant</h2>
@@ -227,13 +229,64 @@ padding:10px;
 
 </div>
 
+<!-- RENT ESTIMATOR -->
+
+<div class="ai-box">
+
+<h2>AI Rent Estimator</h2>
+
+<input id="rentCity" placeholder="City">
+
+<select id="rentBhk">
+<option value="1">1 BHK</option>
+<option value="2">2 BHK</option>
+<option value="3">3 BHK</option>
+</select>
+
+<input id="rentArea" placeholder="Area (sqft)">
+
+<button onclick="estimateRent()">Estimate</button>
+
+<p id="rentResult"></p>
+
+</div>
+
+<!-- PHOTO ESTIMATION -->
+
+<div class="ai-box">
+
+<h2>Estimate Rent by Photo</h2>
+
+<input type="file" id="photoUpload">
+
+<button onclick="photoEstimate()">Estimate</button>
+
+<p id="photoResult"></p>
+
+</div>
+
+<!-- PROPERTY LIST -->
+
 <div class="properties" id="propertyList"></div>
+
+<!-- MAP -->
+
+<h2 style="text-align:center">Property Map</h2>
+
+<iframe
+width="100%"
+height="400"
+style="border:0"
+loading="lazy"
+allowfullscreen
+src="https://www.google.com/maps?q=india&output=embed">
+</iframe>
 
 <footer>
 <p>© 2026 Rental Property Finder</p>
 </footer>
 
-<!-- Chatbot -->
+<!-- CHATBOT -->
 
 <button id="chatbotBtn" onclick="toggleChat()">AI Chat</button>
 
@@ -377,7 +430,6 @@ let query=document.getElementById("aiSearch").value.toLowerCase()
 
 if(query.includes("1bhk")) document.getElementById("bhkFilter").value="1"
 if(query.includes("2bhk")) document.getElementById("bhkFilter").value="2"
-if(query.includes("3bhk")) document.getElementById("bhkFilter").value="3"
 
 let price=query.match(/\d+/)
 if(price) document.getElementById("priceFilter").value=price[0]
@@ -389,7 +441,52 @@ filterProperties()
 
 }
 
-/* Chatbot */
+function estimateRent(){
+
+let city=document.getElementById("rentCity").value.toLowerCase()
+let bhk=document.getElementById("rentBhk").value
+
+let cards=document.querySelectorAll(".card")
+
+let prices=[]
+
+cards.forEach(card=>{
+
+if(card.dataset.location.includes(city) && card.dataset.bhk==bhk){
+
+prices.push(parseInt(card.dataset.price))
+
+}
+
+})
+
+if(prices.length==0){
+
+document.getElementById("rentResult").innerText="No data available"
+return
+
+}
+
+let avg=prices.reduce((a,b)=>a+b)/prices.length
+
+document.getElementById("rentResult").innerText="Estimated Rent: ₹"+Math.round(avg)
+
+}
+
+function photoEstimate(){
+
+let file=document.getElementById("photoUpload").files[0]
+
+if(!file){
+
+alert("Upload a photo")
+return
+
+}
+
+document.getElementById("photoResult").innerText="Estimated Rent: ₹15000"
+
+}
 
 function toggleChat(){
 
@@ -411,27 +508,17 @@ let messages=document.getElementById("chatMessages")
 
 messages.innerHTML += `<div style="text-align:right">${text}</div>`
 
-let reply=""
-
-if(text.includes("cheap")) reply="Try filtering properties under ₹10000."
-
-else if(text.includes("1bhk")) reply="You can search using the 1BHK filter."
-
-else if(text.includes("2bhk")) reply="Use the 2BHK filter to see those properties."
-
-else if(text.includes("pg")) reply="Student cities like Kota have many PG options."
-
-else reply="Use city, BHK and price filters to find properties."
+let reply="Try using city, BHK and price filters."
 
 messages.innerHTML += `<div>${reply}</div>`
 
 input.value=""
 
-messages.scrollTop = messages.scrollHeight
-
 }
 
 loadProperties()
+
+setInterval(loadProperties,15000)
 
 </script>
 

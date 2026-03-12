@@ -22,34 +22,12 @@ padding:20px;
 text-align:center;
 }
 
-.nav-buttons{
-margin-top:10px;
-}
-
-.nav-buttons a{
-background:white;
-color:#0f4c81;
-padding:8px 14px;
-margin:5px;
-border-radius:6px;
-text-decoration:none;
-font-weight:bold;
-}
-
-/* HERO */
-
 .hero{
 background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
 background-size:cover;
-background-position:center;
-padding:80px 20px;
-text-align:center;
+padding:70px 20px;
 color:white;
-}
-
-.hero h1{
-font-size:36px;
-margin-bottom:10px;
+text-align:center;
 }
 
 .search-box{
@@ -60,14 +38,13 @@ display:flex;
 flex-wrap:wrap;
 gap:10px;
 justify-content:center;
-max-width:800px;
+max-width:900px;
 margin:auto;
 }
 
 .search-box input,
 .search-box select{
 padding:10px;
-font-size:15px;
 border-radius:5px;
 border:1px solid #ccc;
 }
@@ -81,41 +58,19 @@ border-radius:5px;
 cursor:pointer;
 }
 
-/* AI ESTIMATOR */
-
 .ai-box{
 background:white;
 padding:25px;
 margin:30px auto;
-max-width:650px;
+max-width:700px;
 text-align:center;
 border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
-
-.ai-box input,
-.ai-box select{
-padding:10px;
-margin:8px;
-}
-
-/* SORT */
-
-.sort-box{
-text-align:center;
-margin-top:20px;
-}
-
-.sort-box select{
-padding:10px;
-}
-
-/* PROPERTY GRID */
 
 .properties{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-gap:25px;
+gap:20px;
 padding:20px;
 }
 
@@ -139,20 +94,12 @@ padding:15px;
 .price{
 color:green;
 font-weight:bold;
-font-size:18px;
 }
 
 .favorite{
 float:right;
-font-size:20px;
+font-size:22px;
 cursor:pointer;
-}
-
-.buttons{
-margin-top:10px;
-display:flex;
-gap:8px;
-flex-wrap:wrap;
 }
 
 .btn{
@@ -161,17 +108,69 @@ color:white;
 padding:8px 12px;
 border-radius:6px;
 text-decoration:none;
-font-size:14px;
-}
-
-.map-btn{
-background:#2d9c5b;
 }
 
 footer{
 text-align:center;
 padding:20px;
 background:#eee;
+}
+
+/* Chatbot */
+
+#chatbotBtn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#0f4c81;
+color:white;
+border:none;
+padding:14px;
+border-radius:50px;
+cursor:pointer;
+}
+
+#chatbox{
+position:fixed;
+bottom:80px;
+right:20px;
+width:320px;
+background:white;
+border-radius:10px;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
+display:none;
+flex-direction:column;
+}
+
+#chatHeader{
+background:#0f4c81;
+color:white;
+padding:10px;
+}
+
+#chatMessages{
+height:300px;
+overflow-y:auto;
+padding:10px;
+font-size:14px;
+}
+
+#chatInput{
+display:flex;
+border-top:1px solid #ddd;
+}
+
+#chatInput input{
+flex:1;
+border:none;
+padding:10px;
+}
+
+#chatInput button{
+background:#0f4c81;
+color:white;
+border:none;
+padding:10px;
 }
 
 </style>
@@ -181,24 +180,8 @@ background:#eee;
 <body>
 
 <header>
-
 <h2>Rental Property Finder</h2>
-
-<div class="nav-buttons">
-
-<a href="signup.html">Owner Signup</a>
-
-<a href="submit.html">Post Property</a>
-
-<a href="favorites.html">Saved</a>
-
-<a href="map.html">Map</a>
-
-</div>
-
 </header>
-
-<!-- HERO -->
 
 <div class="hero">
 
@@ -220,7 +203,12 @@ background:#eee;
 <option value="10000">₹10k</option>
 <option value="15000">₹15k</option>
 <option value="20000">₹20k</option>
-<option value="30000">₹30k</option>
+</select>
+
+<select id="sortPrice">
+<option value="">Sort</option>
+<option value="low">Price Low-High</option>
+<option value="high">Price High-Low</option>
 </select>
 
 <button onclick="filterProperties()">Search</button>
@@ -229,90 +217,54 @@ background:#eee;
 
 </div>
 
-<!-- AI ESTIMATE -->
-
 <div class="ai-box">
 
-<h2>AI Rent Estimator</h2>
+<h2>AI Property Assistant</h2>
 
-<input type="text" id="aiCity" placeholder="City">
+<input type="text" id="aiSearch" placeholder="Example: 2BHK under 15000 in Delhi">
 
-<select id="aiBHK">
-<option value="">BHK</option>
-<option value="1">1 BHK</option>
-<option value="2">2 BHK</option>
-<option value="3">3 BHK</option>
-</select>
-
-<input type="number" id="aiArea" placeholder="Area (sq ft)">
-
-<button onclick="estimatePrice()">Estimate Rent</button>
-
-<h3 id="estimatedPrice"></h3>
-
-</div>
-
-<!-- PHOTO AI -->
-
-<div class="ai-box">
-
-<h2>AI Rent Estimate by Photo</h2>
-
-<input type="file" id="photoInput" accept="image/*">
-
-<input type="text" id="photoCity" placeholder="City">
-
-<select id="photoBHK">
-<option value="">BHK</option>
-<option value="1">1 BHK</option>
-<option value="2">2 BHK</option>
-<option value="3">3 BHK</option>
-</select>
-
-<button onclick="estimatePhotoRent()">Estimate Rent</button>
-
-<h3 id="photoResult"></h3>
-
-</div>
-
-<div class="sort-box">
-
-<select id="sortPrice" onchange="sortProperties()">
-
-<option value="">Sort Price</option>
-<option value="low">Low → High</option>
-<option value="high">High → Low</option>
-
-</select>
+<button onclick="aiSearch()">Find Properties</button>
 
 </div>
 
 <div class="properties" id="propertyList"></div>
 
 <footer>
-
 <p>© 2026 Rental Property Finder</p>
-
 </footer>
+
+<!-- Chatbot -->
+
+<button id="chatbotBtn" onclick="toggleChat()">AI Chat</button>
+
+<div id="chatbox">
+
+<div id="chatHeader">
+AI Property Assistant
+</div>
+
+<div id="chatMessages"></div>
+
+<div id="chatInput">
+<input id="chatText" placeholder="Ask about rentals...">
+<button onclick="sendMessage()">Send</button>
+</div>
+
+</div>
 
 <script>
 
 const sheetURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
-
-
 function loadProperties(){
 
 fetch(sheetURL)
-
 .then(res=>res.text())
-
 .then(data=>{
 
 let rows=data.split("\n").slice(1)
 
 let container=document.getElementById("propertyList")
-
 container.innerHTML=""
 
 rows.forEach((row,index)=>{
@@ -323,12 +275,9 @@ let title=cols[0]
 let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]
-let images=cols[4]
-
-let image=images.split("|")[0]
+let image=cols[4]
 
 let card=document.createElement("div")
-
 card.className="card"
 
 card.dataset.location=city.toLowerCase()
@@ -344,21 +293,10 @@ card.innerHTML=`
 <span class="favorite" onclick="toggleFav(this,${index})">♡</span>
 
 <h3>${title}</h3>
-
 <p>${city}</p>
-
 <p class="price">₹${price}/month</p>
 
-<div class="buttons">
-
-<a class="btn" href="property.html?id=${index}">View</a>
-
-<a class="btn map-btn" target="_blank"
-href="https://www.google.com/maps/search/?api=1&query=${city}">
-Map
-</a>
-
-</div>
+<a class="btn" href="property.html?id=${index}">View Details</a>
 
 </div>
 `
@@ -370,58 +308,6 @@ container.appendChild(card)
 })
 
 }
-
-
-
-function filterProperties(){
-
-let location=document.getElementById("locationInput").value.toLowerCase()
-let bhk=document.getElementById("bhkFilter").value
-let price=document.getElementById("priceFilter").value
-
-let cards=document.querySelectorAll(".card")
-
-cards.forEach(card=>{
-
-let show=true
-
-if(location && !card.dataset.location.includes(location)) show=false
-if(bhk && card.dataset.bhk!==bhk) show=false
-if(price && parseInt(card.dataset.price)>price) show=false
-
-card.style.display=show ? "" : "none"
-
-})
-
-}
-
-
-
-function sortProperties(){
-
-let container=document.getElementById("propertyList")
-
-let cards=[...container.querySelectorAll(".card")]
-
-let sort=document.getElementById("sortPrice").value
-
-cards.sort((a,b)=>{
-
-let A=parseInt(a.dataset.price)
-let B=parseInt(b.dataset.price)
-
-if(sort=="low") return A-B
-if(sort=="high") return B-A
-
-})
-
-cards.forEach(card=>container.appendChild(card))
-
-}
-
-
-
-/* FAVORITES */
 
 function toggleFav(el,id){
 
@@ -439,147 +325,113 @@ localStorage.setItem("favorites",JSON.stringify(fav))
 
 }
 
+function filterProperties(){
 
+let location=document.getElementById("locationInput").value.toLowerCase()
+let bhk=document.getElementById("bhkFilter").value
+let price=document.getElementById("priceFilter").value
 
-/* AI ESTIMATE */
+let cards=document.querySelectorAll(".card")
 
-function estimatePrice(){
+cards.forEach(card=>{
 
-let city=document.getElementById("aiCity").value.toLowerCase()
-let bhk=document.getElementById("aiBHK").value
-let area=document.getElementById("aiArea").value
+let show=true
 
-fetch(sheetURL)
+if(location && !card.dataset.location.includes(location)) show=false
+if(bhk && card.dataset.bhk!==bhk) show=false
+if(price && parseInt(card.dataset.price)>price) show=false
 
-.then(res=>res.text())
-
-.then(data=>{
-
-let rows=data.split("\n").slice(1)
-
-let total=0
-let count=0
-
-rows.forEach(row=>{
-
-let cols=row.split(",")
-
-let rCity=cols[1].toLowerCase()
-let rBhk=cols[2]
-let price=parseInt(cols[3])
-
-if(rCity.includes(city) && rBhk==bhk){
-
-total+=price
-count++
-
-}
+card.style.display=show?"":"none"
 
 })
 
-if(count==0){
-
-document.getElementById("estimatedPrice").innerHTML="No data available"
-return
+sortProperties()
 
 }
 
-let avg=total/count
+function sortProperties(){
 
-let estimate=Math.round(avg*(area/800))
+let sort=document.getElementById("sortPrice").value
 
-document.getElementById("estimatedPrice").innerHTML="Estimated Rent: ₹"+estimate
+let container=document.getElementById("propertyList")
+
+let cards=[...container.querySelectorAll(".card")]
+
+cards.sort((a,b)=>{
+
+let priceA=parseInt(a.dataset.price)
+let priceB=parseInt(b.dataset.price)
+
+if(sort=="low") return priceA-priceB
+if(sort=="high") return priceB-priceA
 
 })
 
-}
-
-
-
-/* PHOTO AI */
-
-function estimatePhotoRent(){
-
-let city=document.getElementById("photoCity").value.toLowerCase()
-let bhk=document.getElementById("photoBHK").value
-let file=document.getElementById("photoInput").files[0]
-
-if(!file){
-alert("Upload photo")
-return
-}
-
-let img=new Image()
-
-img.onload=function(){
-
-let pixels=img.width*img.height
-let quality="standard"
-
-if(pixels<300000) quality="basic"
-if(pixels>1000000) quality="luxury"
-
-fetch(sheetURL)
-
-.then(res=>res.text())
-
-.then(data=>{
-
-let rows=data.split("\n").slice(1)
-
-let total=0
-let count=0
-
-rows.forEach(row=>{
-
-let cols=row.split(",")
-
-let rCity=cols[1].toLowerCase()
-let rBhk=cols[2]
-let price=parseInt(cols[3])
-
-if(rCity.includes(city) && rBhk==bhk){
-
-total+=price
-count++
+cards.forEach(card=>container.appendChild(card))
 
 }
 
-})
+function aiSearch(){
 
-if(count==0){
+let query=document.getElementById("aiSearch").value.toLowerCase()
 
-document.getElementById("photoResult").innerHTML="No data available"
-return
+if(query.includes("1bhk")) document.getElementById("bhkFilter").value="1"
+if(query.includes("2bhk")) document.getElementById("bhkFilter").value="2"
+if(query.includes("3bhk")) document.getElementById("bhkFilter").value="3"
 
-}
+let price=query.match(/\d+/)
+if(price) document.getElementById("priceFilter").value=price[0]
 
-let avg=total/count
+let words=query.split(" ")
+document.getElementById("locationInput").value=words[words.length-1]
 
-let multiplier=1
-
-if(quality=="basic") multiplier=0.8
-if(quality=="luxury") multiplier=1.4
-
-let estimate=Math.round(avg*multiplier)
-
-document.getElementById("photoResult").innerHTML=
-
-"Quality: "+quality+"<br>Estimated Rent: ₹"+estimate
-
-})
+filterProperties()
 
 }
 
-img.src=URL.createObjectURL(file)
+/* Chatbot */
+
+function toggleChat(){
+
+let box=document.getElementById("chatbox")
+
+box.style.display = box.style.display=="flex" ? "none" : "flex"
 
 }
 
+function sendMessage(){
 
+let input=document.getElementById("chatText")
+
+let text=input.value.toLowerCase()
+
+if(!text) return
+
+let messages=document.getElementById("chatMessages")
+
+messages.innerHTML += `<div style="text-align:right">${text}</div>`
+
+let reply=""
+
+if(text.includes("cheap")) reply="Try filtering properties under ₹10000."
+
+else if(text.includes("1bhk")) reply="You can search using the 1BHK filter."
+
+else if(text.includes("2bhk")) reply="Use the 2BHK filter to see those properties."
+
+else if(text.includes("pg")) reply="Student cities like Kota have many PG options."
+
+else reply="Use city, BHK and price filters to find properties."
+
+messages.innerHTML += `<div>${reply}</div>`
+
+input.value=""
+
+messages.scrollTop = messages.scrollHeight
+
+}
 
 loadProperties()
-
-setInterval(loadProperties,15000)
 
 </script>
 

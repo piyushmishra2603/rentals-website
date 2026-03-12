@@ -7,8 +7,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<meta name="description" content="Find rental houses, apartments and PG accommodation easily">
-
 <style>
 
 body{
@@ -112,11 +110,6 @@ background:white;
 border-radius:10px;
 overflow:hidden;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
 }
 
 .card img{
@@ -159,6 +152,34 @@ font-size:14px;
 
 .map-btn{
 background:#2d9c5b;
+}
+
+/* AI ESTIMATOR */
+
+.ai-estimator{
+background:white;
+padding:25px;
+margin:30px auto;
+max-width:600px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.ai-estimator input,
+.ai-estimator select{
+padding:10px;
+margin:8px;
+width:200px;
+}
+
+.ai-estimator button{
+padding:10px 20px;
+background:#0f4c81;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
 }
 
 footer{
@@ -222,14 +243,35 @@ background:#eee;
 
 </div>
 
+<!-- AI RENT ESTIMATOR -->
+
+<div class="ai-estimator">
+
+<h2>AI Rent Price Estimator</h2>
+
+<input type="text" id="aiCity" placeholder="City">
+
+<select id="aiBHK">
+<option value="">Select BHK</option>
+<option value="1">1 BHK</option>
+<option value="2">2 BHK</option>
+<option value="3">3 BHK</option>
+</select>
+
+<input type="number" id="aiArea" placeholder="Area (sq ft)">
+
+<button onclick="estimatePrice()">Estimate Rent</button>
+
+<h3 id="estimatedPrice"></h3>
+
+</div>
+
 <div class="sort-box">
 
 <select id="sortPrice" onchange="sortProperties()">
 
 <option value="">Sort Price</option>
-
 <option value="low">Low → High</option>
-
 <option value="high">High → Low</option>
 
 </select>
@@ -347,13 +389,11 @@ let favorites = JSON.parse(localStorage.getItem("favorites")) || []
 if(favorites.includes(id)){
 
 favorites = favorites.filter(f => f !== id)
-
 el.innerHTML="♡"
 
 }else{
 
 favorites.push(id)
-
 el.innerHTML="❤️"
 
 }
@@ -422,6 +462,64 @@ cards.forEach(card=>container.appendChild(card))
 
 
 
+/* AI RENT ESTIMATION */
+
+function estimatePrice(){
+
+let city=document.getElementById("aiCity").value.toLowerCase()
+let bhk=document.getElementById("aiBHK").value
+let area=document.getElementById("aiArea").value
+
+fetch(sheetURL)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let total=0
+let count=0
+
+rows.forEach(row=>{
+
+let cols=row.split(",")
+
+let rCity=cols[1].toLowerCase()
+let rBhk=cols[2]
+let price=parseInt(cols[3])
+
+if(rCity.includes(city) && rBhk==bhk){
+
+total+=price
+count++
+
+}
+
+})
+
+if(count==0){
+
+document.getElementById("estimatedPrice").innerHTML=
+"No data available."
+
+return
+
+}
+
+let avg=total/count
+
+let estimate=Math.round(avg*(area/800))
+
+document.getElementById("estimatedPrice").innerHTML=
+"Estimated Rent: ₹"+estimate+"/month"
+
+})
+
+}
+
+
+
 loadProperties()
 
 setInterval(loadProperties,15000)
@@ -429,5 +527,4 @@ setInterval(loadProperties,15000)
 </script>
 
 </body>
-
 </html>

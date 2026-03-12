@@ -15,8 +15,6 @@ margin:0;
 background:#f2f2f2;
 }
 
-/* HEADER */
-
 header{
 background:#0f4c81;
 color:white;
@@ -50,7 +48,7 @@ color:white;
 }
 
 .hero h1{
-font-size:38px;
+font-size:36px;
 margin-bottom:10px;
 }
 
@@ -83,6 +81,24 @@ border-radius:5px;
 cursor:pointer;
 }
 
+/* AI ESTIMATOR */
+
+.ai-box{
+background:white;
+padding:25px;
+margin:30px auto;
+max-width:650px;
+text-align:center;
+border-radius:10px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.ai-box input,
+.ai-box select{
+padding:10px;
+margin:8px;
+}
+
 /* SORT */
 
 .sort-box{
@@ -102,8 +118,6 @@ grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
 gap:25px;
 padding:20px;
 }
-
-/* PROPERTY CARD */
 
 .card{
 background:white;
@@ -154,34 +168,6 @@ font-size:14px;
 background:#2d9c5b;
 }
 
-/* AI ESTIMATOR */
-
-.ai-estimator{
-background:white;
-padding:25px;
-margin:30px auto;
-max-width:600px;
-text-align:center;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.ai-estimator input,
-.ai-estimator select{
-padding:10px;
-margin:8px;
-width:200px;
-}
-
-.ai-estimator button{
-padding:10px 20px;
-background:#0f4c81;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
 footer{
 text-align:center;
 padding:20px;
@@ -204,15 +190,15 @@ background:#eee;
 
 <a href="submit.html">Post Property</a>
 
-<a href="favorites.html">Saved Properties</a>
+<a href="favorites.html">Saved</a>
 
-<a href="map.html">Property Map</a>
+<a href="map.html">Map</a>
 
 </div>
 
 </header>
 
-<!-- HERO SEARCH -->
+<!-- HERO -->
 
 <div class="hero">
 
@@ -231,10 +217,10 @@ background:#eee;
 
 <select id="priceFilter">
 <option value="">Max Price</option>
-<option value="10000">₹10,000</option>
-<option value="15000">₹15,000</option>
-<option value="20000">₹20,000</option>
-<option value="30000">₹30,000</option>
+<option value="10000">₹10k</option>
+<option value="15000">₹15k</option>
+<option value="20000">₹20k</option>
+<option value="30000">₹30k</option>
 </select>
 
 <button onclick="filterProperties()">Search</button>
@@ -243,16 +229,16 @@ background:#eee;
 
 </div>
 
-<!-- AI RENT ESTIMATOR -->
+<!-- AI ESTIMATE -->
 
-<div class="ai-estimator">
+<div class="ai-box">
 
-<h2>AI Rent Price Estimator</h2>
+<h2>AI Rent Estimator</h2>
 
 <input type="text" id="aiCity" placeholder="City">
 
 <select id="aiBHK">
-<option value="">Select BHK</option>
+<option value="">BHK</option>
 <option value="1">1 BHK</option>
 <option value="2">2 BHK</option>
 <option value="3">3 BHK</option>
@@ -263,6 +249,29 @@ background:#eee;
 <button onclick="estimatePrice()">Estimate Rent</button>
 
 <h3 id="estimatedPrice"></h3>
+
+</div>
+
+<!-- PHOTO AI -->
+
+<div class="ai-box">
+
+<h2>AI Rent Estimate by Photo</h2>
+
+<input type="file" id="photoInput" accept="image/*">
+
+<input type="text" id="photoCity" placeholder="City">
+
+<select id="photoBHK">
+<option value="">BHK</option>
+<option value="1">1 BHK</option>
+<option value="2">2 BHK</option>
+<option value="3">3 BHK</option>
+</select>
+
+<button onclick="estimatePhotoRent()">Estimate Rent</button>
+
+<h3 id="photoResult"></h3>
 
 </div>
 
@@ -288,8 +297,7 @@ background:#eee;
 
 <script>
 
-const sheetURL =
-"https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
+const sheetURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
 
 
@@ -317,25 +325,7 @@ let bhk=cols[2]
 let price=cols[3]
 let images=cols[4]
 
-createCard(index,title,city,bhk,price,images)
-
-})
-
-})
-
-}
-
-
-
-function createCard(id,title,city,bhk,price,images){
-
-let container=document.getElementById("propertyList")
-
-let favorites = JSON.parse(localStorage.getItem("favorites")) || []
-
-let favIcon = favorites.includes(id) ? "❤️" : "♡"
-
-let image = images.split("|")[0]
+let image=images.split("|")[0]
 
 let card=document.createElement("div")
 
@@ -351,7 +341,7 @@ card.innerHTML=`
 
 <div class="card-content">
 
-<span class="favorite" onclick="toggleFav(this,${id})">${favIcon}</span>
+<span class="favorite" onclick="toggleFav(this,${index})">♡</span>
 
 <h3>${title}</h3>
 
@@ -361,12 +351,9 @@ card.innerHTML=`
 
 <div class="buttons">
 
-<a class="btn" href="property.html?id=${id}">
-View Details
-</a>
+<a class="btn" href="property.html?id=${index}">View</a>
 
-<a class="btn map-btn"
-target="_blank"
+<a class="btn map-btn" target="_blank"
 href="https://www.google.com/maps/search/?api=1&query=${city}">
 Map
 </a>
@@ -378,27 +365,9 @@ Map
 
 container.appendChild(card)
 
-}
+})
 
-
-
-function toggleFav(el,id){
-
-let favorites = JSON.parse(localStorage.getItem("favorites")) || []
-
-if(favorites.includes(id)){
-
-favorites = favorites.filter(f => f !== id)
-el.innerHTML="♡"
-
-}else{
-
-favorites.push(id)
-el.innerHTML="❤️"
-
-}
-
-localStorage.setItem("favorites",JSON.stringify(favorites))
+})
 
 }
 
@@ -407,30 +376,22 @@ localStorage.setItem("favorites",JSON.stringify(favorites))
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
-
 let bhk=document.getElementById("bhkFilter").value
-
 let price=document.getElementById("priceFilter").value
 
 let cards=document.querySelectorAll(".card")
 
 cards.forEach(card=>{
 
-let cardLocation=card.dataset.location
-let cardBhk=card.dataset.bhk
-let cardPrice=card.dataset.price
-
 let show=true
 
-if(location && !cardLocation.includes(location)) show=false
-if(bhk && cardBhk!==bhk) show=false
-if(price && parseInt(cardPrice)>parseInt(price)) show=false
+if(location && !card.dataset.location.includes(location)) show=false
+if(bhk && card.dataset.bhk!==bhk) show=false
+if(price && parseInt(card.dataset.price)>price) show=false
 
 card.style.display=show ? "" : "none"
 
 })
-
-sortProperties()
 
 }
 
@@ -446,13 +407,11 @@ let sort=document.getElementById("sortPrice").value
 
 cards.sort((a,b)=>{
 
-let priceA=parseInt(a.dataset.price)
-let priceB=parseInt(b.dataset.price)
+let A=parseInt(a.dataset.price)
+let B=parseInt(b.dataset.price)
 
-if(sort=="low") return priceA-priceB
-if(sort=="high") return priceB-priceA
-
-return 0
+if(sort=="low") return A-B
+if(sort=="high") return B-A
 
 })
 
@@ -462,7 +421,27 @@ cards.forEach(card=>container.appendChild(card))
 
 
 
-/* AI RENT ESTIMATION */
+/* FAVORITES */
+
+function toggleFav(el,id){
+
+let fav=JSON.parse(localStorage.getItem("favorites"))||[]
+
+if(fav.includes(id)){
+fav=fav.filter(x=>x!==id)
+el.innerHTML="♡"
+}else{
+fav.push(id)
+el.innerHTML="❤️"
+}
+
+localStorage.setItem("favorites",JSON.stringify(fav))
+
+}
+
+
+
+/* AI ESTIMATE */
 
 function estimatePrice(){
 
@@ -500,9 +479,7 @@ count++
 
 if(count==0){
 
-document.getElementById("estimatedPrice").innerHTML=
-"No data available."
-
+document.getElementById("estimatedPrice").innerHTML="No data available"
 return
 
 }
@@ -511,10 +488,90 @@ let avg=total/count
 
 let estimate=Math.round(avg*(area/800))
 
-document.getElementById("estimatedPrice").innerHTML=
-"Estimated Rent: ₹"+estimate+"/month"
+document.getElementById("estimatedPrice").innerHTML="Estimated Rent: ₹"+estimate
 
 })
+
+}
+
+
+
+/* PHOTO AI */
+
+function estimatePhotoRent(){
+
+let city=document.getElementById("photoCity").value.toLowerCase()
+let bhk=document.getElementById("photoBHK").value
+let file=document.getElementById("photoInput").files[0]
+
+if(!file){
+alert("Upload photo")
+return
+}
+
+let img=new Image()
+
+img.onload=function(){
+
+let pixels=img.width*img.height
+let quality="standard"
+
+if(pixels<300000) quality="basic"
+if(pixels>1000000) quality="luxury"
+
+fetch(sheetURL)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let total=0
+let count=0
+
+rows.forEach(row=>{
+
+let cols=row.split(",")
+
+let rCity=cols[1].toLowerCase()
+let rBhk=cols[2]
+let price=parseInt(cols[3])
+
+if(rCity.includes(city) && rBhk==bhk){
+
+total+=price
+count++
+
+}
+
+})
+
+if(count==0){
+
+document.getElementById("photoResult").innerHTML="No data available"
+return
+
+}
+
+let avg=total/count
+
+let multiplier=1
+
+if(quality=="basic") multiplier=0.8
+if(quality=="luxury") multiplier=1.4
+
+let estimate=Math.round(avg*multiplier)
+
+document.getElementById("photoResult").innerHTML=
+
+"Quality: "+quality+"<br>Estimated Rent: ₹"+estimate
+
+})
+
+}
+
+img.src=URL.createObjectURL(file)
 
 }
 

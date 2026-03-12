@@ -92,6 +92,10 @@ text-align:center;
 margin-top:20px;
 }
 
+.sort-box select{
+padding:10px;
+}
+
 /* PROPERTY GRID */
 
 .properties{
@@ -141,6 +145,7 @@ cursor:pointer;
 margin-top:10px;
 display:flex;
 gap:8px;
+flex-wrap:wrap;
 }
 
 .btn{
@@ -180,6 +185,8 @@ background:#eee;
 
 <a href="favorites.html">Saved Properties</a>
 
+<a href="map.html">Property Map</a>
+
 </div>
 
 </header>
@@ -218,14 +225,16 @@ background:#eee;
 <div class="sort-box">
 
 <select id="sortPrice" onchange="sortProperties()">
+
 <option value="">Sort Price</option>
+
 <option value="low">Low → High</option>
+
 <option value="high">High → Low</option>
+
 </select>
 
 </div>
-
-<!-- PROPERTY LIST -->
 
 <div class="properties" id="propertyList"></div>
 
@@ -241,8 +250,6 @@ const sheetURL =
 "https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
 
 
-
-/* LOAD PROPERTIES */
 
 function loadProperties(){
 
@@ -266,9 +273,9 @@ let title=cols[0]
 let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]
-let image=cols[4]
+let images=cols[4]
 
-createCard(index,title,city,bhk,price,image)
+createCard(index,title,city,bhk,price,images)
 
 })
 
@@ -278,9 +285,7 @@ createCard(index,title,city,bhk,price,image)
 
 
 
-/* CREATE PROPERTY CARD */
-
-function createCard(id,title,city,bhk,price,image){
+function createCard(id,title,city,bhk,price,images){
 
 let container=document.getElementById("propertyList")
 
@@ -288,17 +293,19 @@ let favorites = JSON.parse(localStorage.getItem("favorites")) || []
 
 let favIcon = favorites.includes(id) ? "❤️" : "♡"
 
+let image = images.split("|")[0]
+
 let card=document.createElement("div")
 
 card.className="card"
 
-card.setAttribute("data-location",city.toLowerCase())
-card.setAttribute("data-bhk",bhk)
-card.setAttribute("data-price",price)
+card.dataset.location=city.toLowerCase()
+card.dataset.bhk=bhk
+card.dataset.price=price
 
 card.innerHTML=`
 
-<img src="${image.split("|")[0]}">
+<img src="${image}">
 
 <div class="card-content">
 
@@ -333,8 +340,6 @@ container.appendChild(card)
 
 
 
-/* FAVORITES SYSTEM */
-
 function toggleFav(el,id){
 
 let favorites = JSON.parse(localStorage.getItem("favorites")) || []
@@ -359,8 +364,6 @@ localStorage.setItem("favorites",JSON.stringify(favorites))
 
 
 
-/* FILTER */
-
 function filterProperties(){
 
 let location=document.getElementById("locationInput").value.toLowerCase()
@@ -374,17 +377,13 @@ let cards=document.querySelectorAll(".card")
 cards.forEach(card=>{
 
 let cardLocation=card.dataset.location
-
 let cardBhk=card.dataset.bhk
-
 let cardPrice=card.dataset.price
 
 let show=true
 
 if(location && !cardLocation.includes(location)) show=false
-
 if(bhk && cardBhk!==bhk) show=false
-
 if(price && parseInt(cardPrice)>parseInt(price)) show=false
 
 card.style.display=show ? "" : "none"
@@ -397,8 +396,6 @@ sortProperties()
 
 
 
-/* SORT */
-
 function sortProperties(){
 
 let container=document.getElementById("propertyList")
@@ -410,11 +407,9 @@ let sort=document.getElementById("sortPrice").value
 cards.sort((a,b)=>{
 
 let priceA=parseInt(a.dataset.price)
-
 let priceB=parseInt(b.dataset.price)
 
 if(sort=="low") return priceA-priceB
-
 if(sort=="high") return priceB-priceA
 
 return 0

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Rental Property Finder</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Leaflet Map -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
@@ -13,19 +14,38 @@
 body{
 font-family:Arial;
 margin:0;
-background:#f2f2f2;
+background:#f3f4f6;
 }
+
+/* HEADER */
 
 header{
 background:#0f4c81;
 color:white;
 padding:20px;
-text-align:center;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
 }
 
+header h2{
+margin:0;
+}
+
+nav a{
+color:white;
+margin:5px;
+padding:8px 12px;
+background:#062b4f;
+border-radius:6px;
+text-decoration:none;
+}
+
+/* HERO */
+
 .hero{
-background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
-background-size:cover;
+background:#0f4c81;
 padding:70px 20px;
 color:white;
 text-align:center;
@@ -33,17 +53,19 @@ text-align:center;
 
 .search-box{
 background:white;
+margin:auto;
+margin-top:20px;
 padding:15px;
 border-radius:10px;
+max-width:900px;
 display:flex;
 flex-wrap:wrap;
 gap:10px;
 justify-content:center;
-max-width:900px;
-margin:auto;
 }
 
-.search-box input,.search-box select{
+.search-box input,
+.search-box select{
 padding:10px;
 border-radius:5px;
 border:1px solid #ccc;
@@ -54,22 +76,32 @@ background:#0f4c81;
 color:white;
 border:none;
 padding:10px 20px;
-border-radius:5px;
+border-radius:6px;
 cursor:pointer;
 }
 
-.ai-box{
-background:white;
-padding:25px;
-margin:30px auto;
-max-width:700px;
-text-align:center;
-border-radius:10px;
+/* TRENDING */
+
+.trending{
+padding:20px;
 }
+
+.gallery{
+display:flex;
+overflow:auto;
+gap:10px;
+}
+
+.gallery img{
+width:160px;
+border-radius:8px;
+}
+
+/* PROPERTY GRID */
 
 .properties{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 padding:20px;
 }
@@ -77,8 +109,8 @@ padding:20px;
 .card{
 background:white;
 border-radius:10px;
-overflow:hidden;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
+overflow:hidden;
 }
 
 .card img{
@@ -110,16 +142,25 @@ border-radius:6px;
 text-decoration:none;
 }
 
-footer{
-text-align:center;
-padding:20px;
-background:#eee;
-}
+/* MAP */
 
 #map{
-height:500px;
+height:450px;
 margin:20px;
+border-radius:10px;
 }
+
+/* AI BOX */
+
+.ai-box{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:10px;
+text-align:center;
+}
+
+/* CHATBOT */
 
 #chatbotBtn{
 position:fixed;
@@ -127,8 +168,8 @@ bottom:20px;
 right:20px;
 background:#0f4c81;
 color:white;
+padding:15px;
 border:none;
-padding:14px;
 border-radius:50px;
 cursor:pointer;
 }
@@ -137,12 +178,12 @@ cursor:pointer;
 position:fixed;
 bottom:80px;
 right:20px;
-width:320px;
+width:300px;
 background:white;
 border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
 display:none;
 flex-direction:column;
+box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
 #chatHeader{
@@ -152,10 +193,9 @@ padding:10px;
 }
 
 #chatMessages{
-height:300px;
-overflow-y:auto;
+height:250px;
+overflow:auto;
 padding:10px;
-font-size:14px;
 }
 
 #chatInput{
@@ -176,115 +216,155 @@ border:none;
 padding:10px;
 }
 
+/* FOOTER */
+
+footer{
+background:#0f4c81;
+color:white;
+text-align:center;
+padding:20px;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <header>
+
 <h2>Rental Property Finder</h2>
+
+<nav>
+
+<a href="signup.html">Owner Signup</a>
+<a href="submit.html">Post Property</a>
+<a href="#" onclick="showFavorites()">Favorites</a>
+
+</nav>
+
 </header>
 
 <div class="hero">
+
 <h1>Find Your Perfect Rental Home</h1>
 
 <div class="search-box">
 
-<input type="text" id="locationInput" placeholder="City">
+<input id="searchCity" placeholder="City">
 
-<select id="bhkFilter">
+<select id="bhk">
+
 <option value="">BHK</option>
-<option value="1">1 BHK</option>
-<option value="2">2 BHK</option>
-<option value="3">3 BHK</option>
-</select>
+<option>1</option>
+<option>2</option>
+<option>3</option>
 
-<select id="priceFilter">
-<option value="">Max Price</option>
-<option value="10000">₹10k</option>
-<option value="15000">₹15k</option>
-<option value="20000">₹20k</option>
 </select>
 
 <select id="sortPrice">
-<option value="">Sort</option>
-<option value="low">Price Low-High</option>
-<option value="high">Price High-Low</option>
+
+<option value="">Sort Price</option>
+<option value="low">Low → High</option>
+<option value="high">High → Low</option>
+
 </select>
 
-<button onclick="filterProperties()">Search</button>
+<button onclick="loadProperties()">Search</button>
 
 </div>
+
+</div>
+
+<div class="trending">
+
+<h2>Trending Properties</h2>
+
+<div class="gallery" id="trendingGallery"></div>
+
 </div>
 
 <div class="ai-box">
-<h2>AI Property Assistant</h2>
-<input type="text" id="aiSearch" placeholder="Example: 2BHK under 15000 in Delhi">
-<button onclick="aiSearch()">Find Properties</button>
-</div>
 
-<div class="ai-box">
-<h2>AI Rent Estimator</h2>
-<input id="rentCity" placeholder="City">
-<select id="rentBhk">
-<option value="1">1 BHK</option>
-<option value="2">2 BHK</option>
-<option value="3">3 BHK</option>
-</select>
-<input id="rentArea" placeholder="Area (sqft)">
+<h3>AI Rent Estimator</h3>
+
+<input id="size" placeholder="Area (sq ft)">
+<input id="cityRent" placeholder="City">
+
 <button onclick="estimateRent()">Estimate</button>
+
 <p id="rentResult"></p>
+
 </div>
 
 <div class="ai-box">
-<h2>Estimate Rent by Photo</h2>
+
+<h3>AI Rent Estimate by Photo</h3>
+
 <input type="file" id="photoUpload">
+
 <button onclick="photoEstimate()">Estimate</button>
+
 <p id="photoResult"></p>
+
 </div>
 
-<div class="properties" id="propertyList"></div>
-
-<h2 style="text-align:center">Properties on Map</h2>
 <div id="map"></div>
 
+<div class="properties" id="properties"></div>
+
 <footer>
-<p>© 2026 Rental Property Finder</p>
+
+<p>© 2026 Rental Finder</p>
+
 </footer>
 
-<button id="chatbotBtn" onclick="toggleChat()">AI Chat</button>
+<button id="chatbotBtn" onclick="toggleChat()">AI Help</button>
 
 <div id="chatbox">
-<div id="chatHeader">AI Property Assistant</div>
+
+<div id="chatHeader">Property AI Assistant</div>
+
 <div id="chatMessages"></div>
+
 <div id="chatInput">
-<input id="chatText" placeholder="Ask about rentals...">
-<button onclick="sendMessage()">Send</button>
+
+<input id="chatText" placeholder="Ask something">
+
+<button onclick="sendChat()">Send</button>
+
 </div>
+
 </div>
 
 <script>
 
-const sheetURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
+/* GOOGLE SHEETS CSV */
+
+const csvURL="PASTE YOUR GOOGLE SHEETS CSV HERE"
+
+/* MAP */
 
 let map=L.map('map').setView([20.5937,78.9629],5)
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-maxZoom:18
-}).addTo(map)
+L.tileLayer(
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+).addTo(map)
+
+/* LOAD PROPERTIES */
 
 function loadProperties(){
 
-fetch(sheetURL)
+fetch(csvURL)
 .then(res=>res.text())
 .then(data=>{
 
 let rows=data.split("\n").slice(1)
 
-let container=document.getElementById("propertyList")
-container.innerHTML=""
+let html=""
+let gallery=""
 
-rows.forEach((row,index)=>{
+rows.forEach((row,i)=>{
 
 let cols=row.split(",")
 
@@ -292,202 +372,131 @@ let title=cols[0]
 let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]
-let image=cols[4]
+let img=cols[4]
 let lat=cols[7]
 let lng=cols[8]
 
-let card=document.createElement("div")
-card.className="card"
+gallery+=`<img src="${img}">`
 
-card.dataset.location=city.toLowerCase()
-card.dataset.bhk=bhk
-card.dataset.price=price
+html+=`
 
-card.innerHTML=`
+<div class="card">
 
-<img src="${image}">
+<img src="${img}">
 
 <div class="card-content">
 
-<span class="favorite" onclick="toggleFav(this,${index})">♡</span>
+<span class="favorite" onclick="toggleFav(${i})">♡</span>
 
 <h3>${title}</h3>
-<p>${city}</p>
-<p class="price">₹${price}/month</p>
 
-<a class="btn" href="property.html?id=${index}">View Details</a>
+<p>${city} • ${bhk} BHK</p>
+
+<p class="price">₹${price}</p>
+
+<a class="btn" href="property.html?id=${i}">View</a>
 
 </div>
-`
 
-container.appendChild(card)
+</div>
+
+`
 
 if(lat && lng){
 
-L.marker([lat,lng])
-.addTo(map)
-.bindPopup("<b>"+title+"</b><br>₹"+price)
+L.marker([lat,lng]).addTo(map).bindPopup(title)
 
 }
 
 })
 
+document.getElementById("properties").innerHTML=html
+document.getElementById("trendingGallery").innerHTML=gallery
+
 })
 
 }
 
-function toggleFav(el,id){
+/* AUTO REFRESH */
 
-let fav=JSON.parse(localStorage.getItem("favorites"))||[]
+loadProperties()
+
+setInterval(loadProperties,20000)
+
+/* FAVORITES */
+
+function toggleFav(id){
+
+let fav=JSON.parse(localStorage.getItem("fav"))||[]
 
 if(fav.includes(id)){
-fav=fav.filter(x=>x!==id)
-el.innerHTML="♡"
+fav=fav.filter(f=>f!==id)
 }else{
 fav.push(id)
-el.innerHTML="❤️"
 }
 
-localStorage.setItem("favorites",JSON.stringify(fav))
+localStorage.setItem("fav",JSON.stringify(fav))
 
 }
 
-function filterProperties(){
+function showFavorites(){
 
-let location=document.getElementById("locationInput").value.toLowerCase()
-let bhk=document.getElementById("bhkFilter").value
-let price=document.getElementById("priceFilter").value
+let fav=JSON.parse(localStorage.getItem("fav"))||[]
 
 let cards=document.querySelectorAll(".card")
 
-cards.forEach(card=>{
+cards.forEach((card,i)=>{
 
-let show=true
-
-if(location && !card.dataset.location.includes(location)) show=false
-if(bhk && card.dataset.bhk!==bhk) show=false
-if(price && parseInt(card.dataset.price)>price) show=false
-
-card.style.display=show?"":"none"
+card.style.display=fav.includes(i)?"":"none"
 
 })
 
-sortProperties()
-
 }
 
-function sortProperties(){
-
-let sort=document.getElementById("sortPrice").value
-let container=document.getElementById("propertyList")
-let cards=[...container.querySelectorAll(".card")]
-
-cards.sort((a,b)=>{
-
-let priceA=parseInt(a.dataset.price)
-let priceB=parseInt(b.dataset.price)
-
-if(sort=="low") return priceA-priceB
-if(sort=="high") return priceB-priceA
-
-})
-
-cards.forEach(card=>container.appendChild(card))
-
-}
-
-function aiSearch(){
-
-let query=document.getElementById("aiSearch").value.toLowerCase()
-
-if(query.includes("1bhk")) document.getElementById("bhkFilter").value="1"
-if(query.includes("2bhk")) document.getElementById("bhkFilter").value="2"
-
-let price=query.match(/\d+/)
-if(price) document.getElementById("priceFilter").value=price[0]
-
-let words=query.split(" ")
-document.getElementById("locationInput").value=words[words.length-1]
-
-filterProperties()
-
-}
+/* RENT ESTIMATION */
 
 function estimateRent(){
 
-let city=document.getElementById("rentCity").value.toLowerCase()
-let bhk=document.getElementById("rentBhk").value
+let size=document.getElementById("size").value
 
-let cards=document.querySelectorAll(".card")
+let rent=size*22
 
-let prices=[]
-
-cards.forEach(card=>{
-
-if(card.dataset.location.includes(city) && card.dataset.bhk==bhk){
-
-prices.push(parseInt(card.dataset.price))
+document.getElementById("rentResult").innerText="Estimated Rent ₹"+rent
 
 }
 
-})
-
-if(prices.length==0){
-
-document.getElementById("rentResult").innerText="No data available"
-return
-
-}
-
-let avg=prices.reduce((a,b)=>a+b)/prices.length
-
-document.getElementById("rentResult").innerText="Estimated Rent: ₹"+Math.round(avg)
-
-}
+/* PHOTO ESTIMATE */
 
 function photoEstimate(){
 
-let file=document.getElementById("photoUpload").files[0]
-
-if(!file){
-alert("Upload a photo")
-return
-}
-
-document.getElementById("photoResult").innerText="Estimated Rent: ₹15000"
+document.getElementById("photoResult").innerText="Estimated Rent ₹15000"
 
 }
+
+/* CHATBOT */
 
 function toggleChat(){
 
 let box=document.getElementById("chatbox")
 
-box.style.display = box.style.display=="flex" ? "none" : "flex"
+box.style.display=box.style.display==="flex"?"none":"flex"
 
 }
 
-function sendMessage(){
+function sendChat(){
 
 let input=document.getElementById("chatText")
-let text=input.value.toLowerCase()
 
-if(!text) return
+let msg=input.value
 
-let messages=document.getElementById("chatMessages")
+let chat=document.getElementById("chatMessages")
 
-messages.innerHTML += `<div style="text-align:right">${text}</div>`
-
-let reply="Try searching by city, BHK, or price."
-
-messages.innerHTML += `<div>${reply}</div>`
+chat.innerHTML+=`<p><b>You:</b> ${msg}</p>`
+chat.innerHTML+=`<p><b>AI:</b> Try searching by city, BHK, or price.</p>`
 
 input.value=""
 
 }
-
-loadProperties()
-
-setInterval(loadProperties,15000)
 
 </script>
 

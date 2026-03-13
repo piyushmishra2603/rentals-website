@@ -5,8 +5,6 @@
 
 <title>Owner Dashboard</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
 <style>
 
 body{
@@ -16,11 +14,13 @@ margin:0;
 }
 
 .header{
+
 background:#2563eb;
 color:white;
 padding:15px;
-text-align:center;
-font-size:22px;
+display:flex;
+justify-content:space-between;
+
 }
 
 .container{
@@ -28,36 +28,22 @@ padding:20px;
 }
 
 .card{
+
 background:white;
 padding:20px;
-margin-bottom:20px;
 border-radius:10px;
+margin-bottom:15px;
 box-shadow:0 2px 10px rgba(0,0,0,0.1);
+
 }
 
 button{
-background:#2563eb;
+padding:8px 12px;
+background:red;
 color:white;
 border:none;
-padding:10px 15px;
 border-radius:6px;
 cursor:pointer;
-}
-
-button:hover{
-background:#1d4ed8;
-}
-
-.planBox{
-border:1px solid #eee;
-padding:15px;
-border-radius:8px;
-margin-top:10px;
-}
-
-.property{
-border-bottom:1px solid #eee;
-padding:10px 0;
 }
 
 </style>
@@ -67,170 +53,77 @@ padding:10px 0;
 <body>
 
 <div class="header">
-Owner Dashboard
+
+<h2>Owner Dashboard</h2>
+
+<button onclick="logout()">Logout</button>
+
 </div>
 
 <div class="container">
 
-<div class="card">
+<h3>Welcome <span id="ownerName"></span></h3>
 
-<h2>Welcome Owner</h2>
+<h3>Your Leads</h3>
 
-<p>Email: <span id="ownerEmail"></span></p>
-
-<p>Current Plan: <b id="plan">Free</b></p>
+<div id="leads"></div>
 
 </div>
-
-
-
-<div class="card">
-
-<h3>Upgrade Subscription</h3>
-
-<p>UPI ID: <b>piyushmishra1903@oksbi</b></p>
-
-<div class="planBox">
-
-<h4>Pro Plan</h4>
-<p>₹199 / month</p>
-
-<button onclick="payUPI('199','Pro')">
-Pay via UPI
-</button>
-
-<button onclick="openQR('Pro')">
-Scan QR Code
-</button>
-
-</div>
-
-<br>
-
-<div class="planBox">
-
-<h4>Premium Plan</h4>
-<p>₹499 / month</p>
-
-<button onclick="payUPI('499','Premium')">
-Pay via UPI
-</button>
-
-<button onclick="openQR('Premium')">
-Scan QR Code
-</button>
-
-</div>
-
-<br>
-
-<a href="https://wa.me/YOURNUMBER">
-<button>Send Payment Screenshot</button>
-</a>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>Upload Property</h3>
-
-<button onclick="window.location='submit.html'">
-Submit Property
-</button>
-
-</div>
-
-
-
-<div class="card">
-
-<h3>Your Properties</h3>
-
-<div id="propertyList">
-Loading properties...
-</div>
-
-</div>
-
-</div>
-
-
 
 <script>
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbyPRbaCUVnHnEVVcE-Zf25XeOHTJs53kKMMu9h0lLk3e5MTvj8sxypPsD8Jo8oCmFARew/exec"
+const scriptURL="https://script.google.com/macros/s/AKfycbyPRbaCUVnHnEVVcE-Zf25XeOHTJs53kKMMu9h0lLk3e5MTvj8sxypPsD8Jo8oCmFARew/exec"
 
-const email = localStorage.getItem("ownerEmail")
+let ownerEmail=localStorage.getItem("ownerEmail")
 
-document.getElementById("ownerEmail").innerText = email
+if(!ownerEmail){
 
-
-
-// UPI PAYMENT
-function payUPI(amount,plan){
-
-const upiId = "piyushmishra1903@oksbi"
-
-const url =
-`upi://pay?pa=${upiId}&pn=PropertyPlatform&am=${amount}&cu=INR`
-
-window.location.href = url
-
-alert(
-"After payment send screenshot to admin to activate "+plan+" plan."
-)
+window.location="login.html"
 
 }
 
+document.getElementById("ownerName").innerText=localStorage.getItem("ownerName")
 
 
-// QR CODE PAYMENT
-function openQR(plan){
-
-window.open("payment-qr.jpg")
-
-alert(
-"Scan the QR code and send screenshot to admin to activate "+plan+" plan."
-)
-
-}
-
-
-
-// LOAD OWNER PROPERTIES
-function loadProperties(){
-
-fetch(scriptURL+"?action=getOwnerProperties&email="+email)
+fetch(scriptURL+"?action=getLeads&email="+ownerEmail)
 
 .then(res=>res.json())
 
 .then(data=>{
 
-let html=""
+let container=document.getElementById("leads")
 
-data.forEach(p=>{
+data.forEach(lead=>{
 
-html += `
-<div class="property">
-<b>${p.title}</b><br>
-${p.city} • ₹${p.price}
+container.innerHTML+=`
+
+<div class="card">
+
+<b>${lead.name}</b><br>
+
+Phone: ${lead.phone}<br>
+
+Email: ${lead.email}<br>
+
+Message: ${lead.message}
+
 </div>
+
 `
 
 })
 
-document.getElementById("propertyList").innerHTML = html
-
 })
 
-}
+function logout(){
 
-loadProperties()
+localStorage.clear()
+
+window.location="login.html"
+
+}
 
 </script>
 
 </body>
-
 </html>

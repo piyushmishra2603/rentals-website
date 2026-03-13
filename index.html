@@ -329,7 +329,11 @@ rows.forEach((row,i)=>{
 
 let cols=row.split(",")
 
-let title=cols[0]
+let status=cols[10]
+
+if(status!="Approved"){
+return
+}
 let city=cols[1]
 let bhk=cols[2]
 let price=cols[3]

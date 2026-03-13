@@ -9,35 +9,53 @@
 
 body{
 font-family:Arial;
-background:#f2f2f2;
+background:#f4f6fb;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 }
 
-.box{
+.loginBox{
+
 background:white;
 padding:30px;
 border-radius:10px;
-width:300px;
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+width:320px;
 text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.2);
+
 }
 
 input{
 width:100%;
 padding:10px;
 margin:10px 0;
+border:1px solid #ccc;
+border-radius:6px;
 }
 
 button{
 width:100%;
-padding:10px;
-background:#0f4c81;
+padding:12px;
+background:#2563eb;
 color:white;
 border:none;
+border-radius:6px;
 cursor:pointer;
+}
+
+.whatsappFloat{
+
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:15px;
+border-radius:50px;
+text-decoration:none;
+
 }
 
 </style>
@@ -46,30 +64,71 @@ cursor:pointer;
 
 <body>
 
-<div class="box">
+<div class="loginBox">
 
 <h2>Owner Login</h2>
 
 <input id="email" placeholder="Email">
 
+<input id="password" type="password" placeholder="Password">
+
 <button onclick="login()">Login</button>
+
+<p id="msg"></p>
 
 </div>
 
+<a href="https://wa.me/91YOURNUMBER" class="whatsappFloat">
+WhatsApp
+</a>
+
 <script>
+
+const scriptURL="https://script.google.com/macros/s/AKfycbyPRbaCUVnHnEVVcE-Zf25XeOHTJs53kKMMu9h0lLk3e5MTvj8sxypPsD8Jo8oCmFARew/exec"
 
 function login(){
 
 let email=document.getElementById("email").value
+let password=document.getElementById("password").value
 
-localStorage.setItem("ownerEmail",email)
+fetch(scriptURL,{
+
+method:"POST",
+
+body:JSON.stringify({
+
+action:"ownerLogin",
+email:email,
+password:password
+
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+if(data.status=="success"){
+
+localStorage.setItem("ownerEmail",data.email)
+localStorage.setItem("ownerName",data.name)
 
 window.location="dashboard.html"
+
+}
+
+else{
+
+document.getElementById("msg").innerText="Invalid Login"
+
+}
+
+})
 
 }
 
 </script>
 
 </body>
-
 </html>

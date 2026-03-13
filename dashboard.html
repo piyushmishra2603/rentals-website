@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <title>Owner Dashboard</title>
@@ -10,9 +11,8 @@
 
 body{
 font-family:Arial;
-background:#f5f7fb;
+background:#f4f6fb;
 margin:0;
-padding:0;
 }
 
 .header{
@@ -42,15 +42,16 @@ border:none;
 padding:10px 15px;
 border-radius:6px;
 cursor:pointer;
-margin-top:10px;
 }
 
 button:hover{
 background:#1d4ed8;
 }
 
-.plan{
-font-size:18px;
+.planBox{
+border:1px solid #eee;
+padding:15px;
+border-radius:8px;
 margin-top:10px;
 }
 
@@ -77,41 +78,70 @@ Owner Dashboard
 
 <p>Email: <span id="ownerEmail"></span></p>
 
-<p class="plan">
-Current Plan: <b id="plan">Free</b>
-</p>
+<p>Current Plan: <b id="plan">Free</b></p>
 
 </div>
+
 
 
 <div class="card">
 
 <h3>Upgrade Subscription</h3>
 
-<p>Choose a plan to upload more properties.</p>
+<p>UPI ID: <b>piyushmishra1903@oksbi</b></p>
 
-<button onclick="buyPlan('Pro',199)">
-Buy Pro Plan ₹199 / month
+<div class="planBox">
+
+<h4>Pro Plan</h4>
+<p>₹199 / month</p>
+
+<button onclick="payUPI('199','Pro')">
+Pay via UPI
 </button>
 
-<br><br>
-
-<button onclick="buyPlan('Premium',499)">
-Buy Premium Plan ₹499 / month
+<button onclick="openQR('Pro')">
+Scan QR Code
 </button>
 
 </div>
+
+<br>
+
+<div class="planBox">
+
+<h4>Premium Plan</h4>
+<p>₹499 / month</p>
+
+<button onclick="payUPI('499','Premium')">
+Pay via UPI
+</button>
+
+<button onclick="openQR('Premium')">
+Scan QR Code
+</button>
+
+</div>
+
+<br>
+
+<a href="https://wa.me/YOURNUMBER">
+<button>Send Payment Screenshot</button>
+</a>
+
+</div>
+
 
 
 <div class="card">
 
-<h3>Submit Property</h3>
+<h3>Upload Property</h3>
 
 <button onclick="window.location='submit.html'">
-Upload Property
+Submit Property
 </button>
 
 </div>
+
 
 
 <div class="card">
@@ -130,7 +160,6 @@ Loading properties...
 
 <script>
 
-// WEB APP URL
 const scriptURL = "https://script.google.com/macros/s/AKfycbyPRbaCUVnHnEVVcE-Zf25XeOHTJs53kKMMu9h0lLk3e5MTvj8sxypPsD8Jo8oCmFARew/exec"
 
 const email = localStorage.getItem("ownerEmail")
@@ -139,16 +168,31 @@ document.getElementById("ownerEmail").innerText = email
 
 
 
-// BUY PLAN FUNCTION
-function buyPlan(plan,price){
+// UPI PAYMENT
+function payUPI(amount,plan){
+
+const upiId = "piyushmishra1903@oksbi"
+
+const url =
+`upi://pay?pa=${upiId}&pn=PropertyPlatform&am=${amount}&cu=INR`
+
+window.location.href = url
 
 alert(
-"Payment for "+plan+" plan ₹"+price+
-"\n\nAfter payment send screenshot to admin."
+"After payment send screenshot to admin to activate "+plan+" plan."
 )
 
-window.open(
-"https://wa.me/?text=I want to upgrade to "+plan+" plan"
+}
+
+
+
+// QR CODE PAYMENT
+function openQR(plan){
+
+window.open("payment-qr.jpg")
+
+alert(
+"Scan the QR code and send screenshot to admin to activate "+plan+" plan."
 )
 
 }
@@ -170,9 +214,8 @@ data.forEach(p=>{
 
 html += `
 <div class="property">
-<b>${p.title}</b>
-<br>
-${p.city} • ${p.price}
+<b>${p.title}</b><br>
+${p.city} • ₹${p.price}
 </div>
 `
 
@@ -189,4 +232,5 @@ loadProperties()
 </script>
 
 </body>
+
 </html>

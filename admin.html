@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f8;
+margin:0;
+}
+
+header{
+background:#222;
+color:white;
+padding:15px;
+text-align:center;
+}
+
+.container{
+padding:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:8px;
+box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:200px;
+border-radius:6px;
+}
+
+button{
+border:none;
+padding:6px 12px;
+margin:5px;
+border-radius:6px;
+cursor:pointer;
+}
+
+.approve{
+background:#28a745;
+color:white;
+}
+
+.reject{
+background:#dc3545;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h2>Admin Property Approval Panel</h2>
+</header>
+
+<div class="container" id="properties"></div>
+
+<script>
+
+const csvURL =
+"https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:csv"
+
+const scriptURL =
+"https://script.google.com/macros/s/YOUR_SCRIPT_URL/exec"
+
+fetch(csvURL)
+.then(res=>res.text())
+.then(data=>{
+
+let rows=data.split("\n").slice(1)
+
+let html=""
+
+rows.forEach((row,i)=>{
+
+let cols=row.split(",")
+
+let title=cols[0]
+let city=cols[1]
+let bhk=cols[2]
+let price=cols[3]
+let img=cols[4]
+let status=cols[10]
+
+if(status=="Pending"){
+
+html+=`
+
+<div class="card">
+
+<img src="${img}">
+
+<h3>${title}</h3>
+
+<p>${city} • ${bhk} BHK</p>
+
+<p>₹${price}</p>
+
+<p>Status: ${status}</p>
+
+<button class="approve"
+onclick="approve(${i+2})">
+Approve
+</button>
+
+<button class="reject"
+onclick="reject(${i+2})">
+Reject
+</button>
+
+</div>
+
+`
+
+}
+
+})
+
+document.getElementById("properties").innerHTML=html
+
+})
+
+function approve(row){
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+row:row,
+action:"approve"
+})
+})
+
+alert("Property Approved")
+
+location.reload()
+
+}
+
+function reject(row){
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify({
+row:row,
+action:"reject"
+})
+})
+
+alert("Property Rejected")
+
+location.reload()
+
+}
+
+</script>
+
+</body>
+</html>

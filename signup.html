@@ -3,13 +3,16 @@
 <head>
   <title>Owner Signup</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-    input, button { display: block; margin: 10px 0; padding: 10px; width: 300px; }
-    button { cursor: pointer; background: #4CAF50; color: white; border: none; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    h2 { color: #333; }
+    input, button { display: block; width: 300px; padding: 10px; margin: 10px 0; }
+    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
   </style>
 </head>
 <body>
+
   <h2>Owner Signup</h2>
+
   <input type="text" id="name" placeholder="Full Name">
   <input type="email" id="email" placeholder="Email">
   <input type="text" id="phone" placeholder="Phone">
@@ -17,22 +20,37 @@
   <button onclick="signup()">Sign Up</button>
 
   <script>
+    // ✅ Your Google Apps Script Web App URL
     const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
 
     function signup() {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const phone = document.getElementById("phone").value;
-      const password = document.getElementById("password").value;
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-      fetch(`${WEB_APP_URL}?action=signupOwner&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`)
-        .then(res => res.text())
+      if (!name || !email || !phone || !password) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      // Use GET request (works without postData)
+      const url = `${WEB_APP_URL}?action=signupOwner&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`;
+
+      fetch(url)
+        .then(response => response.text())
         .then(res => {
-          alert(res);
-          if(res === "Success") window.location.href = "login.html";
+          alert(res); // Will show "Success" if signup works
+          if (res === "Success") {
+            window.location.href = "login.html"; // Redirect to login after signup
+          }
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+          console.error(err);
+          alert("Signup failed! Check console for errors.");
+        });
     }
   </script>
+
 </body>
 </html>

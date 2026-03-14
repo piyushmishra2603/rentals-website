@@ -3,9 +3,10 @@
 <head>
   <title>Owner Login</title>
   <style>
-    body { font-family: Arial; margin: 50px; }
-    input { display: block; margin: 10px 0; padding: 8px; width: 250px; }
-    button { padding: 10px 20px; cursor: pointer; }
+    body { font-family: Arial; margin:50px; }
+    input, button { display:block; margin:10px 0; padding:10px; width:300px; }
+    button { cursor:pointer; background-color:#2196F3; color:white; border:none; font-weight:bold; }
+    button:hover { background-color:#0b7dda; }
   </style>
 </head>
 <body>
@@ -17,41 +18,31 @@
 <button onclick="login()">Login</button>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwh-9c-O1jC7RAQrpcdXzFJZO7Yyf28CIdAmAjRVUywGYPMOszLPbYbQxP24f0PPTF80Q/exec";
 
 function login() {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  if(!email || !password) {
-    alert("Please fill all fields!");
-    return;
-  }
+  if(!email || !password) { alert("Fill all fields!"); return; }
 
-  fetch(WEB_APP_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "ownerLogin",
-      email: email,
-      password: password
-    })
+  fetch(WEB_APP_URL,{
+    method:"POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({action:"ownerLogin", email, password})
   })
-  .then(res => res.json())
-  .then(response => {
-    if(response.status === "success") {
-      alert("Login successful!");
-      // Save email locally to fetch properties later
-      localStorage.setItem("ownerEmail", response.email);
-      localStorage.setItem("ownerName", response.name);
-      window.location.href = "dashboard.html";
+  .then(res=>res.json())
+  .then(resp=>{
+    if(resp.status==="success") {
+      localStorage.setItem("ownerEmail", resp.email);
+      localStorage.setItem("ownerName", resp.name);
+      window.location.href="dashboard.html";
     } else {
-      alert("Login failed: " + response.message);
+      alert("Login failed: "+resp.message);
     }
   })
-  .catch(err => console.error(err));
+  .catch(err=>{console.error(err); alert("Error during login");});
 }
 </script>
-
 </body>
 </html>

@@ -3,9 +3,10 @@
 <head>
   <title>Owner Signup</title>
   <style>
-    body { font-family: Arial; margin: 50px; }
-    input { display: block; margin: 10px 0; padding: 8px; width: 250px; }
-    button { padding: 10px 20px; cursor: pointer; }
+    body { font-family: Arial; margin:50px; }
+    input, button { display:block; margin:10px 0; padding:10px; width:300px; }
+    button { cursor:pointer; background-color:#4CAF50; color:white; border:none; font-weight:bold; }
+    button:hover { background-color:#45a049; }
   </style>
 </head>
 <body>
@@ -19,7 +20,7 @@
 <button onclick="signup()">Sign Up</button>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec"; // <-- your Apps Script URL
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwh-9c-O1jC7RAQrpcdXzFJZO7Yyf28CIdAmAjRVUywGYPMOszLPbYbQxP24f0PPTF80Q/exec";
 
 function signup() {
   const name = document.getElementById("name").value.trim();
@@ -33,28 +34,24 @@ function signup() {
   }
 
   fetch(WEB_APP_URL, {
-    method: "POST",
+    method:"POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      action: "signupOwner",
-      name: name,
-      email: email,
-      phone: phone,
-      password: password
-    })
+    body: JSON.stringify({action:"signupOwner", name, email, phone, password})
   })
-  .then(res => res.text())
-  .then(response => {
-    if(response === "Success") {
-      alert("Signup successful!");
-      window.location.href = "login.html"; // redirect to login page
+  .then(res=>res.json())
+  .then(resp=>{
+    if(resp.status==="success") {
+      alert(resp.message);
+      window.location.href="login.html";
     } else {
-      alert("Signup failed: " + response);
+      alert("Signup failed: "+resp.message);
     }
   })
-  .catch(err => console.error(err));
+  .catch(err=>{
+    console.error(err);
+    alert("An error occurred during signup.");
+  });
 }
 </script>
-
 </body>
 </html>

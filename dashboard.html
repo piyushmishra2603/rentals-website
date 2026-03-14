@@ -1,72 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Owner Dashboard</title>
+  <title>Dashboard</title>
   <style>
-    body { font-family: Arial; margin: 30px; }
-    h2 { margin-bottom: 20px; }
-    button { padding: 8px 15px; margin: 5px; cursor: pointer; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #f0f0f0; }
-    .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 15px; border-radius: 50%; text-align: center; font-size: 24px; cursor: pointer; }
+    body { font-family: Arial; margin:20px; }
+    table { border-collapse: collapse; width:100%; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+    th { background-color:#f2f2f2; }
+    #whatsapp { position:fixed; bottom:20px; right:20px; background:#25D366; color:white; border-radius:50%; width:60px; height:60px; font-size:30px; text-align:center; line-height:60px; cursor:pointer; }
   </style>
 </head>
 <body>
 
-<h2>Welcome, <span id="ownerName"></span></h2>
-<button onclick="logout()">Logout</button>
-<h3>Your Properties</h3>
-<table id="propertiesTable">
-  <tr>
-    <th>Title</th>
-    <th>City</th>
-    <th>BHK</th>
-    <th>Price</th>
-    <th>Status</th>
-  </tr>
+<h2>Dashboard - Properties</h2>
+<table id="propertyTable">
+  <tr><th>Title</th><th>City</th><th>BHK</th><th>Price</th></tr>
 </table>
 
-<div class="floating-whatsapp" onclick="contactWhatsApp()">💬</div>
+<div id="whatsapp" onclick="openWhatsApp()">&#9990;</div>
 
 <script>
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
-
-document.getElementById("ownerName").innerText = localStorage.getItem("ownerName") || "Owner";
-
-function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
-}
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwh-9c-O1jC7RAQrpcdXzFJZO7Yyf28CIdAmAjRVUywGYPMOszLPbYbQxP24f0PPTF80Q/exec";
 
 function loadProperties() {
-  const email = localStorage.getItem("ownerEmail");
-  if(!email) return;
-
-  fetch(WEB_APP_URL + "?action=getProperties")
-    .then(res => res.json())
-    .then(properties => {
-      const table = document.getElementById("propertiesTable");
-      properties.forEach(p => {
-        if(p.email === email) { // show only owner’s properties
-          const row = table.insertRow();
-          row.insertCell(0).innerText = p.title;
-          row.insertCell(1).innerText = p.city;
-          row.insertCell(2).innerText = p.bhk;
-          row.insertCell(3).innerText = p.price;
-          row.insertCell(4).innerText = "Approved";
-        }
-      });
-    })
-    .catch(err => console.error(err));
+  fetch(WEB_APP_URL+"?action=getProperties")
+  .then(res=>res.json())
+  .then(properties=>{
+    const table=document.getElementById("propertyTable");
+    properties.forEach(p=>{
+      const row=table.insertRow();
+      row.insertCell(0).innerText=p.title;
+      row.insertCell(1).innerText=p.city;
+      row.insertCell(2).innerText=p.bhk;
+      row.insertCell(3).innerText=p.price;
+    });
+  });
 }
 
-function contactWhatsApp() {
-  const phone = "+911234567890"; // your WhatsApp number
-  window.open(`https://wa.me/${phone.replace(/\D/g,'')}`, "_blank");
+function openWhatsApp() {
+  const number="YOUR_WHATSAPP_NUMBER"; // include country code
+  window.open("https://wa.me/"+number, "_blank");
 }
 
-// Load properties on page load
 loadProperties();
 </script>
 

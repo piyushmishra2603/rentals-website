@@ -3,57 +3,64 @@
 <head>
   <title>Submit Property</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-    input, textarea, button { display: block; margin: 10px 0; padding: 10px; width: 300px; }
-    button { background: #ff5722; color: white; border: none; cursor: pointer; }
+    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
+    input, textarea, button { display: block; width: 300px; padding: 10px; margin: 10px 0; }
+    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    #whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; }
   </style>
 </head>
 <body>
-  <h2>Submit Property</h2>
-  <input type="text" id="title" placeholder="Title">
-  <input type="text" id="city" placeholder="City">
-  <input type="text" id="bhk" placeholder="BHK">
-  <input type="number" id="price" placeholder="Price">
-  <input type="text" id="image1" placeholder="Image URL 1">
-  <input type="text" id="image2" placeholder="Image URL 2">
-  <input type="text" id="image3" placeholder="Image URL 3">
-  <input type="text" id="image4" placeholder="Image URL 4">
-  <textarea id="description" placeholder="Description"></textarea>
-  <input type="text" id="lat" placeholder="Latitude">
-  <input type="text" id="lng" placeholder="Longitude">
-  <button onclick="submitProperty()">Submit Property</button>
 
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
-    const ownerEmail = localStorage.getItem("ownerEmail");
-    const ownerPhone = ""; // optional, can store in localStorage if needed
+<h2>Submit Property</h2>
 
-    function submitProperty() {
-      const data = {
-        action: "submitProperty",
-        title: document.getElementById("title").value,
-        city: document.getElementById("city").value,
-        bhk: document.getElementById("bhk").value,
-        price: document.getElementById("price").value,
-        image1: document.getElementById("image1").value,
-        image2: document.getElementById("image2").value,
-        image3: document.getElementById("image3").value,
-        image4: document.getElementById("image4").value,
-        description: document.getElementById("description").value,
-        lat: document.getElementById("lat").value,
-        lng: document.getElementById("lng").value,
-        email: ownerEmail,
-        phone: ownerPhone
-      };
+<input type="text" id="title" placeholder="Title">
+<input type="text" id="city" placeholder="City">
+<input type="text" id="bhk" placeholder="BHK">
+<input type="number" id="price" placeholder="Price">
+<input type="text" id="image1" placeholder="Image URL 1">
+<input type="text" id="image2" placeholder="Image URL 2">
+<input type="text" id="image3" placeholder="Image URL 3">
+<input type="text" id="image4" placeholder="Image URL 4">
+<textarea id="description" placeholder="Description"></textarea>
+<input type="text" id="lat" placeholder="Latitude">
+<input type="text" id="lng" placeholder="Longitude">
+<button onclick="submitProperty()">Submit</button>
 
-      fetch(WEB_APP_URL, {
-        method: "POST",
-        body: JSON.stringify(data)
-      })
-      .then(res => res.text())
-      .then(res => alert(res))
-      .catch(err => console.error(err));
-    }
-  </script>
+<a href="https://wa.me/YOUR_UPI_OR_PHONE_NUMBER" id="whatsapp" target="_blank">💬</a>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
+const ownerEmail = localStorage.getItem("ownerEmail") || "";
+const ownerPhone = ""; // optionally fill if stored
+
+function submitProperty() {
+  const data = {
+    action: "submitProperty",
+    title: document.getElementById("title").value.trim(),
+    city: document.getElementById("city").value.trim(),
+    bhk: document.getElementById("bhk").value.trim(),
+    price: document.getElementById("price").value.trim(),
+    image1: document.getElementById("image1").value.trim(),
+    image2: document.getElementById("image2").value.trim(),
+    image3: document.getElementById("image3").value.trim(),
+    image4: document.getElementById("image4").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    email: ownerEmail,
+    phone: ownerPhone,
+    lat: document.getElementById("lat").value.trim(),
+    lng: document.getElementById("lng").value.trim()
+  };
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(res => { alert(res); window.location.href = "dashboard.html"; })
+  .catch(err => { console.error(err); alert("Failed to submit property"); });
+}
+</script>
+
 </body>
 </html>

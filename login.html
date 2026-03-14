@@ -3,50 +3,54 @@
 <head>
   <title>Owner Login</title>
   <style>
-    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
-    input, button { display: block; width: 300px; padding: 10px; margin: 10px 0; }
-    button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-    #whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; }
+    body { font-family: Arial; margin: 50px; }
+    input { display: block; margin: 10px 0; padding: 8px; width: 250px; }
+    button { padding: 10px 20px; cursor: pointer; }
   </style>
 </head>
 <body>
 
 <h2>Owner Login</h2>
 
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="password" placeholder="Password">
+<input type="email" id="email" placeholder="Email" required>
+<input type="password" id="password" placeholder="Password" required>
 <button onclick="login()">Login</button>
 
-<a href="https://wa.me/YOUR_UPI_OR_PHONE_NUMBER" id="whatsapp" target="_blank">💬</a>
-
 <script>
-  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
 
-  function login() {
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-    if (!email || !password) { alert("Please fill all fields!"); return; }
-
-    const data = { action: "ownerLogin", email, password };
-
-    fetch(WEB_APP_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status === "success") {
-        localStorage.setItem("ownerName", res.name);
-        localStorage.setItem("ownerEmail", res.email);
-        window.location.href = "dashboard.html";
-      } else {
-        alert(res.message);
-      }
-    })
-    .catch(err => { console.error(err); alert("Login failed!"); });
+  if(!email || !password) {
+    alert("Please fill all fields!");
+    return;
   }
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "ownerLogin",
+      email: email,
+      password: password
+    })
+  })
+  .then(res => res.json())
+  .then(response => {
+    if(response.status === "success") {
+      alert("Login successful!");
+      // Save email locally to fetch properties later
+      localStorage.setItem("ownerEmail", response.email);
+      localStorage.setItem("ownerName", response.name);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Login failed: " + response.message);
+    }
+  })
+  .catch(err => console.error(err));
+}
 </script>
 
 </body>

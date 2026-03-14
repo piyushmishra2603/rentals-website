@@ -1,168 +1,38 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Owner Signup</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f4f6fb;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
-
-.signupBox{
-
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 4px 15px rgba(0,0,0,0.15);
-width:320px;
-text-align:center;
-
-}
-
-.signupBox h2{
-margin-bottom:20px;
-}
-
-.signupBox input{
-
-width:100%;
-padding:10px;
-margin:8px 0;
-border:1px solid #ccc;
-border-radius:6px;
-
-}
-
-.signupBox button{
-
-width:100%;
-padding:12px;
-background:#2563eb;
-border:none;
-color:white;
-border-radius:6px;
-cursor:pointer;
-font-size:16px;
-
-}
-
-.signupBox button:hover{
-background:#1d4ed8;
-}
-
-#msg{
-margin-top:10px;
-color:green;
-}
-
-.whatsappFloat{
-
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:15px;
-border-radius:50px;
-text-decoration:none;
-font-weight:bold;
-box-shadow:0 3px 10px rgba(0,0,0,0.3);
-
-}
-
-</style>
-
+  <title>Owner Signup</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input, button { display: block; margin: 10px 0; padding: 10px; width: 300px; }
+    button { cursor: pointer; background: #4CAF50; color: white; border: none; }
+  </style>
 </head>
-
 <body>
+  <h2>Owner Signup</h2>
+  <input type="text" id="name" placeholder="Full Name">
+  <input type="email" id="email" placeholder="Email">
+  <input type="text" id="phone" placeholder="Phone">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="signup()">Sign Up</button>
 
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
 
-<div class="signupBox">
+    function signup() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const password = document.getElementById("password").value;
 
-<h2>Owner Signup</h2>
-
-<input id="name" placeholder="Full Name">
-
-<input id="email" placeholder="Email">
-
-<input id="phone" placeholder="Phone">
-
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="signupOwner()">Create Account</button>
-
-<p id="msg"></p>
-
-</div>
-
-
-<!-- FLOATING WHATSAPP -->
-
-<a href="https://wa.me/91YOURNUMBER" class="whatsappFloat">
-WhatsApp
-</a>
-
-
-<script>
-
-const scriptURL="https://script.google.com/macros/s/AKfycbxthKturG-CUiuGEL5osKNFdmH7Pdrz8Sz1G1wnRXbjXKHTCvX0y17W4YMdMYePbVIX8w/exec"
-
-
-
-function signupOwner(){
-
-let name=document.getElementById("name").value
-let email=document.getElementById("email").value
-let phone=document.getElementById("phone").value
-let password=document.getElementById("password").value
-
-
-fetch(scriptURL,{
-
-method:"POST",
-
-body:JSON.stringify({
-
-action:"signupOwner",
-
-name:name,
-email:email,
-phone:phone,
-password:password
-
-})
-
-})
-
-.then(res=>res.text())
-
-.then(data=>{
-
-document.getElementById("msg").innerText="Signup Successful!"
-
-})
-
-.catch(err=>{
-
-document.getElementById("msg").innerText="Signup Failed"
-
-})
-
-}
-
-</script>
-
-
+      fetch(`${WEB_APP_URL}?action=signupOwner&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`)
+        .then(res => res.text())
+        .then(res => {
+          alert(res);
+          if(res === "Success") window.location.href = "login.html";
+        })
+        .catch(err => console.error(err));
+    }
+  </script>
 </body>
 </html>

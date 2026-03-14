@@ -1,129 +1,49 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Owner Dashboard</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f4f6fb;
-margin:0;
-}
-
-.header{
-
-background:#2563eb;
-color:white;
-padding:15px;
-display:flex;
-justify-content:space-between;
-
-}
-
-.container{
-padding:20px;
-}
-
-.card{
-
-background:white;
-padding:20px;
-border-radius:10px;
-margin-bottom:15px;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-
-}
-
-button{
-padding:8px 12px;
-background:red;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-</style>
-
+  <title>Owner Dashboard</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    h2 { margin-bottom: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background: #eee; }
+    a { display: inline-block; margin: 10px 0; text-decoration: none; background: #4CAF50; color: white; padding: 10px; }
+  </style>
 </head>
-
 <body>
+  <h2>Welcome, <span id="ownerName"></span></h2>
+  <a href="submit.html">Submit New Property</a>
+  <h3>Your Leads</h3>
+  <table id="leadsTable">
+    <tr>
+      <th>Property</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Email</th>
+      <th>Message</th>
+    </tr>
+  </table>
 
-<div class="header">
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
+    const ownerEmail = localStorage.getItem("ownerEmail");
+    document.getElementById("ownerName").innerText = localStorage.getItem("ownerName");
 
-<h2>Owner Dashboard</h2>
-
-<button onclick="logout()">Logout</button>
-
-</div>
-
-<div class="container">
-
-<h3>Welcome <span id="ownerName"></span></h3>
-
-<h3>Your Leads</h3>
-
-<div id="leads"></div>
-
-</div>
-
-<script>
-
-const scriptURL="https://script.google.com/macros/s/AKfycbxthKturG-CUiuGEL5osKNFdmH7Pdrz8Sz1G1wnRXbjXKHTCvX0y17W4YMdMYePbVIX8w/exec"
-
-let ownerEmail=localStorage.getItem("ownerEmail")
-
-if(!ownerEmail){
-
-window.location="login.html"
-
-}
-
-document.getElementById("ownerName").innerText=localStorage.getItem("ownerName")
-
-
-fetch(scriptURL+"?action=getLeads&email="+ownerEmail)
-
-.then(res=>res.json())
-
-.then(data=>{
-
-let container=document.getElementById("leads")
-
-data.forEach(lead=>{
-
-container.innerHTML+=`
-
-<div class="card">
-
-<b>${lead.name}</b><br>
-
-Phone: ${lead.phone}<br>
-
-Email: ${lead.email}<br>
-
-Message: ${lead.message}
-
-</div>
-
-`
-
-})
-
-})
-
-function logout(){
-
-localStorage.clear()
-
-window.location="login.html"
-
-}
-
-</script>
-
+    fetch(`${WEB_APP_URL}?action=getLeads&email=${encodeURIComponent(ownerEmail)}`)
+      .then(res => res.json())
+      .then(data => {
+        const table = document.getElementById("leadsTable");
+        data.forEach(lead => {
+          const row = table.insertRow();
+          row.insertCell(0).innerText = lead.property;
+          row.insertCell(1).innerText = lead.name;
+          row.insertCell(2).innerText = lead.phone;
+          row.insertCell(3).innerText = lead.email;
+          row.insertCell(4).innerText = lead.message;
+        });
+      })
+      .catch(err => console.error(err));
+  </script>
 </body>
 </html>

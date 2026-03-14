@@ -3,54 +3,52 @@
 <head>
   <title>Owner Signup</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+    body { font-family: Arial; background: #f4f4f4; padding: 20px; }
     h2 { color: #333; }
     input, button { display: block; width: 300px; padding: 10px; margin: 10px 0; }
     button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    /* Floating WhatsApp Button */
+    #whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; }
   </style>
 </head>
 <body>
 
-  <h2>Owner Signup</h2>
+<h2>Owner Signup</h2>
 
-  <input type="text" id="name" placeholder="Full Name">
-  <input type="email" id="email" placeholder="Email">
-  <input type="text" id="phone" placeholder="Phone">
-  <input type="password" id="password" placeholder="Password">
-  <button onclick="signup()">Sign Up</button>
+<input type="text" id="name" placeholder="Full Name">
+<input type="email" id="email" placeholder="Email">
+<input type="text" id="phone" placeholder="Phone">
+<input type="password" id="password" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
 
-  <script>
-    // ✅ Your Google Apps Script Web App URL
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
+<a href="https://wa.me/YOUR_UPI_OR_PHONE_NUMBER" id="whatsapp" target="_blank">💬</a>
 
-    function signup() {
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const password = document.getElementById("password").value.trim();
+<script>
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
 
-      if (!name || !email || !phone || !password) {
-        alert("Please fill all fields!");
-        return;
-      }
+  function signup() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-      // Use GET request (works without postData)
-      const url = `${WEB_APP_URL}?action=signupOwner&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}&password=${encodeURIComponent(password)}`;
+    if (!name || !email || !phone || !password) { alert("Please fill all fields!"); return; }
 
-      fetch(url)
-        .then(response => response.text())
-        .then(res => {
-          alert(res); // Will show "Success" if signup works
-          if (res === "Success") {
-            window.location.href = "login.html"; // Redirect to login after signup
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Signup failed! Check console for errors.");
-        });
-    }
-  </script>
+    const data = { action: "signupOwner", name, email, phone, password };
+
+    fetch(WEB_APP_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    })
+    .then(res => res.text())
+    .then(res => {
+      alert(res);
+      if (res === "Success") window.location.href = "login.html";
+    })
+    .catch(err => { console.error(err); alert("Signup failed!"); });
+  }
+</script>
 
 </body>
 </html>

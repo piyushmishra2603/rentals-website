@@ -1,134 +1,43 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Owner Login</title>
-
-<style>
-
-body{
-font-family:Arial;
-background:#f4f6fb;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-}
-
-.loginBox{
-
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.15);
-width:320px;
-text-align:center;
-
-}
-
-input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border:1px solid #ccc;
-border-radius:6px;
-}
-
-button{
-width:100%;
-padding:12px;
-background:#2563eb;
-color:white;
-border:none;
-border-radius:6px;
-cursor:pointer;
-}
-
-.whatsappFloat{
-
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:15px;
-border-radius:50px;
-text-decoration:none;
-
-}
-
-</style>
-
+  <title>Owner Login</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input, button { display: block; margin: 10px 0; padding: 10px; width: 300px; }
+    button { cursor: pointer; background: #2196F3; color: white; border: none; }
+  </style>
 </head>
-
 <body>
+  <h2>Owner Login</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
 
-<div class="loginBox">
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
 
-<h2>Owner Login</h2>
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-<input id="email" placeholder="Email">
-
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
-<p id="msg"></p>
-
-</div>
-
-<a href="https://wa.me/91YOURNUMBER" class="whatsappFloat">
-WhatsApp
-</a>
-
-<script>
-
-const scriptURL="https://script.google.com/macros/s/AKfycbxthKturG-CUiuGEL5osKNFdmH7Pdrz8Sz1G1wnRXbjXKHTCvX0y17W4YMdMYePbVIX8w/exec"
-
-function login(){
-
-let email=document.getElementById("email").value
-let password=document.getElementById("password").value
-
-fetch(scriptURL,{
-
-method:"POST",
-
-body:JSON.stringify({
-
-action:"ownerLogin",
-email:email,
-password:password
-
-})
-
-})
-
-.then(res=>res.json())
-
-.then(data=>{
-
-if(data.status=="success"){
-
-localStorage.setItem("ownerEmail",data.email)
-localStorage.setItem("ownerName",data.name)
-
-window.location="dashboard.html"
-
-}
-
-else{
-
-document.getElementById("msg").innerText="Invalid Login"
-
-}
-
-})
-
-}
-
-</script>
-
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "ownerLogin", email, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.status === "success"){
+          localStorage.setItem("ownerEmail", data.email);
+          localStorage.setItem("ownerName", data.name);
+          alert("Login successful! Redirecting...");
+          window.location.href = "dashboard.html";
+        } else {
+          alert("Login failed!");
+        }
+      })
+      .catch(err => console.error(err));
+    }
+  </script>
 </body>
 </html>

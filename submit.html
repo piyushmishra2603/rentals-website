@@ -1,204 +1,59 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Submit Property</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<style>
-
-body{
-font-family:Arial;
-background:#f2f2f2;
-margin:0;
-}
-
-.container{
-max-width:600px;
-margin:auto;
-background:white;
-padding:20px;
-margin-top:30px;
-border-radius:8px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-input,textarea{
-width:100%;
-padding:10px;
-margin-top:10px;
-font-size:15px;
-border:1px solid #ccc;
-border-radius:5px;
-}
-
-button{
-margin-top:10px;
-padding:10px;
-background:#0f4c81;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
-button:hover{
-background:#0c3b63;
-}
-
-.success{
-color:green;
-margin-top:10px;
-font-weight:bold;
-}
-
-</style>
-
+  <title>Submit Property</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    input, textarea, button { display: block; margin: 10px 0; padding: 10px; width: 300px; }
+    button { background: #ff5722; color: white; border: none; cursor: pointer; }
+  </style>
 </head>
-
 <body>
+  <h2>Submit Property</h2>
+  <input type="text" id="title" placeholder="Title">
+  <input type="text" id="city" placeholder="City">
+  <input type="text" id="bhk" placeholder="BHK">
+  <input type="number" id="price" placeholder="Price">
+  <input type="text" id="image1" placeholder="Image URL 1">
+  <input type="text" id="image2" placeholder="Image URL 2">
+  <input type="text" id="image3" placeholder="Image URL 3">
+  <input type="text" id="image4" placeholder="Image URL 4">
+  <textarea id="description" placeholder="Description"></textarea>
+  <input type="text" id="lat" placeholder="Latitude">
+  <input type="text" id="lng" placeholder="Longitude">
+  <button onclick="submitProperty()">Submit Property</button>
 
-<div class="container">
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
+    const ownerEmail = localStorage.getItem("ownerEmail");
+    const ownerPhone = ""; // optional, can store in localStorage if needed
 
-<h2>Submit Your Property</h2>
+    function submitProperty() {
+      const data = {
+        action: "submitProperty",
+        title: document.getElementById("title").value,
+        city: document.getElementById("city").value,
+        bhk: document.getElementById("bhk").value,
+        price: document.getElementById("price").value,
+        image1: document.getElementById("image1").value,
+        image2: document.getElementById("image2").value,
+        image3: document.getElementById("image3").value,
+        image4: document.getElementById("image4").value,
+        description: document.getElementById("description").value,
+        lat: document.getElementById("lat").value,
+        lng: document.getElementById("lng").value,
+        email: ownerEmail,
+        phone: ownerPhone
+      };
 
-<form id="propertyForm">
-
-<input id="title" placeholder="Property Title" required>
-
-<input id="city" placeholder="City" required>
-
-<input id="bhk" placeholder="BHK (1,2,3)" required>
-
-<input id="price" placeholder="Price per month" required>
-
-<input id="email" placeholder="Owner Email" required>
-
-<label>Upload Property Image</label>
-<input type="file" id="imageFile" accept="image/*">
-
-<textarea id="description" placeholder="Property Description"></textarea>
-
-<button type="button" onclick="generateDescription()">
-Generate AI Description
-</button>
-
-<button type="submit">
-Submit Property
-</button>
-
-</form>
-
-<p id="successMsg" class="success"></p>
-
-</div>
-
-<script>
-
-/* ===========================
-PASTE YOUR APPS SCRIPT URL
-=========================== */
-
-const scriptURL="https://script.google.com/macros/s/AKfycbxthKturG-CUiuGEL5osKNFdmH7Pdrz8Sz1G1wnRXbjXKHTCvX0y17W4YMdMYePbVIX8w/exec"
-
-
-
-/* ===========================
-AI DESCRIPTION GENERATOR
-=========================== */
-
-function generateDescription(){
-
-let title=document.getElementById("title").value
-let city=document.getElementById("city").value
-let bhk=document.getElementById("bhk").value
-let price=document.getElementById("price").value
-
-if(!title || !city || !bhk || !price){
-
-alert("Please fill title, city, BHK and price first")
-
-return
-
-}
-
-let text=
-"A spacious "+bhk+" BHK property located in "+city+
-" available for rent at ₹"+price+
-" per month. This "+title+
-" offers comfortable living with good ventilation and easy access to nearby markets, transport and daily amenities. Ideal for families, students and working professionals."
-
-document.getElementById("description").value=text
-
-}
-
-
-
-/* ===========================
-FORM SUBMISSION
-=========================== */
-
-document.getElementById("propertyForm").addEventListener("submit",async function(e){
-
-e.preventDefault()
-
-let file=document.getElementById("imageFile").files[0]
-
-let reader=new FileReader()
-
-reader.onload=async function(){
-
-let base64Image=""
-
-if(file){
-base64Image=reader.result.split(",")[1]
-}
-
-let data={
-
-title:document.getElementById("title").value,
-city:document.getElementById("city").value,
-bhk:document.getElementById("bhk").value,
-price:document.getElementById("price").value,
-description:document.getElementById("description").value,
-email:document.getElementById("email").value,
-image:base64Image
-
-}
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify(data)
-})
-.then(res=>res.json())
-.then(response=>{
-
-document.getElementById("successMsg").innerText=
-"Property submitted successfully!"
-
-document.getElementById("propertyForm").reset()
-
-})
-.catch(error=>{
-
-alert("Submission failed. Please try again.")
-
-})
-
-}
-
-if(file){
-reader.readAsDataURL(file)
-}else{
-reader.onload()
-}
-
-})
-
-</script>
-
+      fetch(WEB_APP_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(res => alert(res))
+      .catch(err => console.error(err));
+    }
+  </script>
 </body>
-
 </html>

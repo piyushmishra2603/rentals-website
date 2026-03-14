@@ -339,38 +339,22 @@ border-radius:50%
 
 <script>
 
-const properties=[
-{title:"Luxury Apartment",city:"Delhi",bhk:"3 BHK",price:8500000,img:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2"},
-{title:"Modern Flat",city:"Mumbai",bhk:"2 BHK",price:6500000,img:"https://images.unsplash.com/photo-1568605114967-8130f3a36994"},
-{title:"Family House",city:"Bangalore",bhk:"4 BHK",price:12000000,img:"https://images.unsplash.com/photo-1572120360610-d971b9d7767c"}
-]
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxopCdPSwV4Zl1rpvEJB5uMG66MLEr2fGPAtpj5EkvcKW1_1KNUKxeFrrclI41X6AITxA/exec";
 
-function renderProperties(list){
-const grid=document.getElementById("propertyGrid")
-grid.innerHTML=""
+let properties = [];
 
-list.forEach(p=>{
-
-const card=document.createElement("div")
-card.className="card"
-
-card.innerHTML=`
-<img src="${p.img}">
-<div class="card-body">
-<h4>${p.title}</h4>
-<div>${p.city}</div>
-<div>${p.bhk}</div>
-<div class="price">₹${p.price}</div>
-<button>View Details</button>
-</div>
-`
-
-grid.appendChild(card)
-
-})
+async function loadProperties(){
+try{
+const res = await fetch(WEB_APP_URL+"?action=getProperties");
+const data = await res.json();
+properties = data;
+renderProperties(properties);
+}catch(e){
+console.log("Backend load failed",e);
+}
 }
 
-renderProperties(properties)
+loadProperties();
 
 function applyFilters(){
 const city=document.getElementById("filterCity").value.toLowerCase()
@@ -400,16 +384,67 @@ const desc=`Beautiful ${bhk} property in ${city}. Perfect for families looking f
 document.getElementById("pDesc").value=desc
 }
 
-function submitProperty(){
-alert("Property submitted (connect to backend)")
+async function submitProperty(){
+
+const payload={
+action:"submitProperty",
+title:document.getElementById("pTitle").value,
+city:document.getElementById("pCity").value,
+bhk:document.getElementById("pBhk").value,
+price:document.getElementById("pPrice").value,
+image:document.getElementById("pImage").value,
+description:document.getElementById("pDesc").value
+}
+
+try{
+
+const res = await fetch(WEB_APP_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(payload)
+});
+
+const txt = await res.text();
+alert(txt);
+
+loadProperties();
+
+}catch(e){
+alert("Backend connection failed");
+}
+
 }
 
 function openLogin(){
 document.getElementById("loginModal").style.display="flex"
 }
 
-function loginUser(){
-alert("Login system connect to backend")
+async function loginUser(){
+
+const email=document.getElementById("loginEmail").value
+const pass=document.getElementById("loginPass").value
+
+try{
+
+const res = await fetch(WEB_APP_URL,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({action:"login",email:email,password:pass})
+})
+
+const data = await res.json()
+
+if(data.status==="success"){
+alert("Login successful")
+document.getElementById("loginModal").style.display="none"
+}else{
+alert("Login failed")
+}
+
+}catch(e){
+alert("Server error")
+}
+
 }
 
 function scrollToSection(id){

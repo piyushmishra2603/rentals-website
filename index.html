@@ -1,468 +1,186 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-<title>Rental Property Finder</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<style>
-
-body{
-font-family:'Poppins',sans-serif;
-margin:0;
-background:linear-gradient(180deg,#f8fafc,#e2e8f0);
-}
-
-/* HEADER */
-
-header{
-background:linear-gradient(135deg,#0f4c81,#1e90ff);
-color:white;
-padding:18px 30px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-flex-wrap:wrap;
-}
-
-nav a{
-color:white;
-text-decoration:none;
-margin:5px;
-padding:8px 14px;
-border-radius:8px;
-background:rgba(255,255,255,0.2);
-}
-
-nav a:hover{
-background:white;
-color:#0f4c81;
-}
-
-/* HERO */
-
-.hero{
-background:linear-gradient(120deg,#1e3c72,#2a5298);
-padding:80px 20px;
-text-align:center;
-color:white;
-}
-
-.search-box{
-background:white;
-max-width:900px;
-margin:auto;
-margin-top:20px;
-padding:15px;
-border-radius:12px;
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-justify-content:center;
-}
-
-.search-box input,
-.search-box select{
-padding:10px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-.search-box button{
-background:#1e90ff;
-color:white;
-border:none;
-padding:10px 18px;
-border-radius:6px;
-cursor:pointer;
-}
-
-/* PROPERTY GRID */
-
-.properties{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:25px;
-padding:30px;
-}
-
-.card{
-background:white;
-border-radius:12px;
-overflow:hidden;
-box-shadow:0 6px 20px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-8px);
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
-
-.card-content{
-padding:15px;
-}
-
-.price{
-color:green;
-font-weight:bold;
-}
-
-.favorite{
-float:right;
-cursor:pointer;
-font-size:22px;
-color:red;
-}
-
-.btn{
-display:inline-block;
-margin-top:10px;
-background:#1e90ff;
-color:white;
-padding:8px 14px;
-border-radius:6px;
-text-decoration:none;
-}
-
-/* TRENDING */
-
-.gallery{
-display:flex;
-overflow:auto;
-gap:10px;
-padding:20px;
-}
-
-.gallery img{
-width:160px;
-border-radius:8px;
-}
-
-/* MAP */
-
-#map{
-height:420px;
-margin:25px;
-border-radius:12px;
-}
-
-/* AI BOX */
-
-.ai-box{
-background:white;
-margin:25px;
-padding:20px;
-border-radius:12px;
-text-align:center;
-}
-
-/* CHATBOT */
-
-#chatbotBtn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#1e90ff;
-color:white;
-padding:15px;
-border:none;
-border-radius:50px;
-cursor:pointer;
-}
-
-#chatbox{
-position:fixed;
-bottom:80px;
-right:20px;
-width:300px;
-background:white;
-border-radius:10px;
-display:none;
-flex-direction:column;
-}
-
-#chatMessages{
-height:200px;
-overflow:auto;
-padding:10px;
-}
-
-</style>
-
+  <meta charset="UTF-8">
+  <title>Property Portal</title>
+  <style>
+    body { font-family: Arial; margin: 20px; background:#f7f7f7; }
+    h2 { margin-top: 40px; }
+    input, button, textarea { display: block; margin: 10px 0; padding: 10px; width: 300px; }
+    button { cursor: pointer; background-color: #4CAF50; color: white; border: none; font-weight: bold; }
+    button:hover { background-color: #45a049; }
+    #dashboard { margin-top: 40px; }
+    .property { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background:white; border-radius:8px; }
+    .property img { width: 100px; height: 100px; margin-right: 5px; border-radius:4px; }
+    #whatsapp { position: fixed; bottom: 20px; right: 20px; }
+    #propertyForm { margin-top: 40px; background:white; padding:20px; border-radius:8px; max-width:400px; }
+    label { font-weight:bold; margin-top:10px; display:block; }
+  </style>
 </head>
-
 <body>
 
-<header>
+<h2>Owner Signup</h2>
+<input type="text" id="signup_name" placeholder="Full Name">
+<input type="email" id="signup_email" placeholder="Email">
+<input type="text" id="signup_phone" placeholder="Phone">
+<input type="password" id="signup_password" placeholder="Password">
+<button onclick="signup()">Sign Up</button>
 
-<h2>Rental Finder</h2>
+<h2>Owner Login</h2>
+<input type="email" id="login_email" placeholder="Email">
+<input type="password" id="login_password" placeholder="Password">
+<button onclick="login()">Login</button>
 
-<nav>
-<a href="signup.html">Owner Signup</a>
-<a href="submit.html">Post Property</a>
-<a href="#" onclick="showFavorites()">Favorites</a>
-</nav>
+<div id="dashboard"></div>
 
-</header>
-
-<div class="hero">
-
-<h1>Find Your Perfect Rental Home</h1>
-
-<div class="search-box">
-
-<input id="searchCity" placeholder="City">
-
-<select id="bhk">
-
-<option value="">BHK</option>
-<option>1</option>
-<option>2</option>
-<option>3</option>
-
-</select>
-
-<select id="sortPrice">
-
-<option value="">Sort Price</option>
-<option value="low">Low → High</option>
-<option value="high">High → Low</option>
-
-</select>
-
-<button onclick="loadProperties()">Search</button>
-
+<h2>Submit Property</h2>
+<div id="propertyForm">
+  <label>Title</label>
+  <input type="text" id="prop_title" placeholder="Property Title">
+  
+  <label>City</label>
+  <input type="text" id="prop_city" placeholder="City">
+  
+  <label>BHK</label>
+  <input type="text" id="prop_bhk" placeholder="BHK (e.g., 2BHK)">
+  
+  <label>Price</label>
+  <input type="text" id="prop_price" placeholder="Price">
+  
+  <label>Image URLs (max 4)</label>
+  <input type="text" id="prop_image1" placeholder="Image URL 1">
+  <input type="text" id="prop_image2" placeholder="Image URL 2">
+  <input type="text" id="prop_image3" placeholder="Image URL 3">
+  <input type="text" id="prop_image4" placeholder="Image URL 4">
+  
+  <label>Description</label>
+  <textarea id="prop_description" placeholder="Property description"></textarea>
+  
+  <label>Latitude</label>
+  <input type="text" id="prop_lat" placeholder="Latitude">
+  
+  <label>Longitude</label>
+  <input type="text" id="prop_lng" placeholder="Longitude">
+  
+  <button onclick="submitProperty()">Submit Property</button>
 </div>
 
-</div>
-
-<h2 style="padding-left:20px">Trending Properties</h2>
-
-<div class="gallery" id="trendingGallery"></div>
-
-<div class="ai-box">
-
-<h3>AI Rent Estimator</h3>
-
-<input id="size" placeholder="Area (sq ft)">
-<button onclick="estimateRent()">Estimate</button>
-
-<p id="rentResult"></p>
-
-</div>
-
-<div class="ai-box">
-
-<h3>Rent Estimate by Photo</h3>
-
-<input type="file">
-<button onclick="photoEstimate()">Estimate</button>
-
-<p id="photoResult"></p>
-
-</div>
-
-<div id="map"></div>
-
-<div class="properties" id="properties"></div>
-
-<footer style="text-align:center;padding:20px;background:#0f4c81;color:white">
-
-© 2026 Rental Finder
-
-</footer>
-
-<button id="chatbotBtn" onclick="toggleChat()">AI Help</button>
-
-<div id="chatbox">
-
-<div id="chatMessages"></div>
-
-<input id="chatText" placeholder="Ask something">
-
-<button onclick="sendChat()">Send</button>
-
-</div>
+<!-- WhatsApp Floating Button -->
+<a id="whatsapp" href="https://wa.me/1234567890" target="_blank">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="50">
+</a>
 
 <script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwh-9c-O1jC7RAQrpcdXzFJZO7Yyf28CIdAmAjRVUywGYPMOszLPbYbQxP24f0PPTF80Q/exec";
 
-/* GOOGLE SHEETS CSV */
+// ---------------- SIGNUP ----------------
+function signup(){
+  const name = document.getElementById("signup_name").value.trim();
+  const email = document.getElementById("signup_email").value.trim();
+  const phone = document.getElementById("signup_phone").value.trim();
+  const password = document.getElementById("signup_password").value.trim();
 
-const csvURL="https://docs.google.com/spreadsheets/d/1BiyshMuZ8ex2zDtpIttlGgxnRrvBqV9oBq7-jyz0S0M/gviz/tq?tqx=out:csv"
+  if(!name || !email || !phone || !password){
+    alert("Please fill all fields!");
+    return;
+  }
 
-/* MAP */
-
-let map=L.map('map').setView([20.5937,78.9629],5)
-
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map)
-
-/* LOAD PROPERTIES */
-
-function loadProperties(){
-
-fetch(csvURL)
-
-.then(res=>res.text())
-
-.then(data=>{
-
-let rows=data.split("\n").slice(1)
-
-let html=""
-let gallery=""
-
-rows.forEach((row,i)=>{
-
-let cols=row.split(",")
-
-let status=cols[10]
-
-if(status!="Approved"){
-return
-}
-let city=cols[1]
-let bhk=cols[2]
-let price=cols[3]
-let img=cols[4]
-let lat=cols[7]
-let lng=cols[8]
-
-gallery+=`<img src="${img}">`
-
-html+=`
-
-<div class="card">
-
-<img src="${img}">
-
-<div class="card-content">
-
-<span class="favorite" onclick="toggleFav(${i})">♡</span>
-
-<h3>${title}</h3>
-
-<p>${city} • ${bhk} BHK</p>
-
-<p class="price">₹${price}</p>
-
-<a class="btn" href="property.html?id=${i}">View</a>
-
-</div>
-
-</div>
-
-`
-
-if(lat && lng){
-
-L.marker([lat,lng]).addTo(map).bindPopup(title)
-
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({action:"signupOwner", name, email, phone, password})
+  })
+  .then(res => res.text())
+  .then(resp => alert(resp))
+  .catch(err => alert("Signup Error: "+err.message));
 }
 
-})
+// ---------------- LOGIN ----------------
+function login(){
+  const email = document.getElementById("login_email").value.trim();
+  const password = document.getElementById("login_password").value.trim();
 
-document.getElementById("properties").innerHTML=html
-document.getElementById("trendingGallery").innerHTML=gallery
+  if(!email || !password){
+    alert("Please fill all fields!");
+    return;
+  }
 
-})
-
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({action:"ownerLogin", email, password})
+  })
+  .then(res => res.json())
+  .then(resp => {
+    if(resp.status === "success"){
+      alert("Login successful! Welcome " + resp.name);
+      loadDashboard();
+    } else {
+      alert("Login failed");
+    }
+  })
+  .catch(err => alert("Login Error: "+err.message));
 }
 
-/* AUTO LOAD */
-
-loadProperties()
-
-setInterval(loadProperties,20000)
-
-/* FAVORITES */
-
-function toggleFav(id){
-
-let fav=JSON.parse(localStorage.getItem("fav"))||[]
-
-if(fav.includes(id)){
-fav=fav.filter(f=>f!==id)
-}else{
-fav.push(id)
+// ---------------- DASHBOARD ----------------
+function loadDashboard(){
+  fetch(WEB_APP_URL+"?action=getProperties")
+    .then(res => res.json())
+    .then(data => {
+      const dash = document.getElementById("dashboard");
+      dash.innerHTML = "<h2>Approved Properties</h2>";
+      if(data.length===0){
+        dash.innerHTML += "<p>No approved properties yet.</p>";
+        return;
+      }
+      data.forEach(p=>{
+        const div = document.createElement("div");
+        div.className = "property";
+        div.innerHTML = `
+          <h3>${p.title} (${p.bhk})</h3>
+          <p>City: ${p.city} | Price: ${p.price}</p>
+          <div>${p.images.map(i=>`<img src="${i}">`).join('')}</div>
+          <p>${p.description}</p>
+          <p>Contact: ${p.phone} | ${p.email}</p>
+        `;
+        dash.appendChild(div);
+      });
+    })
+    .catch(err => alert("Dashboard Error: "+err.message));
 }
 
-localStorage.setItem("fav",JSON.stringify(fav))
+// ---------------- SUBMIT PROPERTY ----------------
+function submitProperty(){
+  const data = {
+    action: "submitProperty",
+    title: document.getElementById("prop_title").value.trim(),
+    city: document.getElementById("prop_city").value.trim(),
+    bhk: document.getElementById("prop_bhk").value.trim(),
+    price: document.getElementById("prop_price").value.trim(),
+    image1: document.getElementById("prop_image1").value.trim(),
+    image2: document.getElementById("prop_image2").value.trim(),
+    image3: document.getElementById("prop_image3").value.trim(),
+    image4: document.getElementById("prop_image4").value.trim(),
+    description: document.getElementById("prop_description").value.trim(),
+    lat: document.getElementById("prop_lat").value.trim(),
+    lng: document.getElementById("prop_lng").value.trim()
+  };
 
+  if(!data.title || !data.city || !data.bhk || !data.price){
+    alert("Please fill title, city, BHK, and price!");
+    return;
+  }
+
+  fetch(WEB_APP_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(resp => alert(resp))
+  .catch(err => alert("Property Submission Error: "+err.message));
 }
-
-function showFavorites(){
-
-let fav=JSON.parse(localStorage.getItem("fav"))||[]
-
-let cards=document.querySelectorAll(".card")
-
-cards.forEach((card,i)=>{
-
-card.style.display=fav.includes(i)?"":"none"
-
-})
-
-}
-
-/* RENT ESTIMATE */
-
-function estimateRent(){
-
-let size=document.getElementById("size").value
-
-let rent=size*22
-
-document.getElementById("rentResult").innerText="Estimated Rent ₹"+rent
-
-}
-
-/* PHOTO ESTIMATE */
-
-function photoEstimate(){
-
-document.getElementById("photoResult").innerText="Estimated Rent ₹15000"
-
-}
-
-/* CHATBOT */
-
-function toggleChat(){
-
-let box=document.getElementById("chatbox")
-
-box.style.display=box.style.display==="flex"?"none":"flex"
-
-}
-
-function sendChat(){
-
-let msg=document.getElementById("chatText").value
-
-let chat=document.getElementById("chatMessages")
-
-chat.innerHTML+=`<p><b>You:</b> ${msg}</p>`
-chat.innerHTML+=`<p><b>AI:</b> Try searching by city or BHK.</p>`
-
-document.getElementById("chatText").value=""
-
-}
-
 </script>
 
 </body>
-
 </html>

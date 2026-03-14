@@ -3,47 +3,49 @@
 <head>
   <title>Owner Dashboard</title>
   <style>
-    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
-    h2 { margin-bottom: 10px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background: #eee; }
-    a { display: inline-block; margin: 10px 0; text-decoration: none; background: #4CAF50; color: white; padding: 10px; }
+    body { font-family: Arial; background: #f9f9f9; padding: 20px; }
+    h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #4CAF50; color: white; }
+    #whatsapp { position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; padding: 15px; border-radius: 50%; font-size: 24px; text-decoration: none; }
   </style>
 </head>
 <body>
-  <h2>Welcome, <span id="ownerName"></span></h2>
-  <a href="submit.html">Submit New Property</a>
-  <h3>Your Leads</h3>
-  <table id="leadsTable">
-    <tr>
-      <th>Property</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Email</th>
-      <th>Message</th>
-    </tr>
-  </table>
 
-  <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzRvyjppF8C-MWeOOEPuqxBpfxo_QA3_OXs-lp7JpK1DEzOQQ2kIHB6rnAoTS-5FL2liQ/exec";
-    const ownerEmail = localStorage.getItem("ownerEmail");
-    document.getElementById("ownerName").innerText = localStorage.getItem("ownerName");
+<h2>Welcome <span id="ownerName"></span></h2>
+<h3>Your Leads</h3>
+<table id="leadsTable">
+  <tr><th>Date</th><th>Property</th><th>Name</th><th>Phone</th><th>Email</th><th>Message</th></tr>
+</table>
 
-    fetch(`${WEB_APP_URL}?action=getLeads&email=${encodeURIComponent(ownerEmail)}`)
-      .then(res => res.json())
-      .then(data => {
-        const table = document.getElementById("leadsTable");
-        data.forEach(lead => {
-          const row = table.insertRow();
-          row.insertCell(0).innerText = lead.property;
-          row.insertCell(1).innerText = lead.name;
-          row.insertCell(2).innerText = lead.phone;
-          row.insertCell(3).innerText = lead.email;
-          row.insertCell(4).innerText = lead.message;
-        });
-      })
-      .catch(err => console.error(err));
-  </script>
+<a href="submit.html">Submit New Property</a>
+<a href="https://wa.me/YOUR_UPI_OR_PHONE_NUMBER" id="whatsapp" target="_blank">💬</a>
+
+<script>
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznG-GmZj4sHzqd4XLQzXmAhzAXvqLHJDr5IcpnofWmuexOYsncz7DhfkKL0c5dNcjqOw/exec";
+
+const ownerName = localStorage.getItem("ownerName");
+const ownerEmail = localStorage.getItem("ownerEmail");
+document.getElementById("ownerName").innerText = ownerName || "Owner";
+
+// Fetch leads
+fetch(`${WEB_APP_URL}?action=getLeads&email=${encodeURIComponent(ownerEmail)}`)
+  .then(res => res.json())
+  .then(data => {
+    const table = document.getElementById("leadsTable");
+    data.forEach(lead => {
+      const row = table.insertRow();
+      row.insertCell(0).innerText = lead.date;
+      row.insertCell(1).innerText = lead.property;
+      row.insertCell(2).innerText = lead.name;
+      row.insertCell(3).innerText = lead.phone;
+      row.insertCell(4).innerText = lead.email;
+      row.insertCell(5).innerText = lead.message;
+    });
+  })
+  .catch(err => console.error(err));
+</script>
+
 </body>
 </html>

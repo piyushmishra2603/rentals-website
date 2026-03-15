@@ -6,24 +6,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>SmartProperty Portal</title>
+<title>Smart Property Portal</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial;
-}
-
 body{
-background:#f4f6f9;
+margin:0;
+font-family:Arial;
+background:#f5f7fa;
 }
 
-/* HEADER */
-
-.header{
+header{
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -38,49 +31,37 @@ font-weight:bold;
 color:#1976d2;
 }
 
-.nav{
+nav{
 display:flex;
 gap:15px;
 align-items:center;
 }
 
-.nav a{
+nav a{
 text-decoration:none;
 color:#333;
 }
 
-.login-btn{
-border:2px solid #1976d2;
-color:#1976d2;
+.btn{
 padding:7px 15px;
 border-radius:20px;
+border:2px solid #1976d2;
+color:#1976d2;
 }
 
-.signup-btn{
+.signup{
 background:#1976d2;
 color:white;
-padding:8px 18px;
-border-radius:20px;
 }
 
 .hero{
 height:300px;
 background:linear-gradient(135deg,#1976d2,#42a5f5);
+color:white;
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
-color:white;
-}
-
-.search-box{
-margin-top:15px;
-}
-
-.search-box input{
-padding:8px;
-border-radius:5px;
-border:none;
+justify-content:center;
 }
 
 .container{
@@ -97,8 +78,7 @@ gap:20px;
 background:white;
 border-radius:10px;
 overflow:hidden;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-cursor:pointer;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
 }
 
 .card img{
@@ -116,113 +96,47 @@ color:#1976d2;
 font-weight:bold;
 }
 
-.save-btn{
-margin-top:10px;
-padding:7px 10px;
-background:#ff5252;
-border:none;
-color:white;
-border-radius:5px;
-cursor:pointer;
-}
-
-.add{
-background:white;
-margin:40px;
-padding:30px;
-border-radius:10px;
-}
-
-input,textarea{
-width:100%;
-margin-top:10px;
-padding:10px;
-border:1px solid #ccc;
-border-radius:5px;
-}
-
-.submit{
-margin-top:15px;
-padding:12px;
-background:#1976d2;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<header class="header">
+<header>
 
 <div class="logo">SmartProperty</div>
 
-<div class="nav">
+<nav>
 
 <a href="#">Home</a>
-<a href="#listings">Properties</a>
-<a href="#post">Post Property</a>
 
 <a href="dashboard.html" id="dashBtn" style="display:none;">Dashboard</a>
 
-<span id="userEmail" style="display:none;font-weight:bold;"></span>
+<a href="admin.html" id="adminBtn" style="display:none;">Admin</a>
 
-<a href="login.html" id="loginBtn" class="login-btn">Login</a>
+<span id="userEmail" style="display:none;"></span>
 
-<a href="signup.html" id="signupBtn" class="signup-btn">Sign Up</a>
+<a href="login.html" id="loginBtn" class="btn">Login</a>
 
-<a href="#" id="logoutBtn" class="login-btn" style="display:none;">Logout</a>
+<a href="signup.html" id="signupBtn" class="btn signup">Signup</a>
 
-</div>
+<a href="#" id="logoutBtn" class="btn" style="display:none;">Logout</a>
+
+</nav>
 
 </header>
-
 
 <section class="hero">
 
 <h1>Find Your Dream Property</h1>
 
-<div class="search-box">
-
-<input id="searchCity" placeholder="Search city">
-
-<button onclick="search()">Search</button>
-
-</div>
-
 </section>
 
-
-<section class="container" id="listings">
+<section class="container">
 
 <h2>Latest Properties</h2>
 
-<div id="propertyGrid" class="grid"></div>
-
-</section>
-
-
-<section id="post" class="add">
-
-<h2>Post Property</h2>
-
-<input id="title" placeholder="Property Title">
-
-<input id="city" placeholder="City">
-
-<input id="bhk" placeholder="BHK">
-
-<input id="price" placeholder="Price">
-
-<input id="image" placeholder="Image URL">
-
-<textarea id="desc" placeholder="Description"></textarea>
-
-<button class="submit" onclick="addProperty()">Submit Property</button>
+<div id="grid" class="grid"></div>
 
 </section>
 
@@ -230,22 +144,17 @@ cursor:pointer;
 <script type="module">
 
 import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore,collection,getDocs }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
 import {
 getAuth,
 onAuthStateChanged,
 signOut
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
 const firebaseConfig={
@@ -257,18 +166,17 @@ messagingSenderId:"407241446660",
 appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
 }
 
+const ADMIN_EMAIL="piyushmishra1903@gmail.com"
+
 const app=initializeApp(firebaseConfig)
 
 const db=getFirestore(app)
 
 const auth=getAuth(app)
 
-const grid=document.getElementById("propertyGrid")
-
+const grid=document.getElementById("grid")
 
 async function loadProperties(){
-
-grid.innerHTML=""
 
 const snap=await getDocs(collection(db,"properties"))
 
@@ -278,7 +186,7 @@ const p=doc.data()
 
 grid.innerHTML+=`
 
-<div class="card" onclick="openProperty('${doc.id}')">
+<div class="card">
 
 <img src="${p.image}">
 
@@ -292,13 +200,6 @@ grid.innerHTML+=`
 
 <div class="price">₹${p.price}</div>
 
-<button class="save-btn"
-onclick="event.stopPropagation(); saveProperty('${doc.id}')">
-
-❤ Save
-
-</button>
-
 </div>
 
 </div>
@@ -311,85 +212,12 @@ onclick="event.stopPropagation(); saveProperty('${doc.id}')">
 
 loadProperties()
 
-
-window.openProperty=function(id){
-
-window.location.href="property.html?id="+id
-
-}
-
-
-window.addProperty=async function(){
-
-const user=auth.currentUser
-
-if(!user){
-
-alert("Login required")
-
-window.location="login.html"
-
-return
-
-}
-
-const title=document.getElementById("title").value
-const city=document.getElementById("city").value
-const bhk=document.getElementById("bhk").value
-const price=document.getElementById("price").value
-const image=document.getElementById("image").value
-const desc=document.getElementById("desc").value
-
-await addDoc(collection(db,"properties"),{
-
-title:title,
-city:city,
-bhk:bhk,
-price:price,
-image:image,
-description:desc,
-owner:user.email
-
-})
-
-alert("Property Added")
-
-loadProperties()
-
-}
-
-
-window.saveProperty=async function(id){
-
-const user=auth.currentUser
-
-if(!user){
-
-alert("Login to save")
-
-return
-
-}
-
-await addDoc(collection(db,"favorites"),{
-
-propertyId:id,
-user:user.email
-
-})
-
-alert("Saved")
-
-}
-
-
-/* LOGIN STATE */
-
 const loginBtn=document.getElementById("loginBtn")
 const signupBtn=document.getElementById("signupBtn")
 const logoutBtn=document.getElementById("logoutBtn")
-const userEmail=document.getElementById("userEmail")
 const dashBtn=document.getElementById("dashBtn")
+const adminBtn=document.getElementById("adminBtn")
+const userEmail=document.getElementById("userEmail")
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -397,11 +225,18 @@ if(user){
 
 loginBtn.style.display="none"
 signupBtn.style.display="none"
+
 logoutBtn.style.display="inline-block"
 dashBtn.style.display="inline-block"
 
 userEmail.style.display="inline-block"
 userEmail.innerText=user.email
+
+if(user.email===ADMIN_EMAIL){
+
+adminBtn.style.display="inline-block"
+
+}
 
 }
 
@@ -409,36 +244,19 @@ else{
 
 loginBtn.style.display="inline-block"
 signupBtn.style.display="inline-block"
+
 logoutBtn.style.display="none"
 dashBtn.style.display="none"
-
+adminBtn.style.display="none"
 userEmail.style.display="none"
 
 }
 
 })
 
-
-logoutBtn.onclick=function(){
+logoutBtn.onclick=()=>{
 
 signOut(auth)
-
-}
-
-
-window.search=function(){
-
-const city=document.getElementById("searchCity").value.toLowerCase()
-
-const cards=document.querySelectorAll(".card")
-
-cards.forEach(c=>{
-
-const text=c.innerText.toLowerCase()
-
-c.style.display=text.includes(city)?"block":"none"
-
-})
 
 }
 

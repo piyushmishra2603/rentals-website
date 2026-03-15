@@ -1,1 +1,179 @@
+<!DOCTYPE html>
+<html>
 
+<head>
+
+<title>Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+padding:40px;
+}
+
+h1{
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.card-body{
+padding:15px;
+}
+
+.delete{
+background:red;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:5px;
+cursor:pointer;
+margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Admin Property Control</h1>
+
+<div id="grid" class="grid"></div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+
+import {
+getFirestore,
+collection,
+getDocs,
+deleteDoc,
+doc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+
+
+const firebaseConfig={
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal",
+storageBucket:"smart-property-portal.firebasestorage.app",
+messagingSenderId:"407241446660",
+appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+}
+
+const ADMIN_EMAIL="piyushmishra1903@gmail.com"
+
+const app=initializeApp(firebaseConfig)
+
+const db=getFirestore(app)
+
+const auth=getAuth(app)
+
+const grid=document.getElementById("grid")
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+alert("Login required")
+window.location="login.html"
+return
+
+}
+
+if(user.email!==ADMIN_EMAIL){
+
+alert("Access denied")
+window.location="index.html"
+return
+
+}
+
+loadProperties()
+
+})
+
+async function loadProperties(){
+
+const snap=await getDocs(collection(db,"properties"))
+
+snap.forEach((d)=>{
+
+const p=d.data()
+
+grid.innerHTML+=`
+
+<div class="card">
+
+<img src="${p.image}">
+
+<div class="card-body">
+
+<h3>${p.title}</h3>
+
+<div>${p.city}</div>
+
+<div>${p.bhk}</div>
+
+<div>₹${p.price}</div>
+
+<button class="delete" onclick="deleteProperty('${d.id}')">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`
+
+})
+
+}
+
+window.deleteProperty=async function(id){
+
+await deleteDoc(doc(db,"properties",id))
+
+alert("Property Deleted")
+
+location.reload()
+
+}
+
+</script>
+
+</body>
+
+</html>

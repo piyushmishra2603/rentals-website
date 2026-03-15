@@ -10,13 +10,20 @@
 
 <style>
 
-body{
-font-family:Arial;
+*{
+box-sizing:border-box;
 margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
 background:#f3f5f8;
 }
 
-header{
+/* HEADER */
+
+.header{
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -31,12 +38,37 @@ font-weight:bold;
 color:#1976d2;
 }
 
-nav a{
-margin-left:20px;
+.nav{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav a{
 text-decoration:none;
 color:#333;
 font-weight:500;
 }
+
+/* Signup Button */
+
+.signup-btn{
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+color:white !important;
+padding:9px 20px;
+border-radius:30px;
+font-weight:600;
+text-decoration:none;
+box-shadow:0 3px 8px rgba(0,0,0,0.15);
+transition:0.3s;
+}
+
+.signup-btn:hover{
+transform:translateY(-2px);
+background:linear-gradient(135deg,#1258a8,#1976d2);
+}
+
+/* HERO */
 
 .hero{
 height:320px;
@@ -50,15 +82,14 @@ text-align:center;
 }
 
 .hero h1{
-margin:0;
 font-size:40px;
+margin-bottom:15px;
 }
 
 .search-box{
 background:white;
 padding:15px;
 border-radius:8px;
-margin-top:20px;
 display:flex;
 gap:10px;
 }
@@ -77,6 +108,8 @@ padding:10px 15px;
 border-radius:5px;
 cursor:pointer;
 }
+
+/* LISTINGS */
 
 .container{
 padding:40px;
@@ -116,6 +149,8 @@ font-size:18px;
 font-weight:bold;
 }
 
+/* POST PROPERTY */
+
 .add{
 background:white;
 margin:40px;
@@ -142,47 +177,25 @@ border-radius:5px;
 cursor:pointer;
 }
 
-#topBtn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#1976d2;
-color:white;
-border:none;
-padding:12px;
-border-radius:50%;
-cursor:pointer;
-}
-
-.whatsapp{
-position:fixed;
-bottom:20px;
-left:20px;
-background:#25D366;
-color:white;
-padding:14px;
-border-radius:50%;
-text-decoration:none;
-font-size:18px;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<header>
+<header class="header">
 
 <div class="logo">SmartProperty</div>
 
-<nav>
+<div class="nav">
 
 <a href="#">Home</a>
 <a href="#listings">Properties</a>
 <a href="#post">Post Property</a>
 
-</nav>
+<a href="signup.html" class="signup-btn">Sign Up</a>
+
+</div>
 
 </header>
 
@@ -215,7 +228,7 @@ font-size:18px;
 
 <h2>Post Your Property</h2>
 
-<input id="title" placeholder="Property title">
+<input id="title" placeholder="Property Title">
 
 <input id="city" placeholder="City">
 
@@ -232,36 +245,27 @@ font-size:18px;
 </section>
 
 
-<button id="topBtn" onclick="topFunction()">↑</button>
-
-<a class="whatsapp" href="https://wa.me/911234567890">W</a>
-
-
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import { getFirestore, collection, addDoc, getDocs }
-
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-  authDomain: "smart-property-portal.firebaseapp.com",
-  projectId: "smart-property-portal",
-  storageBucket: "smart-property-portal.firebasestorage.app",
-  messagingSenderId: "407241446660",
-  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal",
+storageBucket: "smart-property-portal.firebasestorage.app",
+messagingSenderId: "407241446660",
+appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
 const grid=document.getElementById("propertyGrid")
-
 
 async function loadProperties(){
 
@@ -301,7 +305,6 @@ grid.innerHTML+=`
 
 loadProperties()
 
-
 window.addProperty=async function(){
 
 const title=document.getElementById("title").value
@@ -328,7 +331,6 @@ loadProperties()
 
 }
 
-
 window.search=function(){
 
 const city=document.getElementById("searchCity").value.toLowerCase()
@@ -346,13 +348,6 @@ c.style.display="none"
 }
 
 })
-
-}
-
-
-window.topFunction=function(){
-
-window.scrollTo({top:0,behavior:"smooth"})
 
 }
 

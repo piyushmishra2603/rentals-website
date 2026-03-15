@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
@@ -20,7 +19,8 @@ font-family:Poppins;
 }
 
 body{
-background:#f4f6f9;
+background:#f5f7fa;
+color:#333;
 }
 
 /* NAVBAR */
@@ -40,41 +40,22 @@ font-weight:600;
 color:#1976d2;
 }
 
-nav{
-display:flex;
-gap:20px;
-align-items:center;
-}
-
 nav a{
+margin-left:20px;
 text-decoration:none;
 color:#333;
 font-size:14px;
 }
 
-.btn{
-padding:8px 18px;
-border-radius:20px;
-border:2px solid #1976d2;
+nav a:hover{
 color:#1976d2;
-transition:0.3s;
-}
-
-.btn:hover{
-background:#1976d2;
-color:white;
-}
-
-.signup{
-background:#1976d2;
-color:white;
 }
 
 /* HERO */
 
 .hero{
 height:420px;
-background:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
 url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
 background-size:cover;
 background-position:center;
@@ -87,72 +68,49 @@ text-align:center;
 }
 
 .hero h1{
-font-size:40px;
-margin-bottom:15px;
+font-size:42px;
+margin-bottom:10px;
 }
 
 .hero p{
-font-size:18px;
 margin-bottom:25px;
 }
 
-.search{
+.search-box{
 background:white;
 padding:12px;
 border-radius:30px;
 display:flex;
-gap:10px;
-width:450px;
+width:420px;
 }
 
-.search input{
+.search-box input{
 flex:1;
 border:none;
 outline:none;
 padding:8px;
 }
 
-.search button{
+.search-box button{
 background:#1976d2;
 color:white;
 border:none;
-padding:8px 20px;
+padding:8px 18px;
 border-radius:20px;
 cursor:pointer;
 }
 
-/* FEATURES */
+/* SECTION */
 
-.features{
-display:flex;
-justify-content:center;
-gap:40px;
-padding:50px;
+.section{
+padding:60px;
 }
 
-.feature{
-background:white;
-padding:30px;
-border-radius:10px;
-text-align:center;
-width:220px;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-transition:0.3s;
+.section h2{
+margin-bottom:30px;
 }
 
-.feature:hover{
-transform:translateY(-5px);
-}
-
-/* PROPERTY SECTION */
-
-.container{
-padding:50px 60px;
-}
-
-.container h2{
-margin-bottom:25px;
-}
+/* PROPERTY GRID */
 
 .grid{
 display:grid;
@@ -162,9 +120,9 @@ gap:20px;
 
 .card{
 background:white;
-border-radius:12px;
+border-radius:10px;
 overflow:hidden;
-box-shadow:0 5px 15px rgba(0,0,0,0.08);
+box-shadow:0 4px 15px rgba(0,0,0,0.08);
 transition:0.3s;
 }
 
@@ -188,6 +146,69 @@ font-weight:600;
 margin-top:5px;
 }
 
+/* CITIES */
+
+.cities{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.city{
+background:white;
+padding:20px;
+border-radius:8px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* SERVICES */
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.service{
+background:white;
+padding:25px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+justify-content:space-around;
+background:#1976d2;
+color:white;
+padding:40px;
+}
+
+.stat{
+text-align:center;
+}
+
+/* CTA */
+
+.cta{
+text-align:center;
+padding:60px;
+background:#f1f5fb;
+}
+
+.cta button{
+background:#1976d2;
+color:white;
+border:none;
+padding:12px 24px;
+border-radius:25px;
+cursor:pointer;
+margin-top:15px;
+}
+
 /* FOOTER */
 
 footer{
@@ -195,7 +216,6 @@ background:#222;
 color:white;
 padding:40px;
 text-align:center;
-margin-top:50px;
 }
 
 </style>
@@ -210,19 +230,10 @@ margin-top:50px;
 
 <nav>
 
-<a href="#">Home</a>
-
-<a href="post-property.html">Post Property</a>
-
 <a href="dashboard.html">Dashboard</a>
-
-<a href="login.html" id="loginBtn" class="btn">Login</a>
-
-<a href="signup.html" id="signupBtn" class="btn signup">Signup</a>
-
+<a href="post-property.html">Post Property</a>
 <a href="admin.html" id="adminBtn" style="display:none;">Admin</a>
-
-<a href="#" id="logoutBtn" style="display:none;">Logout</a>
+<a href="#" id="logoutBtn">Logout</a>
 
 </nav>
 
@@ -231,46 +242,104 @@ margin-top:50px;
 
 <section class="hero">
 
-<h1>Find Your Dream Home</h1>
+<h1>Find Your Dream Property</h1>
+<p>Buy • Rent • Sell Properties Easily</p>
 
-<p>Buy • Rent • Sell properties easily</p>
-
-<div class="search">
-
+<div class="search-box">
 <input placeholder="Search city">
-
 <button>Search</button>
+</div>
+
+</section>
+
+
+<section class="section">
+
+<h2>Featured Properties</h2>
+
+<div class="grid" id="grid"></div>
+
+</section>
+
+
+<section class="section">
+
+<h2>Popular Cities</h2>
+
+<div class="cities">
+
+<div class="city">Delhi</div>
+<div class="city">Mumbai</div>
+<div class="city">Bangalore</div>
+<div class="city">Hyderabad</div>
+<div class="city">Pune</div>
+<div class="city">Kolkata</div>
 
 </div>
 
 </section>
 
 
-<section class="features">
+<section class="section">
 
-<div class="feature">
+<h2>Our Services</h2>
+
+<div class="services">
+
+<div class="service">
 <h3>Buy Property</h3>
-<p>Find verified homes</p>
+<p>Find verified homes across India.</p>
 </div>
 
-<div class="feature">
-<h3>Rent Property</h3>
-<p>Affordable rentals</p>
-</div>
-
-<div class="feature">
+<div class="service">
 <h3>Sell Property</h3>
-<p>List your property</p>
+<p>List your property easily.</p>
+</div>
+
+<div class="service">
+<h3>Rent Property</h3>
+<p>Affordable rental homes.</p>
+</div>
+
+<div class="service">
+<h3>Property Advice</h3>
+<p>Expert real estate consultation.</p>
+</div>
+
 </div>
 
 </section>
 
 
-<section class="container">
+<section class="stats">
 
-<h2>Latest Properties</h2>
+<div class="stat">
+<h2>10K+</h2>
+<p>Properties Listed</p>
+</div>
 
-<div id="grid" class="grid"></div>
+<div class="stat">
+<h2>5K+</h2>
+<p>Happy Users</p>
+</div>
+
+<div class="stat">
+<h2>500+</h2>
+<p>Cities Covered</p>
+</div>
+
+</section>
+
+
+<section class="cta">
+
+<h2>Want to Sell Your Property?</h2>
+
+<p>Post your property for free.</p>
+
+<button onclick="location.href='post-property.html'">
+Post Property
+</button>
 
 </section>
 
@@ -280,7 +349,6 @@ margin-top:50px;
 <p>© 2026 Smart Property Portal</p>
 
 </footer>
-
 
 
 <script type="module">
@@ -315,13 +383,12 @@ appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
 const ADMIN_EMAIL="piyushmishra1903@gmail.com"
 
 const app=initializeApp(firebaseConfig)
-
 const db=getFirestore(app)
-
 const auth=getAuth(app)
 
 const grid=document.getElementById("grid")
-
+const logoutBtn=document.getElementById("logoutBtn")
+const adminBtn=document.getElementById("adminBtn")
 
 async function loadProperties(){
 
@@ -340,9 +407,7 @@ grid.innerHTML+=`
 <div class="card-body">
 
 <h3>${p.title}</h3>
-
 <div>${p.city}</div>
-
 <div>${p.bhk}</div>
 
 <div class="price">₹${p.price}</div>
@@ -357,28 +422,23 @@ grid.innerHTML+=`
 
 }
 
-loadProperties()
 
-
-const loginBtn=document.getElementById("loginBtn")
-const signupBtn=document.getElementById("signupBtn")
-const logoutBtn=document.getElementById("logoutBtn")
-const adminBtn=document.getElementById("adminBtn")
-
+/* LOGIN REQUIRED */
 
 onAuthStateChanged(auth,(user)=>{
 
-if(user){
+if(!user){
 
-loginBtn.style.display="none"
-signupBtn.style.display="none"
-logoutBtn.style.display="inline"
+window.location.href="login.html"
+return
+
+}
+
+loadProperties()
 
 if(user.email===ADMIN_EMAIL){
 
 adminBtn.style.display="inline"
-
-}
 
 }
 
@@ -388,8 +448,7 @@ adminBtn.style.display="inline"
 logoutBtn.onclick=()=>{
 
 signOut(auth)
-
-location.reload()
+window.location.href="login.html"
 
 }
 

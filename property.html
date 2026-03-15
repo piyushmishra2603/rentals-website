@@ -1,46 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Property Details</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-font-family:Arial;
-background:#f4f4f4;
-padding:40px;
+font-family:Poppins;
+background:#f4f6f9;
+margin:0;
+}
+
+header{
+background:white;
+padding:15px 60px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+}
+
+.container{
+padding:60px;
+max-width:900px;
+margin:auto;
 }
 
 .card{
 background:white;
-padding:30px;
 border-radius:10px;
-max-width:700px;
-margin:auto;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-img{
+.card img{
 width:100%;
-border-radius:8px;
+height:350px;
+object-fit:cover;
+}
+
+.content{
+padding:30px;
 }
 
 .price{
-color:#1976d2;
 font-size:22px;
-font-weight:bold;
+color:#1976d2;
+font-weight:600;
 margin-top:10px;
 }
 
-.contact-btn{
+.owner{
 margin-top:20px;
-padding:12px;
+padding:15px;
+background:#f1f5fb;
+border-radius:8px;
+}
+
+button{
+margin-top:20px;
 background:#1976d2;
 color:white;
 border:none;
-border-radius:5px;
+padding:12px 22px;
+border-radius:6px;
 cursor:pointer;
 }
 
@@ -48,11 +75,21 @@ cursor:pointer;
 
 </head>
 
+
 <body>
+
+<header>
+<h2>Property Details</h2>
+</header>
+
+
+<div class="container">
 
 <div class="card">
 
-<img id="img">
+<img id="image">
+
+<div class="content">
 
 <h2 id="title"></h2>
 
@@ -60,42 +97,83 @@ cursor:pointer;
 
 <div id="bhk"></div>
 
-<div id="desc"></div>
-
 <div class="price" id="price"></div>
 
-<button class="contact-btn" onclick="contactOwner()">Contact Owner</button>
+<p id="description"></p>
+
+<div class="owner">
+
+<h4>Owner Contact</h4>
+
+<p id="owner"></p>
+
+<button onclick="contactOwner()">Contact Owner</button>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 
-import { getFirestore, doc, getDoc }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
-const firebaseConfig = {
-apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain: "smart-property-portal.firebaseapp.com",
-projectId: "smart-property-portal",
-storageBucket: "smart-property-portal.firebasestorage.app",
-messagingSenderId: "407241446660",
-appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
-};
+const firebaseConfig={
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal",
+storageBucket:"smart-property-portal.firebasestorage.app",
+messagingSenderId:"407241446660",
+appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+}
 
-const app=initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig)
+
 const db=getFirestore(app)
 
+const auth=getAuth(app)
+
+
+/* LOGIN REQUIRED */
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href="login.html"
+
+}
+
+})
+
+
+/* GET PROPERTY ID FROM URL */
 
 const params=new URLSearchParams(window.location.search)
 
 const id=params.get("id")
 
 
-async function load(){
+async function loadProperty(){
 
 const ref=doc(db,"properties",id)
 
@@ -103,25 +181,32 @@ const snap=await getDoc(ref)
 
 const p=snap.data()
 
-document.getElementById("img").src=p.image
 document.getElementById("title").innerText=p.title
+
 document.getElementById("city").innerText="City: "+p.city
+
 document.getElementById("bhk").innerText="BHK: "+p.bhk
-document.getElementById("desc").innerText=p.description
+
 document.getElementById("price").innerText="₹"+p.price
+
+document.getElementById("description").innerText=p.description
+
+document.getElementById("owner").innerText=p.owner
+
+document.getElementById("image").src=p.image
 
 }
 
-load()
+loadProperty()
+
 
 window.contactOwner=function(){
 
-alert("Owner contact feature coming soon")
+alert("Contact Owner: "+document.getElementById("owner").innerText)
 
 }
 
 </script>
 
 </body>
-
 </html>

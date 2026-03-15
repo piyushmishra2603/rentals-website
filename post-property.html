@@ -8,45 +8,12 @@
 
 <title>Post Property</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-}
-
 body{
+font-family:Arial;
 background:#f4f6f9;
 }
-
-/* HEADER */
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 50px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.logo{
-font-size:22px;
-font-weight:600;
-color:#1976d2;
-}
-
-nav a{
-margin-left:15px;
-text-decoration:none;
-color:#333;
-}
-
-/* FORM */
 
 .container{
 display:flex;
@@ -54,17 +21,12 @@ justify-content:center;
 padding:60px;
 }
 
-.form-box{
+.form{
 background:white;
 padding:40px;
 width:420px;
-border-radius:12px;
+border-radius:10px;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.form-box h2{
-margin-bottom:25px;
-text-align:center;
 }
 
 input,textarea{
@@ -78,22 +40,11 @@ border-radius:6px;
 button{
 width:100%;
 padding:12px;
-border:none;
 background:#1976d2;
 color:white;
+border:none;
 border-radius:6px;
 cursor:pointer;
-font-size:15px;
-}
-
-button:hover{
-background:#125ea9;
-}
-
-.success{
-color:green;
-margin-top:10px;
-text-align:center;
 }
 
 </style>
@@ -102,41 +53,27 @@ text-align:center;
 
 <body>
 
-<header>
-
-<div class="logo">SmartProperty</div>
-
-<nav>
-
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-
-</nav>
-
-</header>
-
-
 <div class="container">
 
-<div class="form-box">
+<div class="form">
 
-<h2>Post Your Property</h2>
+<h2>Post Property</h2>
 
-<input id="title" placeholder="Property Title">
+<input id="title" placeholder="Title">
 
 <input id="price" placeholder="Price">
 
 <input id="city" placeholder="City">
 
-<input id="bhk" placeholder="BHK (e.g. 2BHK)">
+<input id="bhk" placeholder="BHK">
 
 <input id="image" placeholder="Image URL">
 
-<textarea id="description" placeholder="Property Description"></textarea>
+<textarea id="description" placeholder="Description"></textarea>
 
 <button onclick="postProperty()">Post Property</button>
 
-<div id="msg" class="success"></div>
+<p id="msg"></p>
 
 </div>
 
@@ -172,26 +109,23 @@ appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
 }
 
 const app=initializeApp(firebaseConfig)
-
 const db=getFirestore(app)
-
 const auth=getAuth(app)
 
-let currentUserEmail=""
+let userEmail=""
+
+/* LOGIN PROTECTION */
 
 onAuthStateChanged(auth,(user)=>{
 
 if(!user){
 
-alert("Please login first")
-
-window.location="login.html"
-
+window.location.href="login.html"
 return
 
 }
 
-currentUserEmail=user.email
+userEmail=user.email
 
 })
 
@@ -213,23 +147,15 @@ city:city,
 bhk:bhk,
 image:image,
 description:description,
-owner:currentUserEmail
+owner:userEmail
 
 })
 
-document.getElementById("msg").innerText="Property Posted Successfully!"
-
-document.getElementById("title").value=""
-document.getElementById("price").value=""
-document.getElementById("city").value=""
-document.getElementById("bhk").value=""
-document.getElementById("image").value=""
-document.getElementById("description").value=""
+document.getElementById("msg").innerText="Property Posted Successfully"
 
 }
 
 </script>
 
 </body>
-
 </html>

@@ -1,463 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Smart Property Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Poppins,Arial;background:#f4f6fb;color:#222}
 
-/* NAVBAR */
-nav{
-background:#ffffff;
-box-shadow:0 2px 10px rgba(0,0,0,0.08);
-position:sticky;
-top:0;
-z-index:1000;
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Smart Property Portal</title>
+
+<style>
+
+body{
+font-family:Arial;
+margin:0;
+background:#f3f5f8;
+}
+
+header{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 40px
+padding:15px 40px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
 }
 
-nav h1{margin:0;font-size:22px;color:#2e7d32}
-
-nav ul{
-list-style:none;
-display:flex;
-gap:25px;
-margin:0;
-padding:0
+.logo{
+font-size:22px;
+font-weight:bold;
+color:#1976d2;
 }
 
-nav ul li{cursor:pointer;font-weight:500}
-
-nav button{
-background:#2e7d32;
-border:none;
-color:white;
-padding:8px 18px;
-border-radius:6px;
-cursor:pointer
+nav a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+font-weight:500;
 }
 
-/* HERO SEARCH */
 .hero{
-background:linear-gradient(120deg,#2e7d32,#4caf50);
+height:320px;
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
 color:white;
-padding:80px 20px;
-text-align:center
+text-align:center;
 }
 
-.hero h2{font-size:36px;margin-bottom:20px}
+.hero h1{
+margin:0;
+font-size:40px;
+}
 
 .search-box{
 background:white;
-padding:20px;
-border-radius:10px;
-max-width:900px;
-margin:auto;
+padding:15px;
+border-radius:8px;
+margin-top:20px;
 display:flex;
-flex-wrap:wrap;
 gap:10px;
-justify-content:center
 }
 
-.search-box input,.search-box select{
+.search-box input{
 padding:10px;
-border-radius:6px;
 border:1px solid #ccc;
-min-width:150px
+border-radius:5px;
 }
 
 .search-box button{
-background:#2e7d32;
-color:white;
+background:#1976d2;
 border:none;
-padding:10px 20px;
-border-radius:6px;
-cursor:pointer
+color:white;
+padding:10px 15px;
+border-radius:5px;
+cursor:pointer;
 }
 
-/* FEATURE SECTION */
-.section{
-padding:40px
-}
-
-.section h3{
-margin-bottom:25px
+.container{
+padding:40px;
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:25px
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
 }
 
-/* PROPERTY CARD */
 .card{
 background:white;
 border-radius:10px;
 overflow:hidden;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-transition:0.3s
+transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,0,0,0.15)
+transform:translateY(-5px);
 }
 
 .card img{
 width:100%;
 height:180px;
-object-fit:cover
+object-fit:cover;
 }
 
 .card-body{
-padding:15px
-}
-
-.card-body h4{
-margin:0 0 5px 0
+padding:15px;
 }
 
 .price{
-color:#2e7d32;
-font-weight:600
+color:#1976d2;
+font-size:18px;
+font-weight:bold;
 }
 
-.card-body button{
+.add{
+background:white;
+margin:40px;
+padding:30px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+input,textarea{
+width:100%;
+padding:10px;
 margin-top:10px;
-width:100%;
-background:#2e7d32;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button.submit{
+margin-top:15px;
+padding:12px;
 border:none;
+background:#1976d2;
 color:white;
-padding:8px;
-border-radius:6px
+border-radius:5px;
+cursor:pointer;
 }
 
-/* FILTER BAR */
-.filters{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px
-}
-
-.filters input,.filters select{
-padding:8px;border-radius:6px;border:1px solid #ccc
-}
-
-/* POST PROPERTY */
-.post-box{
-background:white;
-padding:25px;
-border-radius:10px;
-max-width:700px
-}
-
-.post-box input,.post-box textarea{
-width:100%;
-padding:10px;
-margin-top:8px;
-margin-bottom:15px;
-border-radius:6px;
-border:1px solid #ccc
-}
-
-.post-box button{
-background:#2e7d32;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:6px
-}
-
-/* LOGIN MODAL */
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-align-items:center;
-justify-content:center
-}
-
-.modal-box{
-background:white;
-padding:30px;
-border-radius:10px;
-width:320px
-}
-
-.modal-box input{
-width:100%;
-padding:10px;
-margin:10px 0;
-border-radius:6px;
-border:1px solid #ccc
-}
-
-.modal-box button{
-width:100%;
-background:#2e7d32;
-color:white;
-border:none;
-padding:10px;
-border-radius:6px
-}
-
-/* FOOTER */
-footer{
-background:#111;
-color:#bbb;
-padding:30px;
-text-align:center;
-margin-top:40px
-}
-
-/* WHATSAPP */
-.whatsapp{
+#topBtn{
 position:fixed;
 bottom:20px;
 right:20px;
-background:#25d366;
-padding:12px;
-border-radius:50%;
-box-shadow:0 4px 10px rgba(0,0,0,0.3)
-}
-
-.whatsapp img{width:30px}
-
-/* SCROLL */
-#topBtn{
-position:fixed;
-bottom:80px;
-right:20px;
-display:none;
-background:#2e7d32;
+background:#1976d2;
 color:white;
 border:none;
-padding:10px;
-border-radius:50%
+padding:12px;
+border-radius:50%;
+cursor:pointer;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#25D366;
+color:white;
+padding:14px;
+border-radius:50%;
+text-decoration:none;
+font-size:18px;
 }
 
 </style>
+
 </head>
+
 <body>
 
+<header>
+
+<div class="logo">SmartProperty</div>
+
 <nav>
-<h1>SmartHomes</h1>
-<ul>
-<li onclick="scrollToSection('listings')">Buy</li>
-<li onclick="scrollToSection('post')">Sell</li>
-<li onclick="scrollToSection('features')">Features</li>
-</ul>
-<button onclick="openLogin()">Login</button>
+
+<a href="#">Home</a>
+<a href="#listings">Properties</a>
+<a href="#post">Post Property</a>
+
 </nav>
 
+</header>
+
+
 <section class="hero">
-<h2>Find Your Dream Property</h2>
+
+<h1>Find Your Dream Property</h1>
+
 <div class="search-box">
-<input id="searchCity" placeholder="City">
-<select id="searchBhk">
-<option value="">BHK</option>
-<option>1 BHK</option>
-<option>2 BHK</option>
-<option>3 BHK</option>
-<option>4 BHK</option>
-</select>
-<input id="searchPrice" placeholder="Max Price">
-<button onclick="searchProperties()">Search</button>
+
+<input id="searchCity" placeholder="Search by city">
+
+<button onclick="search()">Search</button>
+
 </div>
+
 </section>
 
-<section class="section" id="features">
-<h3>Platform Features</h3>
-<div class="grid">
-<div class="card"><div class="card-body"><h4>AI Descriptions</h4><p>Generate property descriptions instantly.</p></div></div>
-<div class="card"><div class="card-body"><h4>Smart Filters</h4><p>Search by city, price and BHK easily.</p></div></div>
-<div class="card"><div class="card-body"><h4>Owner Listings</h4><p>Post properties without brokers.</p></div></div>
-<div class="card"><div class="card-body"><h4>Fast Search</h4><p>Optimized property discovery.</p></div></div>
-</div>
+
+<section class="container" id="listings">
+
+<h2>Latest Properties</h2>
+
+<div id="propertyGrid" class="grid"></div>
+
 </section>
 
-<section class="section" id="listings">
-<h3>Latest Properties</h3>
-<div class="filters">
-<input id="filterCity" placeholder="City">
-<select id="filterBhk">
-<option value="">Any BHK</option>
-<option>1 BHK</option>
-<option>2 BHK</option>
-<option>3 BHK</option>
-</select>
-<input id="filterPrice" placeholder="Max Price">
-<button onclick="applyFilters()">Filter</button>
-</div>
-<div class="grid" id="propertyGrid"></div>
+
+<section id="post" class="add">
+
+<h2>Post Your Property</h2>
+
+<input id="title" placeholder="Property title">
+
+<input id="city" placeholder="City">
+
+<input id="bhk" placeholder="BHK">
+
+<input id="price" placeholder="Price">
+
+<input id="image" placeholder="Image URL">
+
+<textarea id="desc" placeholder="Description"></textarea>
+
+<button class="submit" onclick="addProperty()">Submit Property</button>
+
 </section>
 
-<section class="section" id="post">
-<h3>Post Your Property</h3>
-<div class="post-box">
-<input id="pTitle" placeholder="Property Title">
-<input id="pCity" placeholder="City">
-<input id="pBhk" placeholder="BHK">
-<input id="pPrice" placeholder="Price">
-<input id="pImage" placeholder="Image URL">
-<textarea id="pDesc" placeholder="Description"></textarea>
-<button onclick="generateAI()">Generate AI Description</button>
-<button onclick="submitProperty()">Submit Property</button>
-</div>
-</section>
 
-<footer>
-<p>SmartHomes Property Portal</p>
-</footer>
+<button id="topBtn" onclick="topFunction()">↑</button>
 
-<div class="modal" id="loginModal">
-<div class="modal-box">
-<h3>Login</h3>
-<input id="loginEmail" placeholder="Email">
-<input id="loginPass" type="password" placeholder="Password">
-<button onclick="loginUser()">Login</button>
-</div>
-</div>
+<a class="whatsapp" href="https://wa.me/911234567890">W</a>
 
-<a class="whatsapp" href="https://wa.me/1234567890" target="_blank">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-</a>
 
-<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<script type="module">
 
-<script>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxopCdPSwV4Zl1rpvEJB5uMG66MLEr2fGPAtpj5EkvcKW1_1KNUKxeFrrclI41X6AITxA/exec";
+import { getFirestore, collection, addDoc, getDocs }
 
-let properties = [];
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal",
+  storageBucket: "smart-property-portal.firebasestorage.app",
+  messagingSenderId: "407241446660",
+  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+const grid=document.getElementById("propertyGrid")
+
 
 async function loadProperties(){
-try{
-const res = await fetch(WEB_APP_URL+"?action=getProperties");
-const data = await res.json();
-properties = data;
-renderProperties(properties);
-}catch(e){
-console.log("Backend load failed",e);
-}
-}
 
-loadProperties();
+grid.innerHTML=""
 
-function applyFilters(){
-const city=document.getElementById("filterCity").value.toLowerCase()
-const bhk=document.getElementById("filterBhk").value
-const price=document.getElementById("filterPrice").value
+const querySnapshot=await getDocs(collection(db,"properties"))
 
-let result=properties
+querySnapshot.forEach((doc)=>{
 
-if(city) result=result.filter(p=>p.city.toLowerCase().includes(city))
-if(bhk) result=result.filter(p=>p.bhk===bhk)
-if(price) result=result.filter(p=>p.price<=price)
+const p=doc.data()
 
-renderProperties(result)
-}
+grid.innerHTML+=`
 
-function searchProperties(){
-applyFilters()
-}
+<div class="card">
 
-function generateAI(){
-const title=document.getElementById("pTitle").value
-const city=document.getElementById("pCity").value
-const bhk=document.getElementById("pBhk").value
+<img src="${p.image}">
 
-const desc=`Beautiful ${bhk} property in ${city}. Perfect for families looking for comfort and modern lifestyle.`
+<div class="card-body">
 
-document.getElementById("pDesc").value=desc
-}
+<h3>${p.title}</h3>
 
-async function submitProperty(){
+<div>${p.city}</div>
 
-const payload={
-action:"submitProperty",
-title:document.getElementById("pTitle").value,
-city:document.getElementById("pCity").value,
-bhk:document.getElementById("pBhk").value,
-price:document.getElementById("pPrice").value,
-image:document.getElementById("pImage").value,
-description:document.getElementById("pDesc").value
-}
+<div>${p.bhk}</div>
 
-try{
+<div class="price">₹${p.price}</div>
 
-const res = await fetch(WEB_APP_URL,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify(payload)
-});
+</div>
 
-const txt = await res.text();
-alert(txt);
+</div>
 
-loadProperties();
+`
 
-}catch(e){
-alert("Backend connection failed");
-}
-
-}
-
-function openLogin(){
-document.getElementById("loginModal").style.display="flex"
-}
-
-async function loginUser(){
-
-const email=document.getElementById("loginEmail").value
-const pass=document.getElementById("loginPass").value
-
-try{
-
-const res = await fetch(WEB_APP_URL,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({action:"login",email:email,password:pass})
 })
 
-const data = await res.json()
+}
 
-if(data.status==="success"){
-alert("Login successful")
-document.getElementById("loginModal").style.display="none"
+loadProperties()
+
+
+window.addProperty=async function(){
+
+const title=document.getElementById("title").value
+const city=document.getElementById("city").value
+const bhk=document.getElementById("bhk").value
+const price=document.getElementById("price").value
+const image=document.getElementById("image").value
+const desc=document.getElementById("desc").value
+
+await addDoc(collection(db,"properties"),{
+
+title:title,
+city:city,
+bhk:bhk,
+price:price,
+image:image,
+description:desc
+
+})
+
+alert("Property Added")
+
+loadProperties()
+
+}
+
+
+window.search=function(){
+
+const city=document.getElementById("searchCity").value.toLowerCase()
+
+const cards=document.querySelectorAll(".card")
+
+cards.forEach(c=>{
+
+const text=c.innerText.toLowerCase()
+
+if(text.includes(city)){
+c.style.display="block"
 }else{
-alert("Login failed")
+c.style.display="none"
 }
 
-}catch(e){
-alert("Server error")
-}
+})
 
 }
 
-function scrollToSection(id){
-document.getElementById(id).scrollIntoView({behavior:'smooth'})
-}
 
-window.onscroll=function(){
-const btn=document.getElementById("topBtn")
-if(document.documentElement.scrollTop>300) btn.style.display="block"
-else btn.style.display="none"
+window.topFunction=function(){
+
+window.scrollTo({top:0,behavior:"smooth"})
+
 }
 
 </script>
 
 </body>
+
 </html>

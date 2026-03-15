@@ -4,40 +4,37 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Smart Property Portal</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins;
-}
+/* GLOBAL */
 
 body{
-background:#f5f7fa;
-color:#333;
+margin:0;
+font-family:Arial,Helvetica,sans-serif;
+background:#f4f6f9;
 }
 
 /* NAVBAR */
 
 header{
+background:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 60px;
-background:white;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
+padding:15px 40px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+position:sticky;
+top:0;
+z-index:1000;
 }
 
 .logo{
 font-size:22px;
-font-weight:600;
+font-weight:bold;
 color:#1976d2;
 }
 
@@ -45,86 +42,112 @@ nav a{
 margin-left:20px;
 text-decoration:none;
 color:#333;
-font-size:14px;
-}
-
-nav a:hover{
-color:#1976d2;
+font-weight:500;
 }
 
 /* HERO */
 
 .hero{
+
 height:420px;
-background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
+
+background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
+
 background-size:cover;
+
 background-position:center;
+
 display:flex;
-flex-direction:column;
-justify-content:center;
+
 align-items:center;
-color:white;
+
+justify-content:center;
+
 text-align:center;
+
+color:white;
+
 }
 
 .hero h1{
-font-size:42px;
-margin-bottom:10px;
+font-size:48px;
+margin-bottom:20px;
 }
 
-.hero p{
-margin-bottom:25px;
-}
+/* SEARCH */
 
 .search-box{
+
 background:white;
-padding:12px;
-border-radius:30px;
+
+padding:20px;
+
+border-radius:10px;
+
 display:flex;
-width:420px;
+
+gap:10px;
+
 }
 
 .search-box input{
-flex:1;
-border:none;
-outline:none;
-padding:8px;
+
+padding:10px;
+
+border:1px solid #ddd;
+
+border-radius:5px;
+
 }
 
 .search-box button{
+
+padding:10px 20px;
+
 background:#1976d2;
+
 color:white;
+
 border:none;
-padding:8px 18px;
-border-radius:20px;
+
+border-radius:5px;
+
 cursor:pointer;
+
 }
 
 /* SECTION */
 
 .section{
-padding:60px;
+padding:50px;
 }
 
-.section h2{
-margin-bottom:30px;
-}
-
-/* PROPERTY GRID */
+/* GRID */
 
 .grid{
+
 display:grid;
+
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+
 gap:20px;
+
 }
 
+/* PROPERTY CARD */
+
 .card{
+
 background:white;
+
 border-radius:10px;
+
 overflow:hidden;
-box-shadow:0 4px 15px rgba(0,0,0,0.08);
+
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+
 transition:0.3s;
+
 }
 
 .card:hover{
@@ -132,9 +155,13 @@ transform:translateY(-5px);
 }
 
 .card img{
+
 width:100%;
+
 height:180px;
+
 object-fit:cover;
+
 }
 
 .card-body{
@@ -142,81 +169,51 @@ padding:15px;
 }
 
 .price{
+
 color:#1976d2;
-font-weight:600;
-margin-top:5px;
+
+font-weight:bold;
+
+font-size:18px;
+
 }
 
-/* CITIES */
+/* FEATURED */
 
-.cities{
-display:flex;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.city{
+.featured{
 background:white;
-padding:20px;
-border-radius:8px;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
-}
-
-/* SERVICES */
-
-.services{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.service{
-background:white;
-padding:25px;
-border-radius:10px;
-text-align:center;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-/* STATS */
-
-.stats{
-display:flex;
-justify-content:space-around;
-background:#1976d2;
-color:white;
-padding:40px;
-}
-
-.stat{
-text-align:center;
-}
-
-/* CTA */
-
-.cta{
-text-align:center;
-padding:60px;
-background:#f1f5fb;
-}
-
-.cta button{
-background:#1976d2;
-color:white;
-border:none;
-padding:12px 24px;
-border-radius:25px;
-cursor:pointer;
-margin-top:15px;
 }
 
 /* FOOTER */
 
 footer{
+
 background:#222;
+
 color:white;
-padding:40px;
+
+padding:30px;
+
 text-align:center;
+
+margin-top:40px;
+
+}
+
+/* BUTTON */
+
+.btn{
+
+background:#1976d2;
+
+color:white;
+
+padding:8px 15px;
+
+border-radius:5px;
+
+text-decoration:none;
+
 }
 
 </style>
@@ -225,6 +222,7 @@ text-align:center;
 
 <body>
 
+
 <header>
 
 <div class="logo">SmartProperty</div>
@@ -232,8 +230,11 @@ text-align:center;
 <nav>
 
 <a href="dashboard.html">Dashboard</a>
+
 <a href="post-property.html">Post Property</a>
-<a href="admin.html" id="adminBtn" style="display:none;">Admin</a>
+
+<a href="admin.html">Admin</a>
+
 <a href="#" id="logoutBtn">Logout</a>
 
 </nav>
@@ -241,106 +242,87 @@ text-align:center;
 </header>
 
 
-<section class="hero">
+<!-- HERO -->
+
+<div class="hero">
+
+<div>
 
 <h1>Find Your Dream Property</h1>
-<p>Buy • Rent • Sell Properties Easily</p>
 
 <div class="search-box">
-<input placeholder="Search city">
-<button>Search</button>
+
+<input id="citySearch" placeholder="City">
+
+<input id="bhkSearch" placeholder="BHK">
+
+<input id="priceSearch" placeholder="Max Price">
+
+<button onclick="searchProperties()">Search</button>
+
 </div>
+
+</div>
+
+</div>
+
+
+<!-- PROPERTY LIST -->
+
+<section class="section">
+
+<h2>Latest Properties</h2>
+
+<div class="grid" id="propertyGrid"></div>
 
 </section>
 
 
-<section class="section">
+<!-- FEATURED -->
+
+<section class="section featured">
 
 <h2>Featured Properties</h2>
 
-<div class="grid" id="grid"></div>
+<div class="grid">
 
-</section>
+<div class="card">
 
+<img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
 
-<section class="section">
+<div class="card-body">
 
-<h2>Popular Cities</h2>
+<h3>Luxury Villa</h3>
 
-<div class="cities">
+<p>Mumbai</p>
 
-<div class="city">Delhi</div>
-<div class="city">Mumbai</div>
-<div class="city">Bangalore</div>
-<div class="city">Hyderabad</div>
-<div class="city">Pune</div>
-<div class="city">Kolkata</div>
+<p>4 BHK</p>
 
-</div>
+<div class="price">₹2.5 Cr</div>
 
-</section>
-
-
-<section class="section">
-
-<h2>Our Services</h2>
-
-<div class="services">
-
-<div class="service">
-<h3>Buy Property</h3>
-<p>Find verified homes across India.</p>
-</div>
-
-<div class="service">
-<h3>Sell Property</h3>
-<p>List your property easily.</p>
-</div>
-
-<div class="service">
-<h3>Rent Property</h3>
-<p>Affordable rental homes.</p>
-</div>
-
-<div class="service">
-<h3>Property Advice</h3>
-<p>Expert real estate consultation.</p>
 </div>
 
 </div>
 
-</section>
+<div class="card">
 
+<img src="https://images.unsplash.com/photo-1599423300746-b62533397364">
 
-<section class="stats">
+<div class="card-body">
 
-<div class="stat">
-<h2>10K+</h2>
-<p>Properties Listed</p>
+<h3>Modern Apartment</h3>
+
+<p>Delhi</p>
+
+<p>3 BHK</p>
+
+<div class="price">₹1.2 Cr</div>
+
 </div>
 
-<div class="stat">
-<h2>5K+</h2>
-<p>Happy Users</p>
 </div>
 
-<div class="stat">
-<h2>500+</h2>
-<p>Cities Covered</p>
 </div>
-
-</section>
-
-
-<section class="cta">
-
-<h2>Want to Sell Your Property?</h2>
-
-<p>Post your property for free.</p>
-
-<button onclick="location.href='post-property.html'">
-Post Property
-</button>
 
 </section>
 
@@ -350,6 +332,7 @@ Post Property
 <p>© 2026 Smart Property Portal</p>
 
 </footer>
+
 
 
 <script type="module">
@@ -373,35 +356,76 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
 const firebaseConfig={
+
 apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+
 authDomain:"smart-property-portal.firebaseapp.com",
+
 projectId:"smart-property-portal",
+
 storageBucket:"smart-property-portal.firebasestorage.app",
+
 messagingSenderId:"407241446660",
+
 appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+
 }
 
-const ADMIN_EMAIL="piyushmishra1903@gmail.com"
 
 const app=initializeApp(firebaseConfig)
+
 const db=getFirestore(app)
+
 const auth=getAuth(app)
 
-const grid=document.getElementById("grid")
-const logoutBtn=document.getElementById("logoutBtn")
-const adminBtn=document.getElementById("adminBtn")
+const grid=document.getElementById("propertyGrid")
+
+let properties=[]
+
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+window.location.href="login.html"
+
+return
+
+}
+
+loadProperties()
+
+})
+
 
 async function loadProperties(){
 
-const snap=await getDocs(collection(db,"properties"))
+const snapshot=await getDocs(collection(db,"properties"))
 
-snap.forEach((doc)=>{
+grid.innerHTML=""
+
+properties=[]
+
+snapshot.forEach((doc)=>{
 
 const p=doc.data()
 
+p.id=doc.id
+
+properties.push(p)
+
+renderProperty(p)
+
+})
+
+}
+
+
+function renderProperty(p){
+
 grid.innerHTML+=`
 
-<a href="property.html?id=${doc.id}" style="text-decoration:none;color:inherit">
+<a href="property.html?id=${p.id}" style="text-decoration:none;color:black">
 
 <div class="card">
 
@@ -410,8 +434,10 @@ grid.innerHTML+=`
 <div class="card-body">
 
 <h3>${p.title}</h3>
-<div>${p.city}</div>
-<div>${p.bhk}</div>
+
+<p>${p.city}</p>
+
+<p>${p.bhk}</p>
 
 <div class="price">₹${p.price}</div>
 
@@ -423,41 +449,54 @@ grid.innerHTML+=`
 
 `
 
+}
+
+
+/* SEARCH FUNCTION */
+
+window.searchProperties=function(){
+
+const city=document.getElementById("citySearch").value.toLowerCase()
+
+const bhk=document.getElementById("bhkSearch").value.toLowerCase()
+
+const price=document.getElementById("priceSearch").value
+
+grid.innerHTML=""
+
+properties.forEach(p=>{
+
+if(
+
+(!city || p.city.toLowerCase().includes(city)) &&
+
+(!bhk || p.bhk.toLowerCase().includes(bhk)) &&
+
+(!price || Number(p.price)<=Number(price))
+
+){
+
+renderProperty(p)
+
+}
+
 })
 
 }
 
 
-/* LOGIN REQUIRED */
+/* LOGOUT */
 
-onAuthStateChanged(auth,(user)=>{
-
-if(!user){
-
-window.location.href="login.html"
-return
-
-}
-
-loadProperties()
-
-if(user.email===ADMIN_EMAIL){
-
-adminBtn.style.display="inline"
-
-}
-
-})
-
-
-logoutBtn.onclick=()=>{
+document.getElementById("logoutBtn").onclick=()=>{
 
 signOut(auth)
+
 window.location.href="login.html"
 
 }
 
 </script>
+
 
 </body>
 </html>

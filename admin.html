@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Admin Panel</title>
 
@@ -10,11 +12,19 @@
 body{
 font-family:Arial;
 background:#f4f6f9;
-padding:40px;
+margin:0;
 }
 
-h1{
-margin-bottom:30px;
+header{
+background:#1976d2;
+color:white;
+padding:15px 40px;
+display:flex;
+justify-content:space-between;
+}
+
+.container{
+padding:40px;
 }
 
 .grid{
@@ -27,7 +37,7 @@ gap:20px;
 background:white;
 border-radius:10px;
 overflow:hidden;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 .card img{
@@ -40,14 +50,12 @@ object-fit:cover;
 padding:15px;
 }
 
-.delete{
+button{
+padding:8px 14px;
 background:red;
-color:white;
 border:none;
-padding:8px 12px;
-border-radius:5px;
+color:white;
 cursor:pointer;
-margin-top:10px;
 }
 
 </style>
@@ -56,14 +64,25 @@ margin-top:10px;
 
 <body>
 
-<h1>Admin Property Control</h1>
+<header>
 
-<div id="grid" class="grid"></div>
+<h2>Admin Panel</h2>
+
+<a href="index.html" style="color:white">Home</a>
+
+</header>
+
+<div class="container">
+
+<h3>All Listed Properties</h3>
+
+<div class="grid" id="propertyGrid"></div>
+
+</div>
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 
 import {
 getFirestore,
@@ -82,12 +101,14 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
 const firebaseConfig={
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+
+apiKey:"YOUR_API_KEY",
 authDomain:"smart-property-portal.firebaseapp.com",
 projectId:"smart-property-portal",
 storageBucket:"smart-property-portal.firebasestorage.app",
 messagingSenderId:"407241446660",
 appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+
 }
 
 const ADMIN_EMAIL="piyushmishra1903@gmail.com"
@@ -98,22 +119,16 @@ const db=getFirestore(app)
 
 const auth=getAuth(app)
 
-const grid=document.getElementById("grid")
+const grid=document.getElementById("propertyGrid")
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth,async(user)=>{
 
-if(!user){
-
-alert("Login required")
-window.location="login.html"
-return
-
-}
-
-if(user.email!==ADMIN_EMAIL){
+if(!user || user.email!==ADMIN_EMAIL){
 
 alert("Access denied")
-window.location="index.html"
+
+window.location.href="index.html"
+
 return
 
 }
@@ -122,13 +137,16 @@ loadProperties()
 
 })
 
+
 async function loadProperties(){
 
-const snap=await getDocs(collection(db,"properties"))
+const snapshot=await getDocs(collection(db,"properties"))
 
-snap.forEach((d)=>{
+grid.innerHTML=""
 
-const p=d.data()
+snapshot.forEach((docSnap)=>{
+
+const p=docSnap.data()
 
 grid.innerHTML+=`
 
@@ -140,17 +158,13 @@ grid.innerHTML+=`
 
 <h3>${p.title}</h3>
 
-<div>${p.city}</div>
+<p>${p.city}</p>
 
-<div>${p.bhk}</div>
+<p>${p.bhk}</p>
 
-<div>₹${p.price}</div>
+<p>₹${p.price}</p>
 
-<button class="delete" onclick="deleteProperty('${d.id}')">
-
-Delete
-
-</button>
+<button onclick="deleteProperty('${docSnap.id}')">Delete</button>
 
 </div>
 
@@ -166,7 +180,7 @@ window.deleteProperty=async function(id){
 
 await deleteDoc(doc(db,"properties",id))
 
-alert("Property Deleted")
+alert("Property removed")
 
 location.reload()
 
@@ -175,5 +189,4 @@ location.reload()
 </script>
 
 </body>
-
 </html>

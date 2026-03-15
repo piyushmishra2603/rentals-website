@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Post Property</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
+}
+
+body{
+background:#f4f6f9;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 50px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-size:22px;
+font-weight:600;
+color:#1976d2;
+}
+
+nav a{
+margin-left:15px;
+text-decoration:none;
+color:#333;
+}
+
+/* FORM */
+
+.container{
+display:flex;
+justify-content:center;
+padding:60px;
+}
+
+.form-box{
+background:white;
+padding:40px;
+width:420px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.form-box h2{
+margin-bottom:25px;
+text-align:center;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-bottom:15px;
+border:1px solid #ddd;
+border-radius:6px;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+background:#1976d2;
+color:white;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+}
+
+button:hover{
+background:#125ea9;
+}
+
+.success{
+color:green;
+margin-top:10px;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">SmartProperty</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="dashboard.html">Dashboard</a>
+
+</nav>
+
+</header>
+
+
+<div class="container">
+
+<div class="form-box">
+
+<h2>Post Your Property</h2>
+
+<input id="title" placeholder="Property Title">
+
+<input id="price" placeholder="Price">
+
+<input id="city" placeholder="City">
+
+<input id="bhk" placeholder="BHK (e.g. 2BHK)">
+
+<input id="image" placeholder="Image URL">
+
+<textarea id="description" placeholder="Property Description"></textarea>
+
+<button onclick="postProperty()">Post Property</button>
+
+<div id="msg" class="success"></div>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+
+import {
+getFirestore,
+collection,
+addDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+
+
+const firebaseConfig={
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal",
+storageBucket:"smart-property-portal.firebasestorage.app",
+messagingSenderId:"407241446660",
+appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+}
+
+const app=initializeApp(firebaseConfig)
+
+const db=getFirestore(app)
+
+const auth=getAuth(app)
+
+let currentUserEmail=""
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+
+alert("Please login first")
+
+window.location="login.html"
+
+return
+
+}
+
+currentUserEmail=user.email
+
+})
+
+
+window.postProperty=async function(){
+
+const title=document.getElementById("title").value
+const price=document.getElementById("price").value
+const city=document.getElementById("city").value
+const bhk=document.getElementById("bhk").value
+const image=document.getElementById("image").value
+const description=document.getElementById("description").value
+
+await addDoc(collection(db,"properties"),{
+
+title:title,
+price:price,
+city:city,
+bhk:bhk,
+image:image,
+description:description,
+owner:currentUserEmail
+
+})
+
+document.getElementById("msg").innerText="Property Posted Successfully!"
+
+document.getElementById("title").value=""
+document.getElementById("price").value=""
+document.getElementById("city").value=""
+document.getElementById("bhk").value=""
+document.getElementById("image").value=""
+document.getElementById("description").value=""
+
+}
+
+</script>
+
+</body>
+
+</html>

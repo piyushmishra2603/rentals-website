@@ -1,1 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Login - Smart Property</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+color:#1976d2;
+}
+
+.nav{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.nav a{
+text-decoration:none;
+color:#333;
+font-weight:500;
+}
+
+.signup-btn{
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+color:white !important;
+padding:9px 20px;
+border-radius:30px;
+font-weight:600;
+text-decoration:none;
+box-shadow:0 3px 8px rgba(0,0,0,0.15);
+transition:0.3s;
+}
+
+.signup-btn:hover{
+transform:translateY(-2px);
+}
+
+/* LOGIN CARD */
+
+.container{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.card{
+background:white;
+padding:40px;
+width:360px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+text-align:center;
+}
+
+.card h2{
+margin-bottom:25px;
+color:#1976d2;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:12px;
+border:1px solid #ccc;
+border-radius:6px;
+}
+
+input:focus{
+outline:none;
+border-color:#1976d2;
+}
+
+button{
+width:100%;
+margin-top:18px;
+padding:12px;
+border:none;
+border-radius:30px;
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+color:white;
+font-size:15px;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+#msg{
+margin-top:15px;
+font-size:14px;
+}
+
+.signup-link{
+margin-top:18px;
+font-size:14px;
+}
+
+.signup-link a{
+color:#1976d2;
+text-decoration:none;
+font-weight:500;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="logo">SmartProperty</div>
+
+<div class="nav">
+
+<a href="index.html">Home</a>
+<a href="index.html#listings">Properties</a>
+<a href="index.html#post">Post Property</a>
+
+<a href="signup.html" class="signup-btn">Sign Up</a>
+
+</div>
+
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+<h2>User Login</h2>
+
+<input id="email" type="email" placeholder="Enter Email">
+
+<input id="password" type="password" placeholder="Enter Password">
+
+<button onclick="login()">Login</button>
+
+<div id="msg"></div>
+
+<div class="signup-link">
+Don't have an account? <a href="signup.html">Sign Up</a>
+</div>
+
+</div>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal",
+storageBucket: "smart-property-portal.firebasestorage.app",
+messagingSenderId: "407241446660",
+appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+window.login=function(){
+
+const email=document.getElementById("email").value
+const password=document.getElementById("password").value
+const msg=document.getElementById("msg")
+
+msg.innerHTML="Logging in..."
+
+signInWithEmailAndPassword(auth,email,password)
+
+.then((userCredential)=>{
+
+msg.style.color="green"
+msg.innerHTML="Login successful"
+
+setTimeout(()=>{
+
+window.location.href="index.html"
+
+},1500)
+
+})
+
+.catch((error)=>{
+
+msg.style.color="red"
+msg.innerHTML=error.message
+
+})
+
+}
+
+</script>
+
+</body>
+
+</html>

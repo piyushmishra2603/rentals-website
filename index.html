@@ -76,22 +76,23 @@ flex-direction:column;
 align-items:center;
 justify-content:center;
 color:white;
+text-align:center;
 }
 
 .search-box{
-background:white;
-padding:15px;
-border-radius:8px;
 margin-top:15px;
+background:white;
+padding:12px;
+border-radius:8px;
 }
 
 .search-box input{
-padding:10px;
+padding:8px;
 border:1px solid #ccc;
 border-radius:5px;
 }
 
-/* PROPERTY GRID */
+/* GRID */
 
 .container{
 padding:40px;
@@ -108,6 +109,12 @@ background:white;
 border-radius:10px;
 overflow:hidden;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
 }
 
 .card img{
@@ -122,8 +129,8 @@ padding:15px;
 
 .price{
 color:#1976d2;
-font-weight:bold;
 font-size:18px;
+font-weight:bold;
 }
 
 .save-btn{
@@ -196,8 +203,11 @@ cursor:pointer;
 <h1>Find Your Dream Property</h1>
 
 <div class="search-box">
+
 <input id="searchCity" placeholder="Search city">
+
 <button onclick="search()">Search</button>
+
 </div>
 
 </section>
@@ -254,7 +264,6 @@ const auth = getAuth(app);
 
 const grid=document.getElementById("propertyGrid")
 
-
 async function loadProperties(){
 
 grid.innerHTML=""
@@ -267,19 +276,21 @@ const p=doc.data()
 
 grid.innerHTML+=`
 
-<div class="card">
+<div class="card" onclick="openProperty('${doc.id}')">
 
 <img src="${p.image}">
 
 <div class="card-body">
 
 <h3>${p.title}</h3>
+
 <div>${p.city}</div>
+
 <div>${p.bhk}</div>
 
 <div class="price">₹${p.price}</div>
 
-<button class="save-btn" onclick="saveProperty('${doc.id}')">❤ Save</button>
+<button class="save-btn" onclick="event.stopPropagation(); saveProperty('${doc.id}')">❤ Save</button>
 
 </div>
 
@@ -294,14 +305,23 @@ grid.innerHTML+=`
 loadProperties()
 
 
-window.addProperty = async function(){
+window.openProperty=function(id){
 
-const user = auth.currentUser
+window.location.href="property.html?id="+id
+
+}
+
+
+window.addProperty=async function(){
+
+const user=auth.currentUser
 
 if(!user){
 
 alert("Please login to post property")
+
 window.location.href="login.html"
+
 return
 
 }
@@ -332,13 +352,14 @@ loadProperties()
 }
 
 
-window.saveProperty = async function(id){
+window.saveProperty=async function(id){
 
-const user = auth.currentUser
+const user=auth.currentUser
 
 if(!user){
 
 alert("Login to save property")
+
 return
 
 }

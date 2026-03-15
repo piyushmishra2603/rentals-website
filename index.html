@@ -56,12 +56,6 @@ color:#1976d2;
 padding:8px 18px;
 border-radius:25px;
 font-weight:600;
-transition:0.3s;
-}
-
-.login-btn:hover{
-background:#1976d2;
-color:white;
 }
 
 .signup-btn{
@@ -70,54 +64,31 @@ color:white;
 padding:9px 20px;
 border-radius:25px;
 font-weight:600;
-box-shadow:0 3px 8px rgba(0,0,0,0.15);
-transition:0.3s;
-}
-
-.signup-btn:hover{
-transform:translateY(-2px);
-background:linear-gradient(135deg,#1258a8,#1976d2);
 }
 
 /* HERO */
 
 .hero{
-height:320px;
+height:300px;
 background:linear-gradient(135deg,#1976d2,#42a5f5);
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
 color:white;
-text-align:center;
-}
-
-.hero h1{
-font-size:40px;
-margin-bottom:15px;
 }
 
 .search-box{
 background:white;
 padding:15px;
 border-radius:8px;
-display:flex;
-gap:10px;
+margin-top:15px;
 }
 
 .search-box input{
 padding:10px;
 border:1px solid #ccc;
 border-radius:5px;
-}
-
-.search-box button{
-background:#1976d2;
-border:none;
-color:white;
-padding:10px 15px;
-border-radius:5px;
-cursor:pointer;
 }
 
 /* PROPERTY GRID */
@@ -137,11 +108,6 @@ background:white;
 border-radius:10px;
 overflow:hidden;
 box-shadow:0 5px 15px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
 }
 
 .card img{
@@ -156,8 +122,18 @@ padding:15px;
 
 .price{
 color:#1976d2;
-font-size:18px;
 font-weight:bold;
+font-size:18px;
+}
+
+.save-btn{
+margin-top:10px;
+padding:8px 12px;
+background:#ff5252;
+border:none;
+color:white;
+border-radius:5px;
+cursor:pointer;
 }
 
 /* POST PROPERTY */
@@ -167,7 +143,6 @@ background:white;
 margin:40px;
 padding:30px;
 border-radius:10px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
 }
 
 input,textarea{
@@ -181,9 +156,9 @@ border-radius:5px;
 button.submit{
 margin-top:15px;
 padding:12px;
-border:none;
 background:#1976d2;
 color:white;
+border:none;
 border-radius:5px;
 cursor:pointer;
 }
@@ -221,11 +196,8 @@ cursor:pointer;
 <h1>Find Your Dream Property</h1>
 
 <div class="search-box">
-
-<input id="searchCity" placeholder="Search by city">
-
+<input id="searchCity" placeholder="Search city">
 <button onclick="search()">Search</button>
-
 </div>
 
 </section>
@@ -242,18 +214,13 @@ cursor:pointer;
 
 <section id="post" class="add">
 
-<h2>Post Your Property</h2>
+<h2>Post Property</h2>
 
 <input id="title" placeholder="Property Title">
-
 <input id="city" placeholder="City">
-
 <input id="bhk" placeholder="BHK">
-
 <input id="price" placeholder="Price">
-
 <input id="image" placeholder="Image URL">
-
 <textarea id="desc" placeholder="Description"></textarea>
 
 <button class="submit" onclick="addProperty()">Submit Property</button>
@@ -285,8 +252,8 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-
 const grid=document.getElementById("propertyGrid")
+
 
 async function loadProperties(){
 
@@ -307,12 +274,12 @@ grid.innerHTML+=`
 <div class="card-body">
 
 <h3>${p.title}</h3>
-
 <div>${p.city}</div>
-
 <div>${p.bhk}</div>
 
 <div class="price">₹${p.price}</div>
+
+<button class="save-btn" onclick="saveProperty('${doc.id}')">❤ Save</button>
 
 </div>
 
@@ -327,7 +294,17 @@ grid.innerHTML+=`
 loadProperties()
 
 
-window.addProperty=async function(){
+window.addProperty = async function(){
+
+const user = auth.currentUser
+
+if(!user){
+
+alert("Please login to post property")
+window.location.href="login.html"
+return
+
+}
 
 const title=document.getElementById("title").value
 const city=document.getElementById("city").value
@@ -343,13 +320,37 @@ city:city,
 bhk:bhk,
 price:price,
 image:image,
-description:desc
+description:desc,
+owner:user.email
 
 })
 
 alert("Property Added")
 
 loadProperties()
+
+}
+
+
+window.saveProperty = async function(id){
+
+const user = auth.currentUser
+
+if(!user){
+
+alert("Login to save property")
+return
+
+}
+
+await addDoc(collection(db,"favorites"),{
+
+propertyId:id,
+user:user.email
+
+})
+
+alert("Saved to favorites")
 
 }
 

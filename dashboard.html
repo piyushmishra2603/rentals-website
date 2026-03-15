@@ -1,38 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>User Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
-body{
-font-family:Arial;
-background:#f4f4f4;
-padding:40px;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins;
 }
 
-h2{
-margin-bottom:20px;
+body{
+background:#f4f6f9;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 50px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logo{
+font-size:22px;
+font-weight:600;
+color:#1976d2;
+}
+
+nav a{
+margin-left:15px;
+text-decoration:none;
+color:#333;
+}
+
+/* DASHBOARD */
+
+.container{
+padding:40px 60px;
+}
+
+.welcome{
+background:white;
+padding:25px;
+border-radius:10px;
+margin-bottom:30px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.section{
+margin-top:40px;
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
 gap:20px;
+margin-top:20px;
 }
 
 .card{
 background:white;
-border-radius:10px;
+border-radius:12px;
 overflow:hidden;
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
 .card img{
 width:100%;
-height:180px;
+height:170px;
 object-fit:cover;
 }
 
@@ -40,12 +88,18 @@ object-fit:cover;
 padding:15px;
 }
 
+.price{
+color:#1976d2;
+font-weight:600;
+margin-top:5px;
+}
+
 .delete-btn{
 margin-top:10px;
-padding:8px 12px;
+padding:6px 14px;
 background:red;
-color:white;
 border:none;
+color:white;
 border-radius:5px;
 cursor:pointer;
 }
@@ -56,34 +110,79 @@ cursor:pointer;
 
 <body>
 
+<header>
+
+<div class="logo">SmartProperty</div>
+
+<nav>
+
+<a href="index.html">Home</a>
+<a href="index.html">Browse</a>
+
+</nav>
+
+</header>
+
+<div class="container">
+
+<div class="welcome">
+
+<h2>Welcome</h2>
+<p id="userEmail"></p>
+
+</div>
+
+
+<div class="section">
+
 <h2>My Properties</h2>
 
 <div id="myProperties" class="grid"></div>
 
-<h2 style="margin-top:40px;">Saved Properties</h2>
+</div>
+
+
+<div class="section">
+
+<h2>Saved Properties</h2>
 
 <div id="savedProperties" class="grid"></div>
+
+</div>
+
+</div>
 
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 
-import { getFirestore, collection, getDocs, deleteDoc, doc }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+getFirestore,
+collection,
+getDocs,
+deleteDoc,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
-import { getAuth }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
-const firebaseConfig = {
-apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain: "smart-property-portal.firebaseapp.com",
-projectId: "smart-property-portal",
-storageBucket: "smart-property-portal.firebasestorage.app",
-messagingSenderId: "407241446660",
-appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
-};
+const firebaseConfig={
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal",
+storageBucket:"smart-property-portal.firebasestorage.app",
+messagingSenderId:"407241446660",
+appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+}
 
 const app=initializeApp(firebaseConfig)
 
@@ -91,14 +190,12 @@ const db=getFirestore(app)
 
 const auth=getAuth(app)
 
-
 const myDiv=document.getElementById("myProperties")
 const savedDiv=document.getElementById("savedProperties")
+const emailText=document.getElementById("userEmail")
 
 
-async function loadDashboard(){
-
-const user=auth.currentUser
+onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
 
@@ -110,15 +207,24 @@ return
 
 }
 
-/* MY PROPERTIES */
+emailText.innerText=user.email
 
-const querySnapshot=await getDocs(collection(db,"properties"))
+loadMyProperties(user.email)
 
-querySnapshot.forEach((d)=>{
+loadSaved(user.email)
+
+})
+
+
+async function loadMyProperties(email){
+
+const snap=await getDocs(collection(db,"properties"))
+
+snap.forEach((d)=>{
 
 const p=d.data()
 
-if(p.owner===user.email){
+if(p.owner===email){
 
 myDiv.innerHTML+=`
 
@@ -132,7 +238,9 @@ myDiv.innerHTML+=`
 
 <div>${p.city}</div>
 
-<div>₹${p.price}</div>
+<div>${p.bhk}</div>
+
+<div class="price">₹${p.price}</div>
 
 <button class="delete-btn" onclick="deleteProperty('${d.id}')">Delete</button>
 
@@ -146,15 +254,18 @@ myDiv.innerHTML+=`
 
 })
 
-/* SAVED */
+}
+
+
+async function loadSaved(email){
 
 const favSnap=await getDocs(collection(db,"favorites"))
 
-favSnap.forEach(async(f)=>{
+for(const f of favSnap.docs){
 
 const fav=f.data()
 
-if(fav.user===user.email){
+if(fav.user===email){
 
 const ref=doc(db,"properties",fav.propertyId)
 
@@ -174,7 +285,9 @@ savedDiv.innerHTML+=`
 
 <div>${p.city}</div>
 
-<div>₹${p.price}</div>
+<div>${p.bhk}</div>
+
+<div class="price">₹${p.price}</div>
 
 </div>
 
@@ -184,18 +297,16 @@ savedDiv.innerHTML+=`
 
 }
 
-})
-
 }
 
-loadDashboard()
+}
 
 
 window.deleteProperty=async function(id){
 
 await deleteDoc(doc(db,"properties",id))
 
-alert("Property Deleted")
+alert("Property deleted")
 
 location.reload()
 

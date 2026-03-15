@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -143,10 +144,6 @@ transition:0.3s;
 transform:translateY(-5px);
 }
 
-.feature h3{
-margin-top:10px;
-}
-
 /* PROPERTY SECTION */
 
 .container{
@@ -214,26 +211,33 @@ margin-top:50px;
 <nav>
 
 <a href="#">Home</a>
-<a href="#">Buy</a>
-<a href="#">Rent</a>
 
-<a href="login.html" class="btn">Login</a>
-<a href="signup.html" class="btn signup">Signup</a>
+<a href="post-property.html">Post Property</a>
+
+<a href="dashboard.html">Dashboard</a>
+
+<a href="login.html" id="loginBtn" class="btn">Login</a>
+
+<a href="signup.html" id="signupBtn" class="btn signup">Signup</a>
 
 <a href="admin.html" id="adminBtn" style="display:none;">Admin</a>
+
+<a href="#" id="logoutBtn" style="display:none;">Logout</a>
 
 </nav>
 
 </header>
 
+
 <section class="hero">
 
 <h1>Find Your Dream Home</h1>
+
 <p>Buy • Rent • Sell properties easily</p>
 
 <div class="search">
 
-<input placeholder="Search city or property">
+<input placeholder="Search city">
 
 <button>Search</button>
 
@@ -241,24 +245,26 @@ margin-top:50px;
 
 </section>
 
+
 <section class="features">
 
 <div class="feature">
 <h3>Buy Property</h3>
-<p>Find verified homes easily</p>
+<p>Find verified homes</p>
 </div>
 
 <div class="feature">
 <h3>Rent Property</h3>
-<p>Affordable rental listings</p>
+<p>Affordable rentals</p>
 </div>
 
 <div class="feature">
 <h3>Sell Property</h3>
-<p>List your property quickly</p>
+<p>List your property</p>
 </div>
 
 </section>
+
 
 <section class="container">
 
@@ -268,11 +274,13 @@ margin-top:50px;
 
 </section>
 
+
 <footer>
 
 <p>© 2026 Smart Property Portal</p>
 
 </footer>
+
 
 
 <script type="module">
@@ -289,7 +297,8 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
 import {
 getAuth,
-onAuthStateChanged
+onAuthStateChanged,
+signOut
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
@@ -312,6 +321,7 @@ const db=getFirestore(app)
 const auth=getAuth(app)
 
 const grid=document.getElementById("grid")
+
 
 async function loadProperties(){
 
@@ -349,17 +359,39 @@ grid.innerHTML+=`
 
 loadProperties()
 
+
+const loginBtn=document.getElementById("loginBtn")
+const signupBtn=document.getElementById("signupBtn")
+const logoutBtn=document.getElementById("logoutBtn")
 const adminBtn=document.getElementById("adminBtn")
+
 
 onAuthStateChanged(auth,(user)=>{
 
-if(user && user.email===ADMIN_EMAIL){
+if(user){
+
+loginBtn.style.display="none"
+signupBtn.style.display="none"
+logoutBtn.style.display="inline"
+
+if(user.email===ADMIN_EMAIL){
 
 adminBtn.style.display="inline"
 
 }
 
+}
+
 })
+
+
+logoutBtn.onclick=()=>{
+
+signOut(auth)
+
+location.reload()
+
+}
 
 </script>
 

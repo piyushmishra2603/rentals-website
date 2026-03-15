@@ -1,58 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Create Account</title>
 
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
 <style>
 
-body{
-font-family:Arial;
-background:linear-gradient(135deg,#1976d2,#42a5f5);
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
+*{
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif;
 }
 
-.box{
+body{
+margin:0;
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#1976d2,#42a5f5);
+}
+
+.container{
 background:white;
 padding:40px;
-border-radius:10px;
-width:320px;
-box-shadow:0 5px 20px rgba(0,0,0,0.2);
+width:360px;
+border-radius:12px;
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+text-align:center;
 }
 
 h2{
-text-align:center;
-margin-bottom:20px;
+margin-bottom:25px;
+color:#1976d2;
 }
 
 input{
 width:100%;
-padding:10px;
-margin-top:10px;
+padding:12px;
+margin-top:12px;
 border:1px solid #ccc;
-border-radius:5px;
+border-radius:6px;
+font-size:14px;
+}
+
+input:focus{
+outline:none;
+border-color:#1976d2;
 }
 
 button{
 width:100%;
-margin-top:15px;
+margin-top:18px;
 padding:12px;
 border:none;
-background:#1976d2;
+border-radius:30px;
+background:linear-gradient(135deg,#1976d2,#42a5f5);
 color:white;
-border-radius:5px;
+font-size:15px;
+font-weight:600;
 cursor:pointer;
+transition:0.3s;
+box-shadow:0 3px 8px rgba(0,0,0,0.15);
 }
 
-p{
-text-align:center;
-margin-top:10px;
+button:hover{
+transform:translateY(-2px);
+}
+
+#msg{
+margin-top:15px;
+font-size:14px;
+color:#e53935;
+}
+
+.login-link{
+margin-top:18px;
+font-size:14px;
+}
+
+.login-link a{
+color:#1976d2;
+text-decoration:none;
+font-weight:500;
 }
 
 </style>
@@ -61,19 +94,24 @@ margin-top:10px;
 
 <body>
 
-<div class="box">
+<div class="container">
 
 <h2>Create Account</h2>
 
-<input id="email" placeholder="Email">
+<input id="email" type="email" placeholder="Enter Email">
 
-<input id="password" type="password" placeholder="Password">
+<input id="password" type="password" placeholder="Enter Password">
 
 <button onclick="signup()">Sign Up</button>
 
-<p id="msg"></p>
+<div id="msg"></div>
+
+<div class="login-link">
+Already have an account? <a href="login.html">Login</a>
+</div>
 
 </div>
+
 
 <script type="module">
 
@@ -95,7 +133,6 @@ const firebaseConfig = {
 
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
 
@@ -103,18 +140,29 @@ window.signup = function(){
 
 const email=document.getElementById("email").value
 const password=document.getElementById("password").value
+const msg=document.getElementById("msg")
+
+msg.innerHTML="Creating account..."
 
 createUserWithEmailAndPassword(auth,email,password)
 
 .then((userCredential)=>{
 
-document.getElementById("msg").innerHTML="Account created successfully"
+msg.style.color="green"
+msg.innerHTML="Account created successfully"
+
+setTimeout(()=>{
+
+window.location.href="index.html"
+
+},1500)
 
 })
 
 .catch((error)=>{
 
-document.getElementById("msg").innerHTML=error.message
+msg.style.color="red"
+msg.innerHTML=error.message
 
 })
 

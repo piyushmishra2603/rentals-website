@@ -15,17 +15,17 @@
 body{
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-background:#f4f6f9;
+background:#f5f7fa;
 }
 
 /* NAVBAR */
 
 header{
-background:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px 40px;
+background:white;
 box-shadow:0 2px 10px rgba(0,0,0,0.1);
 position:sticky;
 top:0;
@@ -48,106 +48,69 @@ font-weight:500;
 /* HERO */
 
 .hero{
-
-height:420px;
-
-background:url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
-
-background-size:cover;
-
-background-position:center;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-text-align:center;
-
+background:linear-gradient(120deg,#1976d2,#42a5f5);
 color:white;
-
+padding:80px 20px;
+text-align:center;
 }
 
 .hero h1{
-font-size:48px;
+font-size:40px;
 margin-bottom:20px;
 }
 
 /* SEARCH */
 
 .search-box{
-
 background:white;
-
 padding:20px;
-
 border-radius:10px;
-
+max-width:700px;
+margin:30px auto 0 auto;
 display:flex;
-
 gap:10px;
-
+flex-wrap:wrap;
 }
 
-.search-box input{
-
+.search-box input,
+.search-box select{
 padding:10px;
-
+flex:1;
 border:1px solid #ddd;
-
 border-radius:5px;
-
 }
 
 .search-box button{
-
-padding:10px 20px;
-
 background:#1976d2;
-
-color:white;
-
 border:none;
-
+color:white;
+padding:10px 20px;
 border-radius:5px;
-
 cursor:pointer;
-
 }
 
-/* SECTION */
+/* PROPERTY GRID */
 
-.section{
-padding:50px;
+.container{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
 }
-
-/* GRID */
 
 .grid{
-
 display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-
-gap:20px;
-
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
 }
 
 /* PROPERTY CARD */
 
 .card{
-
 background:white;
-
 border-radius:10px;
-
 overflow:hidden;
-
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
-
 transition:0.3s;
-
 }
 
 .card:hover{
@@ -155,70 +118,51 @@ transform:translateY(-5px);
 }
 
 .card img{
-
 width:100%;
-
-height:180px;
-
+height:200px;
 object-fit:cover;
-
 }
 
-.card-body{
+.card-content{
 padding:15px;
 }
 
 .price{
-
+font-size:20px;
 color:#1976d2;
-
 font-weight:bold;
-
-font-size:18px;
-
+margin:10px 0;
 }
 
-/* FEATURED */
+.city{
+color:#777;
+font-size:14px;
+}
 
-.featured{
-background:white;
+.card a{
+display:inline-block;
+margin-top:10px;
+text-decoration:none;
+background:#1976d2;
+color:white;
+padding:8px 12px;
+border-radius:5px;
 }
 
 /* FOOTER */
 
 footer{
-
 background:#222;
-
 color:white;
-
 padding:30px;
-
 text-align:center;
-
-margin-top:40px;
-
-}
-
-/* BUTTON */
-
-.btn{
-
-background:#1976d2;
-
-color:white;
-
-padding:8px 15px;
-
-border-radius:5px;
-
-text-decoration:none;
-
+margin-top:50px;
 }
 
 </style>
 
 </head>
+
 
 <body>
 
@@ -229,12 +173,10 @@ text-decoration:none;
 
 <nav>
 
-<a href="dashboard.html">Dashboard</a>
-
+<a href="index.html">Home</a>
 <a href="post-property.html">Post Property</a>
-
-<a href="admin.html">Admin</a>
-
+<a href="dashboard.html">Dashboard</a>
+<a href="login.html">Login</a>
 <a href="#" id="logoutBtn">Logout</a>
 
 </nav>
@@ -242,94 +184,45 @@ text-decoration:none;
 </header>
 
 
-<!-- HERO -->
 
-<div class="hero">
+<section class="hero">
 
-<div>
-
-<h1>Find Your Dream Property</h1>
+<h1>Find Your Perfect Rental Home</h1>
 
 <div class="search-box">
 
-<input id="citySearch" placeholder="City">
+<input id="citySearch" placeholder="Search city">
 
-<input id="bhkSearch" placeholder="BHK">
+<select id="bhkSearch">
 
-<input id="priceSearch" placeholder="Max Price">
+<option value="">Any BHK</option>
+<option>1 BHK</option>
+<option>2 BHK</option>
+<option>3 BHK</option>
+
+</select>
 
 <button onclick="searchProperties()">Search</button>
 
 </div>
 
-</div>
-
-</div>
-
-
-<!-- PROPERTY LIST -->
-
-<section class="section">
-
-<h2>Latest Properties</h2>
-
-<div class="grid" id="propertyGrid"></div>
-
 </section>
 
 
-<!-- FEATURED -->
 
-<section class="section featured">
+<div class="container">
 
-<h2>Featured Properties</h2>
+<h2>Available Properties</h2>
 
-<div class="grid">
-
-<div class="card">
-
-<img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
-
-<div class="card-body">
-
-<h3>Luxury Villa</h3>
-
-<p>Mumbai</p>
-
-<p>4 BHK</p>
-
-<div class="price">₹2.5 Cr</div>
+<div id="propertyGrid" class="grid"></div>
 
 </div>
 
-</div>
-
-<div class="card">
-
-<img src="https://images.unsplash.com/photo-1599423300746-b62533397364">
-
-<div class="card-body">
-
-<h3>Modern Apartment</h3>
-
-<p>Delhi</p>
-
-<p>3 BHK</p>
-
-<div class="price">₹1.2 Cr</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
 
 
 <footer>
 
-<p>© 2026 Smart Property Portal</p>
+<p>© 2026 SmartProperty Portal</p>
 
 </footer>
 
@@ -355,33 +248,29 @@ signOut
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
-const firebaseConfig={
+const firebaseConfig = {
 
 apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-
 authDomain:"smart-property-portal.firebaseapp.com",
-
 projectId:"smart-property-portal",
-
 storageBucket:"smart-property-portal.firebasestorage.app",
-
 messagingSenderId:"407241446660",
-
 appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
 
 }
 
 
-const app=initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
-const db=getFirestore(app)
+const db = getFirestore(app)
 
-const auth=getAuth(app)
+const auth = getAuth(app)
 
-const grid=document.getElementById("propertyGrid")
 
-let properties=[]
+const grid = document.getElementById("propertyGrid")
 
+
+/* AUTH CHECK */
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -389,94 +278,98 @@ if(!user){
 
 window.location.href="login.html"
 
-return
-
-}
+}else{
 
 loadProperties()
 
+}
+
 })
 
+
+/* LOAD PROPERTIES */
 
 async function loadProperties(){
 
-const snapshot=await getDocs(collection(db,"properties"))
+grid.innerHTML="Loading properties..."
+
+const snapshot = await getDocs(collection(db,"properties"))
 
 grid.innerHTML=""
 
-properties=[]
+snapshot.forEach(doc=>{
 
-snapshot.forEach((doc)=>{
+const p = doc.data()
 
-const p=doc.data()
-
-p.id=doc.id
-
-properties.push(p)
-
-renderProperty(p)
-
-})
-
-}
-
-
-function renderProperty(p){
-
-grid.innerHTML+=`
-
-<a href="property.html?id=${p.id}" style="text-decoration:none;color:black">
+grid.innerHTML += `
 
 <div class="card">
 
 <img src="${p.image}">
 
-<div class="card-body">
+<div class="card-content">
 
 <h3>${p.title}</h3>
 
-<p>${p.city}</p>
-
-<p>${p.bhk}</p>
+<div class="city">${p.city}</div>
 
 <div class="price">₹${p.price}</div>
 
-</div>
+<a href="property.html?id=${doc.id}">View Details</a>
 
 </div>
 
-</a>
+</div>
 
 `
+
+})
 
 }
 
 
-/* SEARCH FUNCTION */
 
-window.searchProperties=function(){
+/* SEARCH */
 
-const city=document.getElementById("citySearch").value.toLowerCase()
+window.searchProperties = async function(){
 
-const bhk=document.getElementById("bhkSearch").value.toLowerCase()
+const city = document.getElementById("citySearch").value.toLowerCase()
+const bhk = document.getElementById("bhkSearch").value
 
-const price=document.getElementById("priceSearch").value
+const snapshot = await getDocs(collection(db,"properties"))
 
 grid.innerHTML=""
 
-properties.forEach(p=>{
+snapshot.forEach(doc=>{
+
+const p = doc.data()
 
 if(
-
-(!city || p.city.toLowerCase().includes(city)) &&
-
-(!bhk || p.bhk.toLowerCase().includes(bhk)) &&
-
-(!price || Number(p.price)<=Number(price))
-
+(p.city.toLowerCase().includes(city)) &&
+(bhk=="" || p.bhk==bhk)
 ){
 
-renderProperty(p)
+grid.innerHTML += `
+
+<div class="card">
+
+<img src="${p.image}">
+
+<div class="card-content">
+
+<h3>${p.title}</h3>
+
+<div class="city">${p.city}</div>
+
+<div class="price">₹${p.price}</div>
+
+<a href="property.html?id=${doc.id}">View Details</a>
+
+</div>
+
+</div>
+
+`
 
 }
 
@@ -485,11 +378,12 @@ renderProperty(p)
 }
 
 
+
 /* LOGOUT */
 
-document.getElementById("logoutBtn").onclick=()=>{
+document.getElementById("logoutBtn").onclick = async () => {
 
-signOut(auth)
+await signOut(auth)
 
 window.location.href="login.html"
 

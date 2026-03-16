@@ -1,199 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Smart Property Portal</title>
+<title>SmartProperty</title>
 
-<style>
-
-/* GLOBAL */
-
-body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f5f7fa;
-}
-
-/* NAVBAR */
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 40px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#1976d2;
-}
-
-nav a{
-margin-left:20px;
-text-decoration:none;
-color:#333;
-font-weight:500;
-}
-
-/* HERO */
-
-.hero{
-background:linear-gradient(120deg,#1976d2,#42a5f5);
-color:white;
-padding:80px 20px;
-text-align:center;
-}
-
-.hero h1{
-font-size:40px;
-margin-bottom:20px;
-}
-
-/* SEARCH */
-
-.search-box{
-background:white;
-padding:20px;
-border-radius:10px;
-max-width:700px;
-margin:30px auto 0 auto;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.search-box input,
-.search-box select{
-padding:10px;
-flex:1;
-border:1px solid #ddd;
-border-radius:5px;
-}
-
-.search-box button{
-background:#1976d2;
-border:none;
-color:white;
-padding:10px 20px;
-border-radius:5px;
-cursor:pointer;
-}
-
-/* PROPERTY GRID */
-
-.container{
-max-width:1200px;
-margin:auto;
-padding:40px 20px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:25px;
-}
-
-/* PROPERTY CARD */
-
-.card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-transition:0.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
-}
-
-.card-content{
-padding:15px;
-}
-
-.price{
-font-size:20px;
-color:#1976d2;
-font-weight:bold;
-margin:10px 0;
-}
-
-.city{
-color:#777;
-font-size:14px;
-}
-
-.card a{
-display:inline-block;
-margin-top:10px;
-text-decoration:none;
-background:#1976d2;
-color:white;
-padding:8px 12px;
-border-radius:5px;
-}
-
-/* FOOTER */
-
-footer{
-background:#222;
-color:white;
-padding:30px;
-text-align:center;
-margin-top:50px;
-}
-
-</style>
+<script src="https://cdn.tailwindcss.com"></script>
 
 </head>
 
+<body class="bg-gray-100">
 
-<body>
 
+<!-- NAVBAR -->
 
-<header>
+<header class="bg-white shadow-md">
 
-<div class="logo">SmartProperty</div>
+<div class="max-w-7xl mx-auto flex justify-between items-center p-4">
 
-<nav>
+<h1 class="text-2xl font-bold text-blue-600">SmartProperty</h1>
 
-<a href="index.html">Home</a>
-<a href="post-property.html">Post Property</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="login.html">Login</a>
-<a href="#" id="logoutBtn">Logout</a>
+<nav class="space-x-6">
+
+<a href="index.html" class="hover:text-blue-600">Home</a>
+<a href="post-property.html" class="hover:text-blue-600">Post Property</a>
+<a href="dashboard.html" class="hover:text-blue-600">Dashboard</a>
+<a href="login.html" class="hover:text-blue-600">Login</a>
 
 </nav>
+
+</div>
 
 </header>
 
 
 
-<section class="hero">
+<!-- HERO SECTION -->
 
-<h1>Find Your Perfect Rental Home</h1>
+<section class="relative">
 
-<div class="search-box">
+<img 
+src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4"
+class="w-full h-[420px] object-cover">
 
-<input id="citySearch" placeholder="Search city">
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
 
-<select id="bhkSearch">
+<div class="text-center text-white">
+
+<h2 class="text-4xl font-bold mb-6">
+Find Your Dream Rental Home
+</h2>
+
+
+<!-- SEARCH BAR -->
+
+<div class="bg-white p-4 rounded-lg shadow-lg flex gap-3 w-[600px] mx-auto">
+
+<input
+id="citySearch"
+placeholder="Search City"
+class="border p-2 flex-1 rounded">
+
+<select
+id="bhkSearch"
+class="border p-2 rounded">
 
 <option value="">Any BHK</option>
 <option>1 BHK</option>
@@ -202,7 +74,17 @@ margin-top:50px;
 
 </select>
 
-<button onclick="searchProperties()">Search</button>
+<button
+onclick="searchProperties()"
+class="bg-blue-600 text-white px-6 rounded">
+
+Search
+
+</button>
+
+</div>
+
+</div>
 
 </div>
 
@@ -210,17 +92,27 @@ margin-top:50px;
 
 
 
-<div class="container">
+<!-- PROPERTY LIST -->
 
-<h2>Available Properties</h2>
+<section class="max-w-7xl mx-auto p-6">
 
-<div id="propertyGrid" class="grid"></div>
+<h2 class="text-2xl font-semibold mb-6">
+Available Properties
+</h2>
+
+<div
+id="propertyGrid"
+class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
 </div>
 
+</section>
 
 
-<footer>
+
+<!-- FOOTER -->
+
+<footer class="bg-gray-900 text-white text-center p-6 mt-10">
 
 <p>© 2026 SmartProperty Portal</p>
 
@@ -242,10 +134,10 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
 import {
 getAuth,
-onAuthStateChanged,
-signOut
+onAuthStateChanged
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+
 
 
 const firebaseConfig = {
@@ -266,11 +158,11 @@ const db = getFirestore(app)
 
 const auth = getAuth(app)
 
-
 const grid = document.getElementById("propertyGrid")
 
 
-/* AUTH CHECK */
+
+/* LOGIN CHECK */
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -287,11 +179,10 @@ loadProperties()
 })
 
 
+
 /* LOAD PROPERTIES */
 
 async function loadProperties(){
-
-grid.innerHTML="Loading properties..."
 
 const snapshot = await getDocs(collection(db,"properties"))
 
@@ -303,19 +194,31 @@ const p = doc.data()
 
 grid.innerHTML += `
 
-<div class="card">
+<div class="bg-white rounded-lg shadow hover:shadow-xl transition">
 
-<img src="${p.image}">
+<img src="${p.image}" class="h-52 w-full object-cover rounded-t">
 
-<div class="card-content">
+<div class="p-4">
 
-<h3>${p.title}</h3>
+<h3 class="font-semibold text-lg">
+${p.title}
+</h3>
 
-<div class="city">${p.city}</div>
+<p class="text-gray-500">
+${p.city}
+</p>
 
-<div class="price">₹${p.price}</div>
+<p class="text-blue-600 font-bold mt-2">
+₹${p.price}/month
+</p>
 
-<a href="property.html?id=${doc.id}">View Details</a>
+<a
+href="property.html?id=${doc.id}"
+class="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+
+View Details
+
+</a>
 
 </div>
 
@@ -333,8 +236,8 @@ grid.innerHTML += `
 
 window.searchProperties = async function(){
 
-const city = document.getElementById("citySearch").value.toLowerCase()
-const bhk = document.getElementById("bhkSearch").value
+const city=document.getElementById("citySearch").value.toLowerCase()
+const bhk=document.getElementById("bhkSearch").value
 
 const snapshot = await getDocs(collection(db,"properties"))
 
@@ -345,25 +248,37 @@ snapshot.forEach(doc=>{
 const p = doc.data()
 
 if(
-(p.city.toLowerCase().includes(city)) &&
+p.city.toLowerCase().includes(city) &&
 (bhk=="" || p.bhk==bhk)
 ){
 
 grid.innerHTML += `
 
-<div class="card">
+<div class="bg-white rounded-lg shadow hover:shadow-xl transition">
 
-<img src="${p.image}">
+<img src="${p.image}" class="h-52 w-full object-cover rounded-t">
 
-<div class="card-content">
+<div class="p-4">
 
-<h3>${p.title}</h3>
+<h3 class="font-semibold text-lg">
+${p.title}
+</h3>
 
-<div class="city">${p.city}</div>
+<p class="text-gray-500">
+${p.city}
+</p>
 
-<div class="price">₹${p.price}</div>
+<p class="text-blue-600 font-bold mt-2">
+₹${p.price}/month
+</p>
 
-<a href="property.html?id=${doc.id}">View Details</a>
+<a
+href="property.html?id=${doc.id}"
+class="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded">
+
+View Details
+
+</a>
 
 </div>
 
@@ -377,20 +292,7 @@ grid.innerHTML += `
 
 }
 
-
-
-/* LOGOUT */
-
-document.getElementById("logoutBtn").onclick = async () => {
-
-await signOut(auth)
-
-window.location.href="login.html"
-
-}
-
 </script>
-
 
 </body>
 </html>

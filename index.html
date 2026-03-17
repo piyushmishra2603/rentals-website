@@ -5,16 +5,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SmartRent Premium</title>
+<title>SmartRent Ultra</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 
-/* Glass navbar */
+/* Glass */
 .glass{
-backdrop-filter: blur(10px);
+backdrop-filter: blur(12px);
 background: rgba(255,255,255,0.7);
+}
+
+/* Dark mode */
+.dark{
+background:#0f172a;
+color:white;
+}
+
+/* Skyline animation */
+.skyline{
+position:fixed;
+bottom:0;
+width:200%;
+height:120px;
+background:url('https://i.ibb.co/7k0KZ0n/city-skyline.png') repeat-x;
+background-size:contain;
+animation: move 30s linear infinite;
+opacity:0.4;
+z-index:-1;
+}
+
+@keyframes move{
+0%{transform:translateX(0);}
+100%{transform:translateX(-50%);}
+}
+
+/* Parallax */
+.parallax{
+background-attachment: fixed;
 }
 
 /* Toast */
@@ -33,16 +62,17 @@ display:none;
 
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 relative" id="body">
 
+<!-- SKYLINE -->
+<div class="skyline"></div>
 
 <!-- NAVBAR -->
-
 <header class="glass fixed w-full z-50 shadow">
 
 <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
 
-<h1 class="text-2xl font-bold text-blue-600 cursor-pointer" id="logo">
+<h1 class="text-2xl font-bold text-blue-600">
 SmartRent
 </h1>
 
@@ -53,6 +83,11 @@ SmartRent
 <a href="dashboard.html">Dashboard</a>
 <a href="login.html">Login</a>
 
+<button onclick="toggleMode()" 
+class="bg-gray-800 text-white px-3 py-1 rounded">
+🌙
+</button>
+
 </nav>
 
 </div>
@@ -60,20 +95,29 @@ SmartRent
 </header>
 
 
-
-<!-- HERO -->
-
+<!-- HERO WITH VIDEO -->
 <section class="pt-20 relative">
 
-<div class="h-[420px] bg-gradient-to-r from-blue-600 to-indigo-700 flex items-center justify-center">
+<div class="h-[420px] relative overflow-hidden">
+
+<!-- VIDEO -->
+<video autoplay muted loop class="w-full h-full object-cover">
+<source src="https://cdn.coverr.co/videos/coverr-city-traffic-5176/1080p.mp4" type="video/mp4">
+</video>
+
+<!-- OVERLAY -->
+<div class="absolute inset-0 bg-black/60"></div>
+
+<!-- CONTENT -->
+<div class="absolute inset-0 flex items-center justify-center">
 
 <div class="text-center text-white">
 
 <h2 class="text-4xl font-bold mb-6">
-Find Premium Rental Homes
+Find Luxury Rental Homes
 </h2>
 
-<div class="bg-white p-4 rounded-xl shadow-lg flex flex-wrap gap-3 justify-center">
+<div class="bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg flex flex-wrap gap-3 justify-center">
 
 <input id="city" placeholder="City"
 class="border p-2 rounded w-40">
@@ -103,12 +147,19 @@ Search
 
 </div>
 
+</div>
+
 </section>
 
 
+<!-- PARALLAX SECTION -->
+<section class="parallax h-64 flex items-center justify-center text-white text-2xl font-bold"
+style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156'); background-size:cover;">
+Explore Premium Living
+</section>
 
-<!-- PROPERTY GRID -->
 
+<!-- PROPERTIES -->
 <section class="max-w-7xl mx-auto p-6">
 
 <h2 class="text-2xl font-semibold mb-6">
@@ -121,10 +172,7 @@ class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
 </section>
 
-
-
 <div id="toast"></div>
-
 
 
 <script type="module">
@@ -153,17 +201,18 @@ authDomain:"smart-property-portal.firebaseapp.com",
 projectId:"smart-property-portal"
 }
 
-
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
 
 const grid = document.getElementById("grid")
 
-
+/* DARK MODE */
+window.toggleMode = function(){
+document.getElementById("body").classList.toggle("dark")
+}
 
 /* TOAST */
-
 function showToast(msg){
 const t=document.getElementById("toast")
 t.innerText=msg
@@ -171,10 +220,7 @@ t.style.display="block"
 setTimeout(()=>t.style.display="none",2000)
 }
 
-
-
 /* LOGIN */
-
 onAuthStateChanged(auth,(user)=>{
 if(!user){
 window.location.href="login.html"
@@ -183,40 +229,26 @@ load()
 }
 })
 
-
-
 /* LOAD */
-
 async function load(){
 
-grid.innerHTML = skeleton()
+grid.innerHTML="Loading..."
 
 const snapshot = await getDocs(collection(db,"properties"))
 
 grid.innerHTML=""
 
 snapshot.forEach(doc=>{
-
 grid.innerHTML += card(doc.data(),doc.id)
-
 })
 
 }
 
-
-
 /* CARD */
-
 function card(p,id){
 
 return `
-
-<div class="bg-white rounded-xl shadow hover:shadow-2xl transition overflow-hidden relative">
-
-<!-- Badge -->
-<div class="absolute top-2 left-2 bg-yellow-400 text-xs px-2 py-1 rounded">
-Featured
-</div>
+<div class="bg-white/90 backdrop-blur rounded-xl shadow hover:shadow-2xl transition overflow-hidden">
 
 <img src="${p.image}" class="h-52 w-full object-cover">
 
@@ -224,21 +256,20 @@ Featured
 
 <h3 class="font-semibold text-lg">${p.title}</h3>
 
-<p class="text-gray-500">${p.city} • ${p.bhk}</p>
+<p>${p.city} • ${p.bhk}</p>
 
-<p class="text-green-600 font-bold mt-2">
+<p class="text-green-600 font-bold">
 ₹${p.rent}/month
 </p>
 
-<div class="flex justify-between items-center mt-3">
+<div class="flex justify-between mt-3">
 
 <a href="property.html?id=${id}"
 class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
 View
 </a>
 
-<button onclick="saveProperty('${id}')"
-class="text-red-500 text-lg">
+<button onclick="saveProperty()" class="text-red-500">
 ❤️
 </button>
 
@@ -247,37 +278,15 @@ class="text-red-500 text-lg">
 </div>
 
 </div>
-
 `
-
 }
-
-
-
-/* SKELETON */
-
-function skeleton(){
-let s=""
-for(let i=0;i<6;i++){
-s+=`<div class="bg-gray-200 h-64 rounded animate-pulse"></div>`
-}
-return s
-}
-
-
 
 /* SAVE */
-
-window.saveProperty = function(id){
-
-showToast("Saved to wishlist ❤️")
-
+window.saveProperty = function(){
+showToast("Saved ❤️")
 }
 
-
-
 /* SEARCH */
-
 window.search = async function(){
 
 const city=document.getElementById("city").value.toLowerCase()

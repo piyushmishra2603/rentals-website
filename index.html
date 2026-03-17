@@ -5,9 +5,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SmartProperty</title>
+<title>SmartRent Premium</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+/* Glass navbar */
+.glass{
+backdrop-filter: blur(10px);
+background: rgba(255,255,255,0.7);
+}
+
+/* Toast */
+#toast{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#333;
+color:#fff;
+padding:12px 18px;
+border-radius:8px;
+display:none;
+}
+
+</style>
 
 </head>
 
@@ -16,18 +38,20 @@
 
 <!-- NAVBAR -->
 
-<header class="bg-white shadow-md">
+<header class="glass fixed w-full z-50 shadow">
 
 <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
 
-<h1 class="text-2xl font-bold text-blue-600">SmartProperty</h1>
+<h1 class="text-2xl font-bold text-blue-600 cursor-pointer" id="logo">
+SmartRent
+</h1>
 
 <nav class="space-x-6">
 
-<a href="index.html" class="hover:text-blue-600">Home</a>
-<a href="post-property.html" class="hover:text-blue-600">Post Property</a>
-<a href="dashboard.html" class="hover:text-blue-600">Dashboard</a>
-<a href="login.html" class="hover:text-blue-600">Login</a>
+<a href="index.html">Home</a>
+<a href="post-property.html">Post</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="login.html">Login</a>
 
 </nav>
 
@@ -37,49 +61,40 @@
 
 
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 
-<section class="relative">
+<section class="pt-20 relative">
 
-<img 
-src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4"
-class="w-full h-[420px] object-cover">
-
-<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+<div class="h-[420px] bg-gradient-to-r from-blue-600 to-indigo-700 flex items-center justify-center">
 
 <div class="text-center text-white">
 
 <h2 class="text-4xl font-bold mb-6">
-Find Your Dream Rental Home
+Find Premium Rental Homes
 </h2>
 
+<div class="bg-white p-4 rounded-xl shadow-lg flex flex-wrap gap-3 justify-center">
 
-<!-- SEARCH BAR -->
+<input id="city" placeholder="City"
+class="border p-2 rounded w-40">
 
-<div class="bg-white p-4 rounded-lg shadow-lg flex gap-3 w-[600px] mx-auto">
-
-<input
-id="citySearch"
-placeholder="Search City"
-class="border p-2 flex-1 rounded">
-
-<select
-id="bhkSearch"
-class="border p-2 rounded">
-
+<select id="bhk" class="border p-2 rounded">
 <option value="">Any BHK</option>
 <option>1 BHK</option>
 <option>2 BHK</option>
 <option>3 BHK</option>
-
 </select>
 
-<button
-onclick="searchProperties()"
-class="bg-blue-600 text-white px-6 rounded">
+<select id="rent" class="border p-2 rounded">
+<option value="">Budget</option>
+<option value="10000">Under ₹10k</option>
+<option value="20000">Under ₹20k</option>
+<option value="30000">Under ₹30k</option>
+</select>
 
+<button onclick="search()"
+class="bg-blue-600 text-white px-5 rounded">
 Search
-
 </button>
 
 </div>
@@ -92,31 +107,23 @@ Search
 
 
 
-<!-- PROPERTY LIST -->
+<!-- PROPERTY GRID -->
 
 <section class="max-w-7xl mx-auto p-6">
 
 <h2 class="text-2xl font-semibold mb-6">
-Available Properties
+Premium Rentals
 </h2>
 
-<div
-id="propertyGrid"
-class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
+<div id="grid"
+class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 </div>
 
 </section>
 
 
 
-<!-- FOOTER -->
-
-<footer class="bg-gray-900 text-white text-center p-6 mt-10">
-
-<p>© 2026 SmartProperty Portal</p>
-
-</footer>
+<div id="toast"></div>
 
 
 
@@ -141,48 +148,48 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 
 const firebaseConfig = {
-
 apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
 authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal",
-storageBucket:"smart-property-portal.firebasestorage.app",
-messagingSenderId:"407241446660",
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
-
+projectId:"smart-property-portal"
 }
 
 
 const app = initializeApp(firebaseConfig)
-
 const db = getFirestore(app)
-
 const auth = getAuth(app)
 
-const grid = document.getElementById("propertyGrid")
+const grid = document.getElementById("grid")
 
 
 
-/* LOGIN CHECK */
+/* TOAST */
 
-onAuthStateChanged(auth,(user)=>{
-
-if(!user){
-
-window.location.href="login.html"
-
-}else{
-
-loadProperties()
-
+function showToast(msg){
+const t=document.getElementById("toast")
+t.innerText=msg
+t.style.display="block"
+setTimeout(()=>t.style.display="none",2000)
 }
 
+
+
+/* LOGIN */
+
+onAuthStateChanged(auth,(user)=>{
+if(!user){
+window.location.href="login.html"
+}else{
+load()
+}
 })
 
 
 
-/* LOAD PROPERTIES */
+/* LOAD */
 
-async function loadProperties(){
+async function load(){
+
+grid.innerHTML = skeleton()
 
 const snapshot = await getDocs(collection(db,"properties"))
 
@@ -190,35 +197,52 @@ grid.innerHTML=""
 
 snapshot.forEach(doc=>{
 
-const p = doc.data()
+grid.innerHTML += card(doc.data(),doc.id)
 
-grid.innerHTML += `
+})
 
-<div class="bg-white rounded-lg shadow hover:shadow-xl transition">
+}
 
-<img src="${p.image}" class="h-52 w-full object-cover rounded-t">
+
+
+/* CARD */
+
+function card(p,id){
+
+return `
+
+<div class="bg-white rounded-xl shadow hover:shadow-2xl transition overflow-hidden relative">
+
+<!-- Badge -->
+<div class="absolute top-2 left-2 bg-yellow-400 text-xs px-2 py-1 rounded">
+Featured
+</div>
+
+<img src="${p.image}" class="h-52 w-full object-cover">
 
 <div class="p-4">
 
-<h3 class="font-semibold text-lg">
-${p.title}
-</h3>
+<h3 class="font-semibold text-lg">${p.title}</h3>
 
-<p class="text-gray-500">
-${p.city}
+<p class="text-gray-500">${p.city} • ${p.bhk}</p>
+
+<p class="text-green-600 font-bold mt-2">
+₹${p.rent}/month
 </p>
 
-<p class="text-blue-600 font-bold mt-2">
-₹${p.price}/month
-</p>
+<div class="flex justify-between items-center mt-3">
 
-<a
-href="property.html?id=${doc.id}"
-class="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded">
-
-View Details
-
+<a href="property.html?id=${id}"
+class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+View
 </a>
+
+<button onclick="saveProperty('${id}')"
+class="text-red-500 text-lg">
+❤️
+</button>
+
+</div>
 
 </div>
 
@@ -226,7 +250,27 @@ View Details
 
 `
 
-})
+}
+
+
+
+/* SKELETON */
+
+function skeleton(){
+let s=""
+for(let i=0;i<6;i++){
+s+=`<div class="bg-gray-200 h-64 rounded animate-pulse"></div>`
+}
+return s
+}
+
+
+
+/* SAVE */
+
+window.saveProperty = function(id){
+
+showToast("Saved to wishlist ❤️")
 
 }
 
@@ -234,10 +278,11 @@ View Details
 
 /* SEARCH */
 
-window.searchProperties = async function(){
+window.search = async function(){
 
-const city=document.getElementById("citySearch").value.toLowerCase()
-const bhk=document.getElementById("bhkSearch").value
+const city=document.getElementById("city").value.toLowerCase()
+const bhk=document.getElementById("bhk").value
+const rent=document.getElementById("rent").value
 
 const snapshot = await getDocs(collection(db,"properties"))
 
@@ -245,47 +290,14 @@ grid.innerHTML=""
 
 snapshot.forEach(doc=>{
 
-const p = doc.data()
+const p=doc.data()
 
 if(
 p.city.toLowerCase().includes(city) &&
-(bhk=="" || p.bhk==bhk)
+(bhk=="" || p.bhk==bhk) &&
+(rent=="" || p.rent <= rent)
 ){
-
-grid.innerHTML += `
-
-<div class="bg-white rounded-lg shadow hover:shadow-xl transition">
-
-<img src="${p.image}" class="h-52 w-full object-cover rounded-t">
-
-<div class="p-4">
-
-<h3 class="font-semibold text-lg">
-${p.title}
-</h3>
-
-<p class="text-gray-500">
-${p.city}
-</p>
-
-<p class="text-blue-600 font-bold mt-2">
-₹${p.price}/month
-</p>
-
-<a
-href="property.html?id=${doc.id}"
-class="inline-block mt-3 bg-blue-600 text-white px-4 py-2 rounded">
-
-View Details
-
-</a>
-
-</div>
-
-</div>
-
-`
-
+grid.innerHTML += card(p,doc.id)
 }
 
 })

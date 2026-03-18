@@ -1,201 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
 <title>User Dashboard</title>
 
+<script src="https://cdn.tailwindcss.com"></script>
+
 <style>
-
-body{
-font-family:Arial;
-background:#f4f6f9;
-margin:0;
+body {
+  background: linear-gradient(to right, #0f172a, #1e293b);
 }
-
-header{
-background:white;
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#1976d2;
-}
-
-.container{
-padding:40px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.card img{
-width:100%;
-height:170px;
-object-fit:cover;
-}
-
-.card-body{
-padding:15px;
-}
-
-button{
-padding:8px 14px;
-background:red;
-border:none;
-color:white;
-cursor:pointer;
-margin-top:10px;
-}
-
 </style>
-
 </head>
 
-<body>
+<body class="text-white">
 
-<header>
+<div class="max-w-6xl mx-auto p-6">
 
-<div class="logo">User Dashboard</div>
+<h1 class="text-3xl font-bold mb-6">👤 Dashboard</h1>
 
-<div>
-
-<a href="index.html">Home</a>
-<a href="post-property.html">Post Property</a>
-
+<!-- PROFILE -->
+<div class="bg-white/10 p-4 rounded-xl mb-6">
+  <h2 class="text-xl mb-2">Your Profile</h2>
+  <p id="userEmail"></p>
 </div>
 
-</header>
-
-<div class="container">
-
-<h2>Your Properties</h2>
-
-<div class="grid" id="propertyGrid"></div>
+<!-- MY PROPERTIES -->
+<div>
+  <h2 class="text-2xl mb-4">🏠 My Listings</h2>
+  <div id="myProperties" class="grid md:grid-cols-3 gap-4"></div>
+</div>
 
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-getFirestore,
-collection,
-query,
-where,
-getDocs,
-deleteDoc,
-doc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  where,
+  deleteDoc,
+  doc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-getAuth,
-onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+// 🔥 ADD YOUR KEY HERE
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY_HERE",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal",
+  storageBucket: "smart-property-portal.firebasestorage.app",
+  messagingSenderId: "407241446660",
+  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+};
 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
-const firebaseConfig={
+let currentUser = null;
 
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal",
-storageBucket:"smart-property-portal.firebasestorage.app",
-messagingSenderId:"407241446660",
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+// 🔐 AUTH CHECK
+onAuthStateChanged(auth, async (user) => {
 
-}
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
 
-const app=initializeApp(firebaseConfig)
+  currentUser = user;
 
-const db=getFirestore(app)
+  document.getElementById("userEmail").innerText = user.email;
 
-const auth=getAuth(app)
+  // 👤 CREATE PROFILE (SAFE)
+  await setDoc(doc(db, "users", user.uid), {
+    email: user.email,
+    createdAt: Date.now()
+  }, { merge: true });
 
-const grid=document.getElementById("propertyGrid")
+  loadMyProperties();
+});
 
-onAuthStateChanged(auth,async(user)=>{
+// 🏠 LOAD USER PROPERTIES
+async function loadMyProperties(){
 
-if(!user){
+  const q = query(
+    collection(db, "properties"),
+    where("ownerId", "==", currentUser.uid)
+  );
 
-window.location.href="login.html"
-return
+  const snapshot = await getDocs(q);
 
-}
+  const container = document.getElementById("myProperties");
+  container.innerHTML = "";
 
-loadProperties(user)
+  snapshot.forEach(docSnap => {
+    const p = docSnap.data();
 
-})
+    const div = document.createElement("div");
+    div.className = "bg-white/10 p-4 rounded-xl";
 
+    div.innerHTML = `
+      <h3 class="text-xl font-bold">${p.title}</h3>
+      <p>${p.city}</p>
+      <p>₹${p.rent}</p>
 
-async function loadProperties(user){
+      <button onclick="deleteProperty('${docSnap.id}')"
+        class="bg-red-500 px-3 py-1 rounded mt-2">
+        Delete
+      </button>
+    `;
 
-const q=query(collection(db,"properties"),where("ownerId","==",user.uid))
-
-const snapshot=await getDocs(q)
-
-grid.innerHTML=""
-
-snapshot.forEach((docSnap)=>{
-
-const p=docSnap.data()
-
-grid.innerHTML+=`
-
-<div class="card">
-
-<img src="${p.image}">
-
-<div class="card-body">
-
-<h3>${p.title}</h3>
-
-<p>${p.city}</p>
-
-<p>${p.bhk}</p>
-
-<p>₹${p.price}</p>
-
-<button onclick="deleteProperty('${docSnap.id}')">Delete</button>
-
-</div>
-
-</div>
-
-`
-
-})
-
+    container.appendChild(div);
+  });
 }
 
-window.deleteProperty=async function(id){
-
-await deleteDoc(doc(db,"properties",id))
-
-alert("Property deleted")
-
-location.reload()
-
-}
+// 🗑 DELETE PROPERTY
+window.deleteProperty = async function(id){
+  await deleteDoc(doc(db,"properties",id));
+  loadMyProperties();
+};
 
 </script>
 

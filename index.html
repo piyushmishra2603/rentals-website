@@ -5,131 +5,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>SmartRent Ultra</title>
+<title>SmartRent AI</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-.glass{backdrop-filter:blur(12px);background:rgba(255,255,255,0.7);}
-.dark{background:#0f172a;color:white;}
-.skyline{
-position:fixed;bottom:0;width:200%;height:120px;
-background:url('https://i.ibb.co/7k0KZ0n/city-skyline.png') repeat-x;
-background-size:contain;
-animation:move 30s linear infinite;
-opacity:0.4;z-index:-1;
+body{
+font-family: 'Inter', sans-serif;
+background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
+color:white;
 }
-@keyframes move{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.parallax{background-attachment:fixed;}
-#toast{
-position:fixed;bottom:20px;right:20px;
-background:#333;color:#fff;padding:12px 18px;
-border-radius:8px;display:none;
+
+.glass{
+background: rgba(255,255,255,0.1);
+backdrop-filter: blur(10px);
+border-radius: 15px;
+}
+
+.card:hover{
+transform: scale(1.03);
+transition: 0.3s;
+}
+
+.hero{
+background:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab') no-repeat center/cover;
+height:40vh;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+font-weight:bold;
 }
 </style>
 
 </head>
 
-<body class="bg-gray-100 relative" id="body">
+<body>
 
-<div class="skyline"></div>
+<!-- HERO -->
+<div class="hero">SmartRent AI 🏙️</div>
 
-<!-- NAVBAR -->
-<header class="glass fixed w-full z-50 shadow">
-<div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-<h1 class="text-2xl font-bold text-blue-600">SmartRent</h1>
+<!-- NAV -->
+<div class="flex justify-between p-4">
+<div class="text-xl font-bold">SmartRent</div>
 
-<nav class="space-x-6">
-<a href="index.html">Home</a>
-<a href="post-property.html">Post</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="login.html">Login</a>
-
-<button onclick="toggleMode()" class="bg-gray-800 text-white px-3 py-1 rounded">
-🌙
-</button>
-</nav>
+<div class="flex gap-2">
+<a href="login.html" class="bg-blue-600 px-4 py-2 rounded">Login</a>
+<a href="signup.html" class="bg-green-600 px-4 py-2 rounded">Signup</a>
+<a href="post.html" class="bg-purple-600 px-4 py-2 rounded">Post</a>
 </div>
-</header>
+</div>
 
+<!-- FILTER -->
+<div class="max-w-6xl mx-auto p-4 flex gap-3 flex-wrap">
 
-<!-- HERO VIDEO -->
-<section class="pt-20 relative">
-<div class="h-[420px] relative overflow-hidden">
+<input id="cityFilter" placeholder="City" class="px-3 py-2 rounded text-black">
 
-<video autoplay muted loop class="w-full h-full object-cover">
-<source src="https://cdn.coverr.co/videos/coverr-city-traffic-5176/1080p.mp4">
-</video>
+<input id="rentFilter" type="number" placeholder="Max Rent" class="px-3 py-2 rounded text-black">
 
-<div class="absolute inset-0 bg-black/60"></div>
-
-<div class="absolute inset-0 flex items-center justify-center">
-<div class="text-center text-white">
-
-<h2 class="text-4xl font-bold mb-6">
-Find Luxury Rental Homes
-</h2>
-
-<div class="bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg flex flex-wrap gap-3 justify-center">
-
-<input id="city" placeholder="City" class="border p-2 rounded w-40">
-
-<select id="bhk" class="border p-2 rounded">
-<option value="">Any BHK</option>
+<select id="bhkFilter" class="px-3 py-2 rounded text-black">
+<option value="">All</option>
 <option>1 BHK</option>
 <option>2 BHK</option>
 <option>3 BHK</option>
 </select>
 
-<select id="rent" class="border p-2 rounded">
-<option value="">Budget</option>
-<option value="10000">Under ₹10k</option>
-<option value="20000">Under ₹20k</option>
-<option value="30000">Under ₹30k</option>
-</select>
-
-<button onclick="search()" class="bg-blue-600 text-white px-5 rounded">
-Search
+<button onclick="applyFilter()" class="bg-blue-600 px-4 py-2 rounded">
+Apply
 </button>
 
 </div>
 
+<!-- AI -->
+<div class="max-w-6xl mx-auto p-4">
+<div class="glass p-4">
+<h2>🤖 AI Insight</h2>
+<p id="aiInsight"></p>
 </div>
 </div>
 
-</div>
-</section>
-
-
-<!-- PARALLAX -->
-<section class="parallax h-64 flex items-center justify-center text-white text-2xl font-bold"
-style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156'); background-size:cover;">
-Explore Premium Living
-</section>
-
-
-<!-- PROPERTIES -->
-<section class="max-w-7xl mx-auto p-6">
-
-<h2 class="text-2xl font-semibold mb-6">Premium Rentals</h2>
-
-<div id="grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-</section>
-
-
-<!-- AI RECOMMEND -->
-<section class="max-w-7xl mx-auto p-6">
-
-<h2 class="text-2xl font-semibold mb-6">Recommended For You 🤖</h2>
-
-<div id="recommendGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-</section>
-
-
-<div id="toast"></div>
-
+<!-- GRID -->
+<div id="grid" class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-4"></div>
 
 <script type="module">
 
@@ -137,6 +93,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
+/* CONFIG */
 const firebaseConfig = {
 apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
 authDomain:"smart-property-portal.firebaseapp.com",
@@ -148,22 +105,11 @@ const db = getFirestore(app)
 const auth = getAuth(app)
 
 const grid = document.getElementById("grid")
-let allProperties = []
 
-/* DARK MODE */
-window.toggleMode = function(){
-document.getElementById("body").classList.toggle("dark")
-}
+let allProperties=[]
+let saved = JSON.parse(localStorage.getItem("saved")) || []
 
-/* TOAST */
-function showToast(msg){
-const t=document.getElementById("toast")
-t.innerText=msg
-t.style.display="block"
-setTimeout(()=>t.style.display="none",2000)
-}
-
-/* LOGIN */
+/* AUTH */
 onAuthStateChanged(auth,(user)=>{
 if(!user){
 window.location.href="login.html"
@@ -172,133 +118,123 @@ load()
 }
 })
 
+/* DEMO */
+const demoProperties = [
+{title:"Luxury 2BHK",city:"Mumbai",bhk:"2 BHK",rent:28000,image:"https://images.unsplash.com/photo-1507089947368-19c1da9775ae",phone:"9999999999",ownerId:"demo",demo:true},
+{title:"Budget 1BHK",city:"Delhi",bhk:"1 BHK",rent:12000,image:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",phone:"9999999999",ownerId:"demo",demo:true}
+]
+
 /* LOAD */
 async function load(){
 
 grid.innerHTML="Loading..."
 
-const snapshot = await getDocs(collection(db,"properties"))
+const snap = await getDocs(collection(db,"properties"))
 
-grid.innerHTML=""
 allProperties=[]
 
-snapshot.forEach(doc=>{
-const data=doc.data()
-allProperties.push({...data,id:doc.id})
-grid.innerHTML+=card(data,doc.id)
+snap.forEach(doc=>{
+let d=doc.data()
+allProperties.push({...d,id:doc.id})
 })
 
-recommend()
+allProperties=[...allProperties,...demoProperties]
+
+render(allProperties)
+generateAI()
+}
+
+/* AI */
+function generateAI(){
+let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+document.getElementById("aiInsight").innerText =
+`Avg rent ₹${Math.floor(avg)}. Lower = better deal.`
+}
+
+/* SORT */
+function smartSort(arr){
+let avg = arr.reduce((s,x)=>s+x.rent,0)/arr.length
+return arr.sort((a,b)=>{
+let s1=(avg-a.rent)+Math.random()*50
+let s2=(avg-b.rent)+Math.random()*50
+return s2-s1
+})
+}
+
+/* FILTER */
+function applyFilter(){
+
+let city = cityFilter.value.toLowerCase()
+let rent = rentFilter.value
+let bhk = bhkFilter.value
+
+let f = allProperties.filter(p=>
+(!city||p.city.toLowerCase().includes(city)) &&
+(!rent||p.rent<=rent) &&
+(!bhk||p.bhk===bhk)
+)
+
+render(f)
+}
+
+/* SAVE */
+function toggleSave(id){
+if(saved.includes(id)){
+saved=saved.filter(x=>x!==id)
+}else{
+saved.push(id)
+}
+localStorage.setItem("saved",JSON.stringify(saved))
+render(allProperties)
+}
+
+/* RENDER */
+function render(list){
+grid.innerHTML=""
+
+smartSort(list).forEach(p=>{
+grid.innerHTML+=card(p,p.id||Math.random())
+})
 }
 
 /* CARD */
 function card(p,id){
 
+let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+
+let tag = p.rent < avg*0.9 ? "💚 Deal"
+: p.rent > avg*1.2 ? "⚠️ High"
+: "👍 Fair"
+
 return `
-<div class="bg-white/90 backdrop-blur rounded-xl shadow hover:shadow-2xl transition overflow-hidden">
+<div class="glass card p-3">
 
-<img src="${p.image}" class="h-52 w-full object-cover">
+<img src="${p.image}" class="h-40 w-full rounded object-cover">
 
-<div class="p-4">
+<h3 class="mt-2">${p.title}</h3>
 
-<h3 class="font-semibold text-lg">${p.title}</h3>
-<p>${p.city} • ${p.bhk}</p>
+<p class="text-sm">${p.city} • ${p.bhk}</p>
 
-<p class="text-green-600 font-bold">
-₹${p.rent}/month
-</p>
+<p class="text-green-400 font-bold">₹${p.rent}</p>
 
-<div class="flex flex-wrap gap-2 mt-3">
+<p class="text-xs">${tag}</p>
 
-<a href="property.html?id=${id}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
-View
-</a>
+<div class="flex gap-2 mt-3">
 
-<button onclick="showPhone('${p.phone || ''}')" class="bg-gray-800 text-white px-3 py-1 rounded text-sm">
-Show Number
+<a href="property.html?id=${id}" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
+
+${p.demo ? `<span class="text-gray-400 text-sm">Demo</span>` : `
+<a href="chat.html?property=${id}&owner=${p.ownerId}" class="bg-purple-600 px-2 py-1 rounded text-sm">Chat</a>
+<a href="tel:${p.phone}" class="bg-green-600 px-2 py-1 rounded text-sm">Call</a>
+`}
+
+<button onclick="toggleSave('${id}')" class="text-red-500">
+${saved.includes(id)?"❤️":"🤍"}
 </button>
-
-<a href="tel:${p.phone || ''}" class="bg-green-600 text-white px-3 py-1 rounded text-sm">
-Call
-</a>
-
-<a href="https://wa.me/${p.phone || ''}" class="bg-green-500 text-white px-3 py-1 rounded text-sm">
-WhatsApp
-</a>
-
-<button onclick="saveProperty()" class="text-red-500 text-lg">
-❤️
-</button>
-
-</div>
 
 </div>
 </div>
 `
-}
-
-/* AI RECOMMEND */
-function recommend(){
-
-const recommendGrid = document.getElementById("recommendGrid")
-
-if(allProperties.length===0) return
-
-const base = allProperties[Math.floor(Math.random()*allProperties.length)]
-
-let filtered = allProperties.filter(p =>
-p.city===base.city &&
-Math.abs(p.rent-base.rent)<10000 &&
-p.bhk===base.bhk
-)
-
-if(filtered.length<3){
-filtered = allProperties.slice(0,3)
-}
-
-recommendGrid.innerHTML=""
-
-filtered.forEach(p=>{
-recommendGrid.innerHTML+=card(p,p.id)
-})
-}
-
-/* SEARCH */
-window.search = async function(){
-
-const city=document.getElementById("city").value.toLowerCase()
-const bhk=document.getElementById("bhk").value
-const rent=document.getElementById("rent").value
-
-const snapshot = await getDocs(collection(db,"properties"))
-
-grid.innerHTML=""
-
-snapshot.forEach(doc=>{
-
-const p=doc.data()
-
-if(
-p.city.toLowerCase().includes(city) &&
-(bhk=="" || p.bhk==bhk) &&
-(rent=="" || p.rent<=rent)
-){
-grid.innerHTML+=card(p,doc.id)
-}
-
-})
-
-}
-
-/* SAVE */
-window.saveProperty=function(){
-showToast("Saved ❤️")
-}
-
-/* PHONE */
-window.showPhone=function(phone){
-if(!phone){showToast("No number available");return}
-showToast("Owner: "+phone)
 }
 
 </script>

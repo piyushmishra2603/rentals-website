@@ -162,172 +162,75 @@ margin-top:10px;
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
-
-getFirestore,
-
-collection,
-
-addDoc,
-
-serverTimestamp
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-import {
-
-getAuth,
-
-onAuthStateChanged
-
-}
-
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-
-
-const firebaseConfig={
-
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-
-authDomain:"smart-property-portal.firebaseapp.com",
-
-projectId:"smart-property-portal",
-
-storageBucket:"smart-property-portal.firebasestorage.app",
-
-messagingSenderId:"407241446660",
-
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
-
-}
-
-
-const app=initializeApp(firebaseConfig)
-
-const db=getFirestore(app)
-
-const auth=getAuth(app)
-
-
-let currentUser=null
-
-
-/* AUTH CHECK */
-
-onAuthStateChanged(auth,(user)=>{
-
-if(!user){
-
-window.location.href="login.html"
-
-return
-
-}
-
-currentUser=user
-
-})
-
-
-const form=document.getElementById("propertyForm")
-
-const loading=document.getElementById("loading")
-
-
-/* IMAGE CONVERT TO BASE64 */
-
-function convertImage(file){
-
-return new Promise((resolve)=>{
-
-const reader=new FileReader()
-
-reader.onload=()=>resolve(reader.result)
-
-reader.readAsDataURL(file)
-
-})
-
-}
-
-
-/* FORM SUBMIT */
-
-form.addEventListener("submit",async(e)=>{
-
-e.preventDefault()
-
-loading.style.display="block"
-
-
-const title=document.getElementById("title").value
-
-const price=document.getElementById("price").value
-
-const city=document.getElementById("city").value
-
-const bhk=document.getElementById("bhk").value
-
-const area=document.getElementById("area").value
-
-const description=document.getElementById("description").value
-
-const imageFile=document.getElementById("imageInput").files[0]
-
-
-const imageBase64=await convertImage(imageFile)
-
-
-try{
-
-await addDoc(collection(db,"properties"),{
-
-title:title,
-
-price:Number(price),
-
-city:city,
-
-bhk:bhk,
-
-area:area,
-
-description:description,
-
-image:imageBase64,
-
-ownerId:currentUser.uid,
-
-ownerEmail:currentUser.email,
-
-createdAt:serverTimestamp()
-
-})
-
-
-alert("Property posted successfully!")
-
-window.location.href="dashboard.html"
-
-}
-
-catch(err){
-
-alert("Error posting property")
-
-console.error(err)
-
-}
-
-loading.style.display="none"
-
-})
-
+  getFirestore,
+  addDoc,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal",
+  storageBucket: "smart-property-portal.firebasestorage.app",
+  messagingSenderId: "407241446660",
+  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+let currentUser = null;
+
+// 🔐 AUTH CHECK (FIXES REDIRECT LOOP)
+onAuthStateChanged(auth, (user) => {
+
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+});
+
+// 🚀 POST PROPERTY
+window.postProperty = async function(){
+
+  if(!currentUser){
+    alert("Wait... logging in");
+    return;
+  }
+
+  const title = document.getElementById("title").value;
+  const city = document.getElementById("city").value;
+  const rent = document.getElementById("rent").value;
+
+  try {
+
+    await addDoc(collection(db,"properties"),{
+      title,
+      city,
+      rent,
+      ownerId: currentUser.uid, // ✅ FIXED
+      createdAt: Date.now()
+    });
+
+    alert("Property Added Successfully");
+
+    // ✅ REDIRECT FIX
+    window.location.href = "index.html";
+
+  } catch(err){
+    alert(err.message);
+  }
+};
 
 </script>
 

@@ -50,7 +50,6 @@ New property awaiting approval!
 
 <!-- ANALYTICS -->
 <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
-
 <div class="glass p-6 text-center">
 <h2 class="font-bold text-xl">Total Properties</h2>
 <p id="totalProperties" class="text-3xl mt-2">0</p>
@@ -68,7 +67,6 @@ New property awaiting approval!
 <p id="totalRevenue" class="text-3xl mt-2">0</p>
 <canvas id="revenueChart" class="mt-4"></canvas>
 </div>
-
 </div>
 
 <!-- PROPERTY MANAGEMENT -->
@@ -84,13 +82,12 @@ New property awaiting approval!
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 const firebaseConfig = {
-    apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    apiKey:"YOUR_API_KEY",
     authDomain:"smart-property-portal.firebaseapp.com",
     projectId:"smart-property-portal"
 }
@@ -99,28 +96,37 @@ const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
 
-// Only admin can access
-const adminUID = "s9xSrxFAxJSQ54C9voGQeAVJa053"
-
 const propertyList = document.getElementById("propertyList")
 const userList = document.getElementById("userList")
 const totalProperties = document.getElementById("totalProperties")
 const totalUsers = document.getElementById("totalUsers")
 const totalRevenue = document.getElementById("totalRevenue")
+const alertBox = document.getElementById("alertBox")
 
 let allProperties=[]
 let allUsers=[]
+let adminUID = null
 
 // Logout
 logoutBtn.addEventListener("click",()=>signOut(auth).then(()=>location.href="login.html"))
 
 // Auth check
-onAuthStateChanged(auth,(user)=>{
-    if(!user || user.uid!==adminUID){
-        alert("Unauthorized! Only admin can access.")
+onAuthStateChanged(auth, async (user)=>{
+    if(!user){
+        alert("Please log in as admin!")
         location.href="login.html"
-    }else{
-        loadDashboard()
+    } else {
+        adminUID = user.uid
+        // Show UID alert once
+        alert(`Logged in UID: ${adminUID}`)
+        // Optional: replace this with your own admin UID for safety
+        const allowedUID = "YOUR_UID_HERE"
+        if(adminUID !== allowedUID){
+            alert("Unauthorized access!")
+            location.href="login.html"
+        } else {
+            await loadDashboard()
+        }
     }
 })
 

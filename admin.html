@@ -42,7 +42,7 @@ New property awaiting approval!
 </div>
 
 <!-- SEARCH -->
-<div class="max-w-6xl mx-auto p-6 flex gap-3">
+<div class="max-w-6xl mx-auto p-6 flex gap-3 flex-wrap">
 <input id="searchProperty" placeholder="Search Property" class="px-3 py-2 rounded text-black flex-1">
 <input id="searchUser" placeholder="Search User" class="px-3 py-2 rounded text-black flex-1">
 <button onclick="applyAdminSearch()" class="bg-blue-600 px-4 py-2 rounded">Search</button>
@@ -50,6 +50,7 @@ New property awaiting approval!
 
 <!-- ANALYTICS -->
 <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
+
 <div class="glass p-6 text-center">
 <h2 class="font-bold text-xl">Total Properties</h2>
 <p id="totalProperties" class="text-3xl mt-2">0</p>
@@ -67,6 +68,7 @@ New property awaiting approval!
 <p id="totalRevenue" class="text-3xl mt-2">0</p>
 <canvas id="revenueChart" class="mt-4"></canvas>
 </div>
+
 </div>
 
 <!-- PROPERTY MANAGEMENT -->
@@ -105,25 +107,22 @@ const alertBox = document.getElementById("alertBox")
 
 let allProperties=[]
 let allUsers=[]
-let adminUID = null
 
 // Logout
 logoutBtn.addEventListener("click",()=>signOut(auth).then(()=>location.href="login.html"))
 
+// Admin email for access
+const adminEmail = "piyushmishra1903@gmail.com" // replace with your admin email
+
 // Auth check
-onAuthStateChanged(auth, async (user)=>{
-    if(!user){
+onAuthStateChanged(auth, async (user) => {
+    if (!user) {
         alert("Please log in as admin!")
-        location.href="login.html"
+        location.href = "login.html"
     } else {
-        adminUID = user.uid
-        // Show UID alert once
-        alert(`Logged in UID: ${adminUID}`)
-        // Optional: replace this with your own admin UID for safety
-        const allowedUID = "s9xSrxFAxJSQ54C9voGQeAVJa053"
-        if(adminUID !== allowedUID){
-            alert("Unauthorized access!")
-            location.href="login.html"
+        if (user.email !== adminEmail) {
+            alert("Unauthorized! Only admin can access.")
+            location.href = "login.html"
         } else {
             await loadDashboard()
         }

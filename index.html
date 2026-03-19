@@ -439,6 +439,42 @@ showRealActivity()
     </div>
     <p class="mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
 </footer>
+
+<script>
+const modal = document.getElementById("consentModal");
+const acceptBtn = document.getElementById("acceptBtn");
+const declineBtn = document.getElementById("declineBtn");
+
+// Show modal if consent not given
+if(localStorage.getItem("consentGiven") !== "true"){
+    modal.classList.remove("hidden");
+}
+
+// Accept button
+acceptBtn.addEventListener("click", ()=>{
+    localStorage.setItem("consentGiven","true");
+    modal.classList.add("hidden");
+});
+
+// Decline button
+declineBtn.addEventListener("click", ()=>{
+    alert("You must accept Privacy Policy & Terms to use SmartRent.");
+    window.location.href="https://www.google.com"; // or any other page
+});
+
+// Example: block Start Exploring button if consent not given
+const startBtn = document.getElementById("startBtn");
+if(startBtn){
+    startBtn.addEventListener("click", ()=>{
+        if(localStorage.getItem("consentGiven") !== "true"){
+            modal.classList.remove("hidden");
+            alert("Please accept Privacy Policy & Terms first!");
+            return;
+        }
+        // continue with normal start action
+    });
+}
+</script>
   
 </body>
 </html>

@@ -53,6 +53,7 @@ font-weight:bold;
 <a href="login.html" class="bg-blue-600 px-4 py-2 rounded">Login</a>
 <a href="signup.html" class="bg-green-600 px-4 py-2 rounded">Signup</a>
 <a href="post.html" class="bg-purple-600 px-4 py-2 rounded">Post</a>
+<button onclick="logoutUser()" class="bg-red-600 px-4 py-2 rounded">Logout</button>
 </div>
 </div>
 
@@ -80,7 +81,7 @@ Apply
 <div class="max-w-6xl mx-auto p-4">
 <div class="glass p-4">
 <h2>🤖 AI Insight</h2>
-<p id="aiInsight"></p>
+<p id="aiInsight">Loading AI...</p>
 </div>
 </div>
 
@@ -91,13 +92,16 @@ Apply
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
-/* CONFIG */
+/* 🔐 CONFIG — ADD YOUR API KEY */
 const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal"
+apiKey: "YOUR_API_KEY",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal",
+storageBucket: "smart-property-portal.firebasestorage.app",
+messagingSenderId: "407241446660",
+appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
 }
 
 const app = initializeApp(firebaseConfig)
@@ -106,101 +110,138 @@ const auth = getAuth(app)
 
 const grid = document.getElementById("grid")
 
-let allProperties=[]
+let allProperties = []
 let saved = JSON.parse(localStorage.getItem("saved")) || []
 
-/* AUTH */
-onAuthStateChanged(auth,(user)=>{
-if(!user){
-window.location.href="login.html"
-}else{
-load()
+/* 🔐 AUTH CHECK */
+onAuthStateChanged(auth, async (user) => {
+
+if (!user) {
+window.location.href = "login.html"
+return
 }
+
+await load()
+
 })
 
-/* DEMO */
+/* DEMO LISTINGS */
 const demoProperties = [
 {title:"Luxury 2BHK",city:"Mumbai",bhk:"2 BHK",rent:28000,image:"https://images.unsplash.com/photo-1507089947368-19c1da9775ae",phone:"9999999999",ownerId:"demo",demo:true},
 {title:"Budget 1BHK",city:"Delhi",bhk:"1 BHK",rent:12000,image:"https://images.unsplash.com/photo-1560448204-e02f11c3d0e2",phone:"9999999999",ownerId:"demo",demo:true}
 ]
 
-/* LOAD */
+/* LOAD DATA */
 async function load(){
 
-grid.innerHTML="Loading..."
+grid.innerHTML = "Loading properties..."
+
+try {
 
 const snap = await getDocs(collection(db,"properties"))
 
-allProperties=[]
+allProperties = []
 
 snap.forEach(doc=>{
-let d=doc.data()
-allProperties.push({...d,id:doc.id})
+let d = doc.data()
+allProperties.push({...d, id: doc.id})
 })
 
-allProperties=[...allProperties,...demoProperties]
+allProperties = [...allProperties, ...demoProperties]
 
 render(allProperties)
 generateAI()
+
+} catch(err){
+grid.innerHTML = "Error loading data"
+console.error(err)
 }
 
-/* AI */
+}
+
+/* AI INSIGHT */
 function generateAI(){
+
+if(allProperties.length === 0){
+document.getElementById("aiInsight").innerText = "No data available"
+return
+}
+
 let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+
 document.getElementById("aiInsight").innerText =
 `Avg rent ₹${Math.floor(avg)}. Lower = better deal.`
+
 }
 
-/* SORT */
+/* SMART SORT */
 function smartSort(arr){
+
+if(arr.length === 0) return arr
+
 let avg = arr.reduce((s,x)=>s+x.rent,0)/arr.length
+
 return arr.sort((a,b)=>{
-let s1=(avg-a.rent)+Math.random()*50
-let s2=(avg-b.rent)+Math.random()*50
-return s2-s1
+let s1 = (avg - a.rent) + Math.random()*50
+let s2 = (avg - b.rent) + Math.random()*50
+return s2 - s1
 })
+
 }
 
 /* FILTER */
-function applyFilter(){
+window.applyFilter = function(){
 
 let city = cityFilter.value.toLowerCase()
 let rent = rentFilter.value
 let bhk = bhkFilter.value
 
-let f = allProperties.filter(p=>
-(!city||p.city.toLowerCase().includes(city)) &&
-(!rent||p.rent<=rent) &&
-(!bhk||p.bhk===bhk)
+let filtered = allProperties.filter(p =>
+(!city || p.city.toLowerCase().includes(city)) &&
+(!rent || p.rent <= rent) &&
+(!bhk || p.bhk === bhk)
 )
 
-render(f)
+render(filtered)
+
 }
 
-/* SAVE */
-function toggleSave(id){
+/* SAVE PROPERTY */
+window.toggleSave = function(id){
+
 if(saved.includes(id)){
-saved=saved.filter(x=>x!==id)
+saved = saved.filter(x => x !== id)
 }else{
 saved.push(id)
 }
-localStorage.setItem("saved",JSON.stringify(saved))
+
+localStorage.setItem("saved", JSON.stringify(saved))
 render(allProperties)
+
 }
 
-/* RENDER */
+/* RENDER GRID */
 function render(list){
-grid.innerHTML=""
+
+grid.innerHTML = ""
+
+if(list.length === 0){
+grid.innerHTML = "<p>No properties found</p>"
+return
+}
 
 smartSort(list).forEach(p=>{
-grid.innerHTML+=card(p,p.id||Math.random())
+grid.innerHTML += card(p, p.id || Math.random())
 })
+
 }
 
-/* CARD */
+/* PROPERTY CARD */
 function card(p,id){
 
-let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+let avg = allProperties.length
+? allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+: 0
 
 let tag = p.rent < avg*0.9 ? "💚 Deal"
 : p.rent > avg*1.2 ? "⚠️ High"
@@ -235,6 +276,12 @@ ${saved.includes(id)?"❤️":"🤍"}
 </div>
 </div>
 `
+}
+
+/* LOGOUT */
+window.logoutUser = async function(){
+await signOut(auth)
+window.location.href = "login.html"
 }
 
 </script>

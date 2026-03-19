@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chat - SmartRent AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+font-family:'Inter',sans-serif;
+background:linear-gradient(to right,#141e30,#243b55);
+color:white;
+}
+
+.glass{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+}
+
+.msg{
+max-width:70%;
+padding:10px;
+border-radius:10px;
+margin:5px;
+}
+
+.sent{
+background:#4ade80;
+align-self:flex-end;
+color:black;
+}
+
+.received{
+background:#60a5fa;
+align-self:flex-start;
+}
+
+</style>
+
+</head>
+
+<body class="flex flex-col h-screen">
+
+<!-- HEADER -->
+<div class="glass p-4 flex justify-between items-center">
+<h2>💬 Chat</h2>
+<a href="index.html" class="bg-blue-600 px-3 py-1 rounded">Back</a>
+</div>
+
+<!-- MESSAGES -->
+<div id="chatBox" class="flex-1 overflow-y-auto p-4 flex flex-col"></div>
+
+<!-- TYPING -->
+<div id="typing" class="px-4 text-sm text-gray-300"></div>
+
+<!-- INPUT -->
+<div class="glass p-3 flex gap-2">
+
+<input id="msgInput" placeholder="Type message..."
+class="flex-1 p-2 rounded text-black">
+
+<input type="file" id="imgInput" class="hidden">
+
+<button onclick="sendImage()" class="bg-yellow-500 px-3 rounded">📷</button>
+
+<button onclick="sendMsg()" class="bg-green-500 px-4 rounded">
+Send
+</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { 
+getFirestore, 
+collection, 
+addDoc, 
+onSnapshot,
+query,
+orderBy,
+serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+import { 
+getAuth, 
+onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+
+/* CONFIG */
+const firebaseConfig = {
+apiKey:"YOUR_API_KEY",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
+}
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+const auth = getAuth(app)
+
+const chatBox = document.getElementById("chatBox")
+
+/* GET URL PARAMS */
+const url = new URLSearchParams(window.location.search)
+const propertyId = url.get("property")
+const ownerId = url.get("owner")
+
+let userId = null
+
+/* AUTH */
+onAuthStateChanged(auth,(user)=>{
+if(!user){
+window.location.href="login.html"
+}else{
+userId = user.uid
+loadChat()
+}
+})
+
+/* CHAT ID (UNIQUE PER USER + OWNER + PROPERTY) */
+function getChatId(){
+return [propertyId, userId, ownerId].sort().join("_")
+}
+
+/* LOAD CHAT */
+function loadChat(){
+
+const chatId = getChatId()
+
+const q = query(
+collection(db,"chats",chatId,"messages"),
+orderBy("time")
+)
+
+onSnapshot(q,(snap)=>{
+
+chatBox.innerHTML=""
+
+snap.forEach(doc=>{
+const m = doc.data()
+renderMsg(m)
+})
+
+chatBox.scrollTop = chatBox.scrollHeight
+
+})
+
+}
+
+/* SEND MESSAGE */
+window.sendMsg = async function(){
+
+const input = document.getElementById("msgInput")
+const text = input.value
+
+if(!text) return
+
+await addDoc(collection(db,"chats",getChatId(),"messages"),{
+text:text,
+sender:userId,
+time:serverTimestamp()
+})
+
+input.value=""
+
+}
+
+/* SEND IMAGE */
+window.sendImage = function(){
+document.getElementById("imgInput").click()
+}
+
+document.getElementById("imgInput").addEventListener("change", async (e)=>{
+
+const file = e.target.files[0]
+if(!file) return
+
+// SIMPLE BASE64 (for demo; production = Firebase Storage)
+const reader = new FileReader()
+
+reader.onload = async ()=>{
+await addDoc(collection(db,"chats",getChatId(),"messages"),{
+image:reader.result,
+sender:userId,
+time:serverTimestamp()
+})
+}
+
+reader.readAsDataURL(file)
+
+})
+
+/* RENDER MESSAGE */
+function renderMsg(m){
+
+const div = document.createElement("div")
+
+div.className = "msg " + (m.sender === userId ? "sent" : "received")
+
+if(m.text){
+div.innerText = m.text
+}
+
+if(m.image){
+const img = document.createElement("img")
+img.src = m.image
+img.className = "rounded mt-1 max-h-40"
+div.appendChild(img)
+}
+
+chatBox.appendChild(div)
+
+}
+
+/* ENTER KEY SEND */
+document.getElementById("msgInput").addEventListener("keypress",(e)=>{
+if(e.key==="Enter"){
+sendMsg()
+}
+})
+
+</script>
+
+</body>
+</html>

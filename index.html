@@ -353,34 +353,68 @@ offerPopup.style.display="block"
 })
 </script>
 
-  <!-- LIVE ACTIVITY FEED -->
+<!-- REALISTIC ACTIVITY FEED -->
 <div id="liveFeed" style="
 position:fixed;
 bottom:20px;
 left:20px;
-background:rgba(0,0,0,0.8);
-padding:10px 15px;
+background:rgba(0,0,0,0.85);
+padding:10px 14px;
 border-radius:10px;
-font-size:12px;
+font-size:13px;
 z-index:999;
-display:none;">
+display:none;
+max-width:220px;">
 </div>
 
-<script>
-const names=["Rahul","Amit","Sneha","Priya","Arjun","Neha"]
+<script type="module">
 
-setInterval(()=>{
-let name=names[Math.floor(Math.random()*names.length)]
-let city=["Mumbai","Delhi","Pune"][Math.floor(Math.random()*3)]
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
-liveFeed.innerText=`${name} from ${city} just upgraded 🚀`
+const db = getFirestore()
+
+async function showRealActivity(){
+
+try{
+const snap = await getDocs(collection(db,"users"))
+
+let users=[]
+
+snap.forEach(doc=>{
+let d=doc.data()
+if(d.plan && d.plan !== "free"){
+users.push(d)
+}
+})
+
+if(users.length===0) return
+
+let u = users[Math.floor(Math.random()*users.length)]
+
+let mins = Math.floor(Math.random()*5)+1
+
+liveFeed.innerText =
+`Someone upgraded to ${u.plan} • ${mins} min ago`
+
 liveFeed.style.display="block"
 
 setTimeout(()=>{
 liveFeed.style.display="none"
-},3000)
+},4000)
 
-},7000)
+}catch(e){
+console.log("No activity data")
+}
+
+}
+
+/* SHOW RARELY */
+setInterval(()=>{
+if(Math.random()>0.6){  // only sometimes
+showRealActivity()
+}
+},15000)
+
 </script>
   
 </body>

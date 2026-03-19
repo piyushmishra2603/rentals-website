@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SmartRent Premium</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+font-family:'Inter',sans-serif;
+}
+
+/* Glass UI */
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border-radius:20px;
+}
+
+/* Cards */
+.card:hover{
+transform:translateY(-10px) scale(1.03);
+transition:0.4s;
+box-shadow:0 0 25px rgba(255,255,255,0.2);
+}
+
+/* Modal */
+.modal{
+animation:fade 0.4s ease;
+}
+
+@keyframes fade{
+from{opacity:0;transform:scale(0.95)}
+to{opacity:1;transform:scale(1)}
+}
+
+/* Progress bar */
+.progress{
+height:6px;
+background:linear-gradient(to right,#00ffcc,#00aaff);
+animation:load 2s infinite linear;
+}
+
+@keyframes load{
+0%{width:0%}
+100%{width:100%}
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="text-center p-8">
+<h1 class="text-4xl font-bold">💎 SmartRent Premium</h1>
+<p class="text-gray-300">Secure UPI Checkout</p>
+</div>
+
+<!-- PLANS -->
+<div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto p-6">
+
+<div class="glass card p-6 text-center">
+<h2 class="text-xl font-bold">Free</h2>
+<p class="text-3xl mt-2">₹0</p>
+<button class="bg-gray-500 px-4 py-2 mt-5 rounded w-full">Current</button>
+</div>
+
+<div class="glass card p-6 text-center border border-blue-400">
+<h2 class="text-xl font-bold">Pro ⭐</h2>
+<p class="text-3xl mt-2">₹199</p>
+<button onclick="openPay('pro',199)" 
+class="bg-blue-600 px-4 py-2 mt-5 rounded w-full">
+Upgrade
+</button>
+</div>
+
+<div class="glass card p-6 text-center">
+<h2 class="text-xl font-bold">Premium 💎</h2>
+<p class="text-3xl mt-2">₹499</p>
+<button onclick="openPay('premium',499)" 
+class="bg-purple-600 px-4 py-2 mt-5 rounded w-full">
+Go Premium
+</button>
+</div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center modal">
+
+<div class="glass p-6 w-96 text-center relative">
+
+<h2 class="text-xl font-bold mb-2">Complete Payment</h2>
+
+<p id="details"></p>
+
+<!-- TIMER -->
+<p class="text-red-400 text-sm mt-2">
+Offer expires in <span id="timer">05:00</span>
+</p>
+
+<!-- QR -->
+<img id="qr" class="mx-auto my-4 rounded">
+
+<!-- UPI ID -->
+<div class="bg-black p-2 rounded flex justify-between items-center">
+<span id="upiId">yourupi@upi</span>
+<button onclick="copyUPI()" class="text-blue-400">Copy</button>
+</div>
+
+<!-- OPEN APP -->
+<a id="upiLink" class="bg-green-600 px-4 py-2 rounded block mt-3">
+Open UPI App
+</a>
+
+<!-- STATUS -->
+<div id="status" class="mt-4 text-yellow-400">
+Waiting for payment...
+</div>
+
+<div class="progress mt-2"></div>
+
+<!-- UTR -->
+<input id="utr" placeholder="Enter UTR Number"
+class="w-full px-3 py-2 mt-4 rounded text-black">
+
+<!-- FILE UPLOAD -->
+<input type="file" id="proof" class="mt-2 text-sm">
+
+<button onclick="confirmPay()" 
+class="bg-blue-600 px-4 py-2 mt-4 rounded w-full">
+Confirm Payment
+</button>
+
+<button onclick="closeModal()" class="text-red-400 mt-2">
+Cancel
+</button>
+
+</div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+const firebaseConfig = {
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
+}
+
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+
+let user=null
+let plan="",amount=0
+let time=300
+
+onAuthStateChanged(auth,(u)=>{
+if(!u) location.href="login.html"
+user=u
+})
+
+/* OPEN */
+window.openPay=function(p,a){
+
+plan=p
+amount=a
+
+modal.classList.remove("hidden")
+
+details.innerText=`${p.toUpperCase()} Plan - ₹${a}`
+
+qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=yourupi@upi&pn=SmartRent&am=${a}`
+
+upiLink.href=`upi://pay?pa=yourupi@upi&pn=SmartRent&am=${a}&cu=INR`
+
+startTimer()
+}
+
+/* TIMER */
+function startTimer(){
+let t=setInterval(()=>{
+time--
+let m=Math.floor(time/60)
+let s=time%60
+timer.innerText=`${m}:${s<10?'0'+s:s}`
+
+if(time<=0) clearInterval(t)
+
+},1000)
+}
+
+/* COPY */
+window.copyUPI=function(){
+navigator.clipboard.writeText("yourupi@upi")
+alert("Copied!")
+}
+
+/* CLOSE */
+window.closeModal=function(){
+modal.classList.add("hidden")
+}
+
+/* CONFIRM */
+window.confirmPay=async function(){
+
+let utrVal=document.getElementById("utr").value
+
+if(!utrVal) return alert("Enter UTR")
+
+status.innerText="Verifying Payment..."
+
+await setDoc(doc(db,"users",user.uid),{
+plan:plan,
+paid:true,
+utr:utrVal,
+amount:amount,
+status:"pending"
+},{merge:true})
+
+setTimeout(()=>{
+status.innerText="Payment Submitted 🎉"
+},1500)
+
+setTimeout(()=>{
+location.href="index.html"
+},2500)
+
+}
+
+</script>
+
+</body>
+</html>

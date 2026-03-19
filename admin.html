@@ -1,192 +1,277 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent Admin Panel</title>
 
-<title>Admin Panel</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
 body{
-font-family:Arial;
-background:#f4f6f9;
-margin:0;
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
+    color:white;
+    min-height:100vh;
 }
-
-header{
-background:#1976d2;
-color:white;
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
+.glass{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border-radius: 15px;
+    padding:15px;
 }
-
-.container{
-padding:40px;
+.card:hover{
+    transform:scale(1.03);
+    transition:0.3s;
+    box-shadow:0 0 25px rgba(255,255,255,0.2);
 }
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
-}
-
-.card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.card img{
-width:100%;
-height:180px;
-object-fit:cover;
-}
-
-.card-body{
-padding:15px;
-}
-
-button{
-padding:8px 14px;
-background:red;
-border:none;
-color:white;
-cursor:pointer;
-}
-
 </style>
-
 </head>
-
 <body>
 
-<header>
+<!-- HEADER -->
+<div class="flex justify-between items-center p-6">
+    <h1 class="text-3xl font-bold">💎 SmartRent Admin</h1>
+    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded hover:scale-105 transition">Logout</button>
+</div>
 
-<h2>Admin Panel</h2>
+<!-- ALERT BOX -->
+<div id="alertBox" class="fixed top-20 right-6 hidden bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50">
+New property awaiting approval!
+</div>
 
-<a href="index.html" style="color:white">Home</a>
+<!-- SEARCH -->
+<div class="max-w-6xl mx-auto p-6 flex gap-3">
+<input id="searchProperty" placeholder="Search Property" class="px-3 py-2 rounded text-black flex-1">
+<input id="searchUser" placeholder="Search User" class="px-3 py-2 rounded text-black flex-1">
+<button onclick="applyAdminSearch()" class="bg-blue-600 px-4 py-2 rounded">Search</button>
+</div>
 
-</header>
+<!-- ANALYTICS -->
+<div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
 
-<div class="container">
+<div class="glass p-6 text-center">
+<h2 class="font-bold text-xl">Total Properties</h2>
+<p id="totalProperties" class="text-3xl mt-2">0</p>
+<canvas id="cityChart" class="mt-4"></canvas>
+</div>
 
-<h3>All Listed Properties</h3>
+<div class="glass p-6 text-center">
+<h2 class="font-bold text-xl">Users by Plan</h2>
+<p id="totalUsers" class="text-3xl mt-2">0</p>
+<canvas id="planChart" class="mt-4"></canvas>
+</div>
 
-<div class="grid" id="propertyGrid"></div>
+<div class="glass p-6 text-center">
+<h2 class="font-bold text-xl">Revenue (₹)</h2>
+<p id="totalRevenue" class="text-3xl mt-2">0</p>
+<canvas id="revenueChart" class="mt-4"></canvas>
+</div>
 
+</div>
+
+<!-- PROPERTY MANAGEMENT -->
+<div class="max-w-6xl mx-auto p-6">
+<h2 class="text-2xl font-bold mb-4">Property Management</h2>
+<div id="propertyList" class="grid md:grid-cols-2 gap-4"></div>
+</div>
+
+<!-- USER MANAGEMENT -->
+<div class="max-w-6xl mx-auto p-6">
+<h2 class="text-2xl font-bold mb-4">User Management</h2>
+<div id="userList" class="grid md:grid-cols-2 gap-4"></div>
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
-import {
-getFirestore,
-collection,
-getDocs,
-deleteDoc,
-doc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-import {
-getAuth,
-onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-
-
-const firebaseConfig={
-
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal",
-storageBucket:"smart-property-portal.firebasestorage.app",
-messagingSenderId:"407241446660",
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
-
+const firebaseConfig = {
+    apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    authDomain:"smart-property-portal.firebaseapp.com",
+    projectId:"smart-property-portal"
 }
 
-const ADMIN_EMAIL="piyushmishra1903@gmail.com"
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+const auth = getAuth(app)
 
-const app=initializeApp(firebaseConfig)
+// Only admin can access
+const adminUID = "s9xSrxFAxJSQ54C9voGQeAVJa053"
 
-const db=getFirestore(app)
+const propertyList = document.getElementById("propertyList")
+const userList = document.getElementById("userList")
+const totalProperties = document.getElementById("totalProperties")
+const totalUsers = document.getElementById("totalUsers")
+const totalRevenue = document.getElementById("totalRevenue")
 
-const auth=getAuth(app)
+let allProperties=[]
+let allUsers=[]
 
-const grid=document.getElementById("propertyGrid")
+// Logout
+logoutBtn.addEventListener("click",()=>signOut(auth).then(()=>location.href="login.html"))
 
-onAuthStateChanged(auth,async(user)=>{
-
-if(!user || user.email!==ADMIN_EMAIL){
-
-alert("Access denied")
-
-window.location.href="index.html"
-
-return
-
-}
-
-loadProperties()
-
+// Auth check
+onAuthStateChanged(auth,(user)=>{
+    if(!user || user.uid!==adminUID){
+        alert("Unauthorized! Only admin can access.")
+        location.href="login.html"
+    }else{
+        loadDashboard()
+    }
 })
 
+// Load Dashboard
+async function loadDashboard(){
+    // Properties
+    const propSnap = await getDocs(collection(db,"properties"))
+    allProperties=[]
+    let revenue=0
+    propertyList.innerHTML=""
+    propSnap.forEach(doc=>{
+        const d=doc.data()
+        d.id=doc.id
+        allProperties.push(d)
+        propertyList.innerHTML+=propertyCard(d,doc.id)
+        if(d.paid) revenue+=d.amount||0
+    })
+    totalProperties.innerText=propSnap.size
+    totalRevenue.innerText=revenue
 
-async function loadProperties(){
+    // Users
+    const userSnap = await getDocs(collection(db,"users"))
+    allUsers=[]
+    userList.innerHTML=""
+    userSnap.forEach(doc=>{
+        const u=doc.data()
+        u.id=doc.id
+        allUsers.push(u)
+        userList.innerHTML+=userCard(u,doc.id)
+    })
+    totalUsers.innerText=userSnap.size
 
-const snapshot=await getDocs(collection(db,"properties"))
-
-grid.innerHTML=""
-
-snapshot.forEach((docSnap)=>{
-
-const p=docSnap.data()
-
-grid.innerHTML+=`
-
-<div class="card">
-
-<img src="${p.image}">
-
-<div class="card-body">
-
-<h3>${p.title}</h3>
-
-<p>${p.city}</p>
-
-<p>${p.bhk}</p>
-
-<p>₹${p.price}</p>
-
-<button onclick="deleteProperty('${docSnap.id}')">Delete</button>
-
-</div>
-
-</div>
-
-`
-
-})
-
+    // Render Charts
+    renderCharts(allProperties, allUsers)
 }
 
-window.deleteProperty=async function(id){
-
-await deleteDoc(doc(db,"properties",id))
-
-alert("Property removed")
-
-location.reload()
-
+// Property Card
+function propertyCard(p,id){
+    return `
+    <div class="glass p-4">
+        <h3 class="font-bold">${p.title}</h3>
+        <p>${p.city} • ${p.bhk} • ₹${p.rent}</p>
+        <p>Owner: ${p.ownerId}</p>
+        <div class="flex gap-2 mt-3">
+            <button onclick="approveProperty('${id}')" class="bg-green-600 px-3 py-1 rounded text-sm">Approve</button>
+            <button onclick="deleteProperty('${id}')" class="bg-red-600 px-3 py-1 rounded text-sm">Delete</button>
+        </div>
+    </div>
+    `
 }
+
+// User Card
+function userCard(u,id){
+    return `
+    <div class="glass p-4">
+        <h3 class="font-bold">${u.name||"Anonymous"}</h3>
+        <p>Email: ${u.email||"N/A"}</p>
+        <p>Plan: ${u.plan||"Free"}</p>
+        <p>Status: ${u.status||"-"}</p>
+    </div>
+    `
+}
+
+// Approve/Delete
+window.approveProperty=async (id)=>{
+    await updateDoc(doc(db,"properties",id),{approved:true})
+    loadDashboard()
+}
+window.deleteProperty=async (id)=>{
+    await deleteDoc(doc(db,"properties",id))
+    loadDashboard()
+}
+
+// Admin Search
+function applyAdminSearch(){
+    let pSearch = searchProperty.value.toLowerCase()
+    let uSearch = searchUser.value.toLowerCase()
+    propertyList.innerHTML=""
+    userList.innerHTML=""
+    allProperties.filter(p=>p.title.toLowerCase().includes(pSearch) || p.city.toLowerCase().includes(pSearch))
+        .forEach(p=>propertyList.innerHTML+=propertyCard(p,p.id))
+    allUsers.filter(u=>(u.name||'').toLowerCase().includes(uSearch) || (u.email||'').toLowerCase().includes(uSearch))
+        .forEach(u=>userList.innerHTML+=userCard(u,u.id))
+}
+
+// Premium Charts
+function renderCharts(properties, users){
+    // City Chart
+    let cityMap={}
+    properties.forEach(p=>cityMap[p.city]=(cityMap[p.city]||0)+1)
+    new Chart(cityChart,{
+        type:'bar',
+        data:{
+            labels:Object.keys(cityMap),
+            datasets:[{
+                label:'Properties per City',
+                data:Object.values(cityMap),
+                backgroundColor:'rgba(255,99,132,0.6)',
+                borderRadius:5
+            }]
+        },
+        options:{plugins:{legend:{display:false}}}
+    })
+
+    // Plan Chart
+    let planMap={}
+    users.forEach(u=>planMap[u.plan||"Free"]=(planMap[u.plan||"Free"]||0)+1)
+    new Chart(planChart,{
+        type:'pie',
+        data:{
+            labels:Object.keys(planMap),
+            datasets:[{
+                data:Object.values(planMap),
+                backgroundColor:['#ff6384','#36a2eb','#ffcd56','#4bc0c0']
+            }]
+        }
+    })
+
+    // Revenue Chart
+    let months={}
+    properties.forEach(p=>{
+        if(p.paid && p.createdAt){
+            let m=new Date(p.createdAt.seconds*1000).toLocaleString('default',{month:'short'})
+            months[m]=(months[m]||0)+(p.amount||0)
+        }
+    })
+    new Chart(revenueChart,{
+        type:'line',
+        data:{
+            labels:Object.keys(months),
+            datasets:[{
+                label:'Revenue',
+                data:Object.values(months),
+                borderColor:'#ffcd56',
+                backgroundColor:'rgba(255,205,86,0.2)',
+                fill:true,
+                tension:0.3
+            }]
+        }
+    })
+}
+
+// Real-time alerts
+setInterval(()=>{
+    let pending = allProperties.filter(p=>!p.approved)
+    if(pending.length>0){
+        alertBox.style.display='block'
+        setTimeout(()=>{alertBox.style.display='none'},4000)
+    }
+},10000)
 
 </script>
-
 </body>
 </html>

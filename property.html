@@ -1,403 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Details - SmartRent</title>
 
-<title>Property Details</title>
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-
-/* GLOBAL */
-
-body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f4f6f9;
+body {
+    font-family:'Inter',sans-serif;
+    background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
+    color:white;
+    min-height:100vh;
 }
-
-/* NAVBAR */
-
-header{
-background:white;
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-position:sticky;
-top:0;
-z-index:1000;
+.glass{
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    border-radius:15px;
+    padding:15px;
 }
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#1976d2;
+img.main-img{
+    width:100%;
+    border-radius:15px;
+    max-height:400px;
+    object-fit:cover;
 }
-
-nav a{
-margin-left:20px;
-text-decoration:none;
-color:#333;
+.carousel-container{
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
 }
-
-/* PAGE */
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:40px 20px;
+.carousel-img{
+    width:100%;
+    max-height:400px;
+    object-fit:cover;
+    transition: transform 0.5s ease;
 }
-
-/* PROPERTY CARD */
-
-.property-card{
-background:white;
-border-radius:10px;
-overflow:hidden;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+.carousel-btn{
+    position: absolute;
+    top:50%;
+    transform:translateY(-50%);
+    background:rgba(0,0,0,0.3);
+    padding:8px;
+    border-radius:50%;
+    cursor:pointer;
+    font-weight:bold;
+    user-select:none;
 }
-
-/* MAIN IMAGE */
-
-.main-image img{
-width:100%;
-height:420px;
-object-fit:cover;
+.carousel-btn:hover{
+    background:rgba(255,255,255,0.3);
 }
-
-/* GALLERY */
-
-.gallery{
-display:flex;
-gap:10px;
-padding:10px;
-overflow-x:auto;
+.ai-section{
+    margin-top:20px;
 }
-
-.gallery img{
-height:80px;
-width:120px;
-object-fit:cover;
-cursor:pointer;
-border-radius:5px;
+.ai-card:hover{
+    transform:scale(1.05);
+    transition:0.3s;
 }
-
-/* DETAILS */
-
-.details{
-padding:25px;
+button:hover{
+    transform:scale(1.05);
+    transition:0.3s;
 }
-
-.price{
-font-size:26px;
-color:#1976d2;
-font-weight:bold;
-margin:10px 0;
-}
-
-.info{
-margin:8px 0;
-color:#555;
-}
-
-/* CONTACT */
-
-.contact-box{
-margin-top:30px;
-padding:20px;
-background:#f1f3f6;
-border-radius:8px;
-}
-
-button{
-padding:10px 18px;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
-.contact-btn{
-background:#1976d2;
-color:white;
-}
-
-.favorite-btn{
-background:#ff4081;
-color:white;
-margin-left:10px;
-}
-
-/* MAP */
-
-.map{
-margin-top:30px;
-height:350px;
-border-radius:10px;
-overflow:hidden;
-}
-
-/* ERROR */
-
-.error{
-text-align:center;
-padding:60px;
-font-size:22px;
-}
-
 </style>
-
 </head>
-
 <body>
 
-
-<header>
-
-<div class="logo">SmartProperty</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="dashboard.html">Dashboard</a>
-<a href="post-property.html">Post Property</a>
-</nav>
-
-</header>
-
-
-
-<div class="container">
-
-<div id="propertyContainer"></div>
-
+<!-- NAV -->
+<div class="flex justify-between items-center p-6">
+    <h1 class="text-3xl font-bold">SmartRent Property</h1>
+    <a href="index.html" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Back</a>
 </div>
 
+<!-- PROPERTY DETAILS -->
+<div id="propertyContainer" class="max-w-6xl mx-auto p-6"></div>
 
+<!-- AI RECOMMENDATIONS -->
+<div id="aiRecommendations" class="max-w-6xl mx-auto p-6 glass hidden">
+<h2 class="text-xl font-bold mb-3">🤖 You Might Also Like</h2>
+<div id="aiGrid" class="grid md:grid-cols-3 gap-4"></div>
+</div>
 
 <script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-
-import {
-getFirestore,
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-import {
-getAuth,
-onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-
-
-/* FIREBASE CONFIG */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 const firebaseConfig = {
-
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-
-authDomain:"smart-property-portal.firebaseapp.com",
-
-projectId:"smart-property-portal",
-
-storageBucket:"smart-property-portal.firebasestorage.app",
-
-messagingSenderId:"407241446660",
-
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
-
-};
+    apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    authDomain:"smart-property-portal.firebaseapp.com",
+    projectId:"smart-property-portal"
+}
 
 const app = initializeApp(firebaseConfig)
-
 const db = getFirestore(app)
-
 const auth = getAuth(app)
 
 const container = document.getElementById("propertyContainer")
+const aiRecommendations = document.getElementById("aiRecommendations")
+const aiGrid = document.getElementById("aiGrid")
+let saved = JSON.parse(localStorage.getItem("saved")) || []
 
+// Get property ID from URL
+const params = new URLSearchParams(window.location.search)
+const propertyId = params.get("id")
 
-
-/* AUTH CHECK */
-
-onAuthStateChanged(auth,(user)=>{
-
-if(!user){
-
-window.location.href="login.html"
-
-return
-
-}
-
-loadProperty()
-
+onAuthStateChanged(auth,user=>{
+    if(!user){
+        window.location.href="login.html"
+    } else {
+        loadProperty()
+    }
 })
 
-
-
-/* GET PROPERTY ID */
-
-function getPropertyId(){
-
-const params = new URLSearchParams(window.location.search)
-
-return params.get("id")
-
-}
-
-
-
-/* LOAD PROPERTY */
-
 async function loadProperty(){
+    if(!propertyId){
+        container.innerHTML="<p>Property not found.</p>"
+        return
+    }
 
-const id = getPropertyId()
+    // Demo properties
+    let demoProperties = [
+        {id:"demo1",title:"Luxury 2BHK",city:"Mumbai",bhk:"2 BHK",rent:28000,images:["https://images.unsplash.com/photo-1507089947368-19c1da9775ae","https://images.unsplash.com/photo-1560448070-1d9a3f0c9923"],phone:"9999999999",ownerId:"demo",description:"Spacious luxury apartment with modern amenities."},
+        {id:"demo2",title:"Budget 1BHK",city:"Delhi",bhk:"1 BHK",rent:12000,images:["https://images.unsplash.com/photo-1560448204-e02f11c3d0e2","https://images.unsplash.com/photo-1570129477492-45c003edd2be"],phone:"9999999999",ownerId:"demo",description:"Affordable cozy apartment in central location."}
+    ]
+    let property = demoProperties.find(p=>p.id===propertyId)
+    
+    if(!property){
+        const docRef = doc(db,"properties",propertyId)
+        const docSnap = await getDoc(docRef)
+        if(docSnap.exists()){
+            property = {...docSnap.data(), id:docSnap.id}
+            if(!property.images) property.images = [property.image]
+        } else {
+            container.innerHTML="<p>Property not found in database.</p>"
+            return
+        }
+    }
 
-if(!id){
+    // Carousel HTML
+    let carouselHtml = `
+    <div class="carousel-container mb-4 relative">
+        <img src="${property.images[0]}" class="carousel-img" id="carouselImage">
+        <div class="carousel-btn left-0" id="prevBtn">&#10094;</div>
+        <div class="carousel-btn right-0" id="nextBtn">&#10095;</div>
+    </div>
+    `
 
-container.innerHTML="<div class='error'>Property not found</div>"
+    container.innerHTML=`
+    <div class="glass p-6">
+        ${carouselHtml}
+        <h2 class="text-2xl font-bold mb-2">${property.title}</h2>
+        <p class="text-gray-300 mb-2">${property.city} • ${property.bhk}</p>
+        <p class="text-green-400 font-bold mb-2">₹${property.rent}</p>
+        <p class="mb-4">${property.description || "No description available."}</p>
+        <div class="flex gap-3 flex-wrap">
+            <button onclick="toggleSave('${property.id}')" class="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition">
+            ${saved.includes(property.id)?"❤️ Saved":"🤍 Save"}</button>
+            ${property.demo ? `<span class="text-gray-400 px-3 py-1 rounded bg-black/20">Demo Property</span>` : `
+            <a href="chat.html?property=${property.id}&owner=${property.ownerId}" class="bg-purple-600 px-4 py-2 rounded hover:bg-purple-700 transition">Chat with Owner</a>
+            <a href="tel:${property.phone}" class="bg-green-600 px-4 py-2 rounded hover:bg-green-700 transition">Call Owner</a>
+            `}
+        </div>
+    </div>
+    `
 
-return
+    // Carousel logic
+    let currentIndex=0
+    const carouselImage = document.getElementById("carouselImage")
+    document.getElementById("prevBtn").addEventListener("click",()=>{
+        currentIndex = (currentIndex-1+property.images.length)%property.images.length
+        carouselImage.src = property.images[currentIndex]
+    })
+    document.getElementById("nextBtn").addEventListener("click",()=>{
+        currentIndex = (currentIndex+1)%property.images.length
+        carouselImage.src = property.images[currentIndex]
+    })
 
+    // AI recommendations
+    generateAIRecommendations(property)
 }
 
-const ref = doc(db,"properties",id)
-
-const snap = await getDoc(ref)
-
-if(!snap.exists()){
-
-container.innerHTML="<div class='error'>Property does not exist</div>"
-
-return
-
+function toggleSave(id){
+    if(saved.includes(id)) saved=saved.filter(x=>x!==id)
+    else saved.push(id)
+    localStorage.setItem("saved",JSON.stringify(saved))
+    loadProperty()
 }
 
-const p = snap.data()
+// Advanced AI Recommendations
+async function generateAIRecommendations(currentProperty){
+    const snap = await getDocs(collection(db,"properties"))
+    let recs=[]
+    snap.forEach(doc=>{
+        const p = doc.data()
+        if(p.id!==currentProperty.id && !saved.includes(p.id)){
+            recs.push({...p,id:doc.id})
+        }
+    })
 
-renderProperty(p)
+    if(recs.length===0) return
 
+    // Filter by city, BHK, and rent ±20%
+    let filtered = recs.filter(p => p.city===currentProperty.city && p.bhk===currentProperty.bhk && p.rent >= currentProperty.rent*0.8 && p.rent <= currentProperty.rent*1.2)
+
+    if(filtered.length===0) filtered = recs.filter(p=>p.city===currentProperty.city)
+
+    // Sort by best deal first
+    const avgRent = filtered.reduce((s,x)=>s+x.rent,0)/filtered.length
+    filtered.sort((a,b)=>{
+        let scoreA = (avgRent - a.rent) + Math.random()*50
+        let scoreB = (avgRent - b.rent) + Math.random()*50
+        return scoreB - scoreA
+    })
+
+    aiRecommendations.classList.remove("hidden")
+    aiGrid.innerHTML=""
+    filtered.slice(0,3).forEach(p=>{
+        let tag = p.rent < avgRent*0.9 ? "💚 Deal"
+                : p.rent > avgRent*1.2 ? "⚠️ High"
+                : "👍 Fair"
+        let imgSrc = (p.images && p.images.length>0)?p.images[0]:p.image
+        aiGrid.innerHTML+=`
+        <div class="glass p-4 cursor-pointer ai-card relative" onclick="window.location.href='property.html?id=${p.id}'">
+            <img src="${imgSrc}" class="w-full h-32 object-cover rounded mb-2">
+            <span class="absolute top-2 right-2 bg-yellow-400 text-black px-2 py-1 rounded font-bold text-xs">${tag}</span>
+            <h3 class="font-bold text-sm">${p.title}</h3>
+            <p class="text-gray-300 text-xs">${p.city} • ${p.bhk}</p>
+            <p class="text-green-400 font-bold text-sm">₹${p.rent}</p>
+        </div>
+        `
+    })
 }
-
-
-
-/* RENDER PROPERTY */
-
-function renderProperty(p){
-
-const images = p.images || [p.image]
-
-container.innerHTML = `
-
-<div class="property-card">
-
-<div class="main-image">
-
-<img id="mainImage" src="${images[0]}">
-
-</div>
-
-<div class="gallery">
-
-${images.map(img=>`<img src="${img}" onclick="changeImage('${img}')">`).join("")}
-
-</div>
-
-<div class="details">
-
-<h2>${p.title}</h2>
-
-<div class="price">₹${p.price}</div>
-
-<div class="info"><b>City:</b> ${p.city}</div>
-
-<div class="info"><b>BHK:</b> ${p.bhk}</div>
-
-<div class="info"><b>Description:</b> ${p.description || "No description available."}</div>
-
-<div class="info"><b>Area:</b> ${p.area || "N/A"} sq.ft</div>
-
-<div class="info"><b>Type:</b> ${p.type || "Residential"}</div>
-
-<div class="contact-box">
-
-<h3>Owner Contact</h3>
-
-<p>Email: ${p.ownerEmail || "Hidden"}</p>
-
-<button class="contact-btn" onclick="contactOwner()">Contact Owner</button>
-
-<button class="favorite-btn" onclick="saveProperty()">Save Property</button>
-
-</div>
-
-<div class="map">
-
-<iframe
-
-width="100%"
-
-height="100%"
-
-frameborder="0"
-
-style="border:0"
-
-src="https://maps.google.com/maps?q=${encodeURIComponent(p.city)}&output=embed"
-
-allowfullscreen>
-
-</iframe>
-
-</div>
-
-</div>
-
-</div>
-
-`
-
-}
-
-
-
-/* CHANGE GALLERY IMAGE */
-
-window.changeImage = function(src){
-
-document.getElementById("mainImage").src = src
-
-}
-
-
-
-/* CONTACT OWNER */
-
-window.contactOwner = function(){
-
-alert("Contact system will be added soon")
-
-}
-
-
-
-/* SAVE PROPERTY */
-
-window.saveProperty = function(){
-
-alert("Property saved to favorites (feature coming soon)")
-
-}
-
 </script>
-
 
 </body>
 </html>

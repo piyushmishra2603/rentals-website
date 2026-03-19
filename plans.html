@@ -1,244 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SmartRent Premium</title>
-
+<title>SmartRent AI - Premium Plans</title>
 <script src="https://cdn.tailwindcss.com"></script>
-
 <style>
-body{
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-color:white;
-font-family:'Inter',sans-serif;
+/* Body & Fonts */
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Glass UI */
-.glass{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-border-radius:20px;
+/* Hero Section */
+.hero {
+  height: 30vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1500&q=80') no-repeat center/cover;
+  backdrop-filter: brightness(0.7);
+}
+.hero h1 { font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; }
+.hero p { color: #cbd5e1; font-size: 1.2rem; }
+
+/* Glassy Card */
+.card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 25px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+.card:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+/* Highlight AI recommended */
+.card.best::after {
+  content: "⭐ Recommended";
+  position: absolute;
+  top: 10px; right: 10px;
+  background: gold;
+  color: black;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  animation: pulse 1.5s infinite;
 }
 
-/* Cards */
-.card:hover{
-transform:translateY(-10px) scale(1.03);
-transition:0.4s;
-box-shadow:0 0 25px rgba(255,255,255,0.2);
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Buttons */
+.button {
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+.button:hover { transform: scale(1.05); }
+.accept { background: linear-gradient(90deg,#06b6d4,#3b82f6); color:white; }
+.decline { background: #ef4444; color:white; }
+
+/* Input fields */
+input, select {
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  margin-bottom: 12px;
+  color: black;
 }
 
 /* Modal */
-.modal{
-animation:fade 0.4s ease;
-}
-
-@keyframes fade{
-from{opacity:0;transform:scale(0.95)}
-to{opacity:1;transform:scale(1)}
-}
-
-/* Progress bar */
-.progress{
-height:6px;
-background:linear-gradient(to right,#00ffcc,#00aaff);
-animation:load 2s infinite linear;
-}
-
-@keyframes load{
-0%{width:0%}
-100%{width:100%}
+#consentModal .glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
 }
 </style>
-
 </head>
-
 <body>
 
-<!-- HEADER -->
-<div class="text-center p-8">
-<h1 class="text-4xl font-bold">💎 SmartRent Premium</h1>
-<p class="text-gray-300">Secure UPI Checkout</p>
+<!-- HERO -->
+<div class="hero">
+  <h1>SmartRent AI Plans</h1>
+  <p>Get the best features for property management and insights</p>
 </div>
 
-<!-- PLANS -->
-<div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto p-6">
-
-<div class="glass card p-6 text-center">
-<h2 class="text-xl font-bold">Free</h2>
-<p class="text-3xl mt-2">₹0</p>
-<button class="bg-gray-500 px-4 py-2 mt-5 rounded w-full">Current</button>
+<!-- Plans Section -->
+<div class="max-w-6xl mx-auto py-12 px-6">
+  <h2 class="text-3xl font-bold text-center mb-8">Choose Your Plan</h2>
+  <div id="plans" class="flex flex-wrap gap-6 justify-center">
+    <!-- Plan cards will be inserted via JS -->
+  </div>
 </div>
 
-<div class="glass card p-6 text-center border border-blue-400">
-<h2 class="text-xl font-bold">Pro ⭐</h2>
-<p class="text-3xl mt-2">₹199</p>
-<button onclick="openPay('pro',199)" 
-class="bg-blue-600 px-4 py-2 mt-5 rounded w-full">
-Upgrade
-</button>
+<!-- UPI Payment Section -->
+<div class="max-w-2xl mx-auto mt-12 p-6 glass rounded-2xl">
+  <h2 class="text-xl font-bold mb-4">Pay via UPI</h2>
+  <input type="text" id="upiId" placeholder="Enter your UPI ID (e.g., yourid@upi)" />
+  <button id="payBtn" class="button accept w-full">Pay Now</button>
+  <p class="text-gray-300 mt-2 text-sm">After payment, your plan will be activated automatically.</p>
 </div>
 
-<div class="glass card p-6 text-center">
-<h2 class="text-xl font-bold">Premium 💎</h2>
-<p class="text-3xl mt-2">₹499</p>
-<button onclick="openPay('premium',499)" 
-class="bg-purple-600 px-4 py-2 mt-5 rounded w-full">
-Go Premium
-</button>
+<!-- Consent Modal -->
+<div id="consentModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+  <div class="glass p-6 max-w-2xl w-11/12 text-center">
+    <h2 class="text-2xl font-bold mb-4">Before Purchasing</h2>
+    <p class="mb-4">
+      Please read and accept our 
+      <a href="privacy.html" target="_blank" class="underline text-cyan-400">Privacy Policy</a> and 
+      <a href="terms.html" target="_blank" class="underline text-cyan-400">Terms & Conditions</a>.
+    </p>
+    <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
+      <button id="acceptBtn" class="button accept animate-pulse">Accept & Continue</button>
+      <button id="declineBtn" class="button decline">Decline</button>
+    </div>
+  </div>
 </div>
 
-</div>
+<!-- Footer -->
+<footer class="max-w-6xl mx-auto p-6 text-center text-gray-400 text-sm mt-12">
+  <div class="flex justify-center gap-6">
+    <a href="privacy.html" class="underline hover:text-white transition">Privacy Policy</a>
+    <a href="terms.html" class="underline hover:text-white transition">Terms & Conditions</a>
+  </div>
+  <p class="mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
+</footer>
 
-<!-- MODAL -->
-<div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center modal">
+<script>
+// Consent Modal
+const modal = document.getElementById("consentModal");
+const acceptBtn = document.getElementById("acceptBtn");
+const declineBtn = document.getElementById("declineBtn");
 
-<div class="glass p-6 w-96 text-center relative">
-
-<h2 class="text-xl font-bold mb-2">Complete Payment</h2>
-
-<p id="details"></p>
-
-<!-- TIMER -->
-<p class="text-red-400 text-sm mt-2">
-Offer expires in <span id="timer">05:00</span>
-</p>
-
-<!-- QR -->
-<img id="qr" class="mx-auto my-4 rounded">
-
-<!-- UPI ID -->
-<div class="bg-black p-2 rounded flex justify-between items-center">
-<span id="upiId">yourupi@upi</span>
-<button onclick="copyUPI()" class="text-blue-400">Copy</button>
-</div>
-
-<!-- OPEN APP -->
-<a id="upiLink" class="bg-green-600 px-4 py-2 rounded block mt-3">
-Open UPI App
-</a>
-
-<!-- STATUS -->
-<div id="status" class="mt-4 text-yellow-400">
-Waiting for payment...
-</div>
-
-<div class="progress mt-2"></div>
-
-<!-- UTR -->
-<input id="utr" placeholder="Enter UTR Number"
-class="w-full px-3 py-2 mt-4 rounded text-black">
-
-<!-- FILE UPLOAD -->
-<input type="file" id="proof" class="mt-2 text-sm">
-
-<button onclick="confirmPay()" 
-class="bg-blue-600 px-4 py-2 mt-4 rounded w-full">
-Confirm Payment
-</button>
-
-<button onclick="closeModal()" class="text-red-400 mt-2">
-Cancel
-</button>
-
-</div>
-</div>
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal"
+// Show modal if consent not given
+if(localStorage.getItem("consentGiven") !== "true"){
+  modal.classList.remove("hidden");
 }
 
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
-const db = getFirestore(app)
+// Accept
+acceptBtn.addEventListener("click", ()=>{
+  localStorage.setItem("consentGiven","true");
+  modal.classList.add("hidden");
+});
 
-let user=null
-let plan="",amount=0
-let time=300
+// Decline
+declineBtn.addEventListener("click", ()=>{
+  alert("You must accept Privacy Policy & Terms to purchase a plan.");
+  window.location.href="https://www.google.com";
+});
 
-onAuthStateChanged(auth,(u)=>{
-if(!u) location.href="login.html"
-user=u
-})
+// Plan Data
+const plans = [
+  {id:'basic',name:'Basic',features:['1 Property Post'],price:499},
+  {id:'pro',name:'Pro',features:['5 Property Posts','Chat with Owner'],price:1499},
+  {id:'premium',name:'Premium',features:['Unlimited Posts','AI Insights','Priority Support'],price:2999}
+];
 
-/* OPEN */
-window.openPay=function(p,a){
+// AI Recommendation Logic (random demo logic)
+let recommendedPlanIndex = Math.floor(Math.random()*plans.length);
 
-plan=p
-amount=a
+// Render Plans
+const plansContainer = document.getElementById("plans");
+plans.forEach((plan,index)=>{
+  const card = document.createElement("div");
+  card.className = 'card text-center w-72 '+(index===recommendedPlanIndex?'best':'');
+  card.innerHTML = `
+    <h2 class="text-2xl font-bold mb-2">${plan.name}</h2>
+    <ul class="mb-4 text-gray-300 text-left list-disc pl-6">${plan.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <p class="mb-4 font-bold text-xl">₹${plan.price}</p>
+    <button id="buy${plan.id}" class="button accept w-full">Buy with UPI</button>
+  `;
+  plansContainer.appendChild(card);
+});
 
-modal.classList.remove("hidden")
-
-details.innerText=`${p.toUpperCase()} Plan - ₹${a}`
-
-qr.src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=yourupi@upi&pn=SmartRent&am=${a}`
-
-upiLink.href=`upi://pay?pa=yourupi@upi&pn=SmartRent&am=${a}&cu=INR`
-
-startTimer()
-}
-
-/* TIMER */
-function startTimer(){
-let t=setInterval(()=>{
-time--
-let m=Math.floor(time/60)
-let s=time%60
-timer.innerText=`${m}:${s<10?'0'+s:s}`
-
-if(time<=0) clearInterval(t)
-
-},1000)
-}
-
-/* COPY */
-window.copyUPI=function(){
-navigator.clipboard.writeText("yourupi@upi")
-alert("Copied!")
-}
-
-/* CLOSE */
-window.closeModal=function(){
-modal.classList.add("hidden")
-}
-
-/* CONFIRM */
-window.confirmPay=async function(){
-
-let utrVal=document.getElementById("utr").value
-
-if(!utrVal) return alert("Enter UTR")
-
-status.innerText="Verifying Payment..."
-
-await setDoc(doc(db,"users",user.uid),{
-plan:plan,
-paid:true,
-utr:utrVal,
-amount:amount,
-status:"pending"
-},{merge:true})
-
-setTimeout(()=>{
-status.innerText="Payment Submitted 🎉"
-},1500)
-
-setTimeout(()=>{
-location.href="index.html"
-},2500)
-
-}
-
+// Event listeners for buttons
+['buybasic','buypro','buypremium','payBtn'].forEach(id=>{
+  const btn = document.getElementById(id);
+  if(btn){
+    btn.addEventListener("click", ()=>{
+      if(localStorage.getItem("consentGiven")!=="true"){
+        modal.classList.remove("hidden");
+        alert("Please accept Privacy Policy & Terms first!");
+        return;
+      }
+      const upiId = document.getElementById("upiId")?.value || "Not entered";
+      alert(`Proceeding with UPI Payment for ${id.replace('buy','').toUpperCase()}. UPI ID: ${upiId}`);
+      // TODO: Integrate actual UPI payment here
+    });
+  }
+});
 </script>
 
 </body>

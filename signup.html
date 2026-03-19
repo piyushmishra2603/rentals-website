@@ -1,246 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Signup - Smart Property</title>
+<title>Signup - SmartRent AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-
-*{
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-margin:0;
-padding:0;
-}
-
 body{
-background:linear-gradient(135deg,#1976d2,#42a5f5);
-min-height:100vh;
-display:flex;
-flex-direction:column;
-}
-
-/* HEADER */
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 40px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#1976d2;
-}
-
-.nav{
-display:flex;
-gap:20px;
-align-items:center;
-}
-
-.nav a{
-text-decoration:none;
-color:#333;
-font-weight:500;
-}
-
-/* Professional Signup Button */
-
-.signup-btn{
-background:linear-gradient(135deg,#1976d2,#42a5f5);
+font-family:'Inter',sans-serif;
+background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
 color:white;
-padding:9px 20px;
-border-radius:30px;
-text-decoration:none;
-font-weight:600;
-box-shadow:0 3px 8px rgba(0,0,0,0.15);
-transition:0.3s;
 }
 
-.signup-btn:hover{
-transform:translateY(-2px);
-background:linear-gradient(135deg,#1258a8,#1976d2);
-}
-
-/* SIGNUP CARD */
-
-.container{
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-.card{
-background:white;
-padding:40px;
-width:360px;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.25);
-text-align:center;
-}
-
-.card h2{
-margin-bottom:25px;
-color:#1976d2;
+.glass{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+border-radius:15px;
 }
 
 input{
-width:100%;
-padding:12px;
-margin-top:12px;
-border:1px solid #ccc;
-border-radius:6px;
-font-size:14px;
+color:black;
 }
 
-input:focus{
-outline:none;
-border-color:#1976d2;
+.strength{
+height:5px;
+border-radius:5px;
+margin-top:5px;
 }
-
-button{
-width:100%;
-margin-top:18px;
-padding:12px;
-border:none;
-border-radius:30px;
-background:linear-gradient(135deg,#1976d2,#42a5f5);
-color:white;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
-transition:0.3s;
-box-shadow:0 3px 8px rgba(0,0,0,0.15);
-}
-
-button:hover{
-transform:translateY(-2px);
-}
-
-#msg{
-margin-top:15px;
-font-size:14px;
-}
-
-.login-link{
-margin-top:18px;
-font-size:14px;
-}
-
-.login-link a{
-color:#1976d2;
-text-decoration:none;
-font-weight:500;
-}
-
 </style>
 
 </head>
 
-<body>
+<body class="flex items-center justify-center min-h-screen">
 
-<header>
+<div class="glass p-8 w-96 shadow-lg">
 
-<div class="logo">SmartProperty</div>
+<h2 class="text-2xl font-bold text-center mb-6">🚀 Create Account</h2>
 
-<nav class="nav">
+<input id="name" placeholder="Full Name"
+class="w-full p-3 mb-3 rounded">
 
-<a href="index.html">Home</a>
-<a href="index.html#listings">Properties</a>
-<a href="index.html#post">Post Property</a>
+<input id="email" type="email" placeholder="Email"
+class="w-full p-3 mb-3 rounded">
 
-<a href="signup.html" class="signup-btn">Sign Up</a>
-
-</nav>
-
-</header>
-
-
-<div class="container">
-
-<div class="card">
-
-<h2>Create Account</h2>
-
-<input id="email" type="email" placeholder="Enter Email">
-
-<input id="password" type="password" placeholder="Enter Password">
-
-<button onclick="signup()">Create Account</button>
-
-<div id="msg"></div>
-
-<div class="login-link">
-Already have an account? <a href="login.html">Login</a>
+<!-- PASSWORD -->
+<div class="relative">
+<input id="password" type="password" placeholder="Password"
+class="w-full p-3 mb-1 rounded">
+<button onclick="togglePass('password')" 
+class="absolute right-2 top-2 text-black">👁</button>
 </div>
 
+<div id="strengthBar" class="strength bg-red-500"></div>
+
+<!-- CONFIRM PASSWORD -->
+<div class="relative mt-3">
+<input id="confirm" type="password" placeholder="Confirm Password"
+class="w-full p-3 mb-3 rounded">
+<button onclick="togglePass('confirm')" 
+class="absolute right-2 top-2 text-black">👁</button>
 </div>
 
-</div>
+<button onclick="signup()" 
+class="w-full bg-green-600 p-3 rounded mb-3">
+Create Account
+</button>
 
+<button onclick="googleSignup()" 
+class="w-full bg-red-600 p-3 rounded mb-3">
+Signup with Google
+</button>
+
+<p class="text-center">
+Already have an account?
+<a href="login.html" class="text-blue-400">Login</a>
+</p>
+
+<p id="msg" class="text-center mt-3 text-red-400"></p>
+
+</div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { 
+getAuth, 
+createUserWithEmailAndPassword, 
+updateProfile,
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
+import { 
+getFirestore, 
+doc, 
+setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+/* 🔐 CONFIG */
 const firebaseConfig = {
-  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-  authDomain: "smart-property-portal.firebaseapp.com",
-  projectId: "smart-property-portal",
-  storageBucket: "smart-property-portal.firebasestorage.app",
-  messagingSenderId: "407241446660",
-  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
-};
+apiKey:"YOUR_API_KEY",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal",
+storageBucket:"smart-property-portal.firebasestorage.app",
+messagingSenderId:"407241446660",
+appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const provider = new GoogleAuthProvider()
 
-window.signup=function(){
+/* AUTO REDIRECT */
+onAuthStateChanged(auth,(user)=>{
+if(user){
+window.location.href="index.html"
+}
+})
 
-const email=document.getElementById("email").value
-const password=document.getElementById("password").value
-const msg=document.getElementById("msg")
+/* PASSWORD STRENGTH */
+const passwordInput = document.getElementById("password")
+const strengthBar = document.getElementById("strengthBar")
 
-msg.innerHTML="Creating account..."
+passwordInput.addEventListener("input",()=>{
+let val = passwordInput.value
+let strength = 0
 
-createUserWithEmailAndPassword(auth,email,password)
+if(val.length > 5) strength++
+if(/[A-Z]/.test(val)) strength++
+if(/[0-9]/.test(val)) strength++
+if(/[^A-Za-z0-9]/.test(val)) strength++
 
-.then((userCredential)=>{
+const colors = ["red","orange","yellow","green"]
+strengthBar.style.background = colors[strength-1] || "red"
+})
 
-msg.style.color="green"
-msg.innerHTML="Account created successfully"
+/* SIGNUP */
+window.signup = async function(){
 
-setTimeout(()=>{
+const name = document.getElementById("name").value
+const email = document.getElementById("email").value
+const password = document.getElementById("password").value
+const confirm = document.getElementById("confirm").value
+const msg = document.getElementById("msg")
+
+msg.innerText=""
+
+/* VALIDATION */
+if(!name || !email || !password){
+msg.innerText="Fill all fields"
+return
+}
+
+if(password !== confirm){
+msg.innerText="Passwords do not match"
+return
+}
+
+try{
+
+const userCred = await createUserWithEmailAndPassword(auth,email,password)
+
+await updateProfile(userCred.user,{
+displayName:name
+})
+
+/* SAVE USER DATA */
+await setDoc(doc(db,"users",userCred.user.uid),{
+name:name,
+email:email,
+createdAt:Date.now()
+})
 
 window.location.href="index.html"
 
-},1500)
+}catch(err){
+msg.innerText=err.message
+}
 
-})
+}
 
-.catch((error)=>{
+/* GOOGLE SIGNUP */
+window.googleSignup = async function(){
 
-msg.style.color="red"
-msg.innerHTML=error.message
+try{
 
-})
+const result = await signInWithPopup(auth,provider)
+const user = result.user
 
+await setDoc(doc(db,"users",user.uid),{
+name:user.displayName,
+email:user.email,
+createdAt:Date.now()
+},{merge:true})
+
+window.location.href="index.html"
+
+}catch(err){
+document.getElementById("msg").innerText=err.message
+}
+
+}
+
+/* TOGGLE PASSWORD */
+window.togglePass = function(id){
+const input = document.getElementById(id)
+input.type = input.type === "password" ? "text" : "password"
 }
 
 </script>
 
 </body>
-
 </html>

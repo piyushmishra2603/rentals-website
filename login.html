@@ -12,8 +12,16 @@
 <style>
 body{
 font-family:'Inter',sans-serif;
-background:linear-gradient(to right,#141e30,#243b55);
+background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#1c92d2);
+background-size:400% 400%;
+animation:gradient 10s ease infinite;
 color:white;
+}
+
+@keyframes gradient{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 .glass{
@@ -25,15 +33,41 @@ border-radius:15px;
 input{
 color:black;
 }
+
+.spinner{
+border:4px solid rgba(255,255,255,0.2);
+border-top:4px solid white;
+border-radius:50%;
+width:20px;
+height:20px;
+animation:spin 1s linear infinite;
+display:inline-block;
+}
+
+@keyframes spin{
+100%{transform:rotate(360deg);}
+}
 </style>
 
 </head>
 
-<body class="flex items-center justify-center h-screen">
+<body class="flex items-center justify-center min-h-screen">
 
-<div class="glass p-8 w-96 shadow-lg">
+<div class="grid md:grid-cols-2 w-full max-w-5xl glass shadow-lg overflow-hidden">
 
-<h2 class="text-2xl font-bold text-center mb-6">🔐 SmartRent Login</h2>
+<!-- LEFT PANEL -->
+<div class="hidden md:flex flex-col justify-center items-center bg-cover bg-center p-6"
+style="background-image:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85')">
+
+<h1 class="text-3xl font-bold">Welcome Back 🏙️</h1>
+<p class="mt-2 text-center">Smart AI-powered rentals</p>
+
+</div>
+
+<!-- RIGHT PANEL -->
+<div class="p-8">
+
+<h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
 
 <input id="email" type="email" placeholder="Email"
 class="w-full p-3 mb-3 rounded">
@@ -45,27 +79,42 @@ class="w-full p-3 mb-3 rounded">
 class="absolute right-2 top-2 text-black">👁</button>
 </div>
 
-<button onclick="login()" 
-class="w-full bg-blue-600 p-3 rounded mb-3">
-Login
+<!-- OPTIONS -->
+<div class="flex justify-between text-sm mb-3">
+<label>
+<input type="checkbox" id="remember"> Remember me
+</label>
+<button onclick="forgotPassword()" class="text-blue-300 underline">
+Forgot?
+</button>
+</div>
+
+<!-- LOGIN -->
+<button onclick="login()" id="loginBtn"
+class="w-full bg-blue-600 p-3 rounded mb-3 flex justify-center items-center gap-2">
+<span id="btnText">Login</span>
 </button>
 
+<!-- GOOGLE -->
 <button onclick="googleLogin()" 
 class="w-full bg-red-600 p-3 rounded mb-3">
 Login with Google
 </button>
 
-<button onclick="forgotPassword()" 
-class="text-sm text-blue-300 underline">
-Forgot Password?
+<!-- BIOMETRIC -->
+<button onclick="biometricLogin()" 
+class="w-full bg-purple-600 p-3 rounded mb-3">
+🔐 Login with Biometrics
 </button>
 
-<p class="mt-4 text-center">
-Don't have an account?
+<p class="text-center">
+No account?
 <a href="signup.html" class="text-green-400">Signup</a>
 </p>
 
 <p id="msg" class="text-center mt-3 text-red-400"></p>
+
+</div>
 
 </div>
 
@@ -78,7 +127,10 @@ signInWithEmailAndPassword,
 onAuthStateChanged,
 GoogleAuthProvider,
 signInWithPopup,
-sendPasswordResetEmail
+sendPasswordResetEmail,
+setPersistence,
+browserLocalPersistence,
+browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 /* 🔐 CONFIG */
@@ -95,7 +147,7 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 
-/* AUTO REDIRECT IF LOGGED IN */
+/* AUTO REDIRECT */
 onAuthStateChanged(auth,(user)=>{
 if(user){
 window.location.href="index.html"
@@ -107,15 +159,24 @@ window.login = async function(){
 
 const email = document.getElementById("email").value
 const password = document.getElementById("password").value
+const remember = document.getElementById("remember").checked
 const msg = document.getElementById("msg")
+const btnText = document.getElementById("btnText")
 
 msg.innerText=""
+btnText.innerHTML = '<span class="spinner"></span>'
 
 try{
+
+await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence)
+
 await signInWithEmailAndPassword(auth,email,password)
+
 window.location.href="index.html"
+
 }catch(err){
-msg.innerText=err.message
+msg.innerText = err.message
+btnText.innerText = "Login"
 }
 
 }
@@ -144,21 +205,65 @@ return
 
 try{
 await sendPasswordResetEmail(auth,email)
-alert("Password reset email sent")
+alert("Reset email sent")
 }catch(err){
 alert(err.message)
 }
 
 }
 
-/* SHOW/HIDE PASSWORD */
-window.togglePass = function(){
+/* BIOMETRIC LOGIN */
+window.biometricLogin = async function(){
 
-const pass = document.getElementById("password")
+const msg = document.getElementById("msg")
+msg.innerText=""
 
-pass.type = pass.type === "password" ? "text" : "password"
+try{
+
+if(!window.PublicKeyCredential){
+alert("Biometric not supported")
+return
+}
+
+const challenge = new Uint8Array(32)
+window.crypto.getRandomValues(challenge)
+
+await navigator.credentials.get({
+publicKey:{
+challenge:challenge,
+timeout:60000,
+userVerification:"preferred"
+}
+})
+
+alert("Biometric verified ✅")
+
+const user = auth.currentUser
+
+if(user){
+window.location.href="index.html"
+}else{
+alert("Login once with password first")
+}
+
+}catch(err){
+msg.innerText="Biometric cancelled or failed"
+}
 
 }
+
+/* SHOW PASSWORD */
+window.togglePass = function(){
+const pass = document.getElementById("password")
+pass.type = pass.type === "password" ? "text" : "password"
+}
+
+/* ENTER KEY */
+document.addEventListener("keypress",(e)=>{
+if(e.key==="Enter"){
+login()
+}
+})
 
 </script>
 

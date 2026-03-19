@@ -352,6 +352,36 @@ offerPopup.style.display="block"
 }
 })
 </script>
+
+  <!-- LIVE ACTIVITY FEED -->
+<div id="liveFeed" style="
+position:fixed;
+bottom:20px;
+left:20px;
+background:rgba(0,0,0,0.8);
+padding:10px 15px;
+border-radius:10px;
+font-size:12px;
+z-index:999;
+display:none;">
+</div>
+
+<script>
+const names=["Rahul","Amit","Sneha","Priya","Arjun","Neha"]
+
+setInterval(()=>{
+let name=names[Math.floor(Math.random()*names.length)]
+let city=["Mumbai","Delhi","Pune"][Math.floor(Math.random()*3)]
+
+liveFeed.innerText=`${name} from ${city} just upgraded 🚀`
+liveFeed.style.display="block"
+
+setTimeout(()=>{
+liveFeed.style.display="none"
+},3000)
+
+},7000)
+</script>
   
 </body>
 </html>

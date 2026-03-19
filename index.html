@@ -42,6 +42,21 @@ font-weight:bold;
 
 <body>
 
+  <!-- Terms & Privacy Consent Modal -->
+<div id="consentModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
+  <div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl p-6 max-w-2xl w-11/12 glass text-center">
+    <h2 class="text-2xl font-bold mb-4">Welcome to SmartRent AI</h2>
+    <p class="mb-4">Please read and accept our 
+        <a href="privacy.html" target="_blank" class="underline text-cyan-400">Privacy Policy</a> and 
+        <a href="terms.html" target="_blank" class="underline text-cyan-400">Terms & Conditions</a> before continuing.
+    </p>
+    <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
+      <button id="acceptBtn" class="bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-3 rounded font-bold text-white animate-pulse hover:scale-105 transition">Accept & Continue</button>
+      <button id="declineBtn" class="bg-red-500 px-6 py-3 rounded font-bold text-white hover:scale-105 transition">Decline</button>
+    </div>
+  </div>
+</div>
+  
 <!-- ADDICTIVE FLOATING BUTTON -->
 <div style="position:fixed; top:20px; right:20px; z-index:999;">
 

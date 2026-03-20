@@ -97,6 +97,8 @@ Cancel
 
 <script type="module">
 
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"  
+const auth = getAuth()  
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
@@ -117,15 +119,28 @@ const type = params.get("type") || "services"
 document.getElementById("title").innerText = "🔧 " + type.toUpperCase()
 
 /* ADVANCED PROVIDERS */
-let providers = [
-{name:"Raj Plumbing",type:"plumbing",price:300,rating:4.5,jobs:120},
-{name:"Quick Electric",type:"electric",price:500,rating:4.2,jobs:90},
-{name:"Urban Clean",type:"cleaning",price:800,rating:4.8,jobs:200},
-{name:"Furniture Hub",type:"furniture",price:1200,rating:4.3,jobs:60},
-{name:"FixIt Repairs",type:"repair",price:700,rating:4.1,jobs:110},
-{name:"Fast Movers",type:"movers",price:1500,rating:4.6,jobs:80},
-{name:"PaintPro",type:"painting",price:2000,rating:4.7,jobs:140}
-]
+import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+let providers = []
+let filtered = []
+
+async function loadProviders(){
+
+const snapshot = await getDocs(collection(db,"providers"))
+
+providers = []
+
+snapshot.forEach(doc=>{
+providers.push({id:doc.id,...doc.data()})
+})
+
+filtered = providers.filter(p=>p.service === type || type==="more")
+
+render(filtered)
+
+}
+
+loadProviders()
 
 let filtered = providers.filter(p=>p.type===type || type==="more")
 let selectedProvider = null
@@ -211,12 +226,16 @@ return
 alert("Payment Successful 🎉")
 
 await addDoc(collection(db,"bookings"),{
-name,
-phone,
-address,
-service: selectedProvider.name,
+type: "service",
+userId: auth.currentUser.uid,
+ownerId: selectedProvider.uid,
+serviceName: selectedProvider.name,
 price: selectedProvider.price,
-time: Date.now()
+status: "pending",
+paymentStatus: "paid",
+address: address,
+time: Date.now(),
+commission: selectedProvider.price * 0.1
 })
 
 closeModal()

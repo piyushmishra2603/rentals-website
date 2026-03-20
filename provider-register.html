@@ -1,38 +1,211 @@
-<form id="form">
-<input id="name" placeholder="Your Name">
-<select id="service">
-<option>plumbing</option>
-<option>electric</option>
-<option>cleaning</option>
-</select>
-<input id="price" placeholder="Price">
-<input id="city" placeholder="City">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Become a Provider</title>
 
-<button>Register</button>
-</form>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:linear-gradient(to right,#020617,#0f172a);
+color:white;
+font-family:Inter;
+}
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border-radius:16px;
+}
+.step{
+display:none;
+}
+.step.active{
+display:block;
+}
+</style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+
+<div class="glass p-6 w-full max-w-xl">
+
+<h2 class="text-2xl font-bold text-center mb-4">
+🚀 Become a Service Provider
+</h2>
+
+<!-- STEP INDICATOR -->
+<div class="flex justify-between text-xs mb-4">
+<span id="s1">● Info</span>
+<span id="s2">● Service</span>
+<span id="s3">● Pricing</span>
+</div>
+
+<!-- STEP 1 -->
+<div class="step active" id="step1">
+
+<input id="name" placeholder="Full Name"
+class="w-full p-2 rounded text-black mb-3">
+
+<input id="phone" placeholder="Phone Number"
+class="w-full p-2 rounded text-black mb-3">
+
+<input id="city" placeholder="City"
+class="w-full p-2 rounded text-black mb-3">
+
+<label class="text-sm">Upload Profile Image</label>
+<input type="file" id="image"
+class="w-full mb-3">
+
+<button onclick="next(2)"
+class="w-full bg-blue-600 py-2 rounded">
+Next →
+</button>
+
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+
+<p class="mb-2">Select Services</p>
+
+<div class="grid grid-cols-2 gap-2">
+
+<label><input type="checkbox" value="plumbing"> Plumbing</label>
+<label><input type="checkbox" value="electric"> Electric</label>
+<label><input type="checkbox" value="furniture"> Furniture</label>
+<label><input type="checkbox" value="cleaning"> Cleaning</label>
+<label><input type="checkbox" value="painting"> Painting</label>
+<label><input type="checkbox" value="appliance"> Appliances</label>
+
+</div>
+
+<div class="flex gap-2 mt-4">
+<button onclick="next(1)" class="w-1/2 bg-gray-600 py-2 rounded">← Back</button>
+<button onclick="next(3)" class="w-1/2 bg-blue-600 py-2 rounded">Next →</button>
+</div>
+
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+
+<input id="price" type="number"
+placeholder="Base Price ₹"
+class="w-full p-2 rounded text-black mb-3">
+
+<p id="aiSuggest" class="text-sm text-cyan-400 mb-2"></p>
+
+<label class="flex items-center gap-2">
+<input type="checkbox" id="available" checked>
+Available for work
+</label>
+
+<button onclick="register()"
+class="w-full bg-green-600 py-2 mt-4 rounded font-bold">
+🚀 Register Now
+</button>
+
+<button onclick="next(2)"
+class="w-full mt-2 text-gray-400">
+← Back
+</button>
+
+</div>
+
+</div>
 
 <script type="module">
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
-import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
-const auth = getAuth()
-const db = getFirestore()
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
-form.onsubmit = async(e)=>{
-e.preventDefault()
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
-await addDoc(collection(db,"providers"),{
-name:name.value,
-service:service.value,
-price:Number(price.value),
-city:city.value,
-uid:auth.currentUser.uid,
-rating:5,
-jobs:0,
-available:true,
-createdAt:Date.now()
+/* CONFIG */
+const firebaseConfig = {
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
+}
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+const auth = getAuth(app)
+
+let currentUser=null
+
+onAuthStateChanged(auth,(user)=>{
+if(!user){
+alert("Login first")
+window.location.href="login.html"
+}else{
+currentUser=user
+}
 })
 
-alert("Registered Successfully 🚀")
+/* STEP NAV */
+window.next = function(step){
+
+document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"))
+document.getElementById("step"+step).classList.add("active")
+
 }
+
+/* AI PRICE SUGGESTION */
+price.addEventListener("input",()=>{
+let p = Number(price.value)
+
+if(p < 200){
+aiSuggest.innerText = "💡 Try ₹300–₹500 for better earnings"
+}else if(p < 500){
+aiSuggest.innerText = "🔥 Competitive pricing!"
+}else{
+aiSuggest.innerText = "🚀 Premium provider level"
+}
+})
+
+/* REGISTER */
+window.register = async function(){
+
+let services = []
+document.querySelectorAll("input[type=checkbox]:checked").forEach(c=>{
+if(c.value) services.push(c.value)
+})
+
+const data={
+name: name.value,
+phone: phone.value,
+city: city.value,
+services: services,
+price: Number(price.value),
+
+rating: 5,
+jobs: 0,
+verified: false,
+available: available.checked,
+
+ownerId: currentUser.uid,
+createdAt: Date.now()
+}
+
+await addDoc(collection(db,"providers"),data)
+
+alert("🎉 Registered Successfully!")
+
+window.location.href="provider.html"
+
+}
+
 </script>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<form id="form">
+<input id="name" placeholder="Your Name">
+<select id="service">
+<option>plumbing</option>
+<option>electric</option>
+<option>cleaning</option>
+</select>
+<input id="price" placeholder="Price">
+<input id="city" placeholder="City">
+
+<button>Register</button>
+</form>
+
+<script type="module">
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+import { getFirestore, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+const auth = getAuth()
+const db = getFirestore()
+
+form.onsubmit = async(e)=>{
+e.preventDefault()
+
+await addDoc(collection(db,"providers"),{
+name:name.value,
+service:service.value,
+price:Number(price.value),
+city:city.value,
+uid:auth.currentUser.uid,
+rating:5,
+jobs:0,
+available:true,
+createdAt:Date.now()
+})
+
+alert("Registered Successfully 🚀")
+}
+</script>

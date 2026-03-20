@@ -179,6 +179,23 @@ const db = getFirestore(app)
 const auth = getAuth(app)
 const storage = getStorage(app)
 
+async function uploadImageToCloudinary(file){
+
+const url = "https://api.cloudinary.com/v1_1/dq3hko9hn/image/upload"
+
+const formData = new FormData()
+formData.append("file", file)
+formData.append("upload_preset", "dl6dnzau")
+
+const res = await fetch(url,{
+method:"POST",
+body: formData
+})
+
+const data = await res.json()
+return data.secure_url
+}
+            
 const grid = document.getElementById("grid")
 
 let providers = []
@@ -322,7 +339,7 @@ return
 }
 
 let file = document.getElementById("s_image").files[0]
-let imageURL = file ? await uploadServiceImage(file) : ""
+let imageURL = file ? await uploadImageToCloudinary(file) : ""
 
 await addDoc(collection(db,"providers"),{
 name:s_name.value,

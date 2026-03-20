@@ -253,6 +253,11 @@ grid.innerHTML+=`
 <p class="text-gray-300 text-sm">${p.type || "Service"}</p>
 <p class="text-green-400 font-bold text-lg">₹${p.price}</p>
 
+<a href="service-details.html?id=${p.id}" 
+class="bg-blue-600 w-full py-2 rounded mt-2 text-center block">
+View Details 🔍
+</a>
+
 <button onclick="openModal('${p.id}')" 
 class="bg-gradient-to-r from-blue-500 to-cyan-500 
 w-full py-2 rounded mt-3 

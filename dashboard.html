@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>User Dashboard</title>
+<title>SmartRent Dashboard</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body {
   background: linear-gradient(to right, #0f172a, #1e293b);
+}
+
+/* Glass UI */
+.glass {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+}
+
+/* Card hover */
+.card:hover {
+  transform: scale(1.04);
+  transition: 0.3s;
 }
 </style>
 </head>
@@ -20,9 +33,40 @@ body {
 <h1 class="text-3xl font-bold mb-6">👤 Dashboard</h1>
 
 <!-- PROFILE -->
-<div class="bg-white/10 p-4 rounded-xl mb-6">
+<div class="glass p-4 mb-6">
   <h2 class="text-xl mb-2">Your Profile</h2>
   <p id="userEmail"></p>
+</div>
+
+<!-- STATS -->
+<div class="grid md:grid-cols-4 gap-4 mb-6">
+
+<div class="glass p-4 text-center">
+<h2 id="totalProps">0</h2>
+<p>Properties</p>
+</div>
+
+<div class="glass p-4 text-center">
+<h2 id="totalViews">0</h2>
+<p>Views</p>
+</div>
+
+<div class="glass p-4 text-center">
+<h2 id="totalChats">0</h2>
+<p>Chats</p>
+</div>
+
+<div class="glass p-4 text-center">
+<h2 id="totalSaves">0</h2>
+<p>Saves</p>
+</div>
+
+</div>
+
+<!-- AI INSIGHT -->
+<div class="glass p-4 mb-6">
+  <h2>🤖 AI Insight</h2>
+  <p id="aiInsight">Analyzing your listings...</p>
 </div>
 
 <!-- MY PROPERTIES -->
@@ -49,17 +93,14 @@ import {
   where,
   deleteDoc,
   doc,
+  updateDoc,
   setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 ADD YOUR KEY HERE
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
   authDomain: "smart-property-portal.firebaseapp.com",
   projectId: "smart-property-portal",
-  storageBucket: "smart-property-portal.firebasestorage.app",
-  messagingSenderId: "407241446660",
-  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -67,8 +108,9 @@ const auth = getAuth();
 const db = getFirestore();
 
 let currentUser = null;
+let properties = [];
 
-// 🔐 AUTH CHECK
+/* AUTH */
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
@@ -80,7 +122,6 @@ onAuthStateChanged(auth, async (user) => {
 
   document.getElementById("userEmail").innerText = user.email;
 
-  // 👤 CREATE PROFILE (SAFE)
   await setDoc(doc(db, "users", user.uid), {
     email: user.email,
     createdAt: Date.now()
@@ -89,7 +130,7 @@ onAuthStateChanged(auth, async (user) => {
   loadMyProperties();
 });
 
-// 🏠 LOAD USER PROPERTIES
+/* LOAD PROPERTIES */
 async function loadMyProperties(){
 
   const q = query(
@@ -102,31 +143,102 @@ async function loadMyProperties(){
   const container = document.getElementById("myProperties");
   container.innerHTML = "";
 
+  properties = [];
+
   snapshot.forEach(docSnap => {
     const p = docSnap.data();
+    const id = docSnap.id;
+
+    properties.push({ ...p, id });
 
     const div = document.createElement("div");
-    div.className = "bg-white/10 p-4 rounded-xl";
+    div.className = "glass card p-4";
 
     div.innerHTML = `
-      <h3 class="text-xl font-bold">${p.title}</h3>
-      <p>${p.city}</p>
-      <p>₹${p.rent}</p>
+      <img src="${p.image}" class="h-40 w-full object-cover rounded">
 
-      <button onclick="deleteProperty('${docSnap.id}')"
-        class="bg-red-500 px-3 py-1 rounded mt-2">
+      <h3 class="text-xl font-bold mt-2">${p.title}</h3>
+      <p>${p.city}</p>
+      <p class="text-green-400 font-bold">₹${p.rent}</p>
+
+      <p class="text-xs mt-1">👁 ${p.views||0} | 💬 ${p.chats||0} | ❤️ ${p.saves||0}</p>
+
+      <div class="flex flex-wrap gap-2 mt-3">
+
+        <button onclick="boost('${id}')"
+        class="bg-yellow-500 px-2 py-1 rounded text-sm">
+        Boost 🚀
+        </button>
+
+        <button onclick="editProperty('${id}')"
+        class="bg-blue-500 px-2 py-1 rounded text-sm">
+        Edit
+        </button>
+
+        <button onclick="deleteProperty('${id}')"
+        class="bg-red-500 px-2 py-1 rounded text-sm">
         Delete
-      </button>
+        </button>
+
+        <a href="chat.html?property=${id}"
+        class="bg-purple-500 px-2 py-1 rounded text-sm">
+        Chats
+        </a>
+
+      </div>
     `;
 
     container.appendChild(div);
   });
+
+  calculateStats();
+  generateAI();
 }
 
-// 🗑 DELETE PROPERTY
-window.deleteProperty = async function(id){
-  await deleteDoc(doc(db,"properties",id));
-  loadMyProperties();
+/* STATS */
+function calculateStats(){
+
+document.getElementById("totalProps").innerText = properties.length;
+
+let views = properties.reduce((s,x)=>s+(x.views||0),0);
+let chats = properties.reduce((s,x)=>s+(x.chats||0),0);
+let saves = properties.reduce((s,x)=>s+(x.saves||0),0);
+
+document.getElementById("totalViews").innerText = views;
+document.getElementById("totalChats").innerText = chats;
+document.getElementById("totalSaves").innerText = saves;
+}
+
+/* AI INSIGHT */
+function generateAI(){
+
+if(properties.length===0){
+document.getElementById("aiInsight").innerText =
+"Post your first property to unlock insights.";
+return;
+}
+
+let avg = properties.reduce((s,x)=>s+x.rent,0)/properties.length;
+
+document.getElementById("aiInsight").innerText =
+`Average rent ₹${Math.floor(avg)}. Lower price = faster leads. Boost top listings 🚀`;
+}
+
+/* ACTIONS */
+window.deleteProperty = async(id)=>{
+await deleteDoc(doc(db,"properties",id));
+loadMyProperties();
+};
+
+window.editProperty = (id)=>{
+window.location.href = "post.html?edit="+id;
+};
+
+window.boost = async(id)=>{
+await updateDoc(doc(db,"properties",id),{
+boost:true
+});
+alert("Property boosted 🚀");
 };
 
 </script>

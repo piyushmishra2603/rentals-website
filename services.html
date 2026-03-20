@@ -45,7 +45,7 @@ border-radius:6px;
 <a href="index.html" class="bg-gray-700 px-4 py-2 rounded">← Back</a>
 </div>
 
-<!-- SEARCH BAR -->
+<!-- SEARCH -->
 <div class="glass p-4 flex gap-3 flex-wrap mb-6">
 
 <input id="search" placeholder="🔍 Search services..." 
@@ -70,6 +70,13 @@ Apply
 
 </div>
 
+<!-- 🚀 FLOAT BUTTON -->
+<button onclick="openServiceModal()" 
+class="fixed bottom-6 right-6 bg-gradient-to-r from-purple-600 to-pink-500 
+px-5 py-3 rounded-full text-white font-bold shadow-xl hover:scale-110 transition z-50">
+➕ Post Service
+</button>
+
 <!-- BOOKING MODAL -->
 <div id="modal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
 
@@ -80,7 +87,6 @@ Apply
 <input id="name" placeholder="Your Name" class="w-full p-2 rounded text-black mb-2">
 <input id="phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
 <input id="address" placeholder="Address" class="w-full p-2 rounded text-black mb-2">
-
 <input id="upi" placeholder="Enter UPI ID" class="w-full p-2 rounded text-black mb-3">
 
 <button onclick="payNow()" 
@@ -95,12 +101,44 @@ Cancel
 </div>
 </div>
 
+<!-- 💎 POST SERVICE MODAL -->
+<div id="serviceModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
+
+<div class="bg-gradient-to-r from-gray-900 to-gray-800 p-6 rounded-2xl w-11/12 max-w-lg">
+
+<h2 class="text-2xl font-bold mb-4">🚀 List Your Service</h2>
+
+<input id="s_name" placeholder="Your Name" class="w-full p-2 rounded text-black mb-2">
+<input id="s_phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
+<input id="s_city" placeholder="City" class="w-full p-2 rounded text-black mb-2">
+
+<select id="s_category" class="w-full p-2 rounded text-black mb-2">
+<option>Plumbing</option>
+<option>Electrician</option>
+<option>Cleaning</option>
+<option>Furniture</option>
+<option>Painting</option>
+<option>AC Repair</option>
+</select>
+
+<input id="s_price" type="number" placeholder="Price ₹" class="w-full p-2 rounded text-black mb-2">
+
+<input id="s_image" type="file" class="w-full mb-3">
+
+<div class="flex gap-3">
+<button onclick="submitService()" class="flex-1 bg-green-600 py-2 rounded">Post</button>
+<button onclick="closeServiceModal()" class="flex-1 bg-red-500 py-2 rounded">Cancel</button>
+</div>
+
+</div>
+</div>
+
 <script type="module">
 
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"  
-const auth = getAuth()  
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js"
 
 /* CONFIG */
 const firebaseConfig = {
@@ -111,39 +149,31 @@ projectId:"smart-property-portal"
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
+const auth = getAuth(app)
+const storage = getStorage(app)
 
-/* GET TYPE */
-const params = new URLSearchParams(window.location.search)
-const type = params.get("type") || "services"
-
-document.getElementById("title").innerText = "🔧 " + type.toUpperCase()
-
-/* ADVANCED PROVIDERS */
-import { getDocs, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+const grid = document.getElementById("grid")
 
 let providers = []
 let filtered = []
+let selectedProvider = null
 
+/* LOAD PROVIDERS */
 async function loadProviders(){
 
 const snapshot = await getDocs(collection(db,"providers"))
 
 providers = []
-
 snapshot.forEach(doc=>{
 providers.push({id:doc.id,...doc.data()})
 })
 
-filtered = providers.filter(p=>p.service === type || type==="more")
-
+filtered = providers
 render(filtered)
 
 }
 
 loadProviders()
-
-let filtered = providers.filter(p=>p.type===type || type==="more")
-let selectedProvider = null
 
 /* RENDER */
 function render(list){
@@ -152,10 +182,9 @@ grid.innerHTML=""
 
 list.forEach(p=>{
 
-let badge = ""
-if(p.rating > 4.6) badge = '<span class="badge bg-yellow-400 text-black">Top Rated</span>'
-else if(p.jobs > 100) badge = '<span class="badge bg-blue-500">Popular</span>'
-else badge = '<span class="badge bg-green-500">Fast</span>'
+let badge = p.rating>4.6 
+? '<span class="badge bg-yellow-400 text-black">Top Rated</span>'
+: '<span class="badge bg-blue-500">Popular</span>'
 
 grid.innerHTML+=`
 <div class="glass card p-4 relative">
@@ -163,14 +192,10 @@ grid.innerHTML+=`
 <div class="absolute top-2 right-2">${badge}</div>
 
 <h3 class="text-xl font-bold">${p.name}</h3>
-
-<p class="text-gray-300 text-sm">${p.type}</p>
-
+<p class="text-gray-300 text-sm">${p.type || "Service"}</p>
 <p class="text-green-400 font-bold text-lg">₹${p.price}</p>
 
-<p class="text-yellow-400">⭐ ${p.rating} • ${p.jobs}+ jobs</p>
-
-<button onclick="openModal('${p.id}')">
+<button onclick="openModal('${p.id}')" 
 class="bg-blue-600 w-full py-2 rounded mt-3 hover:scale-105">
 Book Instantly ⚡
 </button>
@@ -181,15 +206,13 @@ Book Instantly ⚡
 
 }
 
-render(filtered)
-
 /* FILTER */
 window.applyFilter = function(){
 
-let search = document.getElementById("search").value.toLowerCase()
-let price = document.getElementById("priceFilter").value
+let search = search.value.toLowerCase()
+let price = priceFilter.value
 
-let f = filtered.filter(p=>
+let f = providers.filter(p=>
 p.name.toLowerCase().includes(search) &&
 (!price ||
 (price==="low" && p.price<500) ||
@@ -198,13 +221,12 @@ p.name.toLowerCase().includes(search) &&
 )
 
 render(f)
+
 }
 
 /* MODAL */
 window.openModal = function(id){
-
-selectedProvider = providers.find(p => p.id === id)
-
+selectedProvider = providers.find(p=>p.id===id)
 modal.classList.remove("hidden")
 }
 
@@ -215,68 +237,69 @@ modal.classList.add("hidden")
 /* PAYMENT */
 window.payNow = async function(){
 
-let name = document.getElementById("name").value
-let phone = document.getElementById("phone").value
-let address = document.getElementById("address").value
-let upi = document.getElementById("upi").value
-
-if(!name || !phone || !address || !upi){
-alert("Fill all fields")
+if(!auth.currentUser){
+alert("Login required")
 return
 }
 
-alert("Payment Successful 🎉")
-
 await addDoc(collection(db,"bookings"),{
-type: "service",
-userId: auth.currentUser.uid,
-ownerId: selectedProvider.uid,
-serviceName: selectedProvider.name,
-price: selectedProvider.price,
-status: "pending",
-paymentStatus: "paid",
-address: address,
-time: Date.now(),
-commission: selectedProvider.price * 0.1
+type:"service",
+userId:auth.currentUser.uid,
+ownerId:selectedProvider.ownerId || "unknown",
+serviceName:selectedProvider.name,
+price:selectedProvider.price,
+status:"pending",
+paymentStatus:"paid",
+time:Date.now()
 })
 
+alert("✅ Booking Confirmed")
 closeModal()
-alert("Booking Confirmed ✅")
+
+}
+
+/* SERVICE MODAL */
+window.openServiceModal = ()=> serviceModal.classList.remove("hidden")
+window.closeServiceModal = ()=> serviceModal.classList.add("hidden")
+
+/* IMAGE UPLOAD */
+async function uploadServiceImage(file){
+const storageRef = ref(storage,"services/"+Date.now())
+await uploadBytes(storageRef,file)
+return await getDownloadURL(storageRef)
+}
+
+/* SUBMIT SERVICE */
+window.submitService = async function(){
+
+if(!auth.currentUser){
+alert("Login required")
+return
+}
+
+let file = document.getElementById("s_image").files[0]
+let imageURL = file ? await uploadServiceImage(file) : ""
+
+await addDoc(collection(db,"providers"),{
+name:s_name.value,
+phone:s_phone.value,
+city:s_city.value,
+type:s_category.value,
+price:Number(s_price.value),
+image:imageURL,
+ownerId:auth.currentUser.uid,
+rating:5,
+jobs:0,
+createdAt:Date.now()
+})
+
+alert("🎉 Service Posted!")
+closeServiceModal()
+loadProviders()
 
 }
 
 </script>
 
-<!-- 💎 POST SERVICE MODAL (ADD HERE) -->
-<div id="serviceModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50">
-
-  <div class="bg-gradient-to-r from-gray-900 to-gray-800 p-6 rounded-2xl w-11/12 max-w-lg text-white">
-
-    <h2 class="text-2xl font-bold mb-4">🚀 List Your Service</h2>
-
-    <input id="s_name" placeholder="Your Name" class="w-full p-2 rounded text-black mb-2">
-    <input id="s_phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
-    <input id="s_city" placeholder="City" class="w-full p-2 rounded text-black mb-2">
-
-    <select id="s_category" class="w-full p-2 rounded text-black mb-2">
-      <option>Plumbing</option>
-      <option>Electrician</option>
-      <option>Cleaning</option>
-      <option>Furniture</option>
-    </select>
-
-    <input id="s_price" type="number" placeholder="Price ₹" class="w-full p-2 rounded text-black mb-2">
-
-    <input id="s_image" type="file" class="w-full mb-3">
-
-    <div class="flex gap-3">
-      <button onclick="submitService()" class="flex-1 bg-green-600 py-2 rounded">Post</button>
-      <button onclick="closeServiceModal()" class="flex-1 bg-red-500 py-2 rounded">Cancel</button>
-    </div>
-
-  </div>
-</div>
-
-</body>
 </body>
 </html>

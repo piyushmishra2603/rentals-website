@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Details</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
+color:white;
+font-family:Inter;
+}
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border-radius:16px;
+border:1px solid rgba(255,255,255,0.1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="max-w-6xl mx-auto p-6">
+
+<!-- BACK -->
+<a href="services.html" class="text-gray-400">← Back</a>
+
+<!-- MAIN -->
+<div id="container" class="grid md:grid-cols-2 gap-6 mt-4">
+
+<!-- LEFT -->
+<div>
+
+<img id="mainImage" class="w-full h-80 object-cover rounded-xl mb-3">
+
+<div id="gallery" class="flex gap-2 overflow-x-auto"></div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="glass p-5">
+
+<h1 id="title" class="text-2xl font-bold"></h1>
+
+<p id="category" class="text-gray-400 text-sm"></p>
+
+<p id="price" class="text-green-400 text-xl font-bold mt-2"></p>
+
+<p id="rating" class="text-yellow-400 mt-1"></p>
+
+<p class="text-xs text-gray-400 mt-2">
+✔ Verified • ⚡ Fast Service • 🔒 Secure Booking
+</p>
+
+<div class="flex gap-3 mt-4">
+
+<button onclick="bookNow()" 
+class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 py-2 rounded">
+Book Now 🚀
+</button>
+
+<button onclick="callNow()" 
+class="flex-1 bg-green-600 py-2 rounded">
+Call 📞
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PROVIDER -->
+<div class="glass p-4 mt-6">
+
+<h2 class="text-xl font-bold mb-2">👤 Provider</h2>
+
+<p id="providerName"></p>
+<p id="providerCity" class="text-gray-400 text-sm"></p>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+/* CONFIG */
+const firebaseConfig = {
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
+}
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+
+/* GET ID */
+const params = new URLSearchParams(window.location.search)
+const id = params.get("id")
+
+/* LOAD SERVICE */
+async function load(){
+
+const snap = await getDoc(doc(db,"providers",id))
+
+if(!snap.exists()){
+alert("Service not found")
+return
+}
+
+const p = snap.data()
+
+/* SET DATA */
+title.innerText = p.name
+category.innerText = p.type
+price.innerText = "₹" + p.price
+rating.innerText = "⭐ " + (p.rating || 4.5)
+
+providerName.innerText = p.name
+providerCity.innerText = p.city || "India"
+
+/* IMAGE */
+mainImage.src = p.image || "https://via.placeholder.com/400"
+
+/* GALLERY */
+if(p.images){
+gallery.innerHTML = p.images.map(img=>`
+<img src="${img}" 
+onclick="document.getElementById('mainImage').src='${img}'"
+class="h-20 w-20 object-cover rounded cursor-pointer">
+`).join("")
+}
+
+}
+
+load()
+
+/* ACTIONS */
+window.bookNow = function(){
+alert("Booking coming soon 🚀")
+}
+
+window.callNow = function(){
+alert("Call feature coming soon 📞")
+}
+
+</script>
+
+</body>
+</html>

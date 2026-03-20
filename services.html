@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Services</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
+color:white;
+font-family:Inter;
+}
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border-radius:16px;
+border:1px solid rgba(255,255,255,0.1);
+}
+.card:hover{
+transform:translateY(-5px) scale(1.02);
+transition:0.3s;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+.badge{
+font-size:10px;
+padding:2px 6px;
+border-radius:6px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="max-w-6xl mx-auto p-6">
+
+<!-- HEADER -->
+<div class="flex justify-between items-center mb-6">
+<h1 id="title" class="text-3xl font-bold">Services</h1>
+<a href="index.html" class="bg-gray-700 px-4 py-2 rounded">← Back</a>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="glass p-4 flex gap-3 flex-wrap mb-6">
+
+<input id="search" placeholder="🔍 Search services..." 
+class="flex-1 px-3 py-2 rounded text-black">
+
+<select id="priceFilter" class="px-3 py-2 rounded text-black">
+<option value="">All Prices</option>
+<option value="low">Below ₹500</option>
+<option value="mid">₹500 - ₹1500</option>
+<option value="high">Above ₹1500</option>
+</select>
+
+<button onclick="applyFilter()" 
+class="bg-blue-600 px-4 py-2 rounded hover:scale-105">
+Apply
+</button>
+
+</div>
+
+<!-- GRID -->
+<div id="grid" class="grid md:grid-cols-3 gap-6"></div>
+
+</div>
+
+<!-- BOOKING MODAL -->
+<div id="modal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
+
+<div class="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl w-11/12 max-w-md">
+
+<h2 class="text-xl mb-3 font-bold">📅 Book Service</h2>
+
+<input id="name" placeholder="Your Name" class="w-full p-2 rounded text-black mb-2">
+<input id="phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
+<input id="address" placeholder="Address" class="w-full p-2 rounded text-black mb-2">
+
+<input id="upi" placeholder="Enter UPI ID" class="w-full p-2 rounded text-black mb-3">
+
+<button onclick="payNow()" 
+class="bg-green-600 w-full p-3 rounded font-bold hover:scale-105">
+Pay & Book 🚀
+</button>
+
+<button onclick="closeModal()" class="mt-2 text-gray-400 w-full">
+Cancel
+</button>
+
+</div>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+/* CONFIG */
+const firebaseConfig = {
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
+}
+
+const app = initializeApp(firebaseConfig)
+const db = getFirestore(app)
+
+/* GET TYPE */
+const params = new URLSearchParams(window.location.search)
+const type = params.get("type") || "services"
+
+document.getElementById("title").innerText = "🔧 " + type.toUpperCase()
+
+/* ADVANCED PROVIDERS */
+let providers = [
+{name:"Raj Plumbing",type:"plumbing",price:300,rating:4.5,jobs:120},
+{name:"Quick Electric",type:"electric",price:500,rating:4.2,jobs:90},
+{name:"Urban Clean",type:"cleaning",price:800,rating:4.8,jobs:200},
+{name:"Furniture Hub",type:"furniture",price:1200,rating:4.3,jobs:60},
+{name:"FixIt Repairs",type:"repair",price:700,rating:4.1,jobs:110},
+{name:"Fast Movers",type:"movers",price:1500,rating:4.6,jobs:80},
+{name:"PaintPro",type:"painting",price:2000,rating:4.7,jobs:140}
+]
+
+let filtered = providers.filter(p=>p.type===type || type==="more")
+let selectedProvider = null
+
+/* RENDER */
+function render(list){
+
+grid.innerHTML=""
+
+list.forEach(p=>{
+
+let badge = ""
+if(p.rating > 4.6) badge = '<span class="badge bg-yellow-400 text-black">Top Rated</span>'
+else if(p.jobs > 100) badge = '<span class="badge bg-blue-500">Popular</span>'
+else badge = '<span class="badge bg-green-500">Fast</span>'
+
+grid.innerHTML+=`
+<div class="glass card p-4 relative">
+
+<div class="absolute top-2 right-2">${badge}</div>
+
+<h3 class="text-xl font-bold">${p.name}</h3>
+
+<p class="text-gray-300 text-sm">${p.type}</p>
+
+<p class="text-green-400 font-bold text-lg">₹${p.price}</p>
+
+<p class="text-yellow-400">⭐ ${p.rating} • ${p.jobs}+ jobs</p>
+
+<button onclick="openModal('${p.name}',${p.price})"
+class="bg-blue-600 w-full py-2 rounded mt-3 hover:scale-105">
+Book Instantly ⚡
+</button>
+
+</div>
+`
+})
+
+}
+
+render(filtered)
+
+/* FILTER */
+window.applyFilter = function(){
+
+let search = document.getElementById("search").value.toLowerCase()
+let price = document.getElementById("priceFilter").value
+
+let f = filtered.filter(p=>
+p.name.toLowerCase().includes(search) &&
+(!price ||
+(price==="low" && p.price<500) ||
+(price==="mid" && p.price<=1500 && p.price>=500) ||
+(price==="high" && p.price>1500))
+)
+
+render(f)
+}
+
+/* MODAL */
+window.openModal = function(name,price){
+selectedProvider = {name,price}
+modal.classList.remove("hidden")
+}
+
+window.closeModal = function(){
+modal.classList.add("hidden")
+}
+
+/* PAYMENT */
+window.payNow = async function(){
+
+let name = document.getElementById("name").value
+let phone = document.getElementById("phone").value
+let address = document.getElementById("address").value
+let upi = document.getElementById("upi").value
+
+if(!name || !phone || !address || !upi){
+alert("Fill all fields")
+return
+}
+
+alert("Payment Successful 🎉")
+
+await addDoc(collection(db,"bookings"),{
+name,
+phone,
+address,
+service: selectedProvider.name,
+price: selectedProvider.price,
+time: Date.now()
+})
+
+closeModal()
+alert("Booking Confirmed ✅")
+
+}
+
+</script>
+
+</body>
+</html>

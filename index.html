@@ -280,13 +280,33 @@ function render(list){
 
 grid.innerHTML=""
 
+// 🔥 SMART SORT (BOOST FIRST + BEST DEAL)
+list.sort((a,b)=>{
+
+let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
+let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
+
+if(boostA !== boostB) return boostB - boostA
+
+return a.rent - b.rent
+})
+
 list.forEach(p=>{
 
 let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
 let score = Math.floor(Math.random()*3)+7
 
+let isBoosted = p.boost && p.boostExpiry > Date.now()
+
 grid.innerHTML+=`
-<div class="glass card p-3">
+<div class="glass card p-3 cursor-pointer relative
+${isBoosted ? 'border border-yellow-400 shadow-2xl shadow-yellow-500/30' : ''}"
+onclick="openProperty('${p.id}')">
+
+${isBoosted ? `
+<div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded">
+⭐ BOOSTED
+</div>` : ''}
 
 <img src="${p.image}" class="h-40 w-full rounded object-cover">
 
@@ -300,26 +320,29 @@ grid.innerHTML+=`
 
 <div class="flex gap-2 mt-3">
 
-<a href="property.html?id=${p.id}" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
+<a href="property.html?id=${p.id}" onclick="event.stopPropagation()" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
 
 ${p.demo ? `<span class="text-gray-400 text-sm">Demo</span>` : `
-<a href="chat.html?property=${p.id}&owner=${p.ownerId}" class="bg-purple-600 px-2 py-1 rounded text-sm">Chat</a>
-<a href="tel:${p.phone}" class="bg-green-600 px-2 py-1 rounded text-sm">Call</a>
-<button class="bg-yellow-500 px-2 py-1 rounded text-sm">Visit</button>
+<a href="chat.html?property=${p.id}&owner=${p.ownerId}" onclick="event.stopPropagation()" class="bg-purple-600 px-2 py-1 rounded text-sm">Chat</a>
+<a href="tel:${p.phone}" onclick="event.stopPropagation()" class="bg-green-600 px-2 py-1 rounded text-sm">Call</a>
+<button onclick="event.stopPropagation()" class="bg-yellow-500 px-2 py-1 rounded text-sm">Visit</button>
 `}
 
-<button onclick="toggleSave('${p.id}')" class="text-red-500">
+<button onclick="event.stopPropagation(); toggleSave('${p.id}')" class="text-red-500">
 ${saved.includes(p.id)?"❤️":"🤍"}
 </button>
 
 </div>
 </div>
 `
-
 })
 
 }
 
+window.openProperty = (id)=>{
+window.location.href = `property.html?id=${id}`
+}
+  
 </script>
 
   <!-- AI OFFER POPUP -->

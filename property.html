@@ -82,8 +82,13 @@ button:hover{
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { 
+  getFirestore, 
+  doc, 
+  getDoc, 
+  updateDoc, 
+  increment 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 const firebaseConfig = {
@@ -105,6 +110,11 @@ let saved = JSON.parse(localStorage.getItem("saved")) || []
 const params = new URLSearchParams(window.location.search)
 const propertyId = params.get("id")
 
+// 👁️ Increase Views Count
+await updateDoc(doc(db,"properties",id),{
+  views: increment(1)
+});
+    
 onAuthStateChanged(auth,user=>{
     if(!user){
         window.location.href="login.html"

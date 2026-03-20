@@ -21,10 +21,18 @@ backdrop-filter:blur(12px);
 border-radius:16px;
 border:1px solid rgba(255,255,255,0.1);
 }
+.card{
+transition: all 0.3s ease;
+}
+
 .card:hover{
-transform:translateY(-5px) scale(1.02);
-transition:0.3s;
-box-shadow:0 10px 30px rgba(0,0,0,0.5);
+transform: translateY(-8px) scale(1.03);
+box-shadow: 0 0 20px rgba(0,255,255,0.2),
+            0 0 40px rgba(0,255,255,0.1);
+}
+
+*{
+scroll-behavior:smooth;
 }
 .badge{
 font-size:10px;
@@ -45,6 +53,16 @@ border-radius:6px;
 <a href="index.html" class="bg-gray-700 px-4 py-2 rounded">← Back</a>
 </div>
 
+<div class="glass p-6 mb-6 text-center">
+<h2 class="text-3xl font-bold mb-2">Find Trusted Services ⚡</h2>
+<p class="text-gray-300 mb-4">Plumbing • Electrician • Cleaning • Furniture • Repairs</p>
+<div class="flex justify-center gap-3 flex-wrap">
+<button class="bg-blue-600 px-4 py-2 rounded-full">⚡ Fast Booking</button>
+<button class="bg-purple-600 px-4 py-2 rounded-full">⭐ Top Rated</button>
+<button class="bg-green-600 px-4 py-2 rounded-full">💰 Best Price</button>
+</div>
+</div>
+  
 <!-- SEARCH -->
 <div class="glass p-4 flex gap-3 flex-wrap mb-6">
 
@@ -65,6 +83,15 @@ Apply
 
 </div>
 
+<div class="flex gap-3 overflow-x-auto mb-6">
+
+<button onclick="quickFilter('Plumbing')" class="glass px-4 py-2 rounded">🚰 Plumbing</button>
+<button onclick="quickFilter('Electrician')" class="glass px-4 py-2 rounded">⚡ Electric</button>
+<button onclick="quickFilter('Cleaning')" class="glass px-4 py-2 rounded">🧹 Cleaning</button>
+<button onclick="quickFilter('Furniture')" class="glass px-4 py-2 rounded">🛋️ Furniture</button>
+
+</div>
+  
 <!-- GRID -->
 <div id="grid" class="grid md:grid-cols-3 gap-6"></div>
 
@@ -159,6 +186,13 @@ let filtered = []
 let selectedProvider = null
 
 /* LOAD PROVIDERS */
+grid.innerHTML = `
+<div class="animate-pulse space-y-4">
+<div class="h-24 bg-gray-700 rounded"></div>
+<div class="h-24 bg-gray-700 rounded"></div>
+<div class="h-24 bg-gray-700 rounded"></div>
+</div>
+`  
 async function loadProviders(){
 
 const snapshot = await getDocs(collection(db,"providers"))
@@ -182,6 +216,13 @@ grid.innerHTML=""
 
 list.forEach(p=>{
 
+let icon = "🛠️"
+
+if(p.type?.includes("Plumb")) icon = "🚰"
+if(p.type?.includes("Electric")) icon = "⚡"
+if(p.type?.includes("Clean")) icon = "🧹"
+if(p.type?.includes("Furniture")) icon = "🛋️"  
+
 let badge = p.rating>4.6 
 ? '<span class="badge bg-yellow-400 text-black">Top Rated</span>'
 : '<span class="badge bg-blue-500">Popular</span>'
@@ -191,12 +232,15 @@ grid.innerHTML+=`
 
 <div class="absolute top-2 right-2">${badge}</div>
 
-<h3 class="text-xl font-bold">${p.name}</h3>
+<h3 class="text-xl font-bold">${icon} ${p.name}</h3>
 <p class="text-gray-300 text-sm">${p.type || "Service"}</p>
 <p class="text-green-400 font-bold text-lg">₹${p.price}</p>
 
 <button onclick="openModal('${p.id}')" 
-class="bg-blue-600 w-full py-2 rounded mt-3 hover:scale-105">
+class="bg-gradient-to-r from-blue-500 to-cyan-500 
+w-full py-2 rounded mt-3 
+hover:scale-105 active:scale-95 
+transition duration-200 shadow-lg"
 Book Instantly ⚡
 </button>
 
@@ -301,5 +345,12 @@ loadProviders()
 
 </script>
 
+<button 
+onclick="alert('AI Assistant Coming Soon 🤖')" 
+class="fixed bottom-6 left-6 bg-gradient-to-r from-cyan-500 to-blue-600 
+p-4 rounded-full shadow-xl hover:scale-110 transition z-50">
+🤖
+</button>
+  
 </body>
 </html>

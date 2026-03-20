@@ -201,8 +201,10 @@ render(f)
 }
 
 /* MODAL */
-window.openModal = function(name,price){
-selectedProvider = {name,price}
+window.openModal = function(id){
+
+selectedProvider = providers.find(p => p.id === id)
+
 modal.classList.remove("hidden")
 }
 

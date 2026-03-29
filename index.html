@@ -46,7 +46,23 @@ font-weight:bold;
 
 <div class="font-bold text-xl">SmartRent</div>
 
-<div class="flex gap-4 text-sm">
+<div class="flex gap-4 text-sm items-center">
+
+<a href="#home" class="hover:text-cyan-400">Home</a>
+<a href="#explore" class="hover:text-cyan-400">Explore</a>
+<a href="services.html" class="hover:text-cyan-400">Services</a>
+
+<!-- LOGIN -->
+<a href="login.html" class="bg-blue-600 px-3 py-1 rounded hover:scale-105 transition">
+Login
+</a>
+
+<!-- SIGNUP -->
+<a href="signup.html" class="bg-green-600 px-3 py-1 rounded hover:scale-105 transition">
+Signup
+</a>
+
+</div>
 <a href="#home" class="hover:text-cyan-400">Home</a>
 <a href="#explore" class="hover:text-cyan-400">Explore</a>
 <a href="services.html" class="hover:text-cyan-400">Services</a>
@@ -275,16 +291,35 @@ let saved = JSON.parse(localStorage.getItem("saved")) || []
 /* AUTH */
 await setPersistence(auth, browserLocalPersistence);
 
+const nav = document.querySelector(".flex.gap-4.text-sm")
+
+await setPersistence(auth, browserLocalPersistence);
+
 onAuthStateChanged(auth,(user)=>{
+
   if(user){
     load()
+
+    // ✅ Add Logout button
+    if(nav && !document.getElementById("logoutBtn")){
+      nav.innerHTML += `
+      <button id="logoutBtn" onclick="logout()" 
+      class="bg-red-500 px-3 py-1 rounded">
+      Logout
+      </button>
+      `
+    }
+
   }else{
+
     setTimeout(()=>{
       if(!auth.currentUser){
         window.location.href="login.html"
       }
     },1500)
+
   }
+
 })
 
 /* LOAD */

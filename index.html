@@ -79,9 +79,8 @@ Create Account
 <button onclick="toggleMenu()"
 class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition">
 
-<img src="https://i.pravatar.cc/30"
-class="w-7 h-7 rounded-full border">
-
+<img id="profilePic" src="https://i.pravatar.cc/30" class="w-7 h-7 rounded-full border">
+  
 <span class="text-sm">My Account</span>
 
 </button>
@@ -306,7 +305,7 @@ src="https://maps.google.com/maps?q=india&output=embed"></iframe>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* CONFIG */
@@ -327,15 +326,32 @@ let allProperties=[]
 let saved = JSON.parse(localStorage.getItem("saved")) || []
 
 /* AUTH */
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, async (user)=>{
 
   const userMenu = document.getElementById("userMenu");
+  const profilePic = document.getElementById("profilePic");
 
   if(user){
     load();
 
     if(userMenu){
       userMenu.classList.remove("hidden");
+    }
+
+    // 🔥 GET USER DATA FROM FIRESTORE
+    try{
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if(snap.exists()){
+        const data = snap.data();
+
+        if(data.photo){
+          profilePic.src = data.photo;
+        }
+      }
+    }catch(e){
+      console.log("No profile image found");
     }
 
   }else{
@@ -346,7 +362,7 @@ onAuthStateChanged(auth,(user)=>{
 
   }
 
-})
+});
 
 /* LOAD */
 async function load(){

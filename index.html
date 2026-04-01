@@ -68,20 +68,6 @@ font-weight:bold;
     </div>
   </div>
 </div>
-  
-<!-- ADDICTIVE FLOATING BUTTON -->
-<div style="position:fixed; top:20px; right:20px; z-index:999;">
-
-<a href="plans.html"
-class="px-6 py-2 rounded-full font-bold text-white
-bg-gradient-to-r from-purple-600 via-pink-500 to-red-500
-shadow-xl flex items-center gap-2 transition duration-300">
-
-💎 Plans
-
-</a>
-
-</div>
 
 <style>
 /* Pulse Glow */
@@ -253,6 +239,7 @@ Dashboard
 
 <!-- MAP -->
 <div class="max-w-6xl mx-auto p-4">
+<div id="grid" class="max-w-6xl mx-auto p-4 grid md:grid-cols-3 gap-4"></div>
 <div class="glass p-4">
 <h2>🗺️ Map View</h2>
 <iframe width="100%" height="250" style="border:0;border-radius:10px"
@@ -260,11 +247,17 @@ src="https://maps.google.com/maps?q=india&output=embed"></iframe>
 </div>
 </div>
 
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 /* CONFIG */
 const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal"
+  apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain:"smart-property-portal.firebaseapp.com",
+  projectId:"smart-property-portal"
 }
 
 const app = initializeApp(firebaseConfig)
@@ -272,223 +265,177 @@ const db = getFirestore(app)
 const auth = getAuth(app)
 
 const grid = document.getElementById("grid")
+const liveFeed = document.getElementById("liveFeed")
 
 let allProperties=[]
 let saved = JSON.parse(localStorage.getItem("saved")) || []
 
 /* AUTH */
 onAuthStateChanged(auth,(user)=>{
-if(!user){
-window.location.href="login.html"
-}else{
-load()
-}
+  if(!user){
+    window.location.href="login.html"
+  }else{
+    load()
+  }
 })
 
 /* LOAD */
 async function load(){
+  grid.innerHTML="Loading..."
 
-grid.innerHTML="Loading..."
+  const snap = await getDocs(collection(db,"properties"))
 
-const snap = await getDocs(collection(db,"properties"))
+  allProperties=[]
 
-allProperties=[]
+  snap.forEach(doc=>{
+    let d=doc.data()
+    allProperties.push({...d,id:doc.id})
+  })
 
-snap.forEach(doc=>{
-let d=doc.data()
-allProperties.push({...d,id:doc.id})
-})
+  const demoProperties = []
+  allProperties=[...allProperties,...demoProperties]
 
-allProperties=[...allProperties,...demoProperties]
-
-render(allProperties)
-renderAI()
-generateAI()
-
+  render(allProperties)
 }
 
 /* FILTER */
 window.applyFilter = function(){
-let city = cityFilter.value.toLowerCase()
-let rent = rentFilter.value
-let bhk = bhkFilter.value
+  let city = cityFilter.value.toLowerCase()
+  let rent = rentFilter.value
+  let bhk = bhkFilter.value
 
-let f = allProperties.filter(p=>
-(!city||p.city.toLowerCase().includes(city)) &&
-(!rent||p.rent<=rent) &&
-(!bhk||p.bhk===bhk)
-)
+  let f = allProperties.filter(p=>
+    (!city||p.city.toLowerCase().includes(city)) &&
+    (!rent||p.rent<=rent) &&
+    (!bhk||p.bhk===bhk)
+  )
 
-render(f)
+  render(f)
 }
 
 /* SAVE */
 window.toggleSave=function(id){
-if(saved.includes(id)){
-saved=saved.filter(x=>x!==id)
-}else{
-saved.push(id)
-}
-localStorage.setItem("saved",JSON.stringify(saved))
-render(allProperties)
+  if(saved.includes(id)){
+    saved=saved.filter(x=>x!==id)
+  }else{
+    saved.push(id)
+  }
+  localStorage.setItem("saved",JSON.stringify(saved))
+  render(allProperties)
 }
 
 /* SHOW SAVED */
 window.showSaved=function(){
-let f=allProperties.filter(p=>saved.includes(p.id))
-render(f)
+  let f=allProperties.filter(p=>saved.includes(p.id))
+  render(f)
 }
 
 /* LOGOUT */
 window.logout=function(){
-signOut(auth)
+  signOut(auth)
 }
 
 /* RENDER */
 function render(list){
 
-grid.innerHTML=""
+  grid.innerHTML=""
 
-// 🔥 SMART SORT (BOOST FIRST + BEST DEAL)
-list.sort((a,b)=>{
+  list.sort((a,b)=>{
+    let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
+    let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
+    if(boostA !== boostB) return boostB - boostA
+    return a.rent - b.rent
+  })
 
-let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
-let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
+  list.forEach(p=>{
 
-if(boostA !== boostB) return boostB - boostA
+    let score = Math.floor(Math.random()*3)+7
+    let isBoosted = p.boost && p.boostExpiry > Date.now()
 
-return a.rent - b.rent
-})
+    grid.innerHTML+=`
+    <div class="glass card p-3 cursor-pointer relative
+    ${isBoosted ? 'border border-yellow-400 shadow-2xl shadow-yellow-500/30' : ''}"
+    onclick="openProperty('${p.id}')">
 
-list.forEach(p=>{
+    ${isBoosted ? `
+    <div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded">
+    ⭐ BOOSTED
+    </div>` : ''}
 
-let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
-let score = Math.floor(Math.random()*3)+7
+    <img src="${p.image}" class="h-40 w-full rounded object-cover">
 
-let isBoosted = p.boost && p.boostExpiry > Date.now()
+    <h3>${p.title}</h3>
+    <p>${p.city} • ${p.bhk}</p>
+    <p class="text-green-400 font-bold">₹${p.rent}</p>
+    <p class="text-yellow-400 text-sm">⭐ ${score}/10</p>
 
-grid.innerHTML+=`
-<div class="glass card p-3 cursor-pointer relative
-${isBoosted ? 'border border-yellow-400 shadow-2xl shadow-yellow-500/30' : ''}"
-onclick="openProperty('${p.id}')">
+    <div class="flex gap-2 mt-3">
 
-${isBoosted ? `
-<div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded">
-⭐ BOOSTED
-</div>` : ''}
+    <a href="property.html?id=${p.id}" onclick="event.stopPropagation()" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
 
-<img src="${p.image}" class="h-40 w-full rounded object-cover">
+    <button onclick="event.stopPropagation(); toggleSave('${p.id}')" class="text-red-500">
+    ${saved.includes(p.id)?"❤️":"🤍"}
+    </button>
 
-<h3>${p.title} ${!p.demo?'<span class="text-green-400 text-xs">✔</span>':''}</h3>
-
-<p>${p.city} • ${p.bhk}</p>
-
-<p class="text-green-400 font-bold">₹${p.rent}</p>
-
-<p class="text-yellow-400 text-sm">⭐ ${score}/10</p>
-
-<div class="flex gap-2 mt-3">
-
-<a href="property.html?id=${p.id}" onclick="event.stopPropagation()" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
-
-${p.demo ? `<span class="text-gray-400 text-sm">Demo</span>` : `
-<a href="chat.html?property=${p.id}&owner=${p.ownerId}" onclick="event.stopPropagation()" class="bg-purple-600 px-2 py-1 rounded text-sm">Chat</a>
-<a href="tel:${p.phone}" onclick="event.stopPropagation()" class="bg-green-600 px-2 py-1 rounded text-sm">Call</a>
-<button onclick="event.stopPropagation()" class="bg-yellow-500 px-2 py-1 rounded text-sm">Visit</button>
-`}
-
-<button onclick="event.stopPropagation(); toggleSave('${p.id}')" class="text-red-500">
-${saved.includes(p.id)?"❤️":"🤍"}
-</button>
-
-</div>
-</div>
-`
-})
-
+    </div>
+    </div>
+    `
+  })
 }
 
 window.openProperty = (id)=>{
-window.location.href = `property.html?id=${id}`
+  window.location.href = `property.html?id=${id}`
 }
 
-// 🧰 SERVICE REDIRECT FUNCTION
 window.openService = function(type){
   window.location.href = `services.html?type=${type}`
 }
-  
-</script>
 
-<!-- REALISTIC ACTIVITY FEED -->
-<div id="liveFeed" style="
-position:fixed;
-bottom:20px;
-left:20px;
-background:rgba(0,0,0,0.85);
-padding:10px 14px;
-border-radius:10px;
-font-size:13px;
-z-index:999;
-display:none;
-max-width:220px;">
-</div>
-
-<script type="module">
-
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-const db = getFirestore()
-
+/* 🔥 LIVE ACTIVITY */
 async function showRealActivity(){
+  try{
+    const snap = await getDocs(collection(db,"users"))
+    let users=[]
 
-try{
-const snap = await getDocs(collection(db,"users"))
+    snap.forEach(doc=>{
+      let d=doc.data()
+      if(d.plan && d.plan !== "free"){
+        users.push(d)
+      }
+    })
 
-let users=[]
+    if(users.length===0) return
 
-snap.forEach(doc=>{
-let d=doc.data()
-if(d.plan && d.plan !== "free"){
-users.push(d)
-}
-})
+    let u = users[Math.floor(Math.random()*users.length)]
+    let mins = Math.floor(Math.random()*5)+1
 
-if(users.length===0) return
+    liveFeed.innerText =
+    `Someone upgraded to ${u.plan} • ${mins} min ago`
 
-let u = users[Math.floor(Math.random()*users.length)]
+    liveFeed.style.display="block"
 
-let mins = Math.floor(Math.random()*5)+1
+    setTimeout(()=>{
+      liveFeed.style.display="none"
+    },4000)
 
-liveFeed.innerText =
-`Someone upgraded to ${u.plan} • ${mins} min ago`
-
-liveFeed.style.display="block"
-
-setTimeout(()=>{
-liveFeed.style.display="none"
-},4000)
-
-}catch(e){
-console.log("No activity data")
+  }catch(e){
+    console.log("No activity data")
+  }
 }
 
-}
-
-/* SHOW RARELY */
 setInterval(()=>{
-if(Math.random()>0.6){  // only sometimes
-showRealActivity()
-}
+  if(Math.random()>0.6){
+    showRealActivity()
+  }
 },15000)
 
 </script>
 
-
+</section>  
   
-  <footer class="max-w-6xl mx-auto p-6 text-center text-mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
-  </footer>
-
-</section>
+<footer class="max-w-6xl mx-auto p-6 text-center mt-3">
+<p>&copy; 2026 SmartRent AI. All rights reserved.</p>
+</footer>
 
 <script>
 const modal = document.getElementById("consentModal");

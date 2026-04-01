@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Profile - SmartRent AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+font-family:'Inter',sans-serif;
+background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
+color:white;
+}
+
+.glass{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+border-radius:20px;
+}
+</style>
+
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+
+<div class="glass p-8 w-[90%] max-w-md text-center shadow-2xl">
+
+<img id="profileImg" 
+class="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-white">
+
+<h2 id="name" class="text-xl font-bold"></h2>
+<p id="email" class="text-gray-300 mb-4"></p>
+
+<button onclick="toggleEdit()" 
+class="bg-blue-500 px-4 py-2 rounded hover:scale-105 transition">
+Edit Profile
+</button>
+
+<!-- EDIT FORM -->
+<div id="editBox" class="hidden mt-4">
+
+<input id="newName" placeholder="New Name"
+class="w-full p-2 mb-2 rounded text-black">
+
+<input id="newPhoto" placeholder="New Photo URL"
+class="w-full p-2 mb-2 rounded text-black">
+
+<button onclick="saveProfile()" 
+class="bg-green-500 px-4 py-2 rounded w-full">
+Save Changes
+</button>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* CONFIG */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+/* LOAD USER */
+onAuthStateChanged(auth, async (user)=>{
+
+  if(!user){
+    window.location.href = "login.html";
+    return;
+  }
+
+  const ref = doc(db,"users",user.uid);
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+
+    document.getElementById("name").innerText = data.name || "User";
+    document.getElementById("email").innerText = data.email;
+    document.getElementById("profileImg").src = data.photo;
+  }
+
+});
+
+/* TOGGLE EDIT */
+window.toggleEdit = ()=>{
+  document.getElementById("editBox").classList.toggle("hidden");
+}
+
+/* SAVE */
+window.saveProfile = async ()=>{
+
+  const user = auth.currentUser;
+
+  const newName = document.getElementById("newName").value;
+  const newPhoto = document.getElementById("newPhoto").value;
+
+  const ref = doc(db,"users",user.uid);
+
+  await updateDoc(ref,{
+    name: newName,
+    photo: newPhoto
+  });
+
+  alert("Profile updated ✅");
+  location.reload();
+
+}
+
+</script>
+
+</body>
+</html>

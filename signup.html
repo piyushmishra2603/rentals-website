@@ -16,20 +16,21 @@ background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
 color:white;
 }
 
+/* Glass UI */
 .glass{
 background:rgba(255,255,255,0.1);
 backdrop-filter:blur(15px);
-border-radius:15px;
+border-radius:20px;
 }
 
-input{
-color:black;
+/* Animation */
+.fade-in{
+animation:fade 0.8s ease-in-out;
 }
 
-.strength{
-height:5px;
-border-radius:5px;
-margin-top:5px;
+@keyframes fade{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
 }
 </style>
 
@@ -37,182 +38,111 @@ margin-top:5px;
 
 <body class="flex items-center justify-center min-h-screen">
 
-<div class="glass p-8 w-96 shadow-lg">
+<div class="glass p-8 w-[90%] max-w-md text-center fade-in shadow-2xl">
 
-<h2 class="text-2xl font-bold text-center mb-6">🚀 Create Account</h2>
+<h1 class="text-3xl font-bold mb-2">Create Account 🚀</h1>
+<p class="text-gray-300 mb-6">Join SmartRent AI</p>
 
-<input id="name" placeholder="Full Name"
-class="w-full p-3 mb-3 rounded">
-
+<!-- EMAIL -->
 <input id="email" type="email" placeholder="Email"
-class="w-full p-3 mb-3 rounded">
+class="w-full p-3 mb-3 rounded text-black">
 
 <!-- PASSWORD -->
-<div class="relative">
 <input id="password" type="password" placeholder="Password"
-class="w-full p-3 mb-1 rounded">
-<button onclick="togglePass('password')" 
-class="absolute right-2 top-2 text-black">👁</button>
-</div>
+class="w-full p-3 mb-3 rounded text-black">
 
-<div id="strengthBar" class="strength bg-red-500"></div>
+<!-- PROFILE IMAGE -->
+<input id="photoURL" type="text" placeholder="Profile Image URL"
+class="w-full p-3 mb-3 rounded text-black">
 
-<!-- CONFIRM PASSWORD -->
-<div class="relative mt-3">
-<input id="confirm" type="password" placeholder="Confirm Password"
-class="w-full p-3 mb-3 rounded">
-<button onclick="togglePass('confirm')" 
-class="absolute right-2 top-2 text-black">👁</button>
-</div>
+<!-- PREVIEW -->
+<img id="preview" 
+class="w-20 h-20 rounded-full mx-auto mb-4 hidden border-2 border-white">
 
-<button onclick="signup()" 
-class="w-full bg-green-600 p-3 rounded mb-3">
-Create Account
+<!-- SIGNUP BUTTON -->
+<button id="signupBtn"
+class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 rounded font-bold hover:scale-105 transition">
+Signup
 </button>
 
-<button onclick="googleSignup()" 
-class="w-full bg-red-600 p-3 rounded mb-3">
-Signup with Google
-</button>
-
-<p class="text-center">
-Already have an account?
-<a href="login.html" class="text-blue-400">Login</a>
+<p class="mt-4 text-sm">
+Already have an account? 
+<a href="login.html" class="text-cyan-400">Login</a>
 </p>
-
-<p id="msg" class="text-center mt-3 text-red-400"></p>
 
 </div>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import { 
-getAuth, 
-createUserWithEmailAndPassword, 
-updateProfile,
-GoogleAuthProvider,
-signInWithPopup,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { 
-getFirestore, 
-doc, 
-setDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
-
-/* 🔐 CONFIG */
+/* 🔥 YOUR FIREBASE CONFIG */
 const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal",
-storageBucket:"smart-property-portal.firebasestorage.app",
-messagingSenderId:"407241446660",
-appId:"1:407241446660:web:1259fa8c93bce5fd8aec51"
-}
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
+};
 
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
-const db = getFirestore(app)
-const provider = new GoogleAuthProvider()
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-/* AUTO REDIRECT */
-onAuthStateChanged(auth,(user)=>{
-if(user){
-window.location.href="index.html"
-}
-})
+/* 🔥 IMAGE PREVIEW */
+const photoInput = document.getElementById("photoURL");
+const preview = document.getElementById("preview");
 
-/* PASSWORD STRENGTH */
-const passwordInput = document.getElementById("password")
-const strengthBar = document.getElementById("strengthBar")
+photoInput.addEventListener("input", ()=>{
+  if(photoInput.value){
+    preview.src = photoInput.value;
+    preview.classList.remove("hidden");
+  }else{
+    preview.classList.add("hidden");
+  }
+});
 
-passwordInput.addEventListener("input",()=>{
-let val = passwordInput.value
-let strength = 0
+/* 🔥 SIGNUP LOGIC */
+const signupBtn = document.getElementById("signupBtn");
 
-if(val.length > 5) strength++
-if(/[A-Z]/.test(val)) strength++
-if(/[0-9]/.test(val)) strength++
-if(/[^A-Za-z0-9]/.test(val)) strength++
+signupBtn.addEventListener("click", async ()=>{
 
-const colors = ["red","orange","yellow","green"]
-strengthBar.style.background = colors[strength-1] || "red"
-})
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const photoURL = document.getElementById("photoURL").value;
 
-/* SIGNUP */
-window.signup = async function(){
+  if(!email || !password){
+    alert("Please fill all fields");
+    return;
+  }
 
-const name = document.getElementById("name").value
-const email = document.getElementById("email").value
-const password = document.getElementById("password").value
-const confirm = document.getElementById("confirm").value
-const msg = document.getElementById("msg")
+  try{
+    signupBtn.innerText = "Creating...";
+    signupBtn.disabled = true;
 
-msg.innerText=""
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
 
-/* VALIDATION */
-if(!name || !email || !password){
-msg.innerText="Fill all fields"
-return
-}
+    /* SAVE USER */
+    await setDoc(doc(db,"users",user.uid),{
+      email: user.email,
+      photo: photoURL || "https://i.pravatar.cc/100"
+    });
 
-if(password !== confirm){
-msg.innerText="Passwords do not match"
-return
-}
+    alert("Account created successfully 🎉");
 
-try{
+    window.location.href = "index.html";
 
-const userCred = await createUserWithEmailAndPassword(auth,email,password)
+  }catch(err){
+    alert(err.message);
+  }
 
-await updateProfile(userCred.user,{
-displayName:name
-})
+  signupBtn.innerText = "Signup";
+  signupBtn.disabled = false;
 
-/* SAVE USER DATA */
-await setDoc(doc(db,"users",userCred.user.uid),{
-name:name,
-email:email,
-createdAt:Date.now()
-})
-
-window.location.href="index.html"
-
-}catch(err){
-msg.innerText=err.message
-}
-
-}
-
-/* GOOGLE SIGNUP */
-window.googleSignup = async function(){
-
-try{
-
-const result = await signInWithPopup(auth,provider)
-const user = result.user
-
-await setDoc(doc(db,"users",user.uid),{
-name:user.displayName,
-email:user.email,
-createdAt:Date.now()
-},{merge:true})
-
-window.location.href="index.html"
-
-}catch(err){
-document.getElementById("msg").innerText=err.message
-}
-
-}
-
-/* TOGGLE PASSWORD */
-window.togglePass = function(id){
-const input = document.getElementById(id)
-input.type = input.type === "password" ? "text" : "password"
-}
+});
 
 </script>
 

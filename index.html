@@ -46,10 +46,66 @@ font-weight:bold;
 
 <div class="font-bold text-xl">SmartRent</div>
 
-<div class="flex gap-4 text-sm">
+<div class="flex gap-4 items-center text-sm">
+
 <a href="#home" class="hover:text-cyan-400">Home</a>
 <a href="#explore" class="hover:text-cyan-400">Explore</a>
 <a href="services.html" class="hover:text-cyan-400">Services</a>
+
+<!-- 🔥 LOGIN BUTTON -->
+<a href="login.html"
+class="relative px-4 py-2 rounded-full font-semibold text-white
+bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600
+shadow-lg hover:scale-105 transition duration-300 overflow-hidden">
+
+<span class="relative z-10">Login</span>
+
+<!-- Glow Effect -->
+<span class="absolute inset-0 bg-white/20 blur-xl opacity-0 hover:opacity-30 transition"></span>
+</a>
+
+<!-- 🔥 SIGNUP BUTTON -->
+<a href="signup.html"
+class="px-4 py-2 rounded-full font-semibold text-white
+border border-white/30 backdrop-blur-md
+hover:bg-white/10 hover:scale-105 transition duration-300">
+
+Create Account
+</a>
+
+<!-- 🔥 USER PROFILE (HIDDEN INITIALLY) -->
+<div id="userMenu" class="hidden relative">
+
+<button onclick="toggleMenu()"
+class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition">
+
+<img src="https://i.pravatar.cc/30"
+class="w-7 h-7 rounded-full border">
+
+<span class="text-sm">My Account</span>
+
+</button>
+
+<!-- DROPDOWN -->
+<div id="dropdown"
+class="hidden absolute right-0 mt-2 w-40 glass p-2 rounded-xl shadow-xl">
+
+<a href="dashboard.html" class="block px-3 py-2 hover:bg-white/10 rounded">
+Dashboard
+</a>
+
+<a href="bookings.html" class="block px-3 py-2 hover:bg-white/10 rounded">
+Bookings
+</a>
+
+<button onclick="logout()" 
+class="w-full text-left px-3 py-2 text-red-400 hover:bg-white/10 rounded">
+Logout
+</button>
+
+</div>
+</div>
+
 </div>
 
 </div>
@@ -272,11 +328,24 @@ let saved = JSON.parse(localStorage.getItem("saved")) || []
 
 /* AUTH */
 onAuthStateChanged(auth,(user)=>{
-  if(!user){
-    window.location.href="login.html"
+
+  const userMenu = document.getElementById("userMenu");
+
+  if(user){
+    load();
+
+    if(userMenu){
+      userMenu.classList.remove("hidden");
+    }
+
   }else{
-    load()
+
+    if(userMenu){
+      userMenu.classList.add("hidden");
+    }
+
   }
+
 })
 
 /* LOAD */
@@ -479,6 +548,12 @@ document.body.style.opacity = 0
 window.onload = ()=>{
 document.body.style.transition = "0.5s"
 document.body.style.opacity = 1
+}
+</script>
+
+<script>
+function toggleMenu(){
+  document.getElementById("dropdown").classList.toggle("hidden");
 }
 </script>
   

@@ -16,14 +16,12 @@ background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
 color:white;
 }
 
-/* Glass UI */
 .glass{
 background:rgba(255,255,255,0.1);
 backdrop-filter:blur(15px);
 border-radius:20px;
 }
 
-/* Animation */
 .fade-in{
 animation:fade 0.8s ease-in-out;
 }
@@ -43,19 +41,24 @@ to{opacity:1; transform:translateY(0);}
 <h1 class="text-3xl font-bold mb-2">Create Account 🚀</h1>
 <p class="text-gray-300 mb-6">Join SmartRent AI</p>
 
+<!-- USERNAME -->
+<input id="name" type="text" placeholder="Full Name"
+class="w-full p-3 mb-3 rounded text-black">
+
 <!-- EMAIL -->
 <input id="email" type="email" placeholder="Email"
 class="w-full p-3 mb-3 rounded text-black">
 
 <!-- PASSWORD -->
 <input id="password" type="password" placeholder="Password"
-class="w-full p-3 mb-3 rounded text-black">
+class="w-full p-3 mb-2 rounded text-black">
 
-<!-- PROFILE IMAGE -->
-<input id="photoURL" type="text" placeholder="Profile Image URL"
-class="w-full p-3 mb-3 rounded text-black">
+<p id="strength" class="text-sm text-gray-300 mb-3"></p>
 
-<!-- PREVIEW -->
+<!-- IMAGE UPLOAD -->
+<input id="file" type="file" accept="image/*"
+class="w-full mb-3 text-sm">
+
 <img id="preview" 
 class="w-20 h-20 rounded-full mx-auto mb-4 hidden border-2 border-white">
 
@@ -63,6 +66,12 @@ class="w-20 h-20 rounded-full mx-auto mb-4 hidden border-2 border-white">
 <button id="signupBtn"
 class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 rounded font-bold hover:scale-105 transition">
 Signup
+</button>
+
+<!-- GOOGLE -->
+<button id="googleBtn"
+class="w-full mt-3 bg-white text-black py-2 rounded font-bold hover:scale-105 transition">
+Continue with Google
 </button>
 
 <p class="mt-4 text-sm">
@@ -75,12 +84,17 @@ Already have an account?
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+getAuth, 
+createUserWithEmailAndPassword, 
+GoogleAuthProvider, 
+signInWithPopup 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 import { getFirestore, doc, setDoc }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* 🔥 YOUR FIREBASE CONFIG */
+/* CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
   authDomain: "smart-property-portal.firebaseapp.com",
@@ -91,30 +105,48 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* 🔥 IMAGE PREVIEW */
-const photoInput = document.getElementById("photoURL");
-const preview = document.getElementById("preview");
+/* PASSWORD STRENGTH */
+const password = document.getElementById("password");
+const strength = document.getElementById("strength");
 
-photoInput.addEventListener("input", ()=>{
-  if(photoInput.value){
-    preview.src = photoInput.value;
-    preview.classList.remove("hidden");
+password.addEventListener("input", ()=>{
+  let val = password.value;
+
+  if(val.length < 6){
+    strength.innerText = "Weak password ❌";
+    strength.style.color = "red";
+  }else if(val.length < 10){
+    strength.innerText = "Medium password ⚠️";
+    strength.style.color = "orange";
   }else{
-    preview.classList.add("hidden");
+    strength.innerText = "Strong password ✅";
+    strength.style.color = "green";
   }
 });
 
-/* 🔥 SIGNUP LOGIC */
+/* IMAGE PREVIEW */
+const fileInput = document.getElementById("file");
+const preview = document.getElementById("preview");
+
+fileInput.addEventListener("change", ()=>{
+  const file = fileInput.files[0];
+  if(file){
+    preview.src = URL.createObjectURL(file);
+    preview.classList.remove("hidden");
+  }
+});
+
+/* SIGNUP */
 const signupBtn = document.getElementById("signupBtn");
 
 signupBtn.addEventListener("click", async ()=>{
 
+  const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const photoURL = document.getElementById("photoURL").value;
+  const pass = document.getElementById("password").value;
 
-  if(!email || !password){
-    alert("Please fill all fields");
+  if(!name || !email || !pass){
+    alert("Fill all fields");
     return;
   }
 
@@ -122,25 +154,49 @@ signupBtn.addEventListener("click", async ()=>{
     signupBtn.innerText = "Creating...";
     signupBtn.disabled = true;
 
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const userCred = await createUserWithEmailAndPassword(auth, email, pass);
     const user = userCred.user;
 
     /* SAVE USER */
     await setDoc(doc(db,"users",user.uid),{
-      email: user.email,
-      photo: photoURL || "https://i.pravatar.cc/100"
+      name,
+      email,
+      photo: preview.src || "https://i.pravatar.cc/100"
     });
 
-    alert("Account created successfully 🎉");
-
+    alert("Account created 🎉");
     window.location.href = "index.html";
 
-  }catch(err){
-    alert(err.message);
+  }catch(e){
+    alert(e.message);
   }
 
   signupBtn.innerText = "Signup";
   signupBtn.disabled = false;
+});
+
+/* GOOGLE LOGIN */
+const googleBtn = document.getElementById("googleBtn");
+
+googleBtn.addEventListener("click", async ()=>{
+
+  const provider = new GoogleAuthProvider();
+
+  try{
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    await setDoc(doc(db,"users",user.uid),{
+      name: user.displayName,
+      email: user.email,
+      photo: user.photoURL
+    });
+
+    window.location.href = "index.html";
+
+  }catch(e){
+    alert(e.message);
+  }
 
 });
 

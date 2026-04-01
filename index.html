@@ -46,37 +46,13 @@ font-weight:bold;
 
 <div class="font-bold text-xl">SmartRent</div>
 
-<div class="flex gap-4 text-sm items-center">
-
-<div class="fixed top-0 w-full z-50 px-6 py-3">
-  <div class="max-w-7xl mx-auto flex justify-between items-center 
-  bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-3 shadow-lg">
-
-    <h1 class="text-xl font-bold tracking-wide">SmartRent</h1>
-
-    <div class="flex gap-6 items-center text-sm text-gray-200">
-
-      <a href="#home" class="hover:text-cyan-400">Home</a>
-      <a href="#explore" class="hover:text-cyan-400">Explore</a>
-      <a href="services.html" class="hover:text-cyan-400">Services</a>
-
-      <a href="login.html" class="bg-blue-600 px-4 py-2 rounded-xl">Login</a>
-      <a href="signup.html" class="bg-green-600 px-4 py-2 rounded-xl">Signup</a>
-
-    </div>
-
-  </div>
+<div class="flex gap-4 text-sm">
+<a href="#home" class="hover:text-cyan-400">Home</a>
+<a href="#explore" class="hover:text-cyan-400">Explore</a>
+<a href="services.html" class="hover:text-cyan-400">Services</a>
 </div>
 
-<!-- LOGIN -->
-<a href="login.html" class="bg-blue-600 px-3 py-1 rounded hover:scale-105 transition">
-Login
-</a>
-
-<!-- SIGNUP -->
-<a href="signup.html" class="bg-green-600 px-3 py-1 rounded hover:scale-105 transition">
-Signup
-</a>
+</div>
 
   <!-- Terms & Privacy Consent Modal -->
 <div id="consentModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
@@ -91,6 +67,20 @@ Signup
       <button id="declineBtn" class="bg-red-500 px-6 py-3 rounded font-bold text-white hover:scale-105 transition">Decline</button>
     </div>
   </div>
+</div>
+  
+<!-- ADDICTIVE FLOATING BUTTON -->
+<div style="position:fixed; top:20px; right:20px; z-index:999;">
+
+<a href="plans.html"
+class="px-6 py-2 rounded-full font-bold text-white
+bg-gradient-to-r from-purple-600 via-pink-500 to-red-500
+shadow-xl flex items-center gap-2 transition duration-300">
+
+💎 Plans
+
+</a>
+
 </div>
 
 <style>
@@ -107,34 +97,15 @@ animation:pulse 2s infinite;
 </style>
 
 <!-- HERO -->
-<section id="home" class="min-h-screen flex items-center justify-center text-center px-6"
-style="background:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab') center/cover">
+<section id="home" 
+class="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center"
+style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab')">
 
-<div class="bg-black/60 p-10 rounded-2xl backdrop-blur-lg max-w-3xl">
-
-<h1 class="text-5xl font-extrabold leading-tight">
-Find Your Dream Home 🏡
-</h1>
-
-<p class="mt-4 text-gray-300 text-lg">
-Verified listings • Instant booking • Smart AI recommendations
-</p>
-
-<div class="mt-8 flex justify-center gap-4">
-
-<a href="#explore" 
-class="bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 rounded-xl font-semibold">
-Explore Now
-</a>
-
-<a href="services.html" 
-class="border border-white/30 px-6 py-3 rounded-xl">
-Services
-</a>
-
+<div class="bg-black/60 p-8 rounded-xl">
+<h1 class="text-4xl font-bold mb-4">SmartRent AI 🏙️</h1>
+<p class="text-gray-300">Find homes & services instantly</p>
 </div>
 
-</div>
 </section>
 
 <!-- 🧰 SERVICES HUB -->
@@ -282,7 +253,6 @@ Dashboard
 
 <!-- MAP -->
 <div class="max-w-6xl mx-auto p-4">
-<div id="grid" class="grid md:grid-cols-3 gap"></div>
 <div class="glass p-4">
 <h2>🗺️ Map View</h2>
 <iframe width="100%" height="250" style="border:0;border-radius:10px"
@@ -290,19 +260,11 @@ src="https://maps.google.com/maps?q=india&output=embed"></iframe>
 </div>
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { setPersistence, browserLocalPersistence } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  
 /* CONFIG */
 const firebaseConfig = {
-  apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-  authDomain:"smart-property-portal.firebaseapp.com",
-  projectId:"smart-property-portal"
+apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain:"smart-property-portal.firebaseapp.com",
+projectId:"smart-property-portal"
 }
 
 const app = initializeApp(firebaseConfig)
@@ -310,207 +272,154 @@ const db = getFirestore(app)
 const auth = getAuth(app)
 
 const grid = document.getElementById("grid")
-const liveFeed = document.getElementById("liveFeed")
 
 let allProperties=[]
 let saved = JSON.parse(localStorage.getItem("saved")) || []
 
 /* AUTH */
-await setPersistence(auth, browserLocalPersistence);
-
-const nav = document.querySelector(".flex.gap-4.text-sm")
-
-await setPersistence(auth, browserLocalPersistence);
-
 onAuthStateChanged(auth,(user)=>{
-
-  if(user){
-    load()
-
-    // ✅ Add Logout button
-    if(nav && !document.getElementById("logoutBtn")){
-      nav.innerHTML += `
-      <button id="logoutBtn" onclick="logout()" 
-      class="bg-red-500 px-3 py-1 rounded">
-      Logout
-      </button>
-      `
-    }
-
-  }else{
-
-    setTimeout(()=>{
-      if(!auth.currentUser){
-        window.location.href="login.html"
-      }
-    },1500)
-
-  }
-
+if(!user){
+window.location.href="login.html"
+}else{
+load()
+}
 })
 
 /* LOAD */
 async function load(){
-  grid.innerHTML="Loading..."
 
-  const snap = await getDocs(collection(db,"properties"))
+grid.innerHTML="Loading..."
 
-  allProperties=[]
+const snap = await getDocs(collection(db,"properties"))
 
-  snap.forEach(doc=>{
-    let d=doc.data()
-    allProperties.push({...d,id:doc.id})
-  })
+allProperties=[]
 
-  const demoProperties = []
-  allProperties=[...allProperties,...demoProperties]
+snap.forEach(doc=>{
+let d=doc.data()
+allProperties.push({...d,id:doc.id})
+})
 
-  render(allProperties)
+allProperties=[...allProperties,...demoProperties]
+
+render(allProperties)
+renderAI()
+generateAI()
+
 }
 
 /* FILTER */
 window.applyFilter = function(){
-  let city = cityFilter.value.toLowerCase()
-  let rent = rentFilter.value
-  let bhk = bhkFilter.value
+let city = cityFilter.value.toLowerCase()
+let rent = rentFilter.value
+let bhk = bhkFilter.value
 
-  let f = allProperties.filter(p=>
-    (!city||p.city.toLowerCase().includes(city)) &&
-    (!rent||p.rent<=rent) &&
-    (!bhk||p.bhk===bhk)
-  )
+let f = allProperties.filter(p=>
+(!city||p.city.toLowerCase().includes(city)) &&
+(!rent||p.rent<=rent) &&
+(!bhk||p.bhk===bhk)
+)
 
-  render(f)
+render(f)
 }
 
 /* SAVE */
 window.toggleSave=function(id){
-  if(saved.includes(id)){
-    saved=saved.filter(x=>x!==id)
-  }else{
-    saved.push(id)
-  }
-  localStorage.setItem("saved",JSON.stringify(saved))
-  render(allProperties)
+if(saved.includes(id)){
+saved=saved.filter(x=>x!==id)
+}else{
+saved.push(id)
+}
+localStorage.setItem("saved",JSON.stringify(saved))
+render(allProperties)
 }
 
 /* SHOW SAVED */
 window.showSaved=function(){
-  let f=allProperties.filter(p=>saved.includes(p.id))
-  render(f)
+let f=allProperties.filter(p=>saved.includes(p.id))
+render(f)
 }
 
 /* LOGOUT */
 window.logout=function(){
-  signOut(auth)
+signOut(auth)
 }
 
 /* RENDER */
 function render(list){
 
-  grid.innerHTML=""
-  if(list.length === 0){
-  grid.innerHTML = "<p>No properties found 😕</p>"
-  return
-  }
+grid.innerHTML=""
 
-  list.sort((a,b)=>{
-    let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
-    let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
-    if(boostA !== boostB) return boostB - boostA
-    return a.rent - b.rent
-  })
+// 🔥 SMART SORT (BOOST FIRST + BEST DEAL)
+list.sort((a,b)=>{
 
-  list.forEach(p=>{
+let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
+let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
 
-    let score = Math.floor(Math.random()*3)+7
-    let isBoosted = p.boost && p.boostExpiry > Date.now()
+if(boostA !== boostB) return boostB - boostA
 
-    grid.innerHTML+=`
-<div class="glass card overflow-hidden">
+return a.rent - b.rent
+})
 
-<img src="${p.image || 'https://via.placeholder.com/400'}" 
-class="w-full h-40 object-cover">
+list.forEach(p=>{
 
-<div class="p-4">
+let avg = allProperties.reduce((s,x)=>s+x.rent,0)/allProperties.length
+let score = Math.floor(Math.random()*3)+7
 
-<div class="flex justify-between items-center">
-<h3 class="text-lg font-bold">${p.title}</h3>
-<span class="text-yellow-400">⭐ ${p.rating || 4.5}</span>
-</div>
+let isBoosted = p.boost && p.boostExpiry > Date.now()
 
-<p class="text-sm text-gray-300">📍 ${p.city || "Location"}</p>
+grid.innerHTML+=`
+<div class="glass card p-3 cursor-pointer relative
+${isBoosted ? 'border border-yellow-400 shadow-2xl shadow-yellow-500/30' : ''}"
+onclick="openProperty('${p.id}')">
 
-<p class="text-green-400 text-xl font-bold mt-1">₹${p.rent}</p>
+${isBoosted ? `
+<div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded">
+⭐ BOOSTED
+</div>` : ''}
 
-<div class="flex gap-2 mt-2 text-xs">
-<span class="badge bg-blue-500">Verified</span>
-<span class="badge bg-purple-500">Premium</span>
-</div>
+<img src="${p.image}" class="h-40 w-full rounded object-cover">
 
-<button onclick="openModal('${p.id}')" 
-class="mt-3 w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-2 rounded">
-Book Now ⚡
+<h3>${p.title} ${!p.demo?'<span class="text-green-400 text-xs">✔</span>':''}</h3>
+
+<p>${p.city} • ${p.bhk}</p>
+
+<p class="text-green-400 font-bold">₹${p.rent}</p>
+
+<p class="text-yellow-400 text-sm">⭐ ${score}/10</p>
+
+<div class="flex gap-2 mt-3">
+
+<a href="property.html?id=${p.id}" onclick="event.stopPropagation()" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
+
+${p.demo ? `<span class="text-gray-400 text-sm">Demo</span>` : `
+<a href="chat.html?property=${p.id}&owner=${p.ownerId}" onclick="event.stopPropagation()" class="bg-purple-600 px-2 py-1 rounded text-sm">Chat</a>
+<a href="tel:${p.phone}" onclick="event.stopPropagation()" class="bg-green-600 px-2 py-1 rounded text-sm">Call</a>
+<button onclick="event.stopPropagation()" class="bg-yellow-500 px-2 py-1 rounded text-sm">Visit</button>
+`}
+
+<button onclick="event.stopPropagation(); toggleSave('${p.id}')" class="text-red-500">
+${saved.includes(p.id)?"❤️":"🤍"}
 </button>
 
 </div>
 </div>
 `
-  })
+})
+
 }
 
 window.openProperty = (id)=>{
-  window.location.href = `property.html?id=${id}`
+window.location.href = `property.html?id=${id}`
 }
 
+// 🧰 SERVICE REDIRECT FUNCTION
 window.openService = function(type){
   window.location.href = `services.html?type=${type}`
 }
-
-/* 🔥 LIVE ACTIVITY */
-async function showRealActivity(){
-  try{
-    const snap = await getDocs(collection(db,"users"))
-    let users=[]
-
-    snap.forEach(doc=>{
-      let d=doc.data()
-      if(d.plan && d.plan !== "free"){
-        users.push(d)
-      }
-    })
-
-    if(users.length===0) return
-
-    let u = users[Math.floor(Math.random()*users.length)]
-    let mins = Math.floor(Math.random()*5)+1
-
-    if(!liveFeed) return;
-
-liveFeed.innerText =
-    `Someone upgraded to ${u.plan} • ${mins} min ago`
-
-    liveFeed.style.display="block"
-
-    setTimeout(()=>{
-      liveFeed.style.display="none"
-    },4000)
-
-  }catch(e){
-    console.log("No activity data")
-  }
-}
-
-setInterval(()=>{
-  if(Math.random()>0.6){
-    showRealActivity()
-  }
-},15000)
-
+  
 </script>
 
-</section>  
-
+<!-- REALISTIC ACTIVITY FEED -->
 <div id="liveFeed" style="
 position:fixed;
 bottom:20px;
@@ -523,10 +432,63 @@ z-index:999;
 display:none;
 max-width:220px;">
 </div>
+
+<script type="module">
+
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+
+const db = getFirestore()
+
+async function showRealActivity(){
+
+try{
+const snap = await getDocs(collection(db,"users"))
+
+let users=[]
+
+snap.forEach(doc=>{
+let d=doc.data()
+if(d.plan && d.plan !== "free"){
+users.push(d)
+}
+})
+
+if(users.length===0) return
+
+let u = users[Math.floor(Math.random()*users.length)]
+
+let mins = Math.floor(Math.random()*5)+1
+
+liveFeed.innerText =
+`Someone upgraded to ${u.plan} • ${mins} min ago`
+
+liveFeed.style.display="block"
+
+setTimeout(()=>{
+liveFeed.style.display="none"
+},4000)
+
+}catch(e){
+console.log("No activity data")
+}
+
+}
+
+/* SHOW RARELY */
+setInterval(()=>{
+if(Math.random()>0.6){  // only sometimes
+showRealActivity()
+}
+},15000)
+
+</script>
+
+
   
-<footer class="max-w-6xl mx-auto p-6 text-center mt-3">
-<p>&copy; 2026 SmartRent AI. All rights reserved.</p>
-</footer>
+  <footer class="max-w-6xl mx-auto p-6 text-center text-mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
+  </footer>
+
+</section>
 
 <script>
 const modal = document.getElementById("consentModal");

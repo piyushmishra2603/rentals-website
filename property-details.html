@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Property Details</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:#0f172a;
+color:white;
+font-family:'Inter',sans-serif;
+}
+
+.glass{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(12px);
+border-radius:16px;
+}
+
+img{
+transition:0.3s;
+}
+
+img:hover{
+transform:scale(1.03);
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔥 NAVBAR -->
+<header class="flex justify-between items-center px-6 py-4 bg-black/40 backdrop-blur sticky top-0 z-50">
+<h1 class="text-xl font-bold text-cyan-400">🏠 SmartRent</h1>
+<a href="index.html" class="text-gray-300">← Back</a>
+</header>
+
+<!-- 🔥 MAIN -->
+<div class="max-w-6xl mx-auto p-6 grid md:grid-cols-3 gap-6">
+
+<!-- LEFT SIDE -->
+<div class="md:col-span-2">
+
+<!-- IMAGE GALLERY -->
+<div>
+<img id="mainImage" class="w-full h-80 object-cover rounded-lg mb-4">
+
+<div id="thumbs" class="grid grid-cols-4 gap-2"></div>
+</div>
+
+<!-- DETAILS -->
+<h1 id="title" class="text-3xl font-bold mt-4"></h1>
+<p id="city" class="text-gray-400"></p>
+
+<div class="flex gap-4 mt-3">
+<button id="likeBtn">❤️ Save</button>
+<button id="shareBtn">🔗 Share</button>
+</div>
+
+<p id="description" class="mt-6 text-gray-200"></p>
+
+<!-- OWNER -->
+<div class="glass p-4 mt-6 flex items-center gap-4">
+<img src="https://i.pravatar.cc/100" class="w-12 h-12 rounded-full">
+<div>
+<p class="font-bold">Property Owner</p>
+<p class="text-gray-400 text-sm">Verified Seller</p>
+</div>
+</div>
+
+</div>
+
+<!-- RIGHT SIDE (BOOKING PANEL) -->
+<div class="glass p-6 sticky top-24 h-fit">
+
+<p id="price" class="text-2xl font-bold text-cyan-400 mb-4"></p>
+
+<label>Check-in</label>
+<input type="date" id="checkin" class="w-full p-2 text-black rounded mb-3">
+
+<label>Check-out</label>
+<input type="date" id="checkout" class="w-full p-2 text-black rounded mb-3">
+
+<div class="text-sm text-gray-300 mb-4">
+<p>Price per night: ₹ <span id="nightPrice"></span></p>
+<p>Total: ₹ <span id="totalPrice">0</span></p>
+</div>
+
+<button id="bookBtn"
+class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 rounded font-bold hover:scale-105 transition">
+Reserve Now
+</button>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+doc,
+getDoc,
+addDoc,
+collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const auth = getAuth();
+
+/* 📍 GET ID */
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+let propertyData = null;
+
+/* 🚀 LOAD PROPERTY */
+async function loadProperty(){
+
+const snap = await getDoc(doc(db,"properties",id));
+propertyData = snap.data();
+
+title.innerText = propertyData.title;
+city.innerText = propertyData.city;
+price.innerText = "₹ " + propertyData.price;
+nightPrice.innerText = propertyData.price;
+
+description.innerText = propertyData.description;
+
+/* MAIN IMAGE */
+mainImage.src = propertyData.images[0];
+
+/* THUMBNAILS */
+propertyData.images.forEach(img=>{
+const thumb = document.createElement("img");
+thumb.src = img;
+thumb.className="h-20 w-full object-cover rounded cursor-pointer";
+
+thumb.onclick = ()=> mainImage.src = img;
+
+thumbs.appendChild(thumb);
+});
+
+}
+
+loadProperty();
+
+/* 💰 PRICE CALCULATION */
+function calculatePrice(){
+
+const checkin = new Date(document.getElementById("checkin").value);
+const checkout = new Date(document.getElementById("checkout").value);
+
+if(checkin && checkout && checkout > checkin){
+
+const days = (checkout - checkin)/(1000*60*60*24);
+const total = days * propertyData.price;
+
+document.getElementById("totalPrice").innerText = total;
+
+}
+
+}
+
+checkin.onchange = calculatePrice;
+checkout.onchange = calculatePrice;
+
+/* ❤️ LIKE */
+document.getElementById("likeBtn").onclick = ()=>{
+alert("Saved to favorites ❤️ (you can connect DB later)");
+};
+
+/* 🔗 SHARE */
+document.getElementById("shareBtn").onclick = ()=>{
+navigator.clipboard.writeText(window.location.href);
+alert("Link copied!");
+};
+
+/* 🛒 BOOK */
+document.getElementById("bookBtn").onclick = async()=>{
+
+const user = auth.currentUser;
+
+if(!user){
+alert("Login first");
+window.location.href="login.html";
+return;
+}
+
+await addDoc(collection(db,"bookings"),{
+propertyId:id,
+userId:user.uid,
+checkin:checkin.value,
+checkout:checkout.value,
+total:document.getElementById("totalPrice").innerText,
+status:"pending",
+createdAt:Date.now()
+});
+
+alert("🎉 Booking Successful");
+
+};
+
+</script>
+
+</body>
+</html>

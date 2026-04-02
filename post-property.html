@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post Property - SmartRent AI</title>
+<title>Post Property | SmartRent</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
 body{
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 font-family:'Inter',sans-serif;
-background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
 color:white;
 }
 
@@ -21,6 +20,18 @@ color:white;
 background:rgba(255,255,255,0.1);
 backdrop-filter:blur(15px);
 border-radius:20px;
+}
+
+.drop-zone{
+border:2px dashed rgba(255,255,255,0.4);
+padding:30px;
+text-align:center;
+cursor:pointer;
+transition:0.3s;
+}
+
+.drop-zone:hover{
+background:rgba(255,255,255,0.1);
 }
 </style>
 
@@ -33,26 +44,23 @@ border-radius:20px;
   <h1 class="text-2xl font-bold">🏠 SmartRent</h1>
 
   <div class="flex gap-4">
-    <a href="index.html" class="hover:text-cyan-400">Home</a>
-    <a href="dashboard.html" class="hover:text-cyan-400">Dashboard</a>
+    <a href="index.html">Home</a>
+    <a href="dashboard.html">Dashboard</a>
   </div>
 </header>
 
 <!-- 🔥 FORM -->
-<div class="max-w-2xl mx-auto glass p-8 shadow-2xl">
+<div class="max-w-3xl mx-auto glass p-8 shadow-2xl">
 
-<h2 class="text-2xl mb-6 font-bold">Post New Property 🚀</h2>
+<h2 class="text-2xl font-bold mb-6">Post New Property 🚀</h2>
 
 <form id="propertyForm" class="space-y-4">
 
-<input id="title" placeholder="Property Title"
-class="w-full p-3 rounded text-black">
+<input id="title" placeholder="Property Title" class="w-full p-3 rounded text-black">
 
-<input id="price" type="number" placeholder="Rent Price"
-class="w-full p-3 rounded text-black">
+<input id="price" type="number" placeholder="Price" class="w-full p-3 rounded text-black">
 
-<input id="city" placeholder="City"
-class="w-full p-3 rounded text-black">
+<input id="city" placeholder="City" class="w-full p-3 rounded text-black">
 
 <select id="bhk" class="w-full p-3 rounded text-black">
 <option>1 BHK</option>
@@ -62,27 +70,25 @@ class="w-full p-3 rounded text-black">
 <option>Villa</option>
 </select>
 
-<input id="area" placeholder="Area (sq.ft)"
-class="w-full p-3 rounded text-black">
+<input id="area" placeholder="Area (sq.ft)" class="w-full p-3 rounded text-black">
 
-<textarea id="description" placeholder="Description"
-class="w-full p-3 rounded text-black"></textarea>
+<textarea id="description" placeholder="Description" class="w-full p-3 rounded text-black"></textarea>
 
-<!-- IMAGE -->
-<input type="file" id="imageInput" accept="image/*"
-class="w-full text-sm">
+<!-- 📸 DROP ZONE -->
+<div id="dropZone" class="drop-zone rounded">
+  Drag & Drop Images or Click to Upload
+  <input type="file" id="imageInput" multiple hidden>
+</div>
 
-<img id="preview"
-class="w-full h-48 object-cover rounded mt-2 hidden">
+<!-- PREVIEW -->
+<div id="previewContainer" class="grid grid-cols-3 gap-2 mt-4"></div>
 
 <button id="submitBtn"
 class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 rounded font-bold hover:scale-105 transition">
 Post Property
 </button>
 
-<div id="loading" class="hidden text-center mt-3">
-Uploading property...
-</div>
+<div id="loading" class="hidden text-center mt-3">Uploading...</div>
 
 </form>
 
@@ -91,16 +97,11 @@ Uploading property...
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
-  getFirestore,
-  addDoc,
-  collection
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, addDoc, collection }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* 🔥 CONFIG */
 const firebaseConfig = {
@@ -115,51 +116,58 @@ const db = getFirestore();
 
 let currentUser = null;
 
-/* 🔐 AUTH */
-onAuthStateChanged(auth, (user) => {
-
+onAuthStateChanged(auth, (user)=>{
   if(!user){
     window.location.href = "login.html";
-    return;
   }
-
   currentUser = user;
 });
 
-/* 🖼 IMAGE PREVIEW */
-const imageInput = document.getElementById("imageInput");
-const preview = document.getElementById("preview");
+/* 📸 DRAG DROP */
+const dropZone = document.getElementById("dropZone");
+const input = document.getElementById("imageInput");
+const previewContainer = document.getElementById("previewContainer");
 
-imageInput.addEventListener("change", ()=>{
-  const file = imageInput.files[0];
-  if(file){
-    preview.src = URL.createObjectURL(file);
-    preview.classList.remove("hidden");
-  }
+dropZone.onclick = ()=> input.click();
+
+input.addEventListener("change", handleFiles);
+
+dropZone.addEventListener("dragover",(e)=>{
+  e.preventDefault();
 });
 
-/* 🚀 SUBMIT */
-const form = document.getElementById("propertyForm");
+dropZone.addEventListener("drop",(e)=>{
+  e.preventDefault();
+  input.files = e.dataTransfer.files;
+  handleFiles();
+});
 
-form.addEventListener("submit", async (e)=>{
+function handleFiles(){
+  previewContainer.innerHTML = "";
+
+  [...input.files].forEach(file=>{
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.className = "h-24 w-full object-cover rounded";
+    previewContainer.appendChild(img);
+  });
+}
+
+/* 🚀 SUBMIT */
+document.getElementById("propertyForm").addEventListener("submit", async(e)=>{
   e.preventDefault();
 
-  if(!currentUser){
-    alert("Login first");
-    return;
-  }
+  const title = titleEl.value;
+  const price = priceEl.value;
+  const city = cityEl.value;
+  const bhk = bhkEl.value;
+  const area = areaEl.value;
+  const description = descEl.value;
 
-  const title = document.getElementById("title").value;
-  const price = document.getElementById("price").value;
-  const city = document.getElementById("city").value;
-  const bhk = document.getElementById("bhk").value;
-  const area = document.getElementById("area").value;
-  const description = document.getElementById("description").value;
+  const files = input.files;
 
-  const file = imageInput.files[0];
-
-  if(!file){
-    alert("Please upload image");
+  if(files.length === 0){
+    alert("Upload at least 1 image");
     return;
   }
 
@@ -168,27 +176,26 @@ form.addEventListener("submit", async (e)=>{
 
   loading.classList.remove("hidden");
   btn.disabled = true;
-  btn.innerText = "Posting...";
 
   try{
 
-    /* 🔥 UPLOAD TO CLOUDINARY */
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "dl6dnzau");
+    let imageUrls = [];
 
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dq3hko9hn/image/upload",
-      {
-        method: "POST",
-        body: formData
-      }
-    );
+    for(let file of files){
 
-    const data = await res.json();
-    const imageUrl = data.secure_url;
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset","dl6dnzau");
 
-    /* 🔥 SAVE TO FIRESTORE */
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dq3hko9hn/image/upload",
+        { method:"POST", body:formData }
+      );
+
+      const data = await res.json();
+      imageUrls.push(data.secure_url);
+    }
+
     await addDoc(collection(db,"properties"),{
       title,
       price,
@@ -196,23 +203,21 @@ form.addEventListener("submit", async (e)=>{
       bhk,
       area,
       description,
-      image: imageUrl,
+      images: imageUrls,
       ownerId: currentUser.uid,
-      createdAt: Date.now(),
-      boosted: false
+      createdAt: Date.now()
     });
 
-    alert("🎉 Property posted successfully");
+    alert("🎉 Property Posted");
 
-    window.location.href = "dashboard.html";
+    window.location.href="dashboard.html";
 
   }catch(err){
-    alert("Error: " + err.message);
+    alert(err.message);
   }
 
   loading.classList.add("hidden");
   btn.disabled = false;
-  btn.innerText = "Post Property";
 
 });
 

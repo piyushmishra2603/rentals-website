@@ -6,159 +6,87 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Post Property</title>
+<title>Post Property - SmartRent AI</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-
 body{
-margin:0;
-font-family:Arial,Helvetica,sans-serif;
-background:#f4f6f9;
-}
-  
-/* NAVBAR */
-
-header{
-background:white;
-padding:15px 40px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.1);
-}
-
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#1976d2;
-}
-
-nav a{
-margin-left:20px;
-text-decoration:none;
-color:#333;
-}
-
-/* FORM */
-
-.container{
-max-width:700px;
-margin:40px auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
-
-h2{
-margin-bottom:20px;
-}
-
-input,textarea,select{
-
-width:100%;
-
-padding:10px;
-
-margin-top:10px;
-
-margin-bottom:15px;
-
-border:1px solid #ddd;
-
-border-radius:5px;
-
-}
-
-button{
-
-background:#1976d2;
-
+font-family:'Inter',sans-serif;
+background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
 color:white;
-
-border:none;
-
-padding:12px;
-
-width:100%;
-
-border-radius:5px;
-
-cursor:pointer;
-
-font-size:16px;
-
 }
 
-.loading{
-
-display:none;
-
-text-align:center;
-
-margin-top:10px;
-
+.glass{
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+border-radius:20px;
 }
-
 </style>
 
 </head>
 
-<body>
+<body class="p-6">
 
+<!-- 🔥 NAVBAR -->
+<header class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold">🏠 SmartRent</h1>
 
-<header>
-
-<div class="logo">SmartProperty</div>
-
-<nav>
-
-<a href="index.html">Home</a>
-
-<a href="dashboard.html">Dashboard</a>
-
-</nav>
-
+  <div class="flex gap-4">
+    <a href="index.html" class="hover:text-cyan-400">Home</a>
+    <a href="dashboard.html" class="hover:text-cyan-400">Dashboard</a>
+  </div>
 </header>
 
+<!-- 🔥 FORM -->
+<div class="max-w-2xl mx-auto glass p-8 shadow-2xl">
 
-<div class="container">
+<h2 class="text-2xl mb-6 font-bold">Post New Property 🚀</h2>
 
-<h2>Post New Property</h2>
+<form id="propertyForm" class="space-y-4">
 
-<form id="propertyForm">
+<input id="title" placeholder="Property Title"
+class="w-full p-3 rounded text-black">
 
-<input id="title" placeholder="Property Title" required>
+<input id="price" type="number" placeholder="Rent Price"
+class="w-full p-3 rounded text-black">
 
-<input id="price" type="number" placeholder="Price" required>
+<input id="city" placeholder="City"
+class="w-full p-3 rounded text-black">
 
-<input id="city" placeholder="City" required>
-
-<select id="bhk">
-
+<select id="bhk" class="w-full p-3 rounded text-black">
 <option>1 BHK</option>
 <option>2 BHK</option>
 <option>3 BHK</option>
 <option>4 BHK</option>
 <option>Villa</option>
-
 </select>
 
-<input id="area" placeholder="Area (sq.ft)">
+<input id="area" placeholder="Area (sq.ft)"
+class="w-full p-3 rounded text-black">
 
-<textarea id="description" placeholder="Property Description"></textarea>
+<textarea id="description" placeholder="Description"
+class="w-full p-3 rounded text-black"></textarea>
 
-<input type="file" id="imageInput" accept="image/*" required>
+<!-- IMAGE -->
+<input type="file" id="imageInput" accept="image/*"
+class="w-full text-sm">
 
-<button type="submit">Post Property</button>
+<img id="preview"
+class="w-full h-48 object-cover rounded mt-2 hidden">
 
-<div class="loading" id="loading">Uploading property...</div>
+<button id="submitBtn"
+class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 py-3 rounded font-bold hover:scale-105 transition">
+Post Property
+</button>
+
+<div id="loading" class="hidden text-center mt-3">
+Uploading property...
+</div>
 
 </form>
 
 </div>
-
-
 
 <script type="module">
 
@@ -174,13 +102,11 @@ import {
   collection
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* 🔥 CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
   authDomain: "smart-property-portal.firebaseapp.com",
-  projectId: "smart-property-portal",
-  storageBucket: "smart-property-portal.firebasestorage.app",
-  messagingSenderId: "407241446660",
-  appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
+  projectId: "smart-property-portal"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -189,7 +115,7 @@ const db = getFirestore();
 
 let currentUser = null;
 
-// 🔐 AUTH CHECK (FIXES REDIRECT LOOP)
+/* 🔐 AUTH */
 onAuthStateChanged(auth, (user) => {
 
   if(!user){
@@ -200,40 +126,97 @@ onAuthStateChanged(auth, (user) => {
   currentUser = user;
 });
 
-// 🚀 POST PROPERTY
-window.postProperty = async function(){
+/* 🖼 IMAGE PREVIEW */
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+
+imageInput.addEventListener("change", ()=>{
+  const file = imageInput.files[0];
+  if(file){
+    preview.src = URL.createObjectURL(file);
+    preview.classList.remove("hidden");
+  }
+});
+
+/* 🚀 SUBMIT */
+const form = document.getElementById("propertyForm");
+
+form.addEventListener("submit", async (e)=>{
+  e.preventDefault();
 
   if(!currentUser){
-    alert("Wait... logging in");
+    alert("Login first");
     return;
   }
 
   const title = document.getElementById("title").value;
+  const price = document.getElementById("price").value;
   const city = document.getElementById("city").value;
-  const rent = document.getElementById("rent").value;
+  const bhk = document.getElementById("bhk").value;
+  const area = document.getElementById("area").value;
+  const description = document.getElementById("description").value;
 
-  try {
+  const file = imageInput.files[0];
 
+  if(!file){
+    alert("Please upload image");
+    return;
+  }
+
+  const loading = document.getElementById("loading");
+  const btn = document.getElementById("submitBtn");
+
+  loading.classList.remove("hidden");
+  btn.disabled = true;
+  btn.innerText = "Posting...";
+
+  try{
+
+    /* 🔥 UPLOAD TO CLOUDINARY */
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "dl6dnzau");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dq3hko9hn/image/upload",
+      {
+        method: "POST",
+        body: formData
+      }
+    );
+
+    const data = await res.json();
+    const imageUrl = data.secure_url;
+
+    /* 🔥 SAVE TO FIRESTORE */
     await addDoc(collection(db,"properties"),{
       title,
+      price,
       city,
-      rent,
-      ownerId: currentUser.uid, // ✅ FIXED
-      createdAt: Date.now()
+      bhk,
+      area,
+      description,
+      image: imageUrl,
+      ownerId: currentUser.uid,
+      createdAt: Date.now(),
+      boosted: false
     });
 
-    alert("Property Added Successfully");
+    alert("🎉 Property posted successfully");
 
-    // ✅ REDIRECT FIX
-    window.location.href = "index.html";
+    window.location.href = "dashboard.html";
 
-  } catch(err){
-    alert(err.message);
+  }catch(err){
+    alert("Error: " + err.message);
   }
-};
+
+  loading.classList.add("hidden");
+  btn.disabled = false;
+  btn.innerText = "Post Property";
+
+});
 
 </script>
 
 </body>
-
 </html>

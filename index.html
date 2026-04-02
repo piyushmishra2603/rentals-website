@@ -36,6 +36,18 @@ justify-content:center;
 font-size:32px;
 font-weight:bold;
 }
+
+#postBtn{
+box-shadow:0 0 20px rgba(0,200,255,0.6);
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 10px rgba(0,200,255,0.4);}
+50%{box-shadow:0 0 25px rgba(0,200,255,0.9);}
+100%{box-shadow:0 0 10px rgba(0,200,255,0.4);}
+}
+  
 </style>
 
 </head>
@@ -576,6 +588,17 @@ function toggleMenu(){
   document.getElementById("dropdown").classList.toggle("hidden");
 }
 </script>
+
+<!-- 🚀 POST PROPERTY FLOAT BUTTON -->
+<a href="post-property.html" id="postBtn"
+class="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full 
+bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold shadow-lg 
+hover:scale-110 transition duration-300">
+
+  <span class="text-xl">＋</span>
+  Post Property
+
+</a>
   
 </body>
 </html>

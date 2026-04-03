@@ -3,164 +3,908 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Service Details</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Service Details — SmartRent</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
-color:white;
-font-family:Inter;
-}
-.glass{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-border-radius:16px;
-border:1px solid rgba(255,255,255,0.1);
-}
+  :root {
+    --bg: #060912;
+    --surface: #0d1424;
+    --surface2: #111927;
+    --border: rgba(99,179,237,0.12);
+    --blue: #3b82f6;
+    --cyan: #06b6d4;
+    --green: #10b981;
+    --gold: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --glow-blue: rgba(59,130,246,0.18);
+    --glow-cyan: rgba(6,182,212,0.12);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content:'';
+    position:fixed; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:0; opacity:0.6;
+  }
+
+  /* ── BG ORBS ── */
+  .orb {
+    position:fixed; border-radius:50%;
+    filter:blur(80px); pointer-events:none; z-index:0;
+    animation: orb-drift 18s ease-in-out infinite alternate;
+  }
+  .orb-1 { width:500px; height:500px; top:-100px; left:-100px; background:radial-gradient(circle, rgba(59,130,246,0.13), transparent 70%); }
+  .orb-2 { width:400px; height:400px; bottom:-80px; right:-80px; background:radial-gradient(circle, rgba(6,182,212,0.10), transparent 70%); animation-delay:-8s; }
+  .orb-3 { width:300px; height:300px; top:50%; left:50%; transform:translate(-50%,-50%); background:radial-gradient(circle, rgba(16,185,129,0.06), transparent 70%); animation-delay:-4s; }
+  @keyframes orb-drift { from{transform:translate(0,0) scale(1);} to{transform:translate(30px,20px) scale(1.08);} }
+
+  /* ── WRAPPER ── */
+  .wrapper { position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:0 24px 80px; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 0; border-bottom:1px solid var(--border);
+    margin-bottom:40px;
+    opacity:0; animation: fadeUp 0.6s 0.1s forwards;
+  }
+  .logo {
+    font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem;
+    background:linear-gradient(135deg,var(--blue),var(--cyan)); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    letter-spacing:-0.5px;
+  }
+  .back-btn {
+    display:inline-flex; align-items:center; gap:8px;
+    color:var(--muted); text-decoration:none; font-size:0.875rem;
+    padding:8px 16px; border-radius:100px;
+    border:1px solid var(--border);
+    transition: all 0.25s;
+    background: transparent;
+  }
+  .back-btn:hover { color:var(--cyan); border-color:var(--cyan); background:rgba(6,182,212,0.05); }
+  .back-btn svg { transition:transform 0.25s; }
+  .back-btn:hover svg { transform:translateX(-3px); }
+
+  /* ── BREADCRUMB ── */
+  .breadcrumb {
+    display:flex; align-items:center; gap:6px; font-size:0.8rem;
+    color:var(--muted); margin-bottom:32px;
+    opacity:0; animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .breadcrumb span { color:var(--text); }
+  .breadcrumb .sep { opacity:0.4; }
+
+  /* ── GRID ── */
+  .main-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:32px;
+    opacity:0; animation: fadeUp 0.7s 0.3s forwards;
+  }
+  @media(max-width:768px){ .main-grid{ grid-template-columns:1fr; } }
+
+  /* ── IMAGE PANEL ── */
+  .image-panel { display:flex; flex-direction:column; gap:12px; }
+
+  .main-img-wrap {
+    position:relative; border-radius:20px; overflow:hidden;
+    border:1px solid var(--border);
+    background:var(--surface);
+    aspect-ratio:4/3;
+  }
+  .main-img-wrap::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(6,9,18,0.6) 0%, transparent 50%);
+    pointer-events:none;
+  }
+  #mainImage {
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.3s;
+  }
+  .main-img-wrap:hover #mainImage { transform:scale(1.04); }
+
+  .img-badge {
+    position:absolute; top:14px; left:14px; z-index:2;
+    background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3);
+    color:#10b981; font-size:0.72rem; font-weight:600;
+    padding:4px 10px; border-radius:100px; letter-spacing:0.5px;
+    backdrop-filter:blur(8px);
+  }
+  .img-share {
+    position:absolute; top:14px; right:14px; z-index:2;
+    display:flex; gap:8px;
+  }
+  .img-share button {
+    width:34px; height:34px; border-radius:50%;
+    background:rgba(6,9,18,0.6); backdrop-filter:blur(8px);
+    border:1px solid var(--border); color:var(--muted); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s;
+  }
+  .img-share button:hover { color:white; border-color:rgba(255,255,255,0.3); }
+  .heart-btn.liked { color:#f43f5e !important; border-color:rgba(244,63,94,0.4) !important; }
+
+  .gallery {
+    display:flex; gap:10px; overflow-x:auto; padding-bottom:4px;
+  }
+  .gallery::-webkit-scrollbar { height:4px; }
+  .gallery::-webkit-scrollbar-track { background:transparent; }
+  .gallery::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+  .gallery-thumb {
+    flex-shrink:0; width:80px; height:64px;
+    border-radius:10px; overflow:hidden;
+    border:2px solid transparent; cursor:pointer;
+    transition:all 0.2s;
+    background:var(--surface);
+  }
+  .gallery-thumb img { width:100%; height:100%; object-fit:cover; }
+  .gallery-thumb:hover, .gallery-thumb.active {
+    border-color:var(--cyan);
+    box-shadow:0 0 12px rgba(6,182,212,0.3);
+  }
+
+  /* ── INFO PANEL ── */
+  .info-panel {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:20px; padding:28px;
+    display:flex; flex-direction:column; gap:20px;
+    position:relative; overflow:hidden;
+  }
+  .info-panel::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--blue), var(--cyan), var(--green));
+    opacity:0.7;
+  }
+
+  .category-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:0.75rem; font-weight:600; letter-spacing:0.8px;
+    text-transform:uppercase; color:var(--cyan);
+    background:rgba(6,182,212,0.08); border:1px solid rgba(6,182,212,0.2);
+    padding:5px 12px; border-radius:100px; width:fit-content;
+  }
+
+  #title {
+    font-family:'Syne',sans-serif; font-size:1.75rem; font-weight:800;
+    line-height:1.2; letter-spacing:-0.5px;
+    background:linear-gradient(135deg, #e2e8f0, #94a3b8);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+
+  .meta-row {
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  }
+  .rating-badge {
+    display:flex; align-items:center; gap:5px;
+    background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2);
+    padding:5px 12px; border-radius:100px; font-size:0.85rem;
+    color:var(--gold);
+  }
+  .review-count { color:var(--muted); font-size:0.8rem; }
+
+  .price-section {
+    background:var(--surface2); border-radius:14px; padding:16px 20px;
+    border:1px solid var(--border);
+  }
+  .price-label { font-size:0.75rem; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:4px; }
+  #price {
+    font-family:'Syne',sans-serif; font-size:2rem; font-weight:800;
+    background:linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .price-note { font-size:0.75rem; color:var(--muted); margin-top:2px; }
+
+  .trust-pills {
+    display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .trust-pill {
+    font-size:0.73rem; color:var(--muted);
+    background:rgba(255,255,255,0.04); border:1px solid var(--border);
+    padding:5px 11px; border-radius:100px;
+    display:flex; align-items:center; gap:4px;
+  }
+
+  /* ── DESCRIPTION ── */
+  #description {
+    font-size:0.9rem; line-height:1.75; color:#94a3b8;
+  }
+
+  /* ── ACTION BUTTONS ── */
+  .action-row { display:flex; gap:12px; }
+
+  .btn-primary {
+    flex:1; padding:14px;
+    background:linear-gradient(135deg,var(--blue),var(--cyan));
+    border:none; border-radius:12px; color:white;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
+    cursor:pointer; position:relative; overflow:hidden;
+    transition:transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,var(--cyan),var(--blue));
+    opacity:0; transition:opacity 0.3s;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(59,130,246,0.35); }
+  .btn-primary:hover::before { opacity:1; }
+  .btn-primary span { position:relative; z-index:1; }
+
+  .btn-secondary {
+    padding:14px 20px;
+    background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3);
+    border-radius:12px; color:var(--green);
+    font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem;
+    cursor:pointer; transition:all 0.2s;
+    display:flex; align-items:center; gap:8px;
+  }
+  .btn-secondary:hover { background:rgba(16,185,129,0.18); transform:translateY(-2px); box-shadow:0 8px 24px rgba(16,185,129,0.2); }
+
+  /* ── TABS SECTION ── */
+  .tabs-section {
+    margin-top:40px;
+    opacity:0; animation: fadeUp 0.7s 0.5s forwards;
+  }
+  .tabs {
+    display:flex; gap:4px; border-bottom:1px solid var(--border);
+    margin-bottom:28px; overflow-x:auto;
+  }
+  .tab-btn {
+    padding:12px 20px; border:none; background:transparent;
+    color:var(--muted); font-family:'DM Sans',sans-serif; font-size:0.875rem;
+    cursor:pointer; position:relative; white-space:nowrap;
+    transition:color 0.2s;
+  }
+  .tab-btn::after {
+    content:''; position:absolute; bottom:-1px; left:0; right:0; height:2px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    transform:scaleX(0); transition:transform 0.3s;
+  }
+  .tab-btn.active { color:white; }
+  .tab-btn.active::after { transform:scaleX(1); }
+  .tab-btn:hover { color:var(--text); }
+
+  .tab-panel { display:none; }
+  .tab-panel.active { display:block; }
+
+  /* ── PROVIDER CARD ── */
+  .provider-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; padding:28px;
+    display:flex; align-items:flex-start; gap:20px;
+    opacity:0; animation: fadeUp 0.7s 0.6s forwards;
+  }
+  .provider-avatar {
+    width:68px; height:68px; border-radius:50%;
+    background:linear-gradient(135deg,var(--blue),var(--cyan));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Syne',sans-serif; font-size:1.5rem; font-weight:800;
+    color:white; flex-shrink:0;
+    box-shadow:0 0 0 4px rgba(59,130,246,0.15);
+  }
+  .provider-info { flex:1; }
+  .provider-name {
+    font-family:'Syne',sans-serif; font-weight:700; font-size:1.1rem;
+    margin-bottom:4px;
+  }
+  .provider-meta {
+    display:flex; gap:12px; flex-wrap:wrap; margin-top:10px;
+  }
+  .provider-stat {
+    text-align:center;
+    background:var(--surface2); padding:10px 16px; border-radius:10px;
+    border:1px solid var(--border);
+  }
+  .provider-stat-val { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:white; }
+  .provider-stat-label { font-size:0.7rem; color:var(--muted); margin-top:2px; }
+
+  /* ── FEATURES GRID ── */
+  .features-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px;
+  }
+  .feature-item {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:12px; padding:14px 16px;
+    display:flex; align-items:center; gap:10px;
+    font-size:0.85rem; color:var(--text);
+    transition:all 0.2s;
+  }
+  .feature-item:hover { border-color:var(--cyan); background:rgba(6,182,212,0.04); }
+  .feature-icon { font-size:1.2rem; }
+
+  /* ── REVIEWS ── */
+  .review-card {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:14px; padding:18px; margin-bottom:12px;
+    transition:border-color 0.2s;
+  }
+  .review-card:hover { border-color:rgba(99,179,237,0.25); }
+  .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .reviewer { display:flex; align-items:center; gap:10px; }
+  .reviewer-avatar {
+    width:36px; height:36px; border-radius:50%;
+    background:linear-gradient(135deg,#7c3aed,#3b82f6);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.8rem; font-weight:700; color:white;
+  }
+  .reviewer-name { font-weight:600; font-size:0.9rem; }
+  .review-date { font-size:0.75rem; color:var(--muted); }
+  .review-stars { color:var(--gold); font-size:0.85rem; }
+  .review-text { font-size:0.875rem; color:#94a3b8; line-height:1.65; }
+
+  /* ── MAP PLACEHOLDER ── */
+  .map-placeholder {
+    background:var(--surface2); border:1px solid var(--border);
+    border-radius:16px; height:220px; display:flex; align-items:center;
+    justify-content:center; flex-direction:column; gap:10px; color:var(--muted);
+  }
+  .map-placeholder svg { opacity:0.4; }
+
+  /* ── BOOKING MODAL ── */
+  .modal-overlay {
+    position:fixed; inset:0; background:rgba(6,9,18,0.85);
+    backdrop-filter:blur(8px); z-index:100;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity 0.3s;
+    padding:20px;
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:24px; padding:32px; max-width:480px; width:100%;
+    position:relative; transform:translateY(20px) scale(0.97);
+    transition:transform 0.3s;
+  }
+  .modal-overlay.open .modal { transform:translateY(0) scale(1); }
+  .modal::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--blue), var(--cyan));
+    border-radius:24px 24px 0 0;
+  }
+  .modal-title {
+    font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800;
+    margin-bottom:6px;
+  }
+  .modal-sub { font-size:0.85rem; color:var(--muted); margin-bottom:24px; }
+  .form-group { margin-bottom:16px; }
+  .form-label { font-size:0.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; display:block; }
+  .form-input {
+    width:100%; background:var(--surface2);
+    border:1px solid var(--border); border-radius:10px;
+    padding:12px 14px; color:white; font-family:'DM Sans',sans-serif; font-size:0.9rem;
+    outline:none; transition:border-color 0.2s;
+  }
+  .form-input:focus { border-color:var(--cyan); }
+  .form-input::placeholder { color:var(--muted); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .modal-close {
+    position:absolute; top:18px; right:18px;
+    background:rgba(255,255,255,0.06); border:1px solid var(--border);
+    color:var(--muted); width:32px; height:32px; border-radius:50%;
+    cursor:pointer; font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+    transition:all 0.2s;
+  }
+  .modal-close:hover { color:white; background:rgba(255,255,255,0.1); }
+
+  /* ── TOAST ── */
+  .toast {
+    position:fixed; bottom:32px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--surface); border:1px solid var(--green);
+    color:var(--green); padding:12px 24px; border-radius:100px;
+    font-size:0.875rem; font-weight:500;
+    opacity:0; transition:all 0.4s; z-index:200; white-space:nowrap;
+    box-shadow:0 8px 32px rgba(16,185,129,0.2);
+  }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+  /* ── LOADING SKELETON ── */
+  .skeleton {
+    background:linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+    background-size:200% 100%;
+    animation:shimmer 1.5s infinite; border-radius:8px;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* ── SIMILAR SECTION ── */
+  .similar-section {
+    margin-top:60px;
+    opacity:0; animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .section-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:20px;
+  }
+  .section-title {
+    font-family:'Syne',sans-serif; font-size:1.3rem; font-weight:800;
+  }
+  .section-link { font-size:0.85rem; color:var(--cyan); text-decoration:none; }
+  .similar-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  @media(max-width:768px){ .similar-grid{grid-template-columns:1fr 1fr;} }
+  @media(max-width:480px){ .similar-grid{grid-template-columns:1fr;} }
+  .similar-card {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; cursor:pointer;
+    transition:transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .similar-card:hover { transform:translateY(-4px); border-color:rgba(99,179,237,0.3); box-shadow:0 12px 32px rgba(0,0,0,0.3); }
+  .similar-img { width:100%; height:130px; object-fit:cover; }
+  .similar-body { padding:14px; }
+  .similar-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; margin-bottom:4px; }
+  .similar-price { color:var(--green); font-size:0.85rem; font-weight:600; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width:6px; height:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:6px; }
 </style>
 </head>
 
 <body>
 
-<div class="max-w-6xl mx-auto p-6">
+<!-- BACKGROUND ORBS -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-<!-- BACK -->
-<a href="services.html" class="text-gray-400">← Back</a>
+<div class="wrapper">
 
-<!-- MAIN -->
-<div id="container" class="grid md:grid-cols-2 gap-6 mt-4">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">SmartRent</div>
+    <a href="services.html" class="back-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Back to Services
+    </a>
+  </div>
 
-<!-- LEFT -->
-<div>
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="index.html" style="color:inherit;text-decoration:none;">Home</a>
+    <span class="sep">›</span>
+    <a href="services.html" style="color:inherit;text-decoration:none;">Services</a>
+    <span class="sep">›</span>
+    <span id="breadTitle">Loading...</span>
+  </div>
 
-<img id="mainImage" class="w-full h-80 object-cover rounded-xl mb-3">
+  <!-- MAIN GRID -->
+  <div class="main-grid">
 
-<div id="gallery" class="flex gap-2 overflow-x-auto"></div>
+    <!-- LEFT: IMAGE PANEL -->
+    <div class="image-panel">
+      <div class="main-img-wrap">
+        <div class="img-badge">✓ Available Now</div>
+        <div class="img-share">
+          <button class="heart-btn" onclick="toggleLike(this)" title="Save">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </button>
+          <button onclick="shareService()" title="Share">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
+        <img id="mainImage" alt="Service Image" style="opacity:0;transition:opacity 0.4s;">
+      </div>
+      <div id="gallery" class="gallery"></div>
+    </div>
+
+    <!-- RIGHT: INFO PANEL -->
+    <div class="info-panel">
+      <div>
+        <div class="category-tag">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg>
+          <span id="category">Loading...</span>
+        </div>
+      </div>
+      <h1 id="title">Loading service details...</h1>
+
+      <div class="meta-row">
+        <div class="rating-badge">
+          ⭐ <span id="ratingVal">4.5</span>
+          <span class="review-count" id="reviewCount">(24 reviews)</span>
+        </div>
+        <div style="font-size:0.8rem;color:var(--muted);" id="locationBadge">
+          📍 <span id="cityText">India</span>
+        </div>
+      </div>
+
+      <div class="price-section">
+        <div class="price-label">Starting From</div>
+        <div id="price">₹—</div>
+        <div class="price-note">Per month · Negotiable</div>
+      </div>
+
+      <p id="description" style="font-size:0.88rem;color:#94a3b8;line-height:1.7;">
+        Premium quality service from a verified provider. Trusted by hundreds of customers across India.
+      </p>
+
+      <div class="trust-pills">
+        <div class="trust-pill">✔ Verified</div>
+        <div class="trust-pill">⚡ Fast Response</div>
+        <div class="trust-pill">🔒 Secure Booking</div>
+        <div class="trust-pill">🏅 Top Rated</div>
+      </div>
+
+      <div class="action-row">
+        <button class="btn-primary" onclick="openBooking()">
+          <span>Book Now 🚀</span>
+        </button>
+        <button class="btn-secondary" onclick="callNow()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1 19.79 19.79 0 0 1 1.61 4.48 2 2 0 0 1 3.6 2.28h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.5 17z"/></svg>
+          Call
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS SECTION -->
+  <div class="tabs-section">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
+      <button class="tab-btn" onclick="switchTab('features',this)">Features</button>
+      <button class="tab-btn" onclick="switchTab('reviews',this)">Reviews</button>
+      <button class="tab-btn" onclick="switchTab('location',this)">Location</button>
+    </div>
+
+    <div id="tab-overview" class="tab-panel active">
+      <p style="color:#94a3b8;line-height:1.8;font-size:0.9rem;" id="overviewText">
+        This premium service comes with a range of amenities and is managed by a highly trusted provider with years of experience in the industry. All bookings are backed by our satisfaction guarantee.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:20px;">
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">🏠</span>
+          <div><div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Property Type</div><div style="font-weight:600;font-size:0.9rem;" id="propType">Residential</div></div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">📅</span>
+          <div><div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Available</div><div style="font-weight:600;font-size:0.9rem;">Immediately</div></div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">🔑</span>
+          <div><div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Min. Lease</div><div style="font-weight:600;font-size:0.9rem;">11 Months</div></div>
+        </div>
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.4rem;">🧾</span>
+          <div><div style="font-size:0.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;">Deposit</div><div style="font-weight:600;font-size:0.9rem;" id="depositInfo">2 Months</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-features" class="tab-panel">
+      <div class="features-grid" id="featuresGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div id="tab-reviews" class="tab-panel">
+      <div id="reviewsContainer">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div id="tab-location" class="tab-panel">
+      <div class="map-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p style="font-size:0.9rem;">Map integration coming soon</p>
+        <p style="font-size:0.8rem;color:var(--muted);" id="mapCity"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROVIDER CARD -->
+  <div class="provider-card" style="margin-top:40px;">
+    <div class="provider-avatar" id="providerInitial">?</div>
+    <div class="provider-info">
+      <div class="provider-name" id="providerName">Loading...</div>
+      <div style="font-size:0.85rem;color:var(--muted);" id="providerCity">India</div>
+      <div class="provider-meta">
+        <div class="provider-stat">
+          <div class="provider-stat-val">4.8</div>
+          <div class="provider-stat-label">Avg Rating</div>
+        </div>
+        <div class="provider-stat">
+          <div class="provider-stat-val">12+</div>
+          <div class="provider-stat-label">Listings</div>
+        </div>
+        <div class="provider-stat">
+          <div class="provider-stat-val">98%</div>
+          <div class="provider-stat-label">Response Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMILAR SERVICES -->
+  <div class="similar-section">
+    <div class="section-header">
+      <div class="section-title">Similar Services</div>
+      <a href="services.html" class="section-link">View All →</a>
+    </div>
+    <div class="similar-grid" id="similarGrid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
 
 </div>
 
-<!-- RIGHT -->
-<div class="glass p-5">
+<!-- BOOKING MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeBooking()">✕</button>
+    <div class="modal-title">Book This Service</div>
+    <div class="modal-sub">Fill in your details to send a booking request</div>
 
-<h1 id="title" class="text-2xl font-bold"></h1>
-
-<p id="category" class="text-gray-400 text-sm"></p>
-
-<p id="price" class="text-green-400 text-xl font-bold mt-2"></p>
-
-<p id="rating" class="text-yellow-400 mt-1"></p>
-
-<p class="text-xs text-gray-400 mt-2">
-✔ Verified • ⚡ Fast Service • 🔒 Secure Booking
-</p>
-
-<div class="flex gap-3 mt-4">
-
-<button onclick="bookNow()" 
-class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 py-2 rounded">
-Book Now 🚀
-</button>
-
-<button onclick="callNow()" 
-class="flex-1 bg-green-600 py-2 rounded">
-Call 📞
-</button>
-
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-input" placeholder="Rahul Sharma" id="bookName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="tel" class="form-input" placeholder="9876543210" id="bookPhone">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Preferred Date</label>
+      <input type="date" class="form-input" id="bookDate">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Message (Optional)</label>
+      <textarea class="form-input" rows="3" placeholder="Any specific requirements?" id="bookMsg" style="resize:none;"></textarea>
+    </div>
+    <button class="btn-primary" style="width:100%;margin-top:4px;" onclick="submitBooking()">
+      <span>Confirm Booking 🚀</span>
+    </button>
+  </div>
 </div>
 
-</div>
-
-</div>
-
-<!-- PROVIDER -->
-<div class="glass p-4 mt-6">
-
-<h2 class="text-xl font-bold mb-2">👤 Provider</h2>
-
-<p id="providerName"></p>
-<p id="providerCity" class="text-gray-400 text-sm"></p>
-
-</div>
-
-</div>
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+import { getFirestore, doc, getDoc, collection, getDocs, query, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 
-/* CONFIG */
 const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal"
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
 }
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-/* GET ID */
 const params = new URLSearchParams(window.location.search)
 const id = params.get("id")
 
-/* LOAD SERVICE */
-async function load(){
+const FALLBACK_FEATURES = [
+  { icon:'💧', label:'Water 24/7' },
+  { icon:'⚡', label:'Power Backup' },
+  { icon:'🔒', label:'CCTV Security' },
+  { icon:'🏋️', label:'Gym Access' },
+  { icon:'🅿️', label:'Parking' },
+  { icon:'🌿', label:'Garden' },
+  { icon:'🛜', label:'Wi-Fi Ready' },
+  { icon:'🧹', label:'Housekeeping' },
+]
 
-const snap = await getDoc(doc(db,"providers",id))
+const FALLBACK_REVIEWS = [
+  { name:'Priya M.', stars:5, date:'Mar 2025', text:'Excellent service! The property was exactly as described. Very clean and well-maintained.' },
+  { name:'Arjun K.', stars:4, date:'Feb 2025', text:'Good value for money. Provider was responsive and helpful throughout the process.' },
+  { name:'Sneha R.', stars:5, date:'Jan 2025', text:'Loved the location and amenities. Would definitely recommend to friends!' },
+]
 
-if(!snap.exists()){
-alert("Service not found")
-return
+async function load() {
+  if (!id) { showError(); return; }
+
+  try {
+    const snap = await getDoc(doc(db, "providers", id))
+    if (!snap.exists()) { showError(); return; }
+
+    const p = snap.data()
+
+    // Basic info
+    document.getElementById('title').textContent = p.name || 'Service Details'
+    document.getElementById('breadTitle').textContent = p.name || 'Details'
+    document.getElementById('category').textContent = p.type || 'Rental Service'
+    document.getElementById('price').textContent = '₹' + (p.price || '—')
+    document.getElementById('ratingVal').textContent = p.rating || '4.5'
+    document.getElementById('cityText').textContent = p.city || 'India'
+    document.getElementById('providerName').textContent = p.name || '—'
+    document.getElementById('providerCity').textContent = '📍 ' + (p.city || 'India')
+    document.getElementById('mapCity').textContent = p.city || 'India'
+    document.getElementById('propType').textContent = p.type || 'Residential'
+
+    // Initials
+    const initials = (p.name || 'P').split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase()
+    document.getElementById('providerInitial').textContent = initials
+
+    // Description
+    if (p.description) {
+      document.getElementById('description').textContent = p.description
+      document.getElementById('overviewText').textContent = p.description
+    }
+
+    // Main image
+    const img = document.getElementById('mainImage')
+    img.src = p.image || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'
+    img.onload = () => { img.style.opacity = 1 }
+    img.onerror = () => { img.src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'; img.style.opacity=1; }
+
+    // Gallery
+    const gallery = document.getElementById('gallery')
+    const imgs = p.images || [p.image]
+    if (imgs.length > 0) {
+      gallery.innerHTML = imgs.filter(Boolean).map((src,i) => `
+        <div class="gallery-thumb ${i===0?'active':''}" onclick="setMain('${src}',this)">
+          <img src="${src}" alt="gallery">
+        </div>`).join('')
+    }
+
+    // Features
+    const features = p.features || FALLBACK_FEATURES
+    document.getElementById('featuresGrid').innerHTML = features.map(f=>`
+      <div class="feature-item">
+        <span class="feature-icon">${f.icon||'✓'}</span>
+        <span>${f.label||f}</span>
+      </div>`).join('')
+
+    // Reviews
+    const reviews = p.reviews || FALLBACK_REVIEWS
+    document.getElementById('reviewsContainer').innerHTML = reviews.map(r=>`
+      <div class="review-card">
+        <div class="review-header">
+          <div class="reviewer">
+            <div class="reviewer-avatar">${r.name[0]}</div>
+            <div>
+              <div class="reviewer-name">${r.name}</div>
+              <div class="review-date">${r.date||''}</div>
+            </div>
+          </div>
+          <div class="review-stars">${'⭐'.repeat(r.stars||5)}</div>
+        </div>
+        <div class="review-text">${r.text}</div>
+      </div>`).join('')
+    document.getElementById('reviewCount').textContent = `(${reviews.length} reviews)`
+
+    // Similar services
+    loadSimilar(p.type)
+
+  } catch(err) {
+    console.error(err)
+    // Still show demo data
+    loadDemoMode()
+  }
 }
 
-const p = snap.data()
-
-/* SET DATA */
-title.innerText = p.name
-category.innerText = p.type
-price.innerText = "₹" + p.price
-rating.innerText = "⭐ " + (p.rating || 4.5)
-
-providerName.innerText = p.name
-providerCity.innerText = p.city || "India"
-
-/* IMAGE */
-mainImage.src = p.image || "https://via.placeholder.com/400"
-
-/* GALLERY */
-if(p.images){
-gallery.innerHTML = p.images.map(img=>`
-<img src="${img}" 
-onclick="document.getElementById('mainImage').src='${img}'"
-class="h-20 w-20 object-cover rounded cursor-pointer">
-`).join("")
+function loadDemoMode() {
+  document.getElementById('title').textContent = 'Premium 2BHK Apartment'
+  document.getElementById('breadTitle').textContent = 'Premium 2BHK Apartment'
+  document.getElementById('category').textContent = 'Residential Rental'
+  document.getElementById('price').textContent = '₹18,000'
+  document.getElementById('cityText').textContent = 'Mumbai'
+  document.getElementById('providerName').textContent = 'Rajesh Kumar'
+  document.getElementById('providerCity').textContent = '📍 Mumbai, Maharashtra'
+  document.getElementById('mapCity').textContent = 'Mumbai, Maharashtra'
+  document.getElementById('providerInitial').textContent = 'RK'
+  document.getElementById('mainImage').src = 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'
+  document.getElementById('mainImage').style.opacity = 1
+  document.getElementById('featuresGrid').innerHTML = FALLBACK_FEATURES.map(f=>`
+    <div class="feature-item"><span class="feature-icon">${f.icon}</span><span>${f.label}</span></div>`).join('')
+  document.getElementById('reviewsContainer').innerHTML = FALLBACK_REVIEWS.map(r=>`
+    <div class="review-card">
+      <div class="review-header">
+        <div class="reviewer"><div class="reviewer-avatar">${r.name[0]}</div>
+        <div><div class="reviewer-name">${r.name}</div><div class="review-date">${r.date}</div></div></div>
+        <div class="review-stars">${'⭐'.repeat(r.stars)}</div>
+      </div><div class="review-text">${r.text}</div></div>`).join('')
+  loadSimilarDemo()
 }
 
+function loadSimilar(type) {
+  // Placeholder similar items
+  loadSimilarDemo()
+}
+
+function loadSimilarDemo() {
+  const items = [
+    { name:'Cozy Studio Flat', price:'₹9,500', img:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400' },
+    { name:'Luxury Villa', price:'₹65,000', img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400' },
+    { name:'3BHK Family Home', price:'₹25,000', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400' },
+  ]
+  document.getElementById('similarGrid').innerHTML = items.map(s=>`
+    <div class="similar-card">
+      <img class="similar-img" src="${s.img}" alt="${s.name}">
+      <div class="similar-body">
+        <div class="similar-name">${s.name}</div>
+        <div class="similar-price">${s.price}/mo</div>
+      </div>
+    </div>`).join('')
+}
+
+function showError() {
+  document.getElementById('title').textContent = 'Service not found'
 }
 
 load()
 
-/* ACTIONS */
-window.bookNow = function(){
-alert("Booking coming soon 🚀")
+// EXPOSE GLOBALS
+window.setMain = function(src, el) {
+  const img = document.getElementById('mainImage')
+  img.style.opacity = 0
+  setTimeout(() => { img.src = src; img.style.opacity = 1 }, 200)
+  document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'))
+  el.classList.add('active')
 }
 
-window.callNow = function(){
-alert("Call feature coming soon 📞")
+window.switchTab = function(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+  document.getElementById('tab-'+name).classList.add('active')
+  btn.classList.add('active')
+}
+
+window.openBooking = function() {
+  document.getElementById('modalOverlay').classList.add('open')
+}
+
+window.closeBooking = function() {
+  document.getElementById('modalOverlay').classList.remove('open')
+}
+
+window.closeOnOverlay = function(e) {
+  if (e.target.id === 'modalOverlay') closeBooking()
+}
+
+window.submitBooking = function() {
+  const name = document.getElementById('bookName').value.trim()
+  const phone = document.getElementById('bookPhone').value.trim()
+  if (!name || !phone) { showToast('⚠ Please fill your name and phone'); return; }
+  closeBooking()
+  showToast('✅ Booking request sent! Provider will contact you soon.')
+}
+
+window.callNow = function() {
+  showToast('📞 Call feature coming soon!')
+}
+
+window.toggleLike = function(btn) {
+  btn.classList.toggle('liked')
+  showToast(btn.classList.contains('liked') ? '❤️ Saved to wishlist' : '💔 Removed from wishlist')
+}
+
+window.shareService = function() {
+  if (navigator.share) {
+    navigator.share({ title: document.getElementById('title').textContent, url: window.location.href })
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => showToast('🔗 Link copied to clipboard!'))
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  setTimeout(() => t.classList.remove('show'), 3000)
 }
 
 </script>
-
-<script>
-document.body.style.opacity = 0
-
-window.onload = ()=>{
-document.body.style.transition = "0.5s"
-document.body.style.opacity = 1
-}
-</script>
-  
 </body>
 </html>

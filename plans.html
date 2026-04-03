@@ -3,214 +3,1422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartRent AI - Premium Plans</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>SmartRent AI – Premium Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* Body & Fonts */
+:root {
+  --bg: #050810;
+  --surface: #0c1120;
+  --surface2: #111827;
+  --border: rgba(99,179,237,0.12);
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --gold: #f59e0b;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --success: #10b981;
+  --danger: #ef4444;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-  color: white;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
   min-height: 100vh;
   overflow-x: hidden;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards 0.1s;
 }
 
-/* Hero Section */
+@keyframes fadeIn { to { opacity: 1; } }
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ── GRID BACKGROUND ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── NAV BAR ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(5,8,16,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.5px;
+}
+
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 9px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* ── HERO ── */
 .hero {
-  height: 30vh;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 100px 24px 80px;
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse, rgba(56,189,248,0.12) 0%, rgba(129,140,248,0.08) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(56,189,248,0.08);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+  animation: slideDown 0.6s ease both 0.3s;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -2px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.6s ease both 0.4s;
+}
+
+.hero h1 span {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.6s ease both 0.5s;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── BILLING TOGGLE ── */
+.billing-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px;
+  margin-bottom: 60px;
+  position: relative;
+  z-index: 1;
+  animation: slideUp 0.6s ease both 0.6s;
+}
+
+.billing-toggle span {
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--muted);
+}
+
+.billing-toggle span.active {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+}
+
+.save-badge {
+  background: rgba(16,185,129,0.15);
+  color: var(--success);
+  border: 1px solid rgba(16,185,129,0.3);
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* ── PLANS SECTION ── */
+.plans-section {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+/* ── PLAN CARD ── */
+.plan-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px 32px;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s, border-color 0.3s;
+  cursor: default;
+  animation: slideUp 0.6s ease both;
+}
+
+.plan-card:nth-child(1) { animation-delay: 0.5s; }
+.plan-card:nth-child(2) { animation-delay: 0.65s; }
+.plan-card:nth-child(3) { animation-delay: 0.8s; }
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  border-color: rgba(56,189,248,0.25);
+}
+
+.plan-card.recommended {
+  border-color: rgba(56,189,248,0.4);
+  background: linear-gradient(160deg, rgba(56,189,248,0.06) 0%, var(--surface) 60%);
+}
+
+.plan-card.recommended::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, rgba(56,189,248,0.4), rgba(129,140,248,0.2), transparent 60%);
+  z-index: -1;
+}
+
+.plan-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 5px 16px;
+  border-radius: 999px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.plan-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.plan-icon.basic { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.2); }
+.plan-icon.pro { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); }
+.plan-icon.premium { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); }
+
+.plan-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.plan-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.plan-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.plan-price .currency {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.plan-price .amount {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+.plan-price .per {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-left: 2px;
+}
+
+.plan-price .original {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+
+.features-list {
+  list-style: none;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 12px;
+}
+
+.features-list li {
+  display: flex;
   align-items: center;
-  text-align: center;
-  background: url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1500&q=80') no-repeat center/cover;
-  backdrop-filter: brightness(0.7);
-}
-.hero h1 { font-size: 3rem; font-weight: bold; margin-bottom: 0.5rem; }
-.hero p { color: #cbd5e1; font-size: 1.2rem; }
-
-/* Glassy Card */
-.card {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 25px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
-}
-.card:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-
-/* Highlight AI recommended */
-.card.best::after {
-  content: "⭐ Recommended";
-  position: absolute;
-  top: 10px; right: 10px;
-  background: gold;
-  color: black;
-  padding: 3px 10px;
-  border-radius: 12px;
+  gap: 10px;
   font-size: 0.9rem;
-  font-weight: bold;
-  animation: pulse 1.5s infinite;
+  color: #94a3b8;
 }
 
-@keyframes pulse {
-  0%,100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+.features-list li.active { color: var(--text); }
+
+.feature-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
 }
 
-/* Buttons */
-.button {
-  padding: 12px 28px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s, background 0.3s;
-}
-.button:hover { transform: scale(1.05); }
-.accept { background: linear-gradient(90deg,#06b6d4,#3b82f6); color:white; }
-.decline { background: #ef4444; color:white; }
+.feature-icon.check { background: rgba(16,185,129,0.15); color: var(--success); }
+.feature-icon.cross { background: rgba(100,116,139,0.1); color: var(--muted); }
 
-/* Input fields */
-input, select {
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
+.divider {
   width: 100%;
-  margin-bottom: 12px;
-  color: black;
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 28px;
 }
 
-/* Modal */
-#consentModal .glass {
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(12px);
+.plan-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-btn.outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.plan-btn.outline:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(56,189,248,0.3);
+  transform: translateY(-1px);
+}
+
+.plan-btn.primary {
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #000;
+}
+.plan-btn.primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(56,189,248,0.3);
+}
+
+.plan-btn.gold-btn {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+  color: #000;
+}
+.plan-btn.gold-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(245,158,11,0.3);
+}
+
+/* ripple */
+.plan-btn::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.plan-btn:active::after { opacity: 1; }
+
+/* ── COMPARE TABLE ── */
+.compare-section {
+  max-width: 1100px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -1px;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 20px;
+  overflow: hidden;
+}
+
+.compare-table th, .compare-table td {
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-table th {
+  background: rgba(56,189,248,0.05);
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  color: var(--text);
+}
+
+.compare-table th:first-child,
+.compare-table td:first-child {
+  text-align: left;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.compare-table .col-recommended {
+  background: rgba(56,189,248,0.04);
+}
+
+.tick { color: var(--success); font-size: 1rem; }
+.cross2 { color: var(--muted); font-size: 1rem; }
+
+/* ── UPI PAYMENT SECTION ── */
+.payment-section {
+  max-width: 560px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.payment-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 40px 36px;
+}
+
+.payment-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.payment-card p.sub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.input-group input, .input-group select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+.input-group select option { background: #111827; }
+
+.input-group input:focus, .input-group select:focus {
+  border-color: rgba(56,189,248,0.4);
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.08);
+}
+
+.selected-plan-display {
+  background: rgba(56,189,248,0.06);
+  border: 1px solid rgba(56,189,248,0.2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.selected-plan-display .plan-tag {
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.selected-plan-display .plan-amount {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 14px;
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.2px;
+}
+
+.pay-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(56,189,248,0.25);
+}
+
+.pay-note {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── FAQ ── */
+.faq-section {
+  max-width: 720px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq-item.open { border-color: rgba(56,189,248,0.25); }
+
+.faq-q {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  user-select: none;
+  gap: 16px;
+}
+
+.faq-arrow {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(56,189,248,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+
+.faq-item.open .faq-arrow { transform: rotate(180deg); }
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+  padding: 0 24px;
+}
+
+.faq-item.open .faq-a {
+  max-height: 200px;
+  padding: 0 24px 20px;
+}
+
+/* ── TESTIMONIALS ── */
+.testi-section {
+  max-width: 1100px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 0;
+}
+
+.testi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.testi-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56,189,248,0.2);
+}
+
+.stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 2px; }
+
+.testi-text {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testi-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.testi-name { font-weight: 600; font-size: 0.88rem; }
+.testi-role { font-size: 0.78rem; color: var(--muted); }
+
+/* ── CONSENT MODAL ── */
+#consentModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+  opacity: 0;
+  animation: modalIn 0.4s ease forwards;
+}
+
+@keyframes modalIn {
+  to { opacity: 1; }
+}
+
+#consentModal.hidden { display: none; }
+
+.modal-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 48px 40px;
+  max-width: 540px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+  animation: modalUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes modalUp {
+  from { transform: translateY(24px) scale(0.97); }
+  to { transform: translateY(0) scale(1); }
+}
+
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: rgba(56,189,248,0.1);
+  border: 1px solid rgba(56,189,248,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 24px;
+}
+
+.modal-box h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+.modal-box p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+
+.modal-box p a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+.modal-box p a:hover { text-decoration: underline; }
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  flex-direction: column;
+}
+
+.btn-accept {
+  padding: 16px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border: none;
+  border-radius: 14px;
+  color: #000;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-accept:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.btn-decline {
+  padding: 14px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-decline:hover { border-color: var(--danger); color: var(--danger); }
+
+/* ── FOOTER ── */
+footer {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid var(--border);
+  padding: 40px 40px 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.footer-logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footer-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--text); }
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ── TOAST ── */
+#toast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 9998;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 320px;
+  pointer-events: none;
+}
+
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast .toast-icon { font-size: 1.1rem; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.2); border-radius: 3px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 60px 20px 50px; }
+  .modal-box { padding: 36px 24px; }
+  footer { padding: 30px 20px; }
+  .compare-table th, .compare-table td { padding: 12px 12px; font-size: 0.78rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>SmartRent AI Plans</h1>
-  <p>Get the best features for property management and insights</p>
-</div>
-
-<!-- Plans Section -->
-<div class="max-w-6xl mx-auto py-12 px-6">
-  <h2 class="text-3xl font-bold text-center mb-8">Choose Your Plan</h2>
-  <div id="plans" class="flex flex-wrap gap-6 justify-center">
-    <!-- Plan cards will be inserted via JS -->
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SmartRent AI</div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">Properties</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
   </div>
-</div>
+  <a href="#payment" class="nav-cta">Get Started →</a>
+</nav>
 
-<!-- UPI Payment Section -->
-<div class="max-w-2xl mx-auto mt-12 p-6 glass rounded-2xl">
-  <h2 class="text-xl font-bold mb-4">Pay via UPI</h2>
-  <input type="text" id="upiId" placeholder="Enter your UPI ID (e.g., yourid@upi)" />
-  <button id="payBtn" class="button accept w-full">Pay Now</button>
-  <p class="text-gray-300 mt-2 text-sm">After payment, your plan will be activated automatically.</p>
-</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">🚀 Trusted by 10,000+ Landlords</div>
+  <h1>Choose the Right <span>Plan</span><br>for Your Properties</h1>
+  <p>Manage, list and grow your rental portfolio with AI-powered insights and seamless tools.</p>
 
-<!-- Consent Modal -->
-<div id="consentModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
-  <div class="glass p-6 max-w-2xl w-11/12 text-center">
-    <h2 class="text-2xl font-bold mb-4">Before Purchasing</h2>
-    <p class="mb-4">
-      Please read and accept our 
-      <a href="privacy.html" target="_blank" class="underline text-cyan-400">Privacy Policy</a> and 
-      <a href="terms.html" target="_blank" class="underline text-cyan-400">Terms & Conditions</a>.
-    </p>
-    <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
-      <button id="acceptBtn" class="button accept animate-pulse">Accept & Continue</button>
-      <button id="declineBtn" class="button decline">Decline</button>
+  <div class="billing-toggle" id="billingToggle">
+    <span class="active" id="monthlyTab">Monthly</span>
+    <span id="yearlyTab">Yearly <span class="save-badge">SAVE 20%</span></span>
+  </div>
+</section>
+
+<!-- PLANS -->
+<section class="plans-section" id="plans">
+  <div class="plans-grid" id="plansGrid"></div>
+</section>
+
+<!-- COMPARE -->
+<section class="compare-section">
+  <p class="section-label">Details</p>
+  <h2 class="section-title">Full Plan Comparison</h2>
+  <div style="overflow-x:auto;">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="text-align:left;">Feature</th>
+          <th>Basic</th>
+          <th class="col-recommended">Pro ⭐</th>
+          <th>Premium</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Property Listings</td>
+          <td>1</td>
+          <td class="col-recommended">5</td>
+          <td>Unlimited</td>
+        </tr>
+        <tr>
+          <td>Chat with Owner</td>
+          <td><span class="cross2">✕</span></td>
+          <td class="col-recommended"><span class="tick">✓</span></td>
+          <td><span class="tick">✓</span></td>
+        </tr>
+        <tr>
+          <td>AI Market Insights</td>
+          <td><span class="cross2">✕</span></td>
+          <td class="col-recommended"><span class="cross2">✕</span></td>
+          <td><span class="tick">✓</span></td>
+        </tr>
+        <tr>
+          <td>Priority Support</td>
+          <td><span class="cross2">✕</span></td>
+          <td class="col-recommended"><span class="cross2">✕</span></td>
+          <td><span class="tick">✓</span></td>
+        </tr>
+        <tr>
+          <td>Analytics Dashboard</td>
+          <td>Basic</td>
+          <td class="col-recommended">Advanced</td>
+          <td>Full AI</td>
+        </tr>
+        <tr>
+          <td>Custom Branding</td>
+          <td><span class="cross2">✕</span></td>
+          <td class="col-recommended"><span class="cross2">✕</span></td>
+          <td><span class="tick">✓</span></td>
+        </tr>
+        <tr>
+          <td>Tenant Screening</td>
+          <td><span class="cross2">✕</span></td>
+          <td class="col-recommended"><span class="tick">✓</span></td>
+          <td><span class="tick">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <p class="section-label">Testimonials</p>
+  <h2 class="section-title">What Landlords Are Saying</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"SmartRent AI helped me fill all 5 of my properties within 2 weeks. The AI insights are genuinely useful."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(56,189,248,0.15);color:#38bdf8;">R</div>
+        <div>
+          <div class="testi-name">Rahul Sharma</div>
+          <div class="testi-role">Pro Plan · Mumbai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"The Premium plan's market analytics saved me from underpricing my flat by ₹8,000/month. Worth every rupee."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(245,158,11,0.15);color:#f59e0b;">P</div>
+        <div>
+          <div class="testi-name">Priya Nair</div>
+          <div class="testi-role">Premium Plan · Bangalore</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★☆</div>
+      <p class="testi-text">"Started with Basic to test things out. Upgraded to Pro after a week — the tenant screening alone is worth it."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:rgba(16,185,129,0.15);color:#10b981;">A</div>
+        <div>
+          <div class="testi-name">Arjun Kapoor</div>
+          <div class="testi-role">Pro Plan · Delhi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <p class="section-label">Help</p>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">Can I upgrade my plan later?<div class="faq-arrow">▼</div></div>
+    <div class="faq-a">Yes! You can upgrade or downgrade your plan anytime from your account settings. The difference will be prorated automatically.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Is the UPI payment secure?<div class="faq-arrow">▼</div></div>
+    <div class="faq-a">Absolutely. We use bank-grade encryption for all transactions. Your UPI credentials are never stored on our servers.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">What happens after my subscription ends?<div class="faq-arrow">▼</div></div>
+    <div class="faq-a">Your account will move to a free read-only mode. Your listings and data remain safe, but new features will be disabled until you renew.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Do you offer refunds?<div class="faq-arrow">▼</div></div>
+    <div class="faq-a">We offer a 7-day money-back guarantee for all plans. If you're not satisfied, contact our support team within 7 days of purchase.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Is there a free trial?<div class="faq-arrow">▼</div></div>
+    <div class="faq-a">The Basic plan is available at a very low cost to try our platform. We also offer demo calls for Premium — reach out to us!</div>
+  </div>
+</section>
+
+<!-- PAYMENT -->
+<section class="payment-section" id="payment">
+  <div class="payment-card">
+    <h2>Complete Payment</h2>
+    <p class="sub">Enter your UPI ID below to activate your selected plan instantly.</p>
+
+    <div class="selected-plan-display" id="selectedPlanDisplay">
+      <span class="plan-tag" id="selectedPlanName">No plan selected</span>
+      <span class="plan-amount" id="selectedPlanPrice">—</span>
+    </div>
+
+    <div class="input-group">
+      <label>Select Plan</label>
+      <select id="planSelect">
+        <option value="">Choose a plan...</option>
+        <option value="basic-499">Basic – ₹499/mo</option>
+        <option value="pro-1499">Pro – ₹1,499/mo</option>
+        <option value="premium-2999">Premium – ₹2,999/mo</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>UPI ID</label>
+      <input type="text" id="upiId" placeholder="yourname@upi" autocomplete="off" />
+    </div>
+
+    <button class="pay-btn" id="payBtn">Pay Now →</button>
+    <p class="pay-note">🔒 Secured by 256-bit encryption · Instant activation</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">SmartRent AI</div>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Properties</a>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms & Conditions</a>
+      <a href="#">Contact</a>
+    </div>
+    <p class="footer-copy">© 2026 SmartRent AI. All rights reserved. Built with ❤️ for smart landlords.</p>
+  </div>
+</footer>
+
+<!-- CONSENT MODAL -->
+<div id="consentModal" class="hidden">
+  <div class="modal-box">
+    <div class="modal-icon">📋</div>
+    <h2>Before You Continue</h2>
+    <p>Please read and accept our <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="terms.html" target="_blank">Terms & Conditions</a> to proceed with your purchase on SmartRent AI.</p>
+    <div class="modal-actions">
+      <button class="btn-accept" id="acceptBtn">✓ Accept & Continue</button>
+      <button class="btn-decline" id="declineBtn">Decline</button>
     </div>
   </div>
 </div>
 
-<!-- Footer -->
-<footer class="max-w-6xl mx-auto p-6 text-center text-gray-400 text-sm mt-12">
-  <div class="flex justify-center gap-6">
-    <a href="privacy.html" class="underline hover:text-white transition">Privacy Policy</a>
-    <a href="terms.html" class="underline hover:text-white transition">Terms & Conditions</a>
-  </div>
-  <p class="mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
-</footer>
+<!-- TOAST -->
+<div id="toast">
+  <span class="toast-icon" id="toastIcon">✓</span>
+  <span id="toastMsg">Message here</span>
+</div>
 
 <script>
-// Consent Modal
-const modal = document.getElementById("consentModal");
-const acceptBtn = document.getElementById("acceptBtn");
-const declineBtn = document.getElementById("declineBtn");
-
-// Show modal if consent not given
-if(localStorage.getItem("consentGiven") !== "true"){
-  modal.classList.remove("hidden");
-}
-
-// Accept
-acceptBtn.addEventListener("click", ()=>{
-  localStorage.setItem("consentGiven","true");
-  modal.classList.add("hidden");
-});
-
-// Decline
-declineBtn.addEventListener("click", ()=>{
-  alert("You must accept Privacy Policy & Terms to purchase a plan.");
-  window.location.href="https://www.google.com";
-});
-
-// Plan Data
-const plans = [
-  {id:'basic',name:'Basic',features:['1 Property Post'],price:499},
-  {id:'pro',name:'Pro',features:['5 Property Posts','Chat with Owner'],price:1499},
-  {id:'premium',name:'Premium',features:['Unlimited Posts','AI Insights','Priority Support'],price:2999}
+// ── DATA ──
+const plansData = [
+  {
+    id: 'basic',
+    name: 'Basic',
+    icon: '🏠',
+    iconClass: 'basic',
+    desc: 'Perfect for individual landlords just getting started.',
+    monthlyPrice: 499,
+    yearlyPrice: 399,
+    recommended: false,
+    btnClass: 'outline',
+    features: [
+      { text: '1 Property Listing', active: true },
+      { text: 'Basic Analytics', active: true },
+      { text: 'Email Support', active: true },
+      { text: 'Chat with Owner', active: false },
+      { text: 'AI Market Insights', active: false },
+      { text: 'Tenant Screening', active: false },
+    ]
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    icon: '⚡',
+    iconClass: 'pro',
+    desc: 'For growing landlords who need more power and tools.',
+    monthlyPrice: 1499,
+    yearlyPrice: 1199,
+    recommended: true,
+    btnClass: 'primary',
+    features: [
+      { text: '5 Property Listings', active: true },
+      { text: 'Advanced Analytics', active: true },
+      { text: 'Priority Email Support', active: true },
+      { text: 'Chat with Owner', active: true },
+      { text: 'Tenant Screening', active: true },
+      { text: 'AI Market Insights', active: false },
+    ]
+  },
+  {
+    id: 'premium',
+    name: 'Premium',
+    icon: '👑',
+    iconClass: 'premium',
+    desc: 'Full power for serious property managers and agencies.',
+    monthlyPrice: 2999,
+    yearlyPrice: 2399,
+    recommended: false,
+    btnClass: 'gold-btn',
+    features: [
+      { text: 'Unlimited Listings', active: true },
+      { text: 'Full AI Analytics', active: true },
+      { text: '24/7 Priority Support', active: true },
+      { text: 'Chat with Owner', active: true },
+      { text: 'Tenant Screening', active: true },
+      { text: 'AI Market Insights', active: true },
+    ]
+  }
 ];
 
-// AI Recommendation Logic (random demo logic)
-let recommendedPlanIndex = Math.floor(Math.random()*plans.length);
+let isYearly = false;
+let selectedPlan = null;
 
-// Render Plans
-const plansContainer = document.getElementById("plans");
-plans.forEach((plan,index)=>{
-  const card = document.createElement("div");
-  card.className = 'card text-center w-72 '+(index===recommendedPlanIndex?'best':'');
-  card.innerHTML = `
-    <h2 class="text-2xl font-bold mb-2">${plan.name}</h2>
-    <ul class="mb-4 text-gray-300 text-left list-disc pl-6">${plan.features.map(f=>`<li>${f}</li>`).join('')}</ul>
-    <p class="mb-4 font-bold text-xl">₹${plan.price}</p>
-    <button id="buy${plan.id}" class="button accept w-full">Buy with UPI</button>
-  `;
-  plansContainer.appendChild(card);
-});
+// ── RENDER PLANS ──
+function renderPlans() {
+  const grid = document.getElementById('plansGrid');
+  grid.innerHTML = '';
 
-// Event listeners for buttons
-['buybasic','buypro','buypremium','payBtn'].forEach(id=>{
-  const btn = document.getElementById(id);
-  if(btn){
-    btn.addEventListener("click", ()=>{
-      if(localStorage.getItem("consentGiven")!=="true"){
-        modal.classList.remove("hidden");
-        alert("Please accept Privacy Policy & Terms first!");
-        return;
-      }
-      const upiId = document.getElementById("upiId")?.value || "Not entered";
-      alert(`Proceeding with UPI Payment for ${id.replace('buy','').toUpperCase()}. UPI ID: ${upiId}`);
-      // TODO: Integrate actual UPI payment here
-    });
-  }
-});
-</script>
+  plansData.forEach(plan => {
+    const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
+    const original = isYearly ? plan.monthlyPrice : null;
 
-<script>
-document.body.style.opacity = 0
-
-window.onload = ()=>{
-document.body.style.transition = "0.5s"
-document.body.style.opacity = 1
+    const card = document.createElement('div');
+    card.className = 'plan-card' + (plan.recommended ? ' recommended' : '');
+    card.innerHTML = `
+      ${plan.recommended ? '<div class="plan-badge">⭐ Most Popular</div>' : ''}
+      <div class="plan-icon ${plan.iconClass}">${plan.icon}</div>
+      <div class="plan-name">${plan.name}</div>
+      <p class="plan-desc">${plan.desc}</p>
+      <div class="plan-price">
+        <span class="currency">₹</span>
+        <span class="amount" id="price-${plan.id}">${price.toLocaleString()}</span>
+        <span class="per">/mo</span>
+        ${original ? `<span class="original">₹${original.toLocaleString()}</span>` : ''}
+      </div>
+      <div class="divider"></div>
+      <ul class="features-list">
+        ${plan.features.map(f => `
+          <li class="${f.active ? 'active' : ''}">
+            <div class="feature-icon ${f.active ? 'check' : 'cross'}">${f.active ? '✓' : '✕'}</div>
+            ${f.text}
+          </li>
+        `).join('')}
+      </ul>
+      <button class="plan-btn ${plan.btnClass}" onclick="selectPlan('${plan.id}', ${price})">
+        ${plan.recommended ? 'Get Pro Now' : `Choose ${plan.name}`}
+      </button>
+    `;
+    grid.appendChild(card);
+  });
 }
+
+// ── SELECT PLAN ──
+function selectPlan(planId, price) {
+  if (localStorage.getItem('consentGiven') !== 'true') {
+    document.getElementById('consentModal').classList.remove('hidden');
+    return;
+  }
+  selectedPlan = { id: planId, price };
+  const plan = plansData.find(p => p.id === planId);
+  document.getElementById('selectedPlanName').textContent = `${plan.name} Plan`;
+  document.getElementById('selectedPlanPrice').textContent = `₹${price.toLocaleString()}/mo`;
+
+  // update select
+  const sel = document.getElementById('planSelect');
+  for (let opt of sel.options) {
+    if (opt.value.startsWith(planId)) { sel.value = opt.value; break; }
+  }
+
+  document.getElementById('payment').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  showToast('✓', `${plan.name} plan selected!`);
+}
+
+// ── BILLING TOGGLE ──
+const monthlyTab = document.getElementById('monthlyTab');
+const yearlyTab = document.getElementById('yearlyTab');
+
+monthlyTab.addEventListener('click', () => {
+  isYearly = false;
+  monthlyTab.classList.add('active');
+  yearlyTab.classList.remove('active');
+  renderPlans();
+});
+
+yearlyTab.addEventListener('click', () => {
+  isYearly = true;
+  yearlyTab.classList.add('active');
+  monthlyTab.classList.remove('active');
+  renderPlans();
+});
+
+// ── PLAN SELECT DROPDOWN ──
+document.getElementById('planSelect').addEventListener('change', function () {
+  const val = this.value;
+  if (!val) return;
+  const [id, price] = val.split('-');
+  const plan = plansData.find(p => p.id === id);
+  selectedPlan = { id, price: parseInt(price) };
+  document.getElementById('selectedPlanName').textContent = `${plan.name} Plan`;
+  document.getElementById('selectedPlanPrice').textContent = `₹${parseInt(price).toLocaleString()}/mo`;
+});
+
+// ── PAY BUTTON ──
+document.getElementById('payBtn').addEventListener('click', () => {
+  if (localStorage.getItem('consentGiven') !== 'true') {
+    document.getElementById('consentModal').classList.remove('hidden');
+    return;
+  }
+  const upi = document.getElementById('upiId').value.trim();
+  if (!selectedPlan && !document.getElementById('planSelect').value) {
+    showToast('⚠', 'Please select a plan first.'); return;
+  }
+  if (!upi) {
+    showToast('⚠', 'Please enter your UPI ID.'); return;
+  }
+  if (!upi.includes('@')) {
+    showToast('⚠', 'Enter a valid UPI ID (e.g., name@upi).'); return;
+  }
+  showToast('🎉', `Payment initiated! Check your UPI app.`);
+  // TODO: Integrate actual UPI gateway here
+});
+
+// ── CONSENT MODAL ──
+if (localStorage.getItem('consentGiven') !== 'true') {
+  document.getElementById('consentModal').classList.remove('hidden');
+}
+
+document.getElementById('acceptBtn').addEventListener('click', () => {
+  localStorage.setItem('consentGiven', 'true');
+  document.getElementById('consentModal').classList.add('hidden');
+  showToast('✓', 'Welcome to SmartRent AI!');
+});
+
+document.getElementById('declineBtn').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
+
+// ── FAQ ACCORDION ──
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// ── TOAST ──
+let toastTimer;
+function showToast(icon, msg) {
+  const toast = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+// ── INIT ──
+renderPlans();
 </script>
-  
 </body>
 </html>

@@ -1,72 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Booking Dashboard</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-
+<title>Booking Dashboard — Smart Property Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-body{
-background:#0f172a;
-color:white;
-font-family:'Inter',sans-serif;
-}
+  :root {
+    --bg: #07090f;
+    --bg2: #0d1117;
+    --surface: #111827;
+    --surface2: #1a2234;
+    --border: rgba(99,179,237,0.12);
+    --cyan: #38bdf8;
+    --cyan2: #0ea5e9;
+    --green: #34d399;
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --purple: #a78bfa;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --glow: rgba(56,189,248,0.15);
+  }
 
-.glass{
-background:rgba(255,255,255,0.06);
-backdrop-filter:blur(10px);
-border-radius:16px;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated Background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(56,189,248,0.06) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: drift1 18s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -30%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(167,139,250,0.05) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: drift2 22s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+  @keyframes drift1 { to { transform: translate(60px, 80px); } }
+  @keyframes drift2 { to { transform: translate(-60px, -50px); } }
+
+  /* NAVBAR */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(7,9,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideDown 0.5s ease;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); opacity:0; } to { transform:translateY(0); opacity:1; } }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 0 16px rgba(56,189,248,0.3);
+  }
+  .nav-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--cyan);
+    letter-spacing: -0.3px;
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-home {
+    display: flex; align-items: center; gap: 6px;
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .nav-home:hover { color: var(--cyan); border-color: var(--cyan); background: var(--glow); }
+
+  .nav-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan2), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid rgba(56,189,248,0.3);
+    transition: all 0.2s;
+  }
+  .nav-avatar:hover { transform: scale(1.08); box-shadow: 0 0 16px rgba(56,189,248,0.3); }
+
+  /* MAIN WRAP */
+  main { position: relative; z-index: 1; padding: 32px; max-width: 1400px; margin: 0 auto; }
+
+  /* PAGE HEADER */
+  .page-header {
+    margin-bottom: 32px;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .page-header h1 span { color: var(--cyan); }
+  .page-header p { color: var(--text-muted); margin-top: 6px; font-size: 14px; }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.5s ease 0.15s both;
+  }
+  @media (max-width: 900px) { .stats-row { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 500px) { .stats-row { grid-template-columns: 1fr; } }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: default;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-card.cyan::before { background: linear-gradient(90deg, var(--cyan), var(--cyan2)); }
+  .stat-card.green::before { background: linear-gradient(90deg, var(--green), #059669); }
+  .stat-card.yellow::before { background: linear-gradient(90deg, var(--yellow), #f59e0b); }
+  .stat-card.purple::before { background: linear-gradient(90deg, var(--purple), #7c3aed); }
+
+  .stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  .stat-card.cyan .stat-icon { background: rgba(56,189,248,0.12); }
+  .stat-card.green .stat-icon { background: rgba(52,211,153,0.12); }
+  .stat-card.yellow .stat-icon { background: rgba(251,191,36,0.12); }
+  .stat-card.purple .stat-icon { background: rgba(167,139,250,0.12); }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+
+  .filter-group {
+    display: flex;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+  }
+  .filter-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: transparent;
+    color: var(--text-muted);
+    position: relative;
+  }
+  .filter-btn .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 700;
+    margin-left: 6px;
+    background: rgba(255,255,255,0.1);
+  }
+  .filter-btn.active { color: var(--bg); }
+  .filter-btn[data-filter="all"].active { background: var(--cyan); }
+  .filter-btn[data-filter="confirmed"].active { background: var(--green); }
+  .filter-btn[data-filter="pending"].active { background: var(--yellow); color: #1a0a00; }
+  .filter-btn[data-filter="cancelled"].active { background: var(--red); }
+  .filter-btn:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+  .search-wrap {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+  }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+  .search-input {
+    width: 100%;
+    padding: 10px 12px 10px 38px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-input::placeholder { color: var(--text-muted); }
+  .search-input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(56,189,248,0.1); }
+
+  .sort-select {
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    appearance: none;
+    padding-right: 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+  }
+  .sort-select:focus { border-color: var(--cyan); }
+
+  /* VIEW TOGGLE */
+  .view-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+  }
+  .view-btn {
+    width: 34px; height: 34px;
+    border: none;
+    background: transparent;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .view-btn.active { background: var(--cyan); color: var(--bg); }
+  .view-btn:not(.active):hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+  /* BOOKING GRID */
+  #bookingList {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    animation: fadeUp 0.5s ease 0.25s both;
+  }
+  #bookingList.list-view {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 1100px) { #bookingList:not(.list-view) { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 650px) { #bookingList:not(.list-view) { grid-template-columns: 1fr; } main { padding: 16px; } }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+  /* BOOKING CARD */
+  .booking-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    animation: cardIn 0.4s ease both;
+    position: relative;
+  }
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 48px rgba(0,0,0,0.5);
+    border-color: rgba(56,189,248,0.25);
+  }
+  @keyframes cardIn { from { opacity:0; transform:translateY(16px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
+
+  .card-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .prop-id {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .prop-id span { color: var(--cyan); }
+
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .status-chip.pending { background: rgba(251,191,36,0.15); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+  .status-chip.confirmed { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
+  .status-chip.cancelled { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .status-chip.pending .status-dot { animation: pulse 1.5s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .card-body { padding: 18px 20px; }
+
+  .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .info-item {}
+  .info-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; }
+  .info-value { font-size: 14px; color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 5px; }
+
+  .duration-bar {
+    background: var(--bg2);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border);
+  }
+  .duration-bar .nights { font-size: 13px; color: var(--text-dim); }
+  .duration-bar .nights strong { color: var(--cyan); font-family: 'Syne', sans-serif; }
+
+  .total-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 4px;
+    border-top: 1px solid var(--border);
+  }
+  .total-label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-muted); font-weight: 500; }
+  .total-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--green);
+    letter-spacing: -0.3px;
+  }
+  .total-amount small { font-size: 13px; font-weight: 500; color: var(--text-muted); margin-right: 4px; }
+
+  .card-actions {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .btn-cancel {
+    background: rgba(248,113,113,0.12);
+    color: var(--red);
+    border: 1px solid rgba(248,113,113,0.2);
+  }
+  .btn-cancel:hover { background: rgba(248,113,113,0.22); transform: scale(1.02); }
+  .btn-view {
+    background: rgba(56,189,248,0.12);
+    color: var(--cyan);
+    border: 1px solid rgba(56,189,248,0.2);
+  }
+  .btn-view:hover { background: rgba(56,189,248,0.22); transform: scale(1.02); }
+  .btn-rebook {
+    background: rgba(52,211,153,0.12);
+    color: var(--green);
+    border: 1px solid rgba(52,211,153,0.2);
+  }
+  .btn-rebook:hover { background: rgba(52,211,153,0.22); transform: scale(1.02); }
+  .btn-review {
+    background: rgba(167,139,250,0.12);
+    color: var(--purple);
+    border: 1px solid rgba(167,139,250,0.2);
+  }
+  .btn-review:hover { background: rgba(167,139,250,0.22); transform: scale(1.02); }
+
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* LIST VIEW CARD */
+  .list-view .booking-card {
+    border-radius: 14px;
+  }
+  .list-view .card-header { padding: 14px 20px; }
+  .list-view .card-body {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 14px 20px;
+  }
+  .list-view .info-row {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 0;
+    flex: 1;
+  }
+  .list-view .duration-bar { display: none; }
+  .list-view .total-row { border-top: none; padding: 0; margin-left: auto; white-space: nowrap; }
+  .list-view .card-actions { padding: 12px 20px; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeUp 0.4s ease;
+  }
+  .empty-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    filter: grayscale(0.3);
+  }
+  .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 20px; color: var(--text-dim); margin-bottom: 8px; }
+  .empty-state p { color: var(--text-muted); font-size: 14px; }
+
+  /* LOADING */
+  .loading-state {
+    grid-column: 1/-1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 80px;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--cyan);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    max-width: 440px;
+    width: 100%;
+    transform: scale(0.95) translateY(10px);
+    transition: transform 0.25s;
+    position: relative;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.07);
+    border: none;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .modal-close:hover { background: rgba(248,113,113,0.15); color: var(--red); }
+  .modal-icon { font-size: 40px; margin-bottom: 16px; }
+  .modal h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .modal p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 24px; }
+  .modal-actions .btn { padding: 12px 20px; font-size: 14px; }
+  .btn-danger { background: var(--red); color: white; border: none; }
+  .btn-danger:hover { background: #ef4444; }
+  .btn-ghost { background: rgba(255,255,255,0.07); color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+  /* TOAST */
+  .toast-container {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .toast {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    font-size: 14px;
+    color: var(--text);
+    min-width: 250px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    animation: toastIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: all;
+  }
+  .toast.success { border-color: rgba(52,211,153,0.35); }
+  .toast.error { border-color: rgba(248,113,113,0.35); }
+  @keyframes toastIn { from { opacity:0; transform:translateX(30px); } to { opacity:1; transform:translateX(0); } }
+  @keyframes toastOut { from { opacity:1; transform:translateX(0); } to { opacity:0; transform:translateX(30px); } }
+
+  /* SKELETON */
+  .skeleton {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    padding: 20px;
+  }
+  .skel-line {
+    height: 14px;
+    border-radius: 7px;
+    background: linear-gradient(90deg, var(--surface2) 25%, rgba(255,255,255,0.04) 50%, var(--surface2) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    margin-bottom: 12px;
+  }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* REVIEW STARS */
+  .star-rating { display: flex; gap: 6px; margin: 16px 0; }
+  .star {
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--border);
+    transition: all 0.15s;
+  }
+  .star:hover, .star.active { color: var(--yellow); transform: scale(1.15); }
+  .review-textarea {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+    min-height: 90px;
+    transition: border-color 0.2s;
+  }
+  .review-textarea:focus { border-color: var(--cyan); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* RESPONSIVE LIST VIEW */
+  @media (max-width: 700px) {
+    .list-view .card-body { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .list-view .info-row { flex-wrap: wrap; gap: 16px; }
+    .list-view .total-row { margin-left: 0; }
+  }
 </style>
-
 </head>
 
 <body>
 
-<!-- 🔥 NAVBAR -->
-<header class="flex justify-between items-center px-6 py-4 bg-black/40 backdrop-blur sticky top-0">
-<h1 class="text-xl font-bold text-cyan-400">📊 Booking Dashboard</h1>
-<a href="index.html">Home</a>
+<!-- NAVBAR -->
+<header>
+  <a href="index.html" class="nav-brand" style="text-decoration:none;">
+    <div class="nav-logo-icon">🏠</div>
+    <span class="nav-title">PropertyPortal</span>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+      Home
+    </a>
+    <div class="nav-avatar" id="userAvatar" title="Profile">U</div>
+  </div>
 </header>
 
-<!-- 🔥 FILTERS -->
-<div class="flex gap-3 p-6">
-<button onclick="filterBookings('all')" class="bg-gray-700 px-4 py-2 rounded">All</button>
-<button onclick="filterBookings('pending')" class="bg-yellow-500 px-4 py-2 rounded">Pending</button>
-<button onclick="filterBookings('confirmed')" class="bg-green-500 px-4 py-2 rounded">Confirmed</button>
+<main>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h1>My <span>Bookings</span></h1>
+    <p id="welcomeText">Track and manage all your property reservations</p>
+  </div>
+
+  <!-- STATS ROW -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card cyan">
+      <div class="stat-icon">📋</div>
+      <div class="stat-num" id="stat-total">—</div>
+      <div class="stat-label">Total Bookings</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-icon">✅</div>
+      <div class="stat-num" id="stat-confirmed">—</div>
+      <div class="stat-label">Confirmed</div>
+    </div>
+    <div class="stat-card yellow">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-num" id="stat-pending">—</div>
+      <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card purple">
+      <div class="stat-icon">💰</div>
+      <div class="stat-num" id="stat-spent">—</div>
+      <div class="stat-label">Total Spent</div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="filter-group">
+      <button class="filter-btn active" data-filter="all" onclick="filterBookings('all')">All <span class="badge" id="badge-all">0</span></button>
+      <button class="filter-btn" data-filter="confirmed" onclick="filterBookings('confirmed')">Confirmed <span class="badge" id="badge-confirmed">0</span></button>
+      <button class="filter-btn" data-filter="pending" onclick="filterBookings('pending')">Pending <span class="badge" id="badge-pending">0</span></button>
+      <button class="filter-btn" data-filter="cancelled" onclick="filterBookings('cancelled')">Cancelled <span class="badge" id="badge-cancelled">0</span></button>
+    </div>
+
+    <div class="search-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input class="search-input" type="text" id="searchInput" placeholder="Search by property ID or ID…" oninput="onSearch()">
+    </div>
+
+    <select class="sort-select" id="sortSelect" onchange="onSort()">
+      <option value="newest">Newest First</option>
+      <option value="oldest">Oldest First</option>
+      <option value="highest">Highest Total</option>
+      <option value="lowest">Lowest Total</option>
+    </select>
+
+    <div class="view-toggle">
+      <button class="view-btn active" id="gridBtn" onclick="setView('grid')" title="Grid View">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+      <button class="view-btn" id="listBtn" onclick="setView('list')" title="List View">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- BOOKING LIST -->
+  <div id="bookingList"></div>
+</main>
+
+<!-- CANCEL MODAL -->
+<div class="modal-overlay" id="cancelModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('cancelModal')">✕</button>
+    <div class="modal-icon">🗑️</div>
+    <h3>Cancel Booking?</h3>
+    <p>This will cancel your reservation and cannot be undone. You may be subject to cancellation fees depending on the property policy.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('cancelModal')">Keep Booking</button>
+      <button class="btn btn-danger" id="confirmCancelBtn">Yes, Cancel</button>
+    </div>
+  </div>
 </div>
 
-<!-- 🔥 BOOKINGS -->
-<div id="bookingList" class="grid md:grid-cols-3 gap-6 px-6 pb-10"></div>
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('reviewModal')">✕</button>
+    <div class="modal-icon">⭐</div>
+    <h3>Leave a Review</h3>
+    <p>Share your experience to help other guests.</p>
+    <div class="star-rating" id="starRating">
+      <span class="star" data-val="1">★</span>
+      <span class="star" data-val="2">★</span>
+      <span class="star" data-val="3">★</span>
+      <span class="star" data-val="4">★</span>
+      <span class="star" data-val="5">★</span>
+    </div>
+    <textarea class="review-textarea" id="reviewText" placeholder="Tell us about your stay…"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('reviewModal')">Skip</button>
+      <button class="btn btn-review" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeModal('detailModal')">✕</button>
+    <div class="modal-icon">🏡</div>
+    <h3 id="detailTitle">Booking Details</h3>
+    <div id="detailBody" style="margin-top:16px;"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
-getFirestore,
-collection,
-getDocs,
-query,
-where,
-updateDoc,
-doc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-import {
-getAuth,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-/* 🔥 CONFIG */
 const firebaseConfig = {
-apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain: "smart-property-portal.firebaseapp.com",
-projectId: "smart-property-portal"
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -75,77 +813,308 @@ const auth = getAuth();
 
 let currentUser = null;
 let allBookings = [];
+let currentFilter = 'all';
+let cancelTargetId = null;
+let reviewTargetId = null;
+let selectedRating = 0;
 
-/* 🔐 AUTH */
-onAuthStateChanged(auth, async(user)=>{
+// ── AUTH ──────────────────────────────────────────────────────────────
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "login.html"; return; }
+  currentUser = user;
 
-if(!user){
-window.location.href="login.html";
-return;
-}
+  // Set avatar initial
+  const initial = (user.displayName || user.email || 'U')[0].toUpperCase();
+  document.getElementById('userAvatar').textContent = initial;
+  document.getElementById('welcomeText').textContent = `Welcome back, ${user.displayName || user.email}`;
 
-currentUser = user;
-
-loadBookings();
-
+  showSkeletons();
+  await loadBookings();
 });
 
-/* 🚀 LOAD BOOKINGS */
-async function loadBookings(){
-
-const q = query(
-collection(db,"bookings"),
-where("userId","==",currentUser.uid)
-);
-
-const snapshot = await getDocs(q);
-
-allBookings = [];
-
-snapshot.forEach(docSnap=>{
-allBookings.push({
-id: docSnap.id,
-...docSnap.data()
-});
-});
-
-renderBookings(allBookings);
-
+// ── SKELETONS ─────────────────────────────────────────────────────────
+function showSkeletons() {
+  const c = document.getElementById('bookingList');
+  c.innerHTML = Array(6).fill(0).map(() => `
+    <div class="skeleton">
+      <div class="skel-line" style="width:60%;height:18px;"></div>
+      <div class="skel-line" style="width:40%;"></div>
+      <div class="skel-line" style="width:80%;"></div>
+      <div class="skel-line" style="width:50%;"></div>
+    </div>
+  `).join('');
 }
 
-/* 🎨 RENDER */
-function renderBookings(data){
-
-const container = document.getElementById("bookingList");
-container.innerHTML = "";
-
-if(data.length === 0){
-container.innerHTML = "<p>No bookings found</p>";
-return;
+// ── LOAD ──────────────────────────────────────────────────────────────
+async function loadBookings() {
+  const q = query(collection(db, "bookings"), where("userId", "==", currentUser.uid));
+  const snapshot = await getDocs(q);
+  allBookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  updateStats();
+  updateBadges();
+  renderBookings(getFiltered());
 }
 
-data.forEach(b=>{
+// ── STATS ─────────────────────────────────────────────────────────────
+function updateStats() {
+  const total = allBookings.length;
+  const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
+  const pending = allBookings.filter(b => b.status === 'pending').length;
+  const spent = allBookings.filter(b => b.status === 'confirmed').reduce((s, b) => s + (Number(b.total) || 0), 0);
 
-const card = document.createElement("div");
+  animateNum('stat-total', total);
+  animateNum('stat-confirmed', confirmed);
+  animateNum('stat-pending', pending);
+  document.getElementById('stat-spent').textContent = '₹' + spent.toLocaleString('en-IN');
+}
 
-card.className = "glass p-4";
+function animateNum(id, target) {
+  const el = document.getElementById(id);
+  let n = 0;
+  const step = Math.ceil(target / 20);
+  const t = setInterval(() => {
+    n = Math.min(n + step, target);
+    el.textContent = n;
+    if (n >= target) clearInterval(t);
+  }, 40);
+}
 
-card.innerHTML = `
-<h2 class="text-lg font-bold mb-2">Property ID: ${b.propertyId}</h2>
+function updateBadges() {
+  document.getElementById('badge-all').textContent = allBookings.length;
+  document.getElementById('badge-confirmed').textContent = allBookings.filter(b => b.status === 'confirmed').length;
+  document.getElementById('badge-pending').textContent = allBookings.filter(b => b.status === 'pending').length;
+  document.getElementById('badge-cancelled').textContent = allBookings.filter(b => b.status === 'cancelled').length;
+}
 
-<p>Check-in: ${b.checkin}</p>
-<p>Check-out: ${b.checkout}</p>
+// ── FILTER / SEARCH / SORT ────────────────────────────────────────────
+function getFiltered() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const sort = document.getElementById('sortSelect').value;
 
-<p class="mt-2">Total: ₹ ${b.total}</p>
+  let data = allBookings.filter(b => {
+    const matchFilter = currentFilter === 'all' || b.status === currentFilter;
+    const matchSearch = !search || b.propertyId?.toLowerCase().includes(search) || b.id?.toLowerCase().includes(search);
+    return matchFilter && matchSearch;
+  });
 
-<p class="mt-2 font-bold ${
-b.status === "pending" ? "text-yellow-400" :
-b.status === "confirmed" ? "text-green-400" :
-"text-red-400"
-}">
-Status: ${b.status}
-</p>
+  data.sort((a, b) => {
+    if (sort === 'newest') return new Date(b.checkin) - new Date(a.checkin);
+    if (sort === 'oldest') return new Date(a.checkin) - new Date(b.checkin);
+    if (sort === 'highest') return (b.total || 0) - (a.total || 0);
+    if (sort === 'lowest') return (a.total || 0) - (b.total || 0);
+    return 0;
+  });
 
-${b.status === "pending" ? `
-<button onclick="cancelBooking('${b.id}')"
-class="mt-3 bg
+  return data;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderBookings(data) {
+  const c = document.getElementById('bookingList');
+  c.innerHTML = '';
+
+  if (!data.length) {
+    c.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🏡</div>
+        <h3>No bookings found</h3>
+        <p>You don't have any ${currentFilter !== 'all' ? currentFilter : ''} bookings yet.</p>
+      </div>`;
+    return;
+  }
+
+  data.forEach((b, i) => {
+    const nights = calcNights(b.checkin, b.checkout);
+    const card = document.createElement('div');
+    card.className = 'booking-card';
+    card.style.animationDelay = (i * 0.05) + 's';
+
+    const statusChip = `<span class="status-chip ${b.status}"><span class="status-dot"></span>${capitalize(b.status)}</span>`;
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div class="prop-id">🏠 Property <span>#${b.propertyId || b.id?.slice(-6)}</span></div>
+        ${statusChip}
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <div class="info-item">
+            <div class="info-label">📅 Check-in</div>
+            <div class="info-value">${formatDate(b.checkin)}</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">📅 Check-out</div>
+            <div class="info-value">${formatDate(b.checkout)}</div>
+          </div>
+        </div>
+        <div class="duration-bar">
+          <span class="nights">Duration: <strong>${nights} night${nights !== 1 ? 's' : ''}</strong></span>
+          <span style="font-size:12px;color:var(--text-muted);">Booking #${b.id?.slice(-8).toUpperCase()}</span>
+        </div>
+        <div class="total-row">
+          <span class="total-label">Total Amount</span>
+          <span class="total-amount"><small>₹</small>${Number(b.total || 0).toLocaleString('en-IN')}</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-view" onclick="openDetail('${b.id}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Details
+        </button>
+        ${b.status === 'pending' ? `
+          <button class="btn btn-cancel" onclick="openCancelModal('${b.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            Cancel
+          </button>` : ''}
+        ${b.status === 'confirmed' ? `
+          <button class="btn btn-review" onclick="openReviewModal('${b.id}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Review
+          </button>` : ''}
+        ${b.status === 'cancelled' ? `
+          <button class="btn btn-rebook" onclick="showToast('Redirecting to property…','success')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+            Rebook
+          </button>` : ''}
+      </div>`;
+
+    c.appendChild(card);
+  });
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function calcNights(ci, co) {
+  try {
+    const d = (new Date(co) - new Date(ci)) / 86400000;
+    return isNaN(d) || d < 0 ? 1 : d;
+  } catch { return 1; }
+}
+
+function formatDate(s) {
+  if (!s) return '—';
+  try {
+    return new Date(s).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  } catch { return s; }
+}
+
+function capitalize(s) { return s ? s[0].toUpperCase() + s.slice(1) : ''; }
+
+// ── GLOBAL CALLBACKS ─────────────────────────────────────────────────
+window.filterBookings = function(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  renderBookings(getFiltered());
+};
+
+window.onSearch = () => renderBookings(getFiltered());
+window.onSort = () => renderBookings(getFiltered());
+
+window.setView = function(v) {
+  const list = document.getElementById('bookingList');
+  list.classList.toggle('list-view', v === 'list');
+  document.getElementById('gridBtn').classList.toggle('active', v === 'grid');
+  document.getElementById('listBtn').classList.toggle('active', v === 'list');
+};
+
+// ── CANCEL ────────────────────────────────────────────────────────────
+window.openCancelModal = function(id) {
+  cancelTargetId = id;
+  document.getElementById('confirmCancelBtn').onclick = () => confirmCancel(id);
+  openModal('cancelModal');
+};
+
+async function confirmCancel(id) {
+  document.getElementById('confirmCancelBtn').disabled = true;
+  document.getElementById('confirmCancelBtn').textContent = 'Cancelling…';
+  try {
+    await updateDoc(doc(db, "bookings", id), { status: "cancelled" });
+    const b = allBookings.find(x => x.id === id);
+    if (b) b.status = 'cancelled';
+    closeModal('cancelModal');
+    updateStats(); updateBadges();
+    renderBookings(getFiltered());
+    showToast('Booking cancelled successfully', 'success');
+  } catch (e) {
+    showToast('Failed to cancel. Try again.', 'error');
+  } finally {
+    document.getElementById('confirmCancelBtn').disabled = false;
+    document.getElementById('confirmCancelBtn').textContent = 'Yes, Cancel';
+  }
+}
+
+// ── DETAIL ────────────────────────────────────────────────────────────
+window.openDetail = function(id) {
+  const b = allBookings.find(x => x.id === id);
+  if (!b) return;
+  const nights = calcNights(b.checkin, b.checkout);
+  document.getElementById('detailTitle').textContent = `Property #${b.propertyId || id.slice(-6)}`;
+  document.getElementById('detailBody').innerHTML = `
+    <div style="display:grid;gap:12px;">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><div class="info-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:4px;">Check-in</div><div style="font-weight:500;">${formatDate(b.checkin)}</div></div>
+        <div><div class="info-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:4px;">Check-out</div><div style="font-weight:500;">${formatDate(b.checkout)}</div></div>
+        <div><div class="info-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:4px;">Duration</div><div style="font-weight:500;">${nights} night${nights!==1?'s':''}</div></div>
+        <div><div class="info-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:4px;">Status</div><span class="status-chip ${b.status}" style="display:inline-flex;"><span class="status-dot"></span>${capitalize(b.status)}</span></div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;">
+        <div class="info-label" style="font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);margin-bottom:8px;">Payment</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:var(--text-muted);font-size:14px;">Total Amount</span>
+          <span style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--green);">₹${Number(b.total||0).toLocaleString('en-IN')}</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text-muted);text-align:center;">Booking ID: ${b.id}</div>
+    </div>`;
+  openModal('detailModal');
+};
+
+// ── REVIEW ────────────────────────────────────────────────────────────
+window.openReviewModal = function(id) {
+  reviewTargetId = id;
+  selectedRating = 0;
+  document.getElementById('reviewText').value = '';
+  document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+  openModal('reviewModal');
+};
+
+// Star rating
+document.querySelectorAll('.star').forEach(star => {
+  star.addEventListener('click', () => {
+    selectedRating = parseInt(star.dataset.val);
+    document.querySelectorAll('.star').forEach(s => {
+      s.classList.toggle('active', parseInt(s.dataset.val) <= selectedRating);
+    });
+  });
+});
+
+window.submitReview = function() {
+  if (!selectedRating) { showToast('Please select a star rating', 'error'); return; }
+  showToast('Review submitted! Thank you 🙏', 'success');
+  closeModal('reviewModal');
+};
+
+// ── MODAL HELPERS ─────────────────────────────────────────────────────
+window.openModal = function(id) { document.getElementById(id).classList.add('open'); };
+window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+window.showToast = function(msg, type = 'success') {
+  const tc = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.innerHTML = `<span style="font-size:18px;">${type === 'success' ? '✅' : '❌'}</span><span>${msg}</span>`;
+  tc.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(() => t.remove(), 300);
+  }, 3000);
+};
+</script>
+</body>
+</html>

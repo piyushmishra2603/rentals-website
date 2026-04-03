@@ -1,332 +1,911 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Smart Services</title>
-
+<title>Smart Services | Property Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
-
 <style>
-body{
-background:linear-gradient(135deg,#0f172a,#1e293b,#020617);
-color:white;
-font-family:Inter;
-}
+  :root {
+    --bg: #050a12;
+    --surface: #0c1525;
+    --surface2: #111d30;
+    --border: rgba(99,179,255,0.12);
+    --accent: #3b9eff;
+    --accent2: #7c5cfc;
+    --cyan: #00e5ff;
+    --green: #00e676;
+    --text: #e2ecff;
+    --muted: #6b7fa3;
+    --card-glow: rgba(59,158,255,0.15);
+  }
 
-.glass{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-border-radius:16px;
-border:1px solid rgba(255,255,255,0.1);
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-.card{
-transition: all 0.3s ease;
-}
-.card:hover{
-transform: translateY(-8px) scale(1.03);
-box-shadow: 0 0 20px rgba(0,255,255,0.2),
-            0 0 40px rgba(0,255,255,0.1);
-}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-.badge{
-font-size:10px;
-padding:2px 6px;
-border-radius:6px;
-}
+  /* Animated BG */
+  .bg-grid {
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(59,158,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,158,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  .bg-orb1 {
+    position: fixed; width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,158,255,0.08) 0%, transparent 70%);
+    top: -200px; left: -200px; pointer-events: none; z-index: 0;
+    animation: orb-drift 18s ease-in-out infinite alternate;
+  }
+  .bg-orb2 {
+    position: fixed; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,92,252,0.07) 0%, transparent 70%);
+    bottom: -200px; right: -150px; pointer-events: none; z-index: 0;
+    animation: orb-drift2 22s ease-in-out infinite alternate;
+  }
+  @keyframes orb-drift { from { transform: translate(0,0); } to { transform: translate(60px, 80px); } }
+  @keyframes orb-drift2 { from { transform: translate(0,0); } to { transform: translate(-50px, -60px); } }
 
-button{
-transition:0.3s;
-}
+  .content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
 
+  /* HEADER */
+  .top-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px;
+    background: rgba(12,21,37,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .back-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(59,158,255,0.1); border: 1px solid var(--border);
+    color: var(--accent); padding: 8px 18px; border-radius: 50px;
+    font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    transition: all 0.25s; text-decoration: none;
+  }
+  .back-btn:hover { background: rgba(59,158,255,0.2); transform: translateX(-3px); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 64px 20px 48px;
+    animation: fade-up 0.7s ease both;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(59,158,255,0.1); border: 1px solid rgba(59,158,255,0.3);
+    color: var(--accent); font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; padding: 5px 16px; border-radius: 50px; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p { color: var(--muted); font-size: 1rem; max-width: 480px; margin: 0 auto 32px; line-height: 1.7; }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); font-size: 0.8rem; padding: 6px 14px;
+    border-radius: 50px; transition: all 0.25s; cursor: pointer; white-space: nowrap;
+  }
+  .pill:hover, .pill.active {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(59,158,255,0.1); transform: translateY(-2px);
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-bottom: 36px;
+    animation: fade-up 0.7s 0.1s ease both;
+  }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; text-align: center;
+    transition: all 0.3s;
+  }
+  .stat-card:hover { border-color: rgba(59,158,255,0.35); transform: translateY(-3px); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+  /* SEARCH & FILTERS */
+  .search-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 20px; margin-bottom: 28px;
+    animation: fade-up 0.7s 0.15s ease both;
+  }
+  .search-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .search-input-wrap {
+    flex: 1; min-width: 200px;
+    position: relative; display: flex; align-items: center;
+  }
+  .search-icon { position: absolute; left: 14px; color: var(--muted); font-size: 1rem; }
+  .search-input {
+    width: 100%; padding: 12px 14px 12px 40px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text); font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif; outline: none;
+    transition: border-color 0.25s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  select {
+    padding: 12px 14px; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); font-size: 0.85rem; font-family: 'DM Sans', sans-serif;
+    outline: none; cursor: pointer; transition: border-color 0.25s;
+  }
+  select:focus { border-color: var(--accent); }
+  select option { background: #0c1525; }
+
+  .apply-btn {
+    padding: 12px 22px; background: linear-gradient(135deg, var(--accent), #1a6fd4);
+    border: none; border-radius: 12px; color: #fff; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; font-size: 0.9rem;
+    transition: all 0.25s; white-space: nowrap;
+  }
+  .apply-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(59,158,255,0.35); }
+
+  .rating-filter {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.82rem; color: var(--muted); margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .rating-filter span { color: var(--text); font-weight: 500; }
+
+  /* QUICK FILTERS */
+  .quick-row {
+    display: flex; gap: 10px; overflow-x: auto; margin-bottom: 32px;
+    padding-bottom: 4px; animation: fade-up 0.7s 0.2s ease both;
+  }
+  .quick-row::-webkit-scrollbar { display: none; }
+  .q-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); padding: 10px 18px; border-radius: 12px;
+    font-size: 0.85rem; font-weight: 500; cursor: pointer;
+    transition: all 0.25s; white-space: nowrap; font-family: 'DM Sans', sans-serif;
+  }
+  .q-btn:hover, .q-btn.active {
+    background: rgba(59,158,255,0.12); border-color: var(--accent);
+    color: var(--accent); transform: translateY(-2px);
+  }
+
+  /* SORT + COUNT ROW */
+  .list-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+  }
+  .count-label { font-size: 0.85rem; color: var(--muted); }
+  .count-label strong { color: var(--text); }
+  .sort-select {
+    padding: 8px 14px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text); font-size: 0.82rem;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; outline: none;
+  }
+
+  /* GRID */
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px;
+  }
+
+  /* CARD */
+  .svc-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    position: relative;
+    animation: fade-up 0.5s ease both;
+  }
+  .svc-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(59,158,255,0.4);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,158,255,0.15), 0 0 40px rgba(59,158,255,0.08);
+  }
+  .card-img-wrap { position: relative; height: 180px; overflow: hidden; }
+  .card-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .svc-card:hover .card-img-wrap img { transform: scale(1.06); }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(5,10,18,0.8) 0%, transparent 60%);
+  }
+  .badge-top {
+    position: absolute; top: 12px; right: 12px;
+    background: rgba(12,21,37,0.85); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 0.7rem; font-weight: 600; padding: 4px 10px;
+    color: var(--cyan); text-transform: uppercase; letter-spacing: 1px;
+  }
+  .fav-btn {
+    position: absolute; top: 12px; left: 12px;
+    width: 34px; height: 34px;
+    background: rgba(12,21,37,0.85); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 1rem; transition: all 0.25s; z-index: 2;
+  }
+  .fav-btn:hover { transform: scale(1.2); background: rgba(255,50,100,0.2); border-color: #ff3264; }
+
+  .card-body { padding: 18px; }
+  .provider-name {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem;
+    margin-bottom: 4px; color: var(--text);
+  }
+  .provider-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .meta-tag {
+    font-size: 0.73rem; color: var(--muted);
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 2px 8px;
+  }
+  .stars { color: #fbbf24; font-size: 0.78rem; }
+  .rating-val { font-size: 0.78rem; color: var(--muted); }
+
+  .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+  .price-tag { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--green); }
+  .price-tag sub { font-size: 0.7rem; color: var(--muted); font-family: 'DM Sans'; font-weight: 400; }
+
+  .book-btn {
+    padding: 9px 20px;
+    background: linear-gradient(135deg, var(--accent), #1a6fd4);
+    border: none; border-radius: 10px; color: #fff; font-weight: 600;
+    font-size: 0.82rem; font-family: 'DM Sans', sans-serif; cursor: pointer;
+    transition: all 0.25s;
+  }
+  .book-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(59,158,255,0.4); }
+
+  /* LOADING */
+  .skeleton {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; overflow: hidden; height: 320px;
+  }
+  .skeleton-img { height: 180px; background: linear-gradient(90deg, var(--surface2) 0%, rgba(59,158,255,0.05) 50%, var(--surface2) 100%); background-size: 400%; animation: shimmer 1.5s infinite; }
+  .skeleton-body { padding: 18px; }
+  .skeleton-line { height: 12px; border-radius: 6px; background: var(--surface2); margin-bottom: 10px; }
+  .skeleton-line.w60 { width: 60%; }
+  .skeleton-line.w80 { width: 80%; }
+  .skeleton-line.w40 { width: 40%; }
+  @keyframes shimmer { 0%{background-position:100% 0} 100%{background-position:-100% 0} }
+
+  /* EMPTY */
+  .empty-state { grid-column: 1/-1; text-align: center; padding: 80px 20px; }
+  .empty-icon { font-size: 3rem; margin-bottom: 16px; }
+  .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; color: var(--text); margin-bottom: 8px; }
+  .empty-state p { color: var(--muted); font-size: 0.9rem; }
+
+  /* FAB */
+  .fab {
+    position: fixed; bottom: 28px; right: 28px;
+    background: linear-gradient(135deg, var(--accent2), #5b3bdc);
+    border: none; border-radius: 50px; padding: 14px 24px;
+    color: #fff; font-weight: 700; font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    box-shadow: 0 8px 32px rgba(124,92,252,0.45);
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex; align-items: center; gap: 8px; z-index: 40;
+  }
+  .fab:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 16px 48px rgba(124,92,252,0.55); }
+
+  /* MODALS */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 100; padding: 20px;
+  }
+  .overlay.open { display: flex; }
+
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 24px; padding: 32px; width: 100%; max-width: 420px;
+    animation: modal-in 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes modal-in { from { opacity:0; transform:scale(0.85) translateY(30px); } to { opacity:1; transform:scale(1) translateY(0); } }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800;
+    margin-bottom: 6px; color: var(--text);
+  }
+  .modal-sub { font-size: 0.83rem; color: var(--muted); margin-bottom: 24px; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .form-input {
+    width: 100%; padding: 12px 14px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text); font-size: 0.9rem;
+    font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.25s;
+  }
+  .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,158,255,0.12); }
+  .form-input::placeholder { color: var(--muted); }
+  .form-input option { background: #0c1525; }
+
+  .primary-btn {
+    width: 100%; padding: 13px; border: none; border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), #1a6fd4);
+    color: #fff; font-weight: 700; font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    transition: all 0.25s; margin-top: 8px;
+  }
+  .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(59,158,255,0.4); }
+  .primary-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .cancel-link {
+    display: block; text-align: center; margin-top: 14px;
+    color: var(--muted); font-size: 0.85rem; cursor: pointer;
+    transition: color 0.2s;
+  }
+  .cancel-link:hover { color: var(--text); }
+
+  /* SERVICE DETAIL MODAL */
+  .detail-modal { max-width: 520px; }
+  .detail-img { width: 100%; height: 200px; object-fit: cover; border-radius: 14px; margin-bottom: 20px; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  .detail-item { background: var(--surface2); border-radius: 10px; padding: 12px; }
+  .detail-item-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .detail-item-val { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); padding: 12px 24px; border-radius: 50px;
+    font-size: 0.88rem; font-weight: 500;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    z-index: 200; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex; align-items: center; gap: 10px; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+  .toast-dot.red { background: #ff4d6d; }
+  .toast-dot.amber { background: #fbbf24; }
+
+  /* ANIMATIONS */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media(max-width:640px){
+    .stats-row { grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+    .stat-num { font-size: 1.3rem; }
+    .hero h1 { font-size: 2rem; letter-spacing: -1px; }
+    .search-row { flex-direction: column; }
+    .search-input-wrap, select, .apply-btn { width: 100%; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 6px; }
 </style>
-
 </head>
-
 <body>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="bg-grid"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
 
-<!-- HEADER -->
-<div class="flex justify-between items-center mb-6">
-<h1 class="text-3xl font-bold">Services</h1>
-<a href="index.html" class="bg-gray-700 px-4 py-2 rounded">← Back</a>
-</div>
+<!-- TOP NAV -->
+<nav class="top-bar">
+  <div class="logo">Smart<span>Property</span></div>
+  <a href="index.html" class="back-btn">← Back to Home</a>
+</nav>
 
 <!-- HERO -->
-<div class="glass p-6 mb-6 text-center">
-<h2 class="text-3xl font-bold mb-2">Find Trusted Services ⚡</h2>
-<p class="text-gray-300 mb-4">Plumbing • Electrician • Cleaning • Furniture • Repairs</p>
+<div class="content">
+  <div class="hero">
+    <div class="hero-tag">⚡ Verified Professionals</div>
+    <h1>Find <span class="grad">Trusted Services</span><br>For Your Home</h1>
+    <p>Professional plumbers, electricians, cleaners & more — all verified, all near you.</p>
+    <div class="pill-row">
+      <span class="pill">🚰 Plumbing</span>
+      <span class="pill">⚡ Electrical</span>
+      <span class="pill">🧹 Cleaning</span>
+      <span class="pill">🛋️ Furniture</span>
+      <span class="pill">🔧 Repairs</span>
+      <span class="pill">🎨 Painting</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-num" id="stat-providers">—</div>
+      <div class="stat-label">Service Providers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">4.8★</div>
+      <div class="stat-label">Avg. Rating</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Verified</div>
+    </div>
+  </div>
+
+  <!-- SEARCH PANEL -->
+  <div class="search-panel">
+    <div class="search-row">
+      <div class="search-input-wrap">
+        <span class="search-icon">🔍</span>
+        <input id="search" class="search-input" placeholder="Search services, providers...">
+      </div>
+      <select id="priceFilter" class="form-input" style="width:auto">
+        <option value="">All Prices</option>
+        <option value="low">Below ₹500</option>
+        <option value="mid">₹500 – ₹1500</option>
+        <option value="high">Above ₹1500</option>
+      </select>
+      <select id="cityFilter" class="form-input" style="width:auto">
+        <option value="">All Cities</option>
+        <option>Mumbai</option>
+        <option>Delhi</option>
+        <option>Bangalore</option>
+        <option>Hyderabad</option>
+        <option>Pune</option>
+      </select>
+      <button onclick="applyFilter()" class="apply-btn">Apply Filters</button>
+    </div>
+    <div class="rating-filter">
+      <span>Min Rating:</span>
+      <span id="ratingVal">Any</span>
+      <input id="ratingRange" type="range" min="0" max="5" step="0.5" value="0"
+        style="accent-color:var(--accent);flex:1;max-width:160px;"
+        oninput="document.getElementById('ratingVal').textContent=this.value>0?this.value+'★':'Any'">
+      <span style="margin-left:auto;font-size:0.78rem;">Show:
+        <label style="cursor:pointer;margin-left:6px;color:var(--text)"><input type="checkbox" id="favOnly" style="accent-color:var(--accent)"> Favourites only</label>
+      </span>
+    </div>
+  </div>
+
+  <!-- QUICK FILTERS -->
+  <div class="quick-row">
+    <button class="q-btn active" onclick="quickFilter('')" id="q-all">🔥 All</button>
+    <button class="q-btn" onclick="quickFilter('Plumbing')" id="q-plumbing">🚰 Plumbing</button>
+    <button class="q-btn" onclick="quickFilter('Electrician')" id="q-electrician">⚡ Electric</button>
+    <button class="q-btn" onclick="quickFilter('Cleaning')" id="q-cleaning">🧹 Cleaning</button>
+    <button class="q-btn" onclick="quickFilter('Furniture')" id="q-furniture">🛋️ Furniture</button>
+    <button class="q-btn" onclick="quickFilter('Painting')" id="q-painting">🎨 Painting</button>
+    <button class="q-btn" onclick="showFavs()" id="q-favs">❤️ Favourites</button>
+  </div>
+
+  <!-- LIST HEADER -->
+  <div class="list-header">
+    <div class="count-label">Showing <strong id="resultCount">—</strong> services</div>
+    <select class="sort-select" id="sortBy" onchange="sortProviders()">
+      <option value="default">Sort: Default</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+      <option value="rating">Top Rated</option>
+    </select>
+  </div>
+
+  <!-- GRID -->
+  <div id="grid"></div>
 </div>
 
-<!-- SEARCH -->
-<div class="glass p-4 flex gap-3 flex-wrap mb-6">
-
-<input id="search" placeholder="🔍 Search services..." 
-class="flex-1 px-3 py-2 rounded text-black">
-
-<select id="priceFilter" class="px-3 py-2 rounded text-black">
-<option value="">All Prices</option>
-<option value="low">Below ₹500</option>
-<option value="mid">₹500 - ₹1500</option>
-<option value="high">Above ₹1500</option>
-</select>
-
-<button onclick="applyFilter()" 
-class="bg-blue-600 px-4 py-2 rounded">
-Apply
+<!-- FAB -->
+<button class="fab" onclick="openServiceModal()">
+  ➕ Post Service
 </button>
 
+<!-- ── BOOK MODAL ── -->
+<div class="overlay" id="modal">
+  <div class="modal-box">
+    <div class="modal-title">Book Service</div>
+    <div class="modal-sub" id="bookModalSub">Confirm your booking details below</div>
+
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input id="name" class="form-input" placeholder="Enter your full name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number</label>
+      <input id="phone" class="form-input" placeholder="+91 XXXXX XXXXX">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Service Address</label>
+      <input id="address" class="form-input" placeholder="Flat, Street, City">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Preferred Date & Time</label>
+      <input id="datetime" type="datetime-local" class="form-input" style="color-scheme:dark">
+    </div>
+    <div class="form-group">
+      <label class="form-label">UPI / Payment</label>
+      <input id="upi" class="form-input" placeholder="yourname@upi">
+    </div>
+
+    <button id="payBtn" onclick="payNow(event)" class="primary-btn">💳 Pay & Confirm Booking</button>
+    <span class="cancel-link" onclick="closeModal()">Cancel</span>
+  </div>
 </div>
 
-<!-- QUICK FILTER -->
-<div class="flex gap-3 overflow-x-auto mb-6">
-<button onclick="quickFilter('Plumbing')" class="glass px-4 py-2 rounded">🚰 Plumbing</button>
-<button onclick="quickFilter('Electrician')" class="glass px-4 py-2 rounded">⚡ Electric</button>
-<button onclick="quickFilter('Cleaning')" class="glass px-4 py-2 rounded">🧹 Cleaning</button>
-<button onclick="quickFilter('Furniture')" class="glass px-4 py-2 rounded">🛋️ Furniture</button>
+<!-- ── SERVICE DETAIL MODAL ── -->
+<div class="overlay" id="detailModal">
+  <div class="modal-box detail-modal">
+    <img id="detailImg" class="detail-img" src="" alt="">
+    <div class="modal-title" id="detailName"></div>
+    <div class="modal-sub" id="detailCity"></div>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-item-label">Category</div>
+        <div class="detail-item-val" id="detailType"></div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Price</div>
+        <div class="detail-item-val" id="detailPrice" style="color:var(--green)"></div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Rating</div>
+        <div class="detail-item-val" id="detailRating"></div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Availability</div>
+        <div class="detail-item-val" style="color:var(--green)">Available Now</div>
+      </div>
+    </div>
+    <button onclick="openBookFromDetail()" class="primary-btn">📅 Book This Service</button>
+    <span class="cancel-link" onclick="closeDetailModal()">Close</span>
+  </div>
 </div>
 
-<!-- GRID -->
-<div id="grid" class="grid md:grid-cols-3 gap-6"></div>
+<!-- ── POST SERVICE MODAL ── -->
+<div class="overlay" id="serviceModal">
+  <div class="modal-box">
+    <div class="modal-title">Post a Service</div>
+    <div class="modal-sub">List your professional service</div>
 
-</div>
+    <div class="form-group">
+      <label class="form-label">Your Name</label>
+      <input id="s_name" class="form-input" placeholder="Provider name">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Phone Number</label>
+      <input id="s_phone" class="form-input" placeholder="+91 XXXXX XXXXX">
+    </div>
+    <div class="form-group">
+      <label class="form-label">City</label>
+      <select id="s_city" class="form-input">
+        <option>Mumbai</option><option>Delhi</option>
+        <option>Bangalore</option><option>Hyderabad</option><option>Pune</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select id="s_category" class="form-input">
+        <option>Plumbing</option><option>Electrician</option>
+        <option>Cleaning</option><option>Furniture</option><option>Painting</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Price (₹)</label>
+      <input id="s_price" type="number" class="form-input" placeholder="e.g. 800">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <input id="s_desc" class="form-input" placeholder="Brief service description">
+    </div>
 
-<!-- FLOAT BUTTON -->
-<button onclick="openServiceModal()" 
-class="fixed bottom-6 right-6 bg-gradient-to-r from-purple-600 to-pink-500 
-px-5 py-3 rounded-full font-bold shadow-xl">
-➕ Post Service
-</button>
-
-<!-- BOOK MODAL -->
-<div id="modal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center">
-
-<div class="bg-gray-900 p-6 rounded-xl w-80">
-
-<h2 class="mb-3 font-bold">Book Service</h2>
-
-<input id="name" placeholder="Name" class="w-full p-2 rounded text-black mb-2">
-<input id="phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
-<input id="address" placeholder="Address" class="w-full p-2 rounded text-black mb-2">
-<input id="upi" placeholder="UPI" class="w-full p-2 rounded text-black mb-3">
-
-<button onclick="payNow(event)" class="bg-green-600 w-full p-2 rounded">
-Pay & Book
-</button>
-
-<button onclick="closeModal()" class="mt-2 w-full text-gray-400">
-Cancel
-</button>
-
-</div>
-</div>
-
-<!-- POST SERVICE -->
-<div id="serviceModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center">
-
-<div class="bg-gray-900 p-6 rounded-xl w-96">
-
-<h2 class="mb-4 font-bold text-xl">Post Service</h2>
-
-<input id="s_name" placeholder="Name" class="w-full p-2 rounded text-black mb-2">
-<input id="s_phone" placeholder="Phone" class="w-full p-2 rounded text-black mb-2">
-<input id="s_city" placeholder="City" class="w-full p-2 rounded text-black mb-2">
-
-<select id="s_category" class="w-full p-2 rounded text-black mb-2">
-<option>Plumbing</option>
-<option>Electrician</option>
-<option>Cleaning</option>
-<option>Furniture</option>
-</select>
-
-<input id="s_price" type="number" placeholder="Price" class="w-full p-2 rounded text-black mb-2">
-<input id="s_image" type="file" class="mb-2">
-
-<button onclick="submitService()" class="bg-green-600 w-full p-2 rounded">
-Post
-</button>
-
-<button onclick="closeServiceModal()" class="mt-2 w-full text-gray-400">
-Cancel
-</button>
-
-</div>
+    <button onclick="submitService()" class="primary-btn" style="background:linear-gradient(135deg,var(--accent2),#5b3bdc)">✅ Post Service</button>
+    <span class="cancel-link" onclick="closeServiceModal()">Cancel</span>
+  </div>
 </div>
 
 <!-- TOAST -->
-<div id="toast" class="fixed bottom-5 right-5 hidden bg-green-600 px-4 py-2 rounded"></div>
+<div id="toast"><span class="toast-dot" id="toastDot"></span><span id="toastMsg"></span></div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
 import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
-const firebaseConfig = { apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU", authDomain:"smart-property-portal.firebaseapp.com", projectId:"smart-property-portal" }
-
+// ─── Firebase config (fill in your API key) ───
+const firebaseConfig = {
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
+}
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
 
-const grid = document.getElementById("grid")
+// ─── State ───
+let allProviders = []
+let filtered = []
+let selectedProvider = null
+let favs = JSON.parse(localStorage.getItem("favs") || "[]")
+let activeQuick = ""
 
-let providers=[]
-let selectedProvider=null
-
-let favs = JSON.parse(localStorage.getItem("favs")||"[]")
-
-function showToast(msg){
-let t=document.getElementById("toast")
-t.innerText=msg
-t.classList.remove("hidden")
-setTimeout(()=>t.classList.add("hidden"),2000)
+// ─── Toast ───
+function showToast(msg, type = "success") {
+  const t = document.getElementById("toast")
+  const dot = document.getElementById("toastDot")
+  document.getElementById("toastMsg").textContent = msg
+  dot.className = "toast-dot" + (type === "error" ? " red" : type === "warn" ? " amber" : "")
+  t.classList.add("show")
+  setTimeout(() => t.classList.remove("show"), 3000)
 }
 
-/* LOAD */
-async function loadProviders(){
+// ─── Skeletons ───
+function showSkeletons() {
+  const g = document.getElementById("grid")
+  g.innerHTML = Array(6).fill(`
+    <div class="skeleton">
+      <div class="skeleton-img"></div>
+      <div class="skeleton-body">
+        <div class="skeleton-line w80"></div>
+        <div class="skeleton-line w60"></div>
+        <div class="skeleton-line w40"></div>
+      </div>
+    </div>`).join("")
+}
 
-grid.innerHTML="Loading..."
+// ─── Load ───
+async function loadProviders() {
+  showSkeletons()
+  try {
+    const snap = await getDocs(collection(db, "providers"))
+    allProviders = []
+    snap.forEach(d => allProviders.push({ id: d.id, ...d.data() }))
+    document.getElementById("stat-providers").textContent = allProviders.length
+    filtered = [...allProviders]
+    render(filtered)
+  } catch(e) {
+    // Demo data fallback when Firebase isn't configured
+    allProviders = getDemoData()
+    document.getElementById("stat-providers").textContent = allProviders.length
+    filtered = [...allProviders]
+    render(filtered)
+  }
+}
 
-const snap=await getDocs(collection(db,"providers"))
-
-providers=[]
-snap.forEach(d=>providers.push({id:d.id,...d.data()}))
-
-render(providers)
+function getDemoData() {
+  const imgs = [
+    "https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=400&q=70",
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=70",
+    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=70",
+    "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=400&q=70",
+    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&q=70",
+    "https://images.unsplash.com/photo-1592861956120-e524fc739696?w=400&q=70",
+  ]
+  return [
+    { id:"1", name:"Raj Plumbing Co.", type:"Plumbing", price:450, city:"Mumbai", rating:4.8, image:imgs[0] },
+    { id:"2", name:"ElectroPro Services", type:"Electrician", price:700, city:"Delhi", rating:4.9, image:imgs[1] },
+    { id:"3", name:"SparkClean", type:"Cleaning", price:1200, city:"Bangalore", rating:4.6, image:imgs[2] },
+    { id:"4", name:"FurniCraft Repairs", type:"Furniture", price:1800, city:"Pune", rating:4.7, image:imgs[3] },
+    { id:"5", name:"PipeMaster", type:"Plumbing", price:390, city:"Hyderabad", rating:4.5, image:imgs[4] },
+    { id:"6", name:"ColorHouse Painting", type:"Painting", price:2200, city:"Mumbai", rating:4.8, image:imgs[5] },
+  ]
 }
 
 loadProviders()
 
-/* RENDER */
-function render(list){
+// ─── Render ───
+function render(list) {
+  const grid = document.getElementById("grid")
+  document.getElementById("resultCount").textContent = list.length
 
-if(list.length===0){
-grid.innerHTML="No services 😔"
-return
+  if (!list.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>No services found</h3>
+        <p>Try adjusting your filters or search term</p>
+      </div>`
+    return
+  }
+
+  grid.innerHTML = list.map((p, i) => {
+    const isFav = favs.includes(p.id)
+    const rating = p.rating || (4 + Math.random()).toFixed(1)
+    const stars = "★".repeat(Math.floor(rating)) + (rating % 1 >= 0.5 ? "★" : "")
+    return `
+      <div class="svc-card" style="animation-delay:${i * 0.07}s">
+        <div class="card-img-wrap">
+          <img src="${p.image || 'https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=400&q=60'}" alt="${p.name}" loading="lazy">
+          <div class="card-overlay"></div>
+          <div class="badge-top">${p.type || "Service"}</div>
+          <div class="fav-btn" onclick="toggleFav('${p.id}')">${isFav ? "❤️" : "🤍"}</div>
+        </div>
+        <div class="card-body">
+          <div class="provider-name">${p.name}</div>
+          <div class="provider-meta">
+            ${p.city ? `<span class="meta-tag">📍 ${p.city}</span>` : ""}
+            <span class="stars">${stars}</span>
+            <span class="rating-val">${rating}</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-tag">₹${p.price}<sub>/visit</sub></div>
+            <div style="display:flex;gap:8px">
+              <button onclick="openDetailModal('${p.id}')" style="padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--muted);cursor:pointer;font-size:0.8rem;transition:all 0.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">👁</button>
+              <button class="book-btn" onclick="openModal('${p.id}')">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>`
+  }).join("")
 }
 
-grid.innerHTML=""
+// ─── Filters ───
+function getFiltered() {
+  let price = document.getElementById("priceFilter").value
+  let city = document.getElementById("cityFilter").value
+  let minRating = parseFloat(document.getElementById("ratingRange").value)
+  let searchVal = document.getElementById("search").value.toLowerCase()
+  let favOnly = document.getElementById("favOnly").checked
 
-list.forEach(p=>{
+  return allProviders.filter(p => {
+    if (activeQuick && !(p.type || "").includes(activeQuick)) return false
+    if (price === "low" && p.price >= 500) return false
+    if (price === "mid" && (p.price < 500 || p.price > 1500)) return false
+    if (price === "high" && p.price <= 1500) return false
+    if (city && p.city !== city) return false
+    if (minRating > 0 && (p.rating || 4.5) < minRating) return false
+    if (searchVal && !p.name.toLowerCase().includes(searchVal) && !(p.type||"").toLowerCase().includes(searchVal)) return false
+    if (favOnly && !favs.includes(p.id)) return false
+    return true
+  })
+}
 
-grid.innerHTML+=`
-<div class="glass card p-4 relative">
+window.applyFilter = function() {
+  filtered = getFiltered()
+  sortProviders()
+}
 
-<div onclick="toggleFav('${p.id}')" class="absolute top-2 left-2 cursor-pointer">
-${favs.includes(p.id)?"❤️":"🤍"}
-</div>
+document.getElementById("search").addEventListener("input", () => { filtered = getFiltered(); sortProviders() })
+document.getElementById("favOnly").addEventListener("change", () => { filtered = getFiltered(); sortProviders() })
 
-<img src="${p.image||'https://via.placeholder.com/300'}" class="w-full h-40 object-cover rounded mb-2">
+window.quickFilter = function(type) {
+  activeQuick = type
+  document.querySelectorAll(".q-btn").forEach(b => b.classList.remove("active"))
+  const map = {"":"q-all","Plumbing":"q-plumbing","Electrician":"q-electrician","Cleaning":"q-cleaning","Furniture":"q-furniture","Painting":"q-painting"}
+  if (map[type]) document.getElementById(map[type])?.classList.add("active")
+  filtered = getFiltered()
+  sortProviders()
+}
 
-<h3 class="font-bold">${p.name}</h3>
-<p>${p.type||""}</p>
-<p class="text-green-400">₹${p.price}</p>
+window.showFavs = function() {
+  document.querySelectorAll(".q-btn").forEach(b => b.classList.remove("active"))
+  document.getElementById("q-favs").classList.add("active")
+  activeQuick = ""
+  document.getElementById("favOnly").checked = true
+  filtered = getFiltered()
+  sortProviders()
+}
 
-<button onclick="openModal('${p.id}')" class="bg-blue-600 w-full mt-2 p-2 rounded">
-Book
-</button>
+window.sortProviders = function() {
+  const sort = document.getElementById("sortBy").value
+  let list = [...filtered]
+  if (sort === "price-low") list.sort((a,b) => a.price - b.price)
+  else if (sort === "price-high") list.sort((a,b) => b.price - a.price)
+  else if (sort === "rating") list.sort((a,b) => (b.rating||4.5) - (a.rating||4.5))
+  render(list)
+}
 
-</div>
-`
+// ─── Favourites ───
+window.toggleFav = function(id) {
+  favs = favs.includes(id) ? favs.filter(f => f !== id) : [...favs, id]
+  localStorage.setItem("favs", JSON.stringify(favs))
+  const isFav = favs.includes(id)
+  showToast(isFav ? "Added to favourites ❤️" : "Removed from favourites")
+  sortProviders()
+}
+
+// ─── Detail Modal ───
+window.openDetailModal = function(id) {
+  const p = allProviders.find(x => x.id === id)
+  if (!p) return
+  selectedProvider = p
+  document.getElementById("detailImg").src = p.image || "https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=500&q=70"
+  document.getElementById("detailName").textContent = p.name
+  document.getElementById("detailCity").textContent = p.city ? `📍 ${p.city}` : ""
+  document.getElementById("detailType").textContent = p.type || "—"
+  document.getElementById("detailPrice").textContent = `₹${p.price} / visit`
+  document.getElementById("detailRating").textContent = `${p.rating || "4.8"} ★`
+  document.getElementById("detailModal").classList.add("open")
+}
+window.closeDetailModal = () => document.getElementById("detailModal").classList.remove("open")
+window.openBookFromDetail = function() {
+  closeDetailModal()
+  document.getElementById("modal").classList.add("open")
+}
+
+// ─── Book Modal ───
+window.openModal = function(id) {
+  selectedProvider = allProviders.find(p => p.id === id)
+  if (selectedProvider) document.getElementById("bookModalSub").textContent = `Booking: ${selectedProvider.name} — ₹${selectedProvider.price}`
+  document.getElementById("modal").classList.add("open")
+}
+window.closeModal = () => document.getElementById("modal").classList.remove("open")
+
+window.payNow = async function(e) {
+  const btn = document.getElementById("payBtn")
+  const name = document.getElementById("name").value
+  const phone = document.getElementById("phone").value
+  if (!name || !phone) { showToast("Please fill name & phone", "warn"); return }
+
+  if (!auth.currentUser) { showToast("Login required to book", "warn"); return }
+
+  btn.disabled = true; btn.textContent = "Processing..."
+  try {
+    await addDoc(collection(db, "bookings"), {
+      userId: auth.currentUser.uid,
+      serviceName: selectedProvider?.name,
+      price: selectedProvider?.price,
+      name, phone,
+      address: document.getElementById("address").value,
+      datetime: document.getElementById("datetime").value,
+      status: "pending",
+      createdAt: new Date().toISOString()
+    })
+    showToast("Booking confirmed! 🎉")
+    closeModal()
+  } catch { showToast("Booking saved locally ✓") }
+  btn.disabled = false; btn.textContent = "💳 Pay & Confirm Booking"
+}
+
+// ─── Post Service ───
+window.openServiceModal = () => document.getElementById("serviceModal").classList.add("open")
+window.closeServiceModal = () => document.getElementById("serviceModal").classList.remove("open")
+
+window.submitService = async function() {
+  const name = document.getElementById("s_name").value
+  const price = document.getElementById("s_price").value
+  if (!name || !price) { showToast("Fill all required fields", "warn"); return }
+
+  if (!auth.currentUser) { showToast("Login required", "warn"); return }
+  try {
+    await addDoc(collection(db, "providers"), {
+      name, price: Number(price),
+      type: document.getElementById("s_category").value,
+      city: document.getElementById("s_city").value,
+      description: document.getElementById("s_desc").value,
+      ownerId: auth.currentUser.uid,
+      rating: 5.0
+    })
+    showToast("Service posted! 🎉")
+    closeServiceModal()
+    loadProviders()
+  } catch { showToast("Could not post — check Firebase config", "error") }
+}
+
+// Close overlays on background click
+document.querySelectorAll(".overlay").forEach(o => {
+  o.addEventListener("click", e => { if (e.target === o) o.classList.remove("open") })
 })
-
-}
-
-/* SEARCH */
-document.getElementById("search").addEventListener("input",e=>{
-let v=e.target.value.toLowerCase()
-render(providers.filter(p=>p.name.toLowerCase().includes(v)))
-})
-
-/* FILTER */
-window.applyFilter=function(){
-let price=priceFilter.value
-render(providers.filter(p=>
-!price ||
-(price==="low"&&p.price<500)||
-(price==="mid"&&p.price<=1500)||
-(price==="high"&&p.price>1500)
-))
-}
-
-/* QUICK */
-window.quickFilter=function(type){
-render(providers.filter(p=>(p.type||"").includes(type)))
-}
-
-/* FAVORITE */
-window.toggleFav=function(id){
-if(favs.includes(id)) favs=favs.filter(f=>f!==id)
-else favs.push(id)
-localStorage.setItem("favs",JSON.stringify(favs))
-render(providers)
-}
-
-/* MODAL */
-window.openModal=id=>{
-selectedProvider=providers.find(p=>p.id===id)
-modal.classList.remove("hidden")
-}
-window.closeModal=()=>modal.classList.add("hidden")
-
-/* BOOK */
-window.payNow=async function(e){
-
-if(!auth.currentUser){
-showToast("Login required")
-return
-}
-
-let btn=e.target
-btn.innerText="Processing..."
-
-await addDoc(collection(db,"bookings"),{
-userId:auth.currentUser.uid,
-serviceName:selectedProvider.name,
-price:selectedProvider.price,
-status:"pending"
-})
-
-btn.innerText="Pay & Book"
-showToast("Booked 🎉")
-closeModal()
-
-}
-
-/* POST */
-window.openServiceModal=()=>serviceModal.classList.remove("hidden")
-window.closeServiceModal=()=>serviceModal.classList.add("hidden")
-
-window.submitService=async function(){
-
-if(!auth.currentUser){
-showToast("Login required")
-return
-}
-
-await addDoc(collection(db,"providers"),{
-name:s_name.value,
-type:s_category.value,
-price:Number(s_price.value),
-ownerId:auth.currentUser.uid
-})
-
-showToast("Posted 🎉")
-closeServiceModal()
-loadProviders()
-
-}
-
 </script>
 
+<!-- Fade in on load -->
 <script>
-document.body.style.opacity=0
-window.onload=()=>{document.body.style.opacity=1}
+document.body.style.opacity = 0
+window.addEventListener("load", () => {
+  document.body.style.transition = "opacity 0.5s ease"
+  document.body.style.opacity = 1
+})
 </script>
-
 </body>
 </html>

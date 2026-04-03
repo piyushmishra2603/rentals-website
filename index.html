@@ -1,604 +1,913 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>SmartRent AI</title>
-
+<title>SmartRent AI — Find Your Perfect Home</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 
 <style>
-body{
-font-family:'Inter',sans-serif;
-background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
-color:white;
-}
+  :root {
+    --bg-deep:   #04070f;
+    --bg-mid:    #080e1c;
+    --bg-card:   #0c1426;
+    --border:    rgba(99,179,237,0.12);
+    --accent:    #38bdf8;
+    --accent2:   #6366f1;
+    --accent3:   #10b981;
+    --gold:      #f59e0b;
+    --text:      #e2e8f0;
+    --muted:     #64748b;
+    --glass-bg:  rgba(8,14,28,0.75);
+  }
 
-.glass{
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
-border-radius:15px;
-}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
 
-.card:hover{
-transform:scale(1.03);
-transition:0.3s;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bg-deep);
+    color: var(--text);
+    overflow-x: hidden;
+  }
 
-.hero{
-background:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab') no-repeat center/cover;
-height:40vh;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:32px;
-font-weight:bold;
-}
+  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
 
-#postBtn{
-box-shadow:0 0 20px rgba(0,200,255,0.6);
-animation:pulse 2s infinite;
-}
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
 
-@keyframes pulse{
-0%{box-shadow:0 0 10px rgba(0,200,255,0.4);}
-50%{box-shadow:0 0 25px rgba(0,200,255,0.9);}
-100%{box-shadow:0 0 10px rgba(0,200,255,0.4);}
-}
-  
+  .blob1, .blob2, .blob3 {
+    position: fixed; border-radius: 50%; filter: blur(120px);
+    pointer-events: none; z-index: 0; animation: blobFloat 12s ease-in-out infinite;
+  }
+  .blob1 { width:500px;height:500px;background:rgba(56,189,248,0.07);top:-100px;left:-150px;animation-delay:0s; }
+  .blob2 { width:400px;height:400px;background:rgba(99,102,241,0.07);bottom:200px;right:-100px;animation-delay:4s; }
+  .blob3 { width:300px;height:300px;background:rgba(16,185,129,0.05);top:50%;left:40%;animation-delay:8s; }
+
+  @keyframes blobFloat {
+    0%,100% { transform:translate(0,0) scale(1); }
+    33% { transform:translate(30px,-20px) scale(1.05); }
+    66% { transform:translate(-20px,15px) scale(0.97); }
+  }
+
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+
+  /* NAVBAR */
+  #navbar {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:0 2rem; height:68px;
+    display:flex; align-items:center; justify-content:space-between;
+    background:rgba(4,7,15,0.85);
+    backdrop-filter:blur(24px);
+    border-bottom:1px solid var(--border);
+    transition:all 0.3s;
+  }
+  #navbar.scrolled { background:rgba(4,7,15,0.97); box-shadow:0 4px 40px rgba(0,0,0,0.6); }
+
+  .logo {
+    font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; letter-spacing:-0.5px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    text-decoration:none;
+  }
+  .logo .white { -webkit-text-fill-color:white; }
+
+  .nav-link { font-size:0.85rem; font-weight:500; color:var(--muted); transition:color 0.2s; text-decoration:none; }
+  .nav-link:hover { color:var(--accent); }
+
+  .btn-primary {
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff; font-family:'Syne',sans-serif; font-weight:600; font-size:0.82rem;
+    padding:0.45rem 1.2rem; border-radius:99px; border:none; cursor:pointer;
+    transition:all 0.25s; text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(56,189,248,0.35); }
+
+  .btn-ghost {
+    background:transparent; color:var(--text); font-family:'Syne',sans-serif;
+    font-weight:600; font-size:0.82rem; padding:0.45rem 1.1rem; border-radius:99px;
+    border:1px solid var(--border); cursor:pointer; transition:all 0.25s;
+    text-decoration:none; display:inline-flex; align-items:center;
+  }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* HERO */
+  #hero {
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden; padding:100px 2rem 4rem;
+  }
+  .hero-bg {
+    position:absolute; inset:0;
+    background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1800&q=80');
+    background-size:cover; background-position:center;
+    filter:brightness(0.18) saturate(0.6); z-index:0;
+  }
+  .hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(4,7,15,0.2) 0%,var(--bg-deep) 100%); z-index:1; }
+  .hero-content { position:relative; z-index:2; text-align:center; max-width:820px; }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:0.5rem;
+    background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25);
+    border-radius:99px; padding:0.35rem 1rem; font-size:0.75rem; font-weight:600;
+    color:var(--accent); letter-spacing:0.05em; text-transform:uppercase; margin-bottom:1.5rem;
+  }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--accent3); animation:dotPulse 1.5s infinite; }
+
+  @keyframes dotPulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);} }
+
+  .hero-title {
+    font-size:clamp(2.8rem,7vw,5.5rem); font-weight:800; line-height:1.05;
+    letter-spacing:-2px; margin-bottom:1.5rem;
+  }
+  .hero-title .line2 {
+    background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .hero-sub { font-size:1.05rem; color:var(--muted); max-width:480px; margin:0 auto 2.5rem; line-height:1.7; }
+
+  /* SEARCH BAR */
+  .search-bar {
+    display:flex; flex-wrap:wrap; gap:0;
+    background:rgba(12,20,38,0.9); border:1px solid var(--border);
+    border-radius:14px; padding:8px; max-width:700px; margin:0 auto 1.5rem;
+    backdrop-filter:blur(20px);
+  }
+  .search-bar input, .search-bar select {
+    flex:1; min-width:120px; background:transparent; border:none;
+    color:var(--text); font-family:'DM Sans',sans-serif; font-size:0.9rem;
+    padding:0.7rem 1rem; outline:none;
+  }
+  .search-bar input::placeholder { color:var(--muted); }
+  .search-bar select option { background:var(--bg-mid); }
+  .search-divider { width:1px; background:var(--border); margin:6px 0; align-self:stretch; }
+  .search-btn {
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:white; border:none; border-radius:10px; padding:0.7rem 1.5rem;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem;
+    cursor:pointer; display:flex; align-items:center; gap:0.4rem;
+    transition:all 0.2s; white-space:nowrap;
+  }
+  .search-btn:hover { transform:scale(1.03); box-shadow:0 6px 24px rgba(56,189,248,0.4); }
+
+  .hero-stats { display:flex; justify-content:center; gap:2.5rem; flex-wrap:wrap; }
+  .stat { text-align:center; }
+  .stat-num {
+    font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800;
+    background:linear-gradient(135deg,#fff,var(--accent));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .stat-label { font-size:0.75rem; color:var(--muted); margin-top:0.15rem; }
+
+  /* SECTION */
+  .section-tag { display:inline-block; font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem; }
+  .section-title { font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; letter-spacing:-0.5px; }
+  .container { max-width:1200px; margin:0 auto; padding:0 1.5rem; }
+
+  /* SERVICES */
+  #services { padding:5rem 0; position:relative; z-index:1; }
+
+  .service-grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:1rem;
+  }
+  .service-card {
+    background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+    padding:1.4rem 1rem; text-align:center; cursor:pointer;
+    transition:all 0.3s cubic-bezier(.34,1.56,.64,1); position:relative; overflow:hidden;
+  }
+  .service-card::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(56,189,248,0.06),transparent);
+    opacity:0; transition:opacity 0.3s;
+  }
+  .service-card:hover { transform:translateY(-6px); border-color:rgba(56,189,248,0.35); box-shadow:0 16px 40px rgba(0,0,0,0.5),0 0 0 1px rgba(56,189,248,0.1); }
+  .service-card:hover::before { opacity:1; }
+  .service-icon { font-size:2rem; margin-bottom:0.6rem; display:block; filter:drop-shadow(0 0 12px rgba(56,189,248,0.3)); }
+  .service-name { font-family:'Syne',sans-serif; font-size:0.82rem; font-weight:700; }
+  .service-desc { font-size:0.72rem; color:var(--muted); margin-top:0.2rem; }
+
+  /* EXPLORE */
+  #explore { padding:4rem 0; position:relative; z-index:1; }
+
+  .filter-bar {
+    display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:14px; padding:1rem 1.25rem; margin-bottom:1.5rem;
+  }
+  .filter-bar input, .filter-bar select {
+    background:rgba(255,255,255,0.05); border:1px solid var(--border);
+    border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif;
+    font-size:0.85rem; padding:0.5rem 0.9rem; outline:none; transition:border-color 0.2s;
+  }
+  .filter-bar input:focus, .filter-bar select:focus { border-color:var(--accent); }
+  .filter-bar input::placeholder { color:var(--muted); }
+  .filter-bar select option { background:var(--bg-mid); }
+
+  .sort-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:1.25rem; }
+  .sort-tab {
+    padding:0.4rem 1rem; border-radius:99px; font-size:0.78rem; font-weight:600;
+    cursor:pointer; border:1px solid var(--border); background:transparent; color:var(--muted); transition:all 0.2s;
+  }
+  .sort-tab.active,.sort-tab:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+
+  /* PROPERTY CARDS */
+  #propertyGrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1.5rem; }
+
+  .prop-card {
+    background:var(--bg-card); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; cursor:pointer;
+    transition:all 0.35s cubic-bezier(.34,1.3,.64,1); position:relative;
+  }
+  .prop-card:hover { transform:translateY(-8px); box-shadow:0 24px 60px rgba(0,0,0,0.6),0 0 0 1px rgba(56,189,248,0.15); border-color:rgba(56,189,248,0.3); }
+  .prop-img-wrap { position:relative; overflow:hidden; height:190px; }
+  .prop-img-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
+  .prop-card:hover .prop-img-wrap img { transform:scale(1.07); }
+  .prop-img-overlay { position:absolute; inset:0; background:linear-gradient(180deg,transparent 50%,rgba(4,7,15,0.9)); }
+  .prop-badges { position:absolute; top:10px; left:10px; display:flex; gap:0.4rem; flex-wrap:wrap; }
+  .badge { font-size:0.65rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; padding:0.2rem 0.6rem; border-radius:99px; }
+  .badge-boost { background:var(--gold); color:#000; }
+  .badge-new   { background:var(--accent3); color:#000; }
+  .badge-hot   { background:#ef4444; color:#fff; }
+
+  .save-btn {
+    position:absolute; top:10px; right:10px; width:34px; height:34px; border-radius:50%;
+    background:rgba(4,7,15,0.75); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1rem; transition:all 0.2s; backdrop-filter:blur(10px);
+  }
+  .save-btn:hover { transform:scale(1.15); background:rgba(239,68,68,0.15); border-color:#ef4444; }
+
+  .prop-body { padding:1rem 1.1rem 1.1rem; }
+  .prop-title { font-family:'Syne',sans-serif; font-size:0.97rem; font-weight:700; margin-bottom:0.3rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .prop-meta { font-size:0.78rem; color:var(--muted); display:flex; align-items:center; gap:0.4rem; margin-bottom:0.6rem; }
+  .prop-meta-dot { width:3px; height:3px; border-radius:50%; background:var(--muted); }
+  .prop-price { font-family:'Syne',sans-serif; font-size:1.25rem; font-weight:800; color:var(--accent3); margin-bottom:0.6rem; }
+  .prop-price span { font-size:0.75rem; font-weight:400; color:var(--muted); }
+  .prop-features { display:flex; gap:0.5rem; margin-bottom:0.9rem; flex-wrap:wrap; }
+  .prop-feature { font-size:0.72rem; color:var(--muted); background:rgba(255,255,255,0.05); border:1px solid var(--border); border-radius:6px; padding:0.2rem 0.5rem; display:flex; align-items:center; gap:0.25rem; }
+  .prop-score { display:flex; align-items:center; gap:0.3rem; font-size:0.75rem; color:var(--gold); margin-bottom:0.75rem; }
+  .prop-actions { display:flex; gap:0.6rem; }
+  .prop-btn-view { flex:1; text-align:center; padding:0.55rem; border-radius:10px; background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:0.8rem; text-decoration:none; transition:all 0.2s; }
+  .prop-btn-view:hover { transform:scale(1.02); box-shadow:0 6px 20px rgba(56,189,248,0.35); }
+  .prop-btn-contact { padding:0.55rem 0.85rem; border-radius:10px; background:rgba(255,255,255,0.05); border:1px solid var(--border); color:var(--text); font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
+  .prop-btn-contact:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* SKELETON */
+  .skeleton { background:linear-gradient(90deg,var(--bg-card) 25%,rgba(99,179,237,0.05) 50%,var(--bg-card) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:12px; }
+  @keyframes shimmer { from{background-position:200% 0;}to{background-position:-200% 0;} }
+
+  /* MAP */
+  #mapSection { padding:2rem 0 4rem; position:relative; z-index:1; }
+  .map-wrap { border-radius:16px; overflow:hidden; border:1px solid var(--border); height:280px; }
+  .map-wrap iframe { width:100%; height:100%; border:none; filter:invert(0.9) hue-rotate(180deg) brightness(0.7) saturate(0.6); }
+
+  /* LIVE FEED */
+  #liveFeed {
+    position:fixed; bottom:90px; left:20px;
+    background:rgba(8,14,28,0.95); border:1px solid rgba(16,185,129,0.35);
+    border-radius:12px; padding:0.7rem 1rem; font-size:0.8rem; color:var(--accent3);
+    display:none; z-index:90; backdrop-filter:blur(16px); max-width:260px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5); animation:slideInLeft 0.4s ease;
+  }
+  @keyframes slideInLeft { from{opacity:0;transform:translateX(-20px);}to{opacity:1;transform:translateX(0);} }
+
+  /* POST BTN */
+  #postBtn {
+    position:fixed; bottom:1.5rem; right:1.5rem; z-index:90;
+    display:flex; align-items:center; gap:0.5rem; padding:0.8rem 1.5rem;
+    border-radius:99px; background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff; font-family:'Syne',sans-serif; font-weight:700; font-size:0.88rem;
+    text-decoration:none; animation:postPulse 2.5s infinite; transition:transform 0.25s;
+  }
+  #postBtn:hover { transform:scale(1.07); animation:none; box-shadow:0 8px 30px rgba(56,189,248,0.5); }
+  @keyframes postPulse { 0%,100%{box-shadow:0 0 0 0 rgba(56,189,248,0.5);}50%{box-shadow:0 0 0 14px rgba(56,189,248,0);} }
+
+  /* SAVED PANEL */
+  #savedPanel { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); align-items:flex-end; justify-content:center; }
+  #savedPanel.open { display:flex; }
+  .saved-drawer { background:var(--bg-mid); border:1px solid var(--border); border-radius:20px 20px 0 0; padding:1.5rem; width:100%; max-width:600px; max-height:75vh; overflow-y:auto; animation:drawerUp 0.4s cubic-bezier(.34,1.3,.64,1); }
+  @keyframes drawerUp { from{transform:translateY(100%);}to{transform:translateY(0);} }
+
+  /* CONSENT */
+  #consentModal { position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; }
+  #consentModal.hidden { display:none; }
+  .consent-card { background:var(--bg-mid); border:1px solid var(--border); border-radius:20px; padding:2.5rem 2rem; max-width:480px; width:90%; text-align:center; box-shadow:0 40px 80px rgba(0,0,0,0.8); animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes popIn { from{opacity:0;transform:scale(0.85);}to{opacity:1;transform:scale(1);} }
+
+  /* DROPDOWN */
+  #userMenu { position:relative; }
+  #dropdown { position:absolute; right:0; top:calc(100% + 8px); background:var(--bg-mid); border:1px solid var(--border); border-radius:14px; padding:0.5rem; min-width:170px; box-shadow:0 20px 50px rgba(0,0,0,0.7); animation:dropDown 0.25s ease; }
+  @keyframes dropDown { from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);} }
+  .dropdown-item { display:block; padding:0.6rem 0.9rem; border-radius:8px; font-size:0.85rem; color:var(--text); text-decoration:none; transition:background 0.15s; cursor:pointer; border:none; width:100%; text-align:left; background:transparent; }
+  .dropdown-item:hover { background:rgba(255,255,255,0.07); }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:2.5rem 2rem; text-align:center; color:var(--muted); font-size:0.82rem; position:relative; z-index:1; }
+  footer a { color:var(--accent); text-decoration:none; }
+  footer a:hover { text-decoration:underline; }
+
+  /* FADE UP */
+  .fade-up { opacity:0; transform:translateY(30px); transition:all 0.6s cubic-bezier(.34,1.1,.64,1); }
+  .fade-up.visible { opacity:1; transform:translateY(0); }
+
+  /* SAVED STRIP */
+  .saved-strip { background:var(--bg-card); border:1px solid var(--border); border-radius:14px; padding:1rem 1.25rem; display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; transition:all 0.2s; }
+  .saved-strip:hover { border-color:rgba(239,68,68,0.4); }
+
+  /* EMPTY STATE */
+  .empty-state { text-align:center; padding:4rem 2rem; color:var(--muted); }
+  .empty-state .icon { font-size:3rem; margin-bottom:1rem; display:block; opacity:0.4; }
+
+  /* MOBILE */
+  #mobileMenuBtn { display:none; background:none; border:none; color:var(--text); font-size:1.4rem; cursor:pointer; }
+  #mobileMenu { display:none; }
+
+  /* TOAST */
+  #toast { position:fixed; bottom:100px; right:20px; background:var(--bg-mid); border:1px solid var(--accent3); border-radius:12px; padding:0.75rem 1.2rem; font-size:0.82rem; color:var(--accent3); z-index:400; display:none; box-shadow:0 8px 30px rgba(0,0,0,0.5); animation:toastIn 0.3s ease; }
+  @keyframes toastIn { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+  ::-webkit-scrollbar-thumb:hover { background:var(--accent); }
+
+  @media (max-width:768px) {
+    #navLinks { display:none; }
+    #mobileMenuBtn { display:block; }
+    #mobileMenu { display:none; position:fixed; top:68px; left:0; right:0; background:rgba(4,7,15,0.98); padding:1.5rem; border-bottom:1px solid var(--border); flex-direction:column; gap:1rem; z-index:99; }
+    #mobileMenu.open { display:flex; }
+    .search-bar { flex-direction:column; }
+    .search-divider { width:100%; height:1px; margin:0; }
+    #postBtn .label { display:none; }
+    #postBtn { padding:0.85rem; border-radius:50%; }
+  }
 </style>
-
 </head>
+<body>
 
-<body class="scroll-smooth">
+<div class="blob1"></div>
+<div class="blob2"></div>
+<div class="blob3"></div>
 
-<div class="fixed top-0 w-full flex justify-between items-center p-4 bg-black/40 backdrop-blur z-50">
-
-<div class="font-bold text-xl">SmartRent</div>
-
-<div class="flex gap-4 items-center text-sm">
-
-<a href="#home" class="hover:text-cyan-400">Home</a>
-<a href="#explore" class="hover:text-cyan-400">Explore</a>
-<a href="services.html" class="hover:text-cyan-400">Services</a>
-
-<!-- 🔥 LOGIN BUTTON -->
-<a href="login.html"
-class="relative px-4 py-2 rounded-full font-semibold text-white
-bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600
-shadow-lg hover:scale-105 transition duration-300 overflow-hidden">
-
-<span class="relative z-10">Login</span>
-
-<!-- Glow Effect -->
-<span class="absolute inset-0 bg-white/20 blur-xl opacity-0 hover:opacity-30 transition"></span>
-</a>
-
-<!-- 🔥 SIGNUP BUTTON -->
-<a href="signup.html"
-class="px-4 py-2 rounded-full font-semibold text-white
-border border-white/30 backdrop-blur-md
-hover:bg-white/10 hover:scale-105 transition duration-300">
-
-Create Account
-</a>
-
-<!-- 🔥 USER PROFILE (HIDDEN INITIALLY) -->
-<div id="userMenu" class="hidden relative">
-
-<button onclick="toggleMenu()"
-class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full hover:bg-white/20 transition">
-
-<img id="profilePic" src="https://i.pravatar.cc/30" class="w-7 h-7 rounded-full border">
-  
-<span class="text-sm">My Account</span>
-
-</button>
-
-<!-- DROPDOWN -->
-<div id="dropdown"
-class="hidden absolute right-0 mt-2 w-40 glass p-2 rounded-xl shadow-xl">
-
-<a href="dashboard.html" class="block px-3 py-2 hover:bg-white/10 rounded">
-Dashboard
-</a>
-
-<a href="bookings.html" class="block px-3 py-2 hover:bg-white/10 rounded">
-Bookings
-</a>
-
-<button onclick="logout()" 
-class="w-full text-left px-3 py-2 text-red-400 hover:bg-white/10 rounded">
-Logout
-</button>
-
-</div>
-</div>
-
-</div>
-
-</div>
-
-  <!-- Terms & Privacy Consent Modal -->
-<div id="consentModal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-50 hidden">
-  <div class="bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-2xl p-6 max-w-2xl w-11/12 glass text-center">
-    <h2 class="text-2xl font-bold mb-4">Welcome to SmartRent AI</h2>
-    <p class="mb-4">Please read and accept our 
-        <a href="privacy.html" target="_blank" class="underline text-cyan-400">Privacy Policy</a> and 
-        <a href="terms.html" target="_blank" class="underline text-cyan-400">Terms & Conditions</a> before continuing.
+<!-- CONSENT MODAL -->
+<div id="consentModal" class="hidden">
+  <div class="consent-card">
+    <span style="font-size:3rem;display:block;margin-bottom:1rem;filter:drop-shadow(0 0 20px rgba(56,189,248,0.4));">🏡</span>
+    <h2 style="font-size:1.5rem;font-weight:800;margin-bottom:0.75rem;">Welcome to SmartRent AI</h2>
+    <p style="font-size:0.88rem;color:var(--muted);line-height:1.7;margin-bottom:1.75rem;">
+      Before exploring thousands of verified properties, please read and accept our
+      <a href="privacy.html" target="_blank" style="color:var(--accent);">Privacy Policy</a> and
+      <a href="terms.html" target="_blank" style="color:var(--accent);">Terms & Conditions</a>.
     </p>
-    <div class="flex flex-col md:flex-row gap-4 justify-center mt-6">
-      <button id="acceptBtn" class="bg-gradient-to-r from-cyan-400 to-blue-600 px-6 py-3 rounded font-bold text-white animate-pulse hover:scale-105 transition">Accept & Continue</button>
-      <button id="declineBtn" class="bg-red-500 px-6 py-3 rounded font-bold text-white hover:scale-105 transition">Decline</button>
+    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <button id="acceptBtn" class="btn-primary" style="font-size:0.9rem;padding:0.7rem 1.8rem;">✓ Accept & Explore</button>
+      <button id="declineBtn" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.4);color:#ef4444;border-radius:99px;padding:0.7rem 1.4rem;font-family:'Syne',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;">Decline</button>
     </div>
   </div>
 </div>
 
-<style>
-/* Pulse Glow */
-a[href="plans.html"]{
-animation:pulse 2s infinite;
-}
+<!-- TOAST -->
+<div id="toast"></div>
 
-@keyframes pulse{
-0%{box-shadow:0 0 10px rgba(255,0,150,0.5);}
-50%{box-shadow:0 0 25px rgba(255,0,150,1);}
-100%{box-shadow:0 0 10px rgba(255,0,150,0.5);}
-}
-</style>
+<!-- NAVBAR -->
+<nav id="navbar">
+  <a href="#home" class="logo">Smart<span class="white">Rent</span> <span style="-webkit-text-fill-color:var(--accent);font-size:0.75em;">AI</span></a>
+
+  <div id="navLinks" style="display:flex;gap:1.75rem;align-items:center;">
+    <a href="#home" class="nav-link">Home</a>
+    <a href="#services" class="nav-link">Services</a>
+    <a href="#explore" class="nav-link">Explore</a>
+    <a href="plans.html" class="nav-link" style="color:var(--gold);">⚡ Plans</a>
+  </div>
+
+  <div style="display:flex;gap:0.6rem;align-items:center;">
+    <a href="login.html" class="btn-ghost" id="loginBtn">Login</a>
+    <a href="signup.html" class="btn-primary" id="signupBtn">Create Account</a>
+
+    <div id="userMenu" style="display:none;">
+      <button onclick="toggleMenu()" style="display:flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:99px;padding:0.35rem 0.75rem 0.35rem 0.35rem;cursor:pointer;color:var(--text);font-size:0.82rem;font-family:'DM Sans',sans-serif;">
+        <img id="profilePic" src="https://i.pravatar.cc/32" style="width:28px;height:28px;border-radius:50%;border:1.5px solid var(--accent);">
+        My Account ▾
+      </button>
+      <div id="dropdown" style="display:none;">
+        <a href="dashboard.html" class="dropdown-item">📊 Dashboard</a>
+        <a href="bookings.html" class="dropdown-item">📅 Bookings</a>
+        <a href="profile.html" class="dropdown-item">👤 My Profile</a>
+        <button onclick="logout()" class="dropdown-item" style="color:#ef4444;">🚪 Logout</button>
+      </div>
+    </div>
+
+    <button id="mobileMenuBtn" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu">
+  <a href="#home" class="nav-link">Home</a>
+  <a href="#services" class="nav-link">Services</a>
+  <a href="#explore" class="nav-link">Explore</a>
+  <a href="plans.html" class="nav-link" style="color:var(--gold);">⚡ Plans</a>
+  <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
+    <a href="login.html" class="btn-ghost">Login</a>
+    <a href="signup.html" class="btn-primary">Create Account</a>
+  </div>
+</div>
 
 <!-- HERO -->
-<section id="home" 
-class="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center"
-style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab')">
+<section id="home">
+  <div id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge fade-up">
+        <span class="dot"></span>
+        2,400+ Verified Properties Live
+      </div>
 
-<div class="bg-black/60 p-8 rounded-xl">
-<h1 class="text-4xl font-bold mb-4">SmartRent AI 🏙️</h1>
-<p class="text-gray-300">Find homes & services instantly</p>
-</div>
+      <h1 class="hero-title fade-up">
+        Find Your<br>
+        <span class="line2">Dream Rental</span>
+      </h1>
 
+      <p class="hero-sub fade-up">
+        AI-powered search. Verified listings. Instant booking.<br>
+        Homes, flats &amp; services — all in one place.
+      </p>
+
+      <div class="search-bar fade-up">
+        <input type="text" id="heroCity" placeholder="🏙️  City or area...">
+        <div class="search-divider"></div>
+        <select id="heroBhk">
+          <option value="">Any BHK</option>
+          <option>1 BHK</option>
+          <option>2 BHK</option>
+          <option>3 BHK</option>
+          <option>4 BHK+</option>
+        </select>
+        <div class="search-divider"></div>
+        <input type="number" id="heroMaxRent" placeholder="💰  Max rent (₹)">
+        <button class="search-btn" onclick="heroSearch()">🔍 Search</button>
+      </div>
+
+      <div class="hero-stats fade-up">
+        <div class="stat"><div class="stat-num">2,400+</div><div class="stat-label">Properties</div></div>
+        <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Cities</div></div>
+        <div class="stat"><div class="stat-num">4.8★</div><div class="stat-label">Avg Rating</div></div>
+        <div class="stat"><div class="stat-num">10k+</div><div class="stat-label">Happy Renters</div></div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<!-- 🧰 SERVICES HUB -->
-<div class="max-w-6xl mx-auto p-6">
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-header fade-up" style="margin-bottom:2rem;">
+      <span class="section-tag">Smart Services</span>
+      <h2 class="section-title">Everything for Your Home 🧰</h2>
+    </div>
+    <div class="service-grid fade-up">
+      <div class="service-card" onclick="openService('furniture')"><span class="service-icon">🛋️</span><div class="service-name">Furniture</div><div class="service-desc">Sofa, Bed, Table</div></div>
+      <div class="service-card" onclick="openService('plumbing')"><span class="service-icon">🔧</span><div class="service-name">Plumbing</div><div class="service-desc">Leaks, Pipes</div></div>
+      <div class="service-card" onclick="openService('electric')"><span class="service-icon">⚡</span><div class="service-name">Electric</div><div class="service-desc">Wiring, Repair</div></div>
+      <div class="service-card" onclick="openService('cleaning')"><span class="service-icon">🧹</span><div class="service-name">Cleaning</div><div class="service-desc">Deep Clean</div></div>
+      <div class="service-card" onclick="openService('repair')"><span class="service-icon">🛠️</span><div class="service-name">Repairs</div><div class="service-desc">Appliances</div></div>
+      <div class="service-card" onclick="openService('movers')"><span class="service-icon">📦</span><div class="service-name">Movers</div><div class="service-desc">Shifting Help</div></div>
+      <div class="service-card" onclick="openService('painting')"><span class="service-icon">🎨</span><div class="service-name">Painting</div><div class="service-desc">Walls & Decor</div></div>
+      <div class="service-card" onclick="openService('security')"><span class="service-icon">🔒</span><div class="service-name">Security</div><div class="service-desc">CCTV, Locks</div></div>
+      <div class="service-card" onclick="openService('ac')"><span class="service-icon">❄️</span><div class="service-name">AC Service</div><div class="service-desc">Install, Repair</div></div>
+      <div class="service-card" onclick="openService('internet')"><span class="service-icon">📡</span><div class="service-name">Internet</div><div class="service-desc">Setup & Plans</div></div>
+      <div class="service-card" onclick="openService('gardening')"><span class="service-icon">🌿</span><div class="service-name">Gardening</div><div class="service-desc">Plants & Care</div></div>
+      <div class="service-card" onclick="openService('more')"><span class="service-icon">➕</span><div class="service-name">More</div><div class="service-desc">All Services</div></div>
+    </div>
+  </div>
+</section>
 
-<h2 class="text-2xl font-bold mb-4">🧰 Smart Services</h2>
+<!-- EXPLORE -->
+<section id="explore">
+  <div class="container">
+    <div class="fade-up" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;">
+      <div>
+        <span class="section-tag">Browse</span>
+        <h2 class="section-title">Explore Properties 🏘️</h2>
+      </div>
+      <div style="display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap;">
+        <a href="bookings.html" style="font-size:0.8rem;padding:0.45rem 1rem;border-radius:99px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);color:var(--accent3);text-decoration:none;">📅 Bookings</a>
+        <a href="dashboard.html" style="font-size:0.8rem;padding:0.45rem 1rem;border-radius:99px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:#a5b4fc;text-decoration:none;">📊 Dashboard</a>
+      </div>
+    </div>
 
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <!-- SAVED STRIP -->
+    <div class="saved-strip fade-up">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;">❤️ Saved Properties</div>
+        <div style="font-size:0.78rem;color:var(--muted);margin-top:0.2rem;" id="savedCount">0 saved</div>
+      </div>
+      <button onclick="showSaved()" style="background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.35);color:#f87171;border-radius:99px;padding:0.4rem 1.1rem;font-size:0.8rem;font-family:'Syne',sans-serif;font-weight:600;cursor:pointer;">View Saved</button>
+    </div>
 
-<!-- FURNITURE -->
-<div onclick="openService('furniture')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
+    <!-- FILTER BAR -->
+    <div class="filter-bar fade-up">
+      <input type="text" id="cityFilter" placeholder="🏙️ City or area">
+      <input type="number" id="rentFilter" placeholder="💰 Max rent (₹)">
+      <select id="bhkFilter">
+        <option value="">All BHK</option>
+        <option>1 BHK</option>
+        <option>2 BHK</option>
+        <option>3 BHK</option>
+        <option>4 BHK+</option>
+      </select>
+      <select id="typeFilter">
+        <option value="">All Types</option>
+        <option value="flat">Flat</option>
+        <option value="house">House</option>
+        <option value="pg">PG</option>
+        <option value="villa">Villa</option>
+      </select>
+      <button onclick="applyFilter()" class="btn-primary">Apply Filters</button>
+      <button onclick="resetFilter()" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:0.5rem 0.9rem;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;">Reset</button>
+    </div>
 
-<div class="text-3xl">🛋</div>
-<h3 class="mt-2 font-bold">Furniture Rent</h3>
-<p class="text-sm text-gray-300">Sofa, Bed, Table</p>
+    <!-- SORT TABS -->
+    <div class="sort-tabs fade-up">
+      <button class="sort-tab active" onclick="sortBy('default',this)">All</button>
+      <button class="sort-tab" onclick="sortBy('priceLow',this)">💸 Price: Low → High</button>
+      <button class="sort-tab" onclick="sortBy('priceHigh',this)">💎 Price: High → Low</button>
+      <button class="sort-tab" onclick="sortBy('rating',this)">⭐ Top Rated</button>
+    </div>
 
-</div>
-
-<!-- PLUMBING -->
-<div onclick="openService('plumbing')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">🔧</div>
-<h3 class="mt-2 font-bold">Plumbing</h3>
-<p class="text-sm text-gray-300">Leaks, Pipes</p>
-
-</div>
-
-<!-- ELECTRIC -->
-<div onclick="openService('electric')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">⚡</div>
-<h3 class="mt-2 font-bold">Electric Work</h3>
-<p class="text-sm text-gray-300">Wiring, Repair</p>
-
-</div>
-
-<!-- CLEANING -->
-<div onclick="openService('cleaning')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">🧹</div>
-<h3 class="mt-2 font-bold">Cleaning</h3>
-<p class="text-sm text-gray-300">Home, Deep Clean</p>
-
-</div>
-
-<!-- REPAIRS -->
-<div onclick="openService('repair')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">🛠</div>
-<h3 class="mt-2 font-bold">Repairs</h3>
-<p class="text-sm text-gray-300">Appliances</p>
-
-</div>
-
-<!-- MOVERS -->
-<div onclick="openService('movers')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">📦</div>
-<h3 class="mt-2 font-bold">Movers</h3>
-<p class="text-sm text-gray-300">Shifting Help</p>
-
-</div>
-
-<!-- PAINTING -->
-<div onclick="openService('painting')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">🎨</div>
-<h3 class="mt-2 font-bold">Painting</h3>
-<p class="text-sm text-gray-300">Walls & Decor</p>
-
-</div>
-
-<!-- MORE -->
-<div onclick="openService('more')" 
-class="glass p-4 text-center cursor-pointer hover:scale-105 transition">
-
-<div class="text-3xl">➕</div>
-<h3 class="mt-2 font-bold">More</h3>
-<p class="text-sm text-gray-300">All Services</p>
-
-</div>
-
-</div>
-</div>
-
-<section id="explore" class="min-h-screen">
-  
-<!-- NAV -->
-<div class="glass flex justify-between items-center px-6 py-4 mb-6 fade-in">
-
-<h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-Smart Property
-</h1>
-
-<div class="flex gap-3 items-center">
-
-<a href="services.html" class="btn">Services</a>
-
-<a href="bookings.html" class="btn bg-green-600">
-Bookings
-</a>
-
-<a href="profile.html" class="block px-3 py-2 hover:bg-white/10 rounded">
-My Profile
-</a>
-  
-<a href="dashboard.html" class="btn bg-purple-600">
-Dashboard
-</a>
-
-</div>
-
-</div>
-  
-<!-- SAVED -->
-<div class="max-w-6xl mx-auto p-4">
-<div class="glass p-3 flex justify-between">
-<div>
-<h3>❤️ Saved Properties</h3>
-<p class="text-sm text-gray-300">Your favorites</p>
-</div>
-<button onclick="showSaved()" class="bg-pink-600 px-3 py-1 rounded">View</button>
-</div>
-</div>
-
-<!-- FILTER -->
-<div class="max-w-6xl mx-auto p-4 flex gap-3 flex-wrap">
-
-<input id="cityFilter" placeholder="City" class="px-3 py-2 rounded text-black">
-<input id="rentFilter" type="number" placeholder="Max Rent" class="px-3 py-2 rounded text-black">
-
-<select id="bhkFilter" class="px-3 py-2 rounded text-black">
-<option value="">All</option>
-<option>1 BHK</option>
-<option>2 BHK</option>
-<option>3 BHK</option>
-</select>
-
-<button onclick="applyFilter()" class="bg-blue-600 px-4 py-2 rounded">Apply</button>
-
-</div>
+    <!-- GRID -->
+    <div id="propertyGrid"></div>
+  </div>
+</section>
 
 <!-- MAP -->
-<div class="max-w-6xl mx-auto p-4">
-<div id="grid" class="max-w-6xl mx-auto p-4 grid md:grid-cols-3 gap-4"></div>
-<div class="glass p-4">
-<h2>🗺️ Map View</h2>
-<iframe width="100%" height="250" style="border:0;border-radius:10px"
-src="https://maps.google.com/maps?q=india&output=embed"></iframe>
-</div>
+<section id="mapSection">
+  <div class="container">
+    <div class="fade-up" style="margin-bottom:1.5rem;">
+      <span class="section-tag">Location</span>
+      <h2 class="section-title">Property Map View 🗺️</h2>
+    </div>
+    <div class="map-wrap fade-up">
+      <iframe src="https://maps.google.com/maps?q=india&output=embed" allowfullscreen loading="lazy"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.75rem;">
+    SmartRent <span style="color:var(--accent);">AI</span>
+  </div>
+  <div style="display:flex;gap:1.25rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;">
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+    <a href="services.html">Services</a>
+    <a href="contact.html">Contact</a>
+    <a href="plans.html">Plans</a>
+  </div>
+  <p>&copy; 2026 SmartRent AI. All rights reserved. Built with ❤️</p>
+</footer>
+
+<!-- SAVED DRAWER -->
+<div id="savedPanel">
+  <div class="saved-drawer">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;">❤️ Saved Properties</h3>
+      <button onclick="closeSaved()" style="background:rgba(255,255,255,0.08);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:0.3rem 0.7rem;cursor:pointer;">✕ Close</button>
+    </div>
+    <div id="savedGrid" style="display:grid;gap:0.75rem;"></div>
+  </div>
 </div>
 
+<!-- LIVE FEED -->
+<div id="liveFeed">🔔 Someone just explored a property...</div>
+
+<!-- POST BTN -->
+<a href="post-property.html" id="postBtn">
+  <span>＋</span>
+  <span class="label">Post Property</span>
+</a>
+
+<!-- FIREBASE MODULE SCRIPT -->
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG */
 const firebaseConfig = {
-  apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-  authDomain:"smart-property-portal.firebaseapp.com",
-  projectId:"smart-property-portal"
-}
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
+};
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
-const auth = getAuth(app)
+const app  = initializeApp(firebaseConfig);
+const db   = getFirestore(app);
+const auth = getAuth(app);
 
-const grid = document.getElementById("grid")
-const liveFeed = document.getElementById("liveFeed")
+const grid    = document.getElementById("propertyGrid");
+const liveFeed = document.getElementById("liveFeed");
 
-let allProperties=[]
-let saved = JSON.parse(localStorage.getItem("saved")) || []
+let allProperties = [];
+let filtered      = [];
+let saved         = JSON.parse(localStorage.getItem("saved")) || [];
+let currentSort   = 'default';
 
 /* AUTH */
-onAuthStateChanged(auth, async (user)=>{
-
-  const userMenu = document.getElementById("userMenu");
+onAuthStateChanged(auth, async (user) => {
+  const userMenu   = document.getElementById("userMenu");
   const profilePic = document.getElementById("profilePic");
+  const loginBtn   = document.getElementById("loginBtn");
+  const signupBtn  = document.getElementById("signupBtn");
 
-  if(user){
+  if (user) {
+    userMenu.style.display  = "block";
+    if(loginBtn)  loginBtn.style.display  = "none";
+    if(signupBtn) signupBtn.style.display = "none";
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      if (snap.exists() && snap.data().photo) profilePic.src = snap.data().photo;
+    } catch(e) {}
     load();
-
-    if(userMenu){
-      userMenu.classList.remove("hidden");
-    }
-
-    // 🔥 GET USER DATA FROM FIRESTORE
-    try{
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-
-      if(snap.exists()){
-        const data = snap.data();
-
-        if(data.photo){
-          profilePic.src = data.photo;
-        }
-      }
-    }catch(e){
-      console.log("No profile image found");
-    }
-
-  }else{
-
-    if(userMenu){
-      userMenu.classList.add("hidden");
-    }
-
+  } else {
+    userMenu.style.display = "none";
+    showDemoProperties();
   }
-
 });
 
-/* LOAD */
-async function load(){
-  grid.innerHTML="Loading..."
-
-  const snap = await getDocs(collection(db,"properties"))
-
-  allProperties=[]
-
-  snap.forEach(doc=>{
-    let d=doc.data()
-    allProperties.push({...d,id:doc.id})
-  })
-
-  const demoProperties = []
-  allProperties=[...allProperties,...demoProperties]
-
-  render(allProperties)
+async function load() {
+  showSkeletons();
+  try {
+    const snap = await getDocs(collection(db, "properties"));
+    allProperties = [];
+    snap.forEach(d => allProperties.push({ ...d.data(), id: d.id }));
+    if (allProperties.length === 0) showDemoProperties();
+    else { filtered = [...allProperties]; applySortAndRender(); }
+  } catch(e) { showDemoProperties(); }
 }
 
-/* FILTER */
-window.applyFilter = function(){
-  let city = cityFilter.value.toLowerCase()
-  let rent = rentFilter.value
-  let bhk = bhkFilter.value
-
-  let f = allProperties.filter(p=>
-    (!city||p.city.toLowerCase().includes(city)) &&
-    (!rent||p.rent<=rent) &&
-    (!bhk||p.bhk===bhk)
-  )
-
-  render(f)
+function showDemoProperties() {
+  allProperties = [
+    { id:'d1', title:'Modern 2BHK Flat',    city:'Mumbai',    bhk:'2 BHK', rent:18000, image:'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80', type:'flat',  beds:2, baths:1, area:900,  rating:9, isNew:true },
+    { id:'d2', title:'Cozy Studio in Pune', city:'Pune',      bhk:'1 BHK', rent:9500,  image:'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80', type:'flat',  beds:1, baths:1, area:420,  rating:8, boost:true, boostExpiry:Date.now()+99999999 },
+    { id:'d3', title:'Spacious Villa',       city:'Bangalore', bhk:'3 BHK', rent:35000, image:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80', type:'villa', beds:3, baths:2, area:1800, rating:10 },
+    { id:'d4', title:'PG for Working Pros',  city:'Delhi',     bhk:'1 BHK', rent:7000,  image:'https://images.unsplash.com/photo-1555636222-cae831e670b3?w=600&q=80', type:'pg',    beds:1, baths:1, area:250,  rating:7 },
+    { id:'d5', title:'Sea-View 3BHK',        city:'Goa',       bhk:'3 BHK', rent:42000, image:'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&q=80', type:'house', beds:3, baths:2, area:1600, rating:9, isNew:true },
+    { id:'d6', title:'Budget 1BHK Flat',     city:'Hyderabad', bhk:'1 BHK', rent:8500,  image:'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=80', type:'flat',  beds:1, baths:1, area:500,  rating:8 },
+  ];
+  filtered = [...allProperties];
+  updateSavedCount();
+  applySortAndRender();
 }
 
-/* SAVE */
-window.toggleSave=function(id){
-  if(saved.includes(id)){
-    saved=saved.filter(x=>x!==id)
-  }else{
-    saved.push(id)
-  }
-  localStorage.setItem("saved",JSON.stringify(saved))
-  render(allProperties)
-}
-
-/* SHOW SAVED */
-window.showSaved=function(){
-  let f=allProperties.filter(p=>saved.includes(p.id))
-  render(f)
-}
-
-/* LOGOUT */
-window.logout=function(){
-  signOut(auth)
-}
-
-/* RENDER */
-function render(list){
-
-  grid.innerHTML=""
-
-  list.sort((a,b)=>{
-    let boostA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0
-    let boostB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0
-    if(boostA !== boostB) return boostB - boostA
-    return a.rent - b.rent
-  })
-
-  list.forEach(p=>{
-
-    let score = Math.floor(Math.random()*3)+7
-    let isBoosted = p.boost && p.boostExpiry > Date.now()
-
-    grid.innerHTML+=`
-    <div class="glass card p-3 cursor-pointer relative
-    ${isBoosted ? 'border border-yellow-400 shadow-2xl shadow-yellow-500/30' : ''}"
-    onclick="openProperty('${p.id}')">
-
-    ${isBoosted ? `
-    <div class="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-2 py-1 rounded">
-    ⭐ BOOSTED
-    </div>` : ''}
-
-    <img src="${p.image}" class="h-40 w-full rounded object-cover">
-
-    <h3>${p.title}</h3>
-    <p>${p.city} • ${p.bhk}</p>
-    <p class="text-green-400 font-bold">₹${p.rent}</p>
-    <p class="text-yellow-400 text-sm">⭐ ${score}/10</p>
-
-    <div class="flex gap-2 mt-3">
-
-    <a href="property.html?id=${p.id}" onclick="event.stopPropagation()" class="bg-blue-600 px-2 py-1 rounded text-sm">View</a>
-
-    <button onclick="event.stopPropagation(); toggleSave('${p.id}')" class="text-red-500">
-    ${saved.includes(p.id)?"❤️":"🤍"}
-    </button>
-
+function showSkeletons() {
+  grid.innerHTML = Array(6).fill(0).map(() => `
+    <div style="border-radius:16px;overflow:hidden;background:var(--bg-card);border:1px solid var(--border);">
+      <div class="skeleton" style="height:190px;border-radius:0;"></div>
+      <div style="padding:1rem;">
+        <div class="skeleton" style="height:16px;border-radius:6px;margin-bottom:0.6rem;width:70%;"></div>
+        <div class="skeleton" style="height:12px;border-radius:6px;margin-bottom:0.5rem;width:50%;"></div>
+        <div class="skeleton" style="height:20px;border-radius:6px;margin-bottom:1rem;width:40%;"></div>
+        <div class="skeleton" style="height:36px;border-radius:10px;"></div>
+      </div>
     </div>
-    </div>
-    `
-  })
+  `).join('');
 }
 
-window.openProperty = (id)=>{
-  window.location.href = `property.html?id=${id}`
+window.applyFilter = function() {
+  const city = document.getElementById("cityFilter").value.toLowerCase();
+  const rent = +document.getElementById("rentFilter").value;
+  const bhk  = document.getElementById("bhkFilter").value;
+  const type = document.getElementById("typeFilter").value;
+  filtered = allProperties.filter(p =>
+    (!city || (p.city||'').toLowerCase().includes(city)) &&
+    (!rent || p.rent <= rent) &&
+    (!bhk  || p.bhk === bhk) &&
+    (!type || p.type === type)
+  );
+  applySortAndRender();
+};
+
+window.resetFilter = function() {
+  ['cityFilter','rentFilter','bhkFilter','typeFilter'].forEach(id => document.getElementById(id).value = '');
+  filtered = [...allProperties];
+  applySortAndRender();
+};
+
+window.heroSearch = function() {
+  document.getElementById("cityFilter").value   = document.getElementById("heroCity").value;
+  document.getElementById("rentFilter").value   = document.getElementById("heroMaxRent").value;
+  document.getElementById("bhkFilter").value    = document.getElementById("heroBhk").value;
+  document.getElementById("explore").scrollIntoView({ behavior:'smooth' });
+  setTimeout(applyFilter, 400);
+};
+
+window.sortBy = function(type, btn) {
+  document.querySelectorAll('.sort-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentSort = type;
+  applySortAndRender();
+};
+
+function applySortAndRender() {
+  let list = [...filtered];
+  list.sort((a,b) => {
+    const bA = (a.boost && a.boostExpiry > Date.now()) ? 1 : 0;
+    const bB = (b.boost && b.boostExpiry > Date.now()) ? 1 : 0;
+    if (bA !== bB) return bB - bA;
+    if (currentSort === 'priceLow')  return a.rent - b.rent;
+    if (currentSort === 'priceHigh') return b.rent - a.rent;
+    if (currentSort === 'rating')    return (b.rating||0) - (a.rating||0);
+    return 0;
+  });
+  render(list);
 }
 
-window.openService = function(type){
-  window.location.href = `services.html?type=${type}`
+window.toggleSave = function(id, e) {
+  e.stopPropagation();
+  if (saved.includes(id)) { saved = saved.filter(x => x !== id); showToast('Removed from saved'); }
+  else { saved.push(id); showToast('Saved! ❤️'); }
+  localStorage.setItem("saved", JSON.stringify(saved));
+  updateSavedCount();
+  applySortAndRender();
+};
+
+function updateSavedCount() {
+  document.getElementById("savedCount").textContent = saved.length + ' saved';
 }
 
-/* 🔥 LIVE ACTIVITY */
-async function showRealActivity(){
-  try{
-    const snap = await getDocs(collection(db,"users"))
-    let users=[]
-
-    snap.forEach(doc=>{
-      let d=doc.data()
-      if(d.plan && d.plan !== "free"){
-        users.push(d)
-      }
-    })
-
-    if(users.length===0) return
-
-    let u = users[Math.floor(Math.random()*users.length)]
-    let mins = Math.floor(Math.random()*5)+1
-
-    liveFeed.innerText =
-    `Someone upgraded to ${u.plan} • ${mins} min ago`
-
-    liveFeed.style.display="block"
-
-    setTimeout(()=>{
-      liveFeed.style.display="none"
-    },4000)
-
-  }catch(e){
-    console.log("No activity data")
+window.showSaved = function() {
+  const panel = document.getElementById("savedPanel");
+  const sgrid = document.getElementById("savedGrid");
+  const items = allProperties.filter(p => saved.includes(p.id));
+  panel.classList.add('open');
+  if (!items.length) {
+    sgrid.innerHTML = `<div class="empty-state"><span class="icon">💔</span><p>No saved properties yet.<br>Tap 🤍 on any property to save it.</p></div>`;
+    return;
   }
+  sgrid.innerHTML = items.map(p => `
+    <div style="display:flex;gap:0.75rem;align-items:center;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:0.75rem;cursor:pointer;" onclick="window.location.href='property.html?id=${p.id}'">
+      <img src="${p.image}" style="width:70px;height:55px;object-fit:cover;border-radius:8px;flex-shrink:0;" loading="lazy">
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${p.title}</div>
+        <div style="font-size:0.75rem;color:var(--muted);">${p.city} · ${p.bhk}</div>
+        <div style="font-size:0.9rem;color:var(--accent3);font-weight:700;font-family:'Syne',sans-serif;">₹${p.rent.toLocaleString('en-IN')}</div>
+      </div>
+      <button onclick="toggleSave('${p.id}',event)" style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;color:#f87171;padding:0.3rem 0.6rem;font-size:0.8rem;cursor:pointer;white-space:nowrap;">Remove</button>
+    </div>`).join('');
+};
+
+window.closeSaved = () => document.getElementById("savedPanel").classList.remove('open');
+window.logout     = () => signOut(auth);
+
+function render(list) {
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><span class="icon">🏚️</span><p>No properties match your search.<br>Try adjusting filters.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    const isBoosted = p.boost && p.boostExpiry > Date.now();
+    const isSaved   = saved.includes(p.id);
+    const score     = p.rating || (Math.floor(Math.random()*3)+7);
+    const stars     = '★'.repeat(Math.round(score/2)) + '☆'.repeat(5-Math.round(score/2));
+    return `
+    <div class="prop-card" onclick="window.location.href='property.html?id=${p.id}'">
+      <div class="prop-img-wrap">
+        <img src="${p.image}" alt="${p.title}" loading="lazy">
+        <div class="prop-img-overlay"></div>
+        <div class="prop-badges">
+          ${isBoosted ? '<span class="badge badge-boost">⭐ Featured</span>' : ''}
+          ${p.isNew   ? '<span class="badge badge-new">New</span>' : ''}
+          ${score >= 9 ? '<span class="badge badge-hot">🔥 Hot</span>' : ''}
+        </div>
+        <button class="save-btn" onclick="toggleSave('${p.id}',event)">${isSaved ? '❤️' : '🤍'}</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-title">${p.title}</div>
+        <div class="prop-meta">
+          <span>📍 ${p.city}</span><span class="prop-meta-dot"></span>
+          <span>${p.bhk}</span>
+          ${p.area ? `<span class="prop-meta-dot"></span><span>${p.area} sq.ft</span>` : ''}
+        </div>
+        <div class="prop-price">₹${p.rent.toLocaleString('en-IN')} <span>/ month</span></div>
+        <div class="prop-features">
+          ${p.beds  ? `<span class="prop-feature">🛏 ${p.beds} Bed</span>` : ''}
+          ${p.baths ? `<span class="prop-feature">🚿 ${p.baths} Bath</span>` : ''}
+          <span class="prop-feature">✅ Verified</span>
+        </div>
+        <div class="prop-score">
+          <span style="letter-spacing:1px;font-size:0.8rem;">${stars}</span>
+          <span style="color:var(--muted);">${score}/10</span>
+        </div>
+        <div class="prop-actions">
+          <a href="property.html?id=${p.id}" class="prop-btn-view" onclick="event.stopPropagation()">View Details →</a>
+          <button class="prop-btn-contact" onclick="event.stopPropagation();showToast('Opening contact...')">📞</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-setInterval(()=>{
-  if(Math.random()>0.6){
-    showRealActivity()
-  }
-},15000)
+window.openService = type => window.location.href = `services.html?type=${type}`;
 
+const activities = [
+  "🔥 Someone just booked a 2BHK in Mumbai",
+  "👀 12 people viewing properties right now",
+  "⭐ New verified property added in Pune",
+  "📦 Someone requested Movers service",
+  "💡 Save properties to compare later",
+  "🏠 New villa listing in Goa just added!",
+];
+
+setInterval(() => {
+  if (Math.random() > 0.5) {
+    liveFeed.textContent = activities[Math.floor(Math.random()*activities.length)];
+    liveFeed.style.display = "block";
+    setTimeout(() => liveFeed.style.display = "none", 4500);
+  }
+}, 12000);
+
+updateSavedCount();
 </script>
 
-</section>  
-  
-<footer class="max-w-6xl mx-auto p-6 text-center mt-3">
-<p>&copy; 2026 SmartRent AI. All rights reserved.</p>
-</footer>
-
 <script>
+/* CONSENT */
 const modal = document.getElementById("consentModal");
-const acceptBtn = document.getElementById("acceptBtn");
-const declineBtn = document.getElementById("declineBtn");
-
-// Show modal if consent not given
-if(localStorage.getItem("consentGiven") !== "true"){
-    modal.classList.remove("hidden");
-}
-
-// Accept button
-acceptBtn.addEventListener("click", ()=>{
-    localStorage.setItem("consentGiven","true");
-    modal.classList.add("hidden");
+if (localStorage.getItem("consentGiven") !== "true") modal.classList.remove("hidden");
+document.getElementById("acceptBtn").addEventListener("click", () => {
+  localStorage.setItem("consentGiven","true");
+  modal.classList.add("hidden");
+});
+document.getElementById("declineBtn").addEventListener("click", () => {
+  alert("You must accept to use SmartRent AI.");
+  window.location.href = "https://www.google.com";
 });
 
-// Decline button
-declineBtn.addEventListener("click", ()=>{
-    alert("You must accept Privacy Policy & Terms to use SmartRent.");
-    window.location.href="https://www.google.com"; // or any other page
+/* NAVBAR SCROLL */
+window.addEventListener("scroll", () => {
+  document.getElementById("navbar").classList.toggle("scrolled", window.scrollY > 30);
 });
 
-// Example: block Start Exploring button if consent not given
-const startBtn = document.getElementById("startBtn");
-if(startBtn){
-    startBtn.addEventListener("click", ()=>{
-        if(localStorage.getItem("consentGiven") !== "true"){
-            modal.classList.remove("hidden");
-            alert("Please accept Privacy Policy & Terms first!");
-            return;
-        }
-        // continue with normal start action
-    });
+/* DROPDOWN */
+function toggleMenu() {
+  const dd = document.getElementById("dropdown");
+  dd.style.display = dd.style.display === "none" ? "block" : "none";
 }
+window.toggleMenu = toggleMenu;
+
+document.addEventListener("click", e => {
+  if (!e.target.closest('#userMenu')) {
+    const dd = document.getElementById("dropdown");
+    if (dd) dd.style.display = "none";
+  }
+});
+
+/* MOBILE MENU */
+window.toggleMobileMenu = function() {
+  document.getElementById("mobileMenu").classList.toggle("open");
+};
+
+/* TOAST */
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2500);
+}
+window.showToast = showToast;
+
+/* INTERSECTION OBSERVER - FADE UP */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+/* PAGE FADE IN */
+document.body.style.opacity = 0;
+window.onload = () => {
+  document.body.style.transition = "opacity 0.6s";
+  document.body.style.opacity = 1;
+};
 </script>
 
-<script>
-document.body.style.opacity = 0
-
-window.onload = ()=>{
-document.body.style.transition = "0.5s"
-document.body.style.opacity = 1
-}
-</script>
-
-<script>
-function toggleMenu(){
-  document.getElementById("dropdown").classList.toggle("hidden");
-}
-</script>
-
-<!-- 🚀 POST PROPERTY FLOAT BUTTON -->
-<a href="post-property.html" id="postBtn"
-class="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 rounded-full 
-bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold shadow-lg 
-hover:scale-110 transition duration-300">
-
-  <span class="text-xl">＋</span>
-  Post Property
-
-</a>
-  
 </body>
 </html>

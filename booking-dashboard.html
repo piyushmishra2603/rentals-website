@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Booking Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:#0f172a;
+color:white;
+font-family:'Inter',sans-serif;
+}
+
+.glass{
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(10px);
+border-radius:16px;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔥 NAVBAR -->
+<header class="flex justify-between items-center px-6 py-4 bg-black/40 backdrop-blur sticky top-0">
+<h1 class="text-xl font-bold text-cyan-400">📊 Booking Dashboard</h1>
+<a href="index.html">Home</a>
+</header>
+
+<!-- 🔥 FILTERS -->
+<div class="flex gap-3 p-6">
+<button onclick="filterBookings('all')" class="bg-gray-700 px-4 py-2 rounded">All</button>
+<button onclick="filterBookings('pending')" class="bg-yellow-500 px-4 py-2 rounded">Pending</button>
+<button onclick="filterBookings('confirmed')" class="bg-green-500 px-4 py-2 rounded">Confirmed</button>
+</div>
+
+<!-- 🔥 BOOKINGS -->
+<div id="bookingList" class="grid md:grid-cols-3 gap-6 px-6 pb-10"></div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+query,
+where,
+updateDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const auth = getAuth();
+
+let currentUser = null;
+let allBookings = [];
+
+/* 🔐 AUTH */
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+window.location.href="login.html";
+return;
+}
+
+currentUser = user;
+
+loadBookings();
+
+});
+
+/* 🚀 LOAD BOOKINGS */
+async function loadBookings(){
+
+const q = query(
+collection(db,"bookings"),
+where("userId","==",currentUser.uid)
+);
+
+const snapshot = await getDocs(q);
+
+allBookings = [];
+
+snapshot.forEach(docSnap=>{
+allBookings.push({
+id: docSnap.id,
+...docSnap.data()
+});
+});
+
+renderBookings(allBookings);
+
+}
+
+/* 🎨 RENDER */
+function renderBookings(data){
+
+const container = document.getElementById("bookingList");
+container.innerHTML = "";
+
+if(data.length === 0){
+container.innerHTML = "<p>No bookings found</p>";
+return;
+}
+
+data.forEach(b=>{
+
+const card = document.createElement("div");
+
+card.className = "glass p-4";
+
+card.innerHTML = `
+<h2 class="text-lg font-bold mb-2">Property ID: ${b.propertyId}</h2>
+
+<p>Check-in: ${b.checkin}</p>
+<p>Check-out: ${b.checkout}</p>
+
+<p class="mt-2">Total: ₹ ${b.total}</p>
+
+<p class="mt-2 font-bold ${
+b.status === "pending" ? "text-yellow-400" :
+b.status === "confirmed" ? "text-green-400" :
+"text-red-400"
+}">
+Status: ${b.status}
+</p>
+
+${b.status === "pending" ? `
+<button onclick="cancelBooking('${b.id}')"
+class="mt-3 bg

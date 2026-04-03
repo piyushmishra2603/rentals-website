@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Owner Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background:linear-gradient(135deg,#0f172a,#020617);
+color:white;
+font-family:'Inter',sans-serif;
+}
+
+.glass{
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border-radius:18px;
+transition:0.3s;
+}
+
+.glass:hover{
+transform:translateY(-5px);
+}
+
+.badge{
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+.toast{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#22c55e;
+padding:12px 18px;
+border-radius:8px;
+display:none;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- 🔥 HEADER -->
+<header class="flex justify-between items-center px-6 py-4 bg-black/30 backdrop-blur sticky top-0 z-50">
+<h1 class="text-xl font-bold text-cyan-400">🏠 Owner Dashboard</h1>
+
+<div class="flex gap-4">
+<input id="search" placeholder="Search..." class="px-3 py-1 rounded text-black">
+<select id="sort" class="text-black px-2 py-1 rounded">
+<option value="latest">Latest</option>
+<option value="earnings">Earnings</option>
+</select>
+<a href="index.html">Home</a>
+</div>
+</header>
+
+<!-- 💰 STATS -->
+<div class="grid md:grid-cols-4 gap-6 p-6">
+
+<div class="glass p-4">
+<p>Total Bookings</p>
+<h2 id="totalBookings" class="text-2xl font-bold">0</h2>
+</div>
+
+<div class="glass p-4">
+<p>Total Earnings</p>
+<h2 id="totalEarnings" class="text-2xl font-bold">₹0</h2>
+</div>
+
+<div class="glass p-4">
+<p>Pending</p>
+<h2 id="pendingBookings" class="text-2xl font-bold">0</h2>
+</div>
+
+<div class="glass p-4">
+<p>Confirmed</p>
+<h2 id="confirmedBookings" class="text-2xl font-bold">0</h2>
+</div>
+
+</div>
+
+<!-- 📦 BOOKINGS -->
+<div id="bookingList" class="grid md:grid-cols-3 gap-6 px-6 pb-10"></div>
+
+<div class="toast" id="toast">Updated!</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+onSnapshot,
+query,
+where,
+updateDoc,
+doc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* 🔥 CONFIG */
+const firebaseConfig = {
+apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+authDomain: "smart-property-portal.firebaseapp.com",
+projectId: "smart-property-portal"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore();
+const auth = getAuth();
+
+let currentUser = null;
+let bookings = [];
+let ownerProperties = [];
+let propertiesMap = {};
+
+/* 🔐 AUTH */
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+window.location.href="login.html";
+return;
+}
+
+currentUser = user;
+
+await loadOwnerProperties();
+listenBookings();
+
+});
+
+/* 🏠 LOAD PROPERTIES */
+async function loadOwnerProperties(){
+
+const snapshot = await onSnapshot(
+query(collection(db,"properties"), where("ownerId","==",currentUser.uid)),
+(snap)=>{
+
+ownerProperties = [];
+propertiesMap = {};
+
+snap.forEach(docSnap=>{
+ownerProperties.push(docSnap.id);
+propertiesMap[docSnap.id] = docSnap.data().title;
+});
+
+});
+
+}
+
+/* 📡 REALTIME BOOKINGS */
+function listenBookings(){
+
+onSnapshot(collection(db,"bookings"), (snap)=>{
+
+bookings = [];
+
+snap.forEach(docSnap=>{
+
+const data = docSnap.data();
+
+if(ownerProperties.includes(data.propertyId)){
+bookings.push({
+id: docSnap.id,
+...data
+});
+}
+
+});
+
+render();
+
+});
+
+}
+
+/* 🎨 RENDER */
+function render(){
+
+updateStats();
+
+let filtered = [...bookings];
+
+const search = document.getElementById("search").value.toLowerCase();
+
+filtered = filtered.filter(b =>
+(propertiesMap[b.propertyId] || "").toLowerCase().includes(search)
+);
+
+/* SORT */
+const sort = document.getElementById("sort").value;
+
+if(sort === "earnings"){
+filtered.sort((a,b)=> b.total - a.total);
+}else{
+filtered.sort((a,b)=> b.createdAt - a.createdAt);
+}
+
+const container = document.getElementById("bookingList");
+container.innerHTML = "";
+
+filtered.forEach(b=>{
+
+const statusColor =
+b.status === "pending" ? "bg-yellow-400 text-black" :
+b.status === "confirmed" ? "bg-green-500" :
+"bg-red-500";
+
+const card = document.createElement("div");
+
+card.className = "glass p-4";
+
+card.innerHTML = `
+<h2 class="font-bold text-lg">${propertiesMap[b.propertyId] || "Property"}</h2>
+
+<p>User: ${b.userId}</p>
+<p>${b.checkin} → ${b.checkout}</p>
+
+<p class="mt-2">₹ ${b.total}</p>
+
+<span class="badge ${statusColor}">
+${b.status}
+</span>
+
+${b.status === "pending" ? `
+<div class="flex gap-2 mt-3">
+<button onclick="updateBooking('${b.id}','confirmed')" class="bg-green-500 px-3 py-1 rounded">Accept</button>
+<button onclick="updateBooking('${b.id}','cancelled')" class="bg-red-500 px-3 py-1 rounded">Reject</button>
+</div>
+` : ""}
+
+`;
+
+container.appendChild(card);
+
+});
+
+}
+
+/* 💰 STATS */
+function updateStats(){
+
+totalBookings.innerText = bookings.length;
+
+const earnings = bookings
+.filter(b=>b.status === "confirmed")
+.reduce((sum,b)=> sum + Number(b.total),0);
+
+totalEarnings.innerText = "₹" + earnings;
+
+pendingBookings.innerText = bookings.filter(b=>b.status==="pending").length;
+
+confirmedBookings.innerText = bookings.filter(b=>b.status==="confirmed").length;
+
+}
+
+/* 🔔 TOAST */
+function showToast(){
+const t = document.getElementById("toast");
+t.style.display="block";
+setTimeout(()=> t.style.display="none",2000);
+}
+
+/* 🔄 UPDATE */
+window.updateBooking = async function(id,status){
+
+await updateDoc(doc(db,"bookings",id),{
+status:status
+});
+
+showToast();
+
+};
+
+document.getElementById("search").addEventListener("input",render);
+document.getElementById("sort").addEventListener("change",render);
+
+</script>
+
+</body>
+</html>

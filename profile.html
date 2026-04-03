@@ -1,206 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Profile - SmartRent AI</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>Profile — SmartRent AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-body{
-font-family:'Inter',sans-serif;
-background:linear-gradient(to right,#0f2027,#203a43,#2c5364);
-color:white;
-}
+  :root {
+    --bg: #060d17;
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.08);
+    --border: rgba(255,255,255,0.08);
+    --accent: #38bdf8;
+    --accent2: #818cf8;
+    --danger: #f87171;
+    --success: #34d399;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
 
-.glass{
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(15px);
-border-radius:20px;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.fade{
-animation:fade 0.6s ease-in-out;
-}
+  html { scroll-behavior: smooth; }
 
-@keyframes fade{
-from{opacity:0; transform:translateY(15px);}
-to{opacity:1; transform:translateY(0);}
-}
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-scene {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    filter: blur(120px); opacity: 0.18;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+  .orb-1 { width: 600px; height: 600px; background: #0ea5e9; top: -200px; left: -200px; animation-delay: 0s; }
+  .orb-2 { width: 500px; height: 500px; background: #6366f1; bottom: -150px; right: -150px; animation-delay: -5s; }
+  .orb-3 { width: 300px; height: 300px; background: #06b6d4; top: 40%; left: 50%; animation-delay: -3s; }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(40px, 30px) scale(1.08); }
+  }
+
+  /* Grid overlay */
+  .bg-scene::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* ── LAYOUT ── */
+  .page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  /* ── NAV BAR ── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem 1.5rem;
+    background: rgba(6,13,23,0.7);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-brand {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .topbar-right { display: flex; gap: 0.6rem; align-items: center; }
+
+  /* ── GLASS CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    backdrop-filter: blur(24px);
+    transition: border-color 0.3s;
+  }
+  .card:hover { border-color: rgba(255,255,255,0.13); }
+
+  /* ── COVER + AVATAR ── */
+  .cover-wrap { position: relative; }
+
+  .cover {
+    height: 180px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(135deg, #0c4a6e 0%, #1e1b4b 50%, #0f172a 100%);
+    position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(56,189,248,0.25) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 30%, rgba(129,140,248,0.2) 0%, transparent 60%);
+  }
+  /* Animated shimmer lines on cover */
+  .cover::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 40px,
+      rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 80px
+    );
+  }
+
+  .avatar-wrap {
+    position: absolute;
+    bottom: -50px; left: 36px;
+  }
+  .avatar-ring {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    padding: 3px;
+    box-shadow: 0 0 30px rgba(56,189,248,0.35);
+  }
+  .avatar-ring img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--bg);
+    display: block;
+  }
+
+  .cover-actions {
+    position: absolute; bottom: 16px; right: 20px;
+    display: flex; gap: 0.5rem;
+  }
+
+  /* ── PROFILE BODY ── */
+  .profile-body {
+    padding: 4rem 2rem 2rem;
+  }
+  .profile-name {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.75rem;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 0.2rem;
+  }
+  .profile-email {
+    color: var(--accent); font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .profile-bio {
+    color: #94a3b8; font-size: 0.9rem; line-height: 1.6;
+    max-width: 500px; margin-bottom: 1rem;
+  }
+  .profile-phone {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-size: 0.82rem; color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.75rem; border-radius: 999px;
+  }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: flex; gap: 1rem; margin: 1.5rem 0 1.5rem;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem 1.5rem;
+    text-align: center;
+    flex: 1; min-width: 90px;
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .stat-chip:hover {
+    background: var(--surface-hover);
+    border-color: rgba(56,189,248,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(56,189,248,0.1);
+  }
+  .stat-num {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.5rem;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── SECTION TITLE ── */
+  .section-title {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  /* ── ACTIVITY FEED ── */
+  .activity-item {
+    display: flex; gap: 1rem; align-items: flex-start;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .activity-text { flex: 1; }
+  .activity-text strong { font-size: 0.87rem; color: var(--text); display: block; font-weight: 500; }
+  .activity-text span { font-size: 0.78rem; color: var(--muted); }
+  .activity-badge {
+    font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 999px;
+    font-weight: 600; align-self: center; white-space: nowrap;
+  }
+
+  /* ── BADGES ── */
+  .badge-green { background: rgba(52,211,153,0.15); color: var(--success); }
+  .badge-blue  { background: rgba(56,189,248,0.15); color: var(--accent); }
+  .badge-purple{ background: rgba(129,140,248,0.15); color: var(--accent2); }
+  .badge-yellow{ background: rgba(251,191,36,0.15); color: #fbbf24; }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.55rem 1.2rem; border-radius: 10px;
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+    border: none; cursor: pointer; transition: all 0.22s;
+    letter-spacing: 0.01em;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #0ea5e9, #6366f1);
+    color: white;
+    box-shadow: 0 4px 14px rgba(56,189,248,0.25);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(56,189,248,0.35); }
+  .btn-danger  { background: rgba(248,113,113,0.15); color: var(--danger); border: 1px solid rgba(248,113,113,0.25); }
+  .btn-danger:hover  { background: rgba(248,113,113,0.25); transform: translateY(-2px); }
+  .btn-ghost   { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+  .btn-ghost:hover   { background: var(--surface-hover); transform: translateY(-2px); }
+
+  /* ── EDIT MODAL OVERLAY ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #0d1829;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 22px;
+    width: 100%; max-width: 480px;
+    padding: 2rem;
+    transform: translateY(24px) scale(0.97);
+    transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-overlay.open .modal { transform: translateY(0) scale(1); }
+
+  .modal-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 1.3rem;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-close {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; transition: all 0.2s;
+  }
+  .modal-close:hover { background: rgba(248,113,113,0.15); color: var(--danger); border-color: rgba(248,113,113,0.3); }
+
+  /* ── FORM ── */
+  .field { margin-bottom: 1.1rem; }
+  .field label { display: block; font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .field input, .field textarea {
+    width: 100%; padding: 0.7rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-family: var(--font-body); font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .field input:focus, .field textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  /* Avatar upload zone */
+  .avatar-upload {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+    padding: 1rem;
+    border: 1.5px dashed var(--border);
+    border-radius: 14px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .avatar-upload:hover { border-color: var(--accent); background: rgba(56,189,248,0.04); }
+  .avatar-upload img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+  .avatar-upload-text strong { display: block; font-size: 0.85rem; }
+  .avatar-upload-text span { font-size: 0.75rem; color: var(--muted); }
+  #file { display: none; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+    background: #0d1829; border: 1px solid var(--border); border-radius: 14px;
+    padding: 0.9rem 1.4rem;
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.87rem; font-weight: 500;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    transform: translateY(20px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .toast.success .toast-dot { background: var(--success); }
+  .toast.error   .toast-dot { background: var(--danger); }
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── SKELETON LOADER ── */
+  .skeleton {
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+    background-size: 400% 100%;
+    animation: shimmer 1.6s ease infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+  /* ── PAGE ENTRY ANIMATION ── */
+  .fade-up {
+    animation: fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .delay-1 { animation-delay: 0.08s; }
+  .delay-2 { animation-delay: 0.16s; }
+  .delay-3 { animation-delay: 0.24s; }
+  .delay-4 { animation-delay: 0.32s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .profile-body { padding: 3.5rem 1.25rem 1.5rem; }
+    .stats-row { gap: 0.6rem; }
+    .cover-actions { display: none; }
+  }
 </style>
-
 </head>
 
-<body class="p-4 fade">
+<body>
 
-<div class="max-w-4xl mx-auto">
-
-<!-- 🔥 HEADER -->
-<div class="relative glass p-6 text-center shadow-2xl">
-
-<!-- COVER -->
-<div class="h-40 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500"></div>
-
-<!-- PROFILE IMAGE -->
-<img id="profileImg"
-class="w-28 h-28 rounded-full border-4 border-white absolute left-1/2 -translate-x-1/2 top-24 object-cover">
-
-<h2 id="name" class="text-2xl font-bold mt-16"></h2>
-<p id="email" class="text-gray-300"></p>
-<p id="bio" class="text-gray-400 mt-2"></p>
-<p id="phone" class="text-gray-400"></p>
-
-<div class="flex justify-center gap-3 mt-4">
-<button onclick="toggleEdit()" 
-class="bg-blue-500 px-4 py-2 rounded hover:scale-105 transition">
-Edit Profile
-</button>
-
-<button onclick="logout()" 
-class="bg-red-500 px-4 py-2 rounded hover:scale-105 transition">
-Logout
-</button>
+<!-- BACKGROUND -->
+<div class="bg-scene">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
 </div>
 
+<!-- TOP NAV -->
+<nav class="topbar">
+  <span class="topbar-brand">⚡ SmartRent AI</span>
+  <div class="topbar-right">
+    <button class="btn btn-ghost" onclick="toggleEdit()" style="padding:0.45rem 1rem;font-size:0.8rem;">
+      ✏️ Edit Profile
+    </button>
+    <button class="btn btn-danger" onclick="logout()" style="padding:0.45rem 1rem;font-size:0.8rem;">
+      Sign Out
+    </button>
+  </div>
+</nav>
+
+<!-- MAIN PAGE -->
+<div class="page">
+
+  <!-- HERO CARD -->
+  <div class="card fade-up" style="overflow:hidden; margin-bottom:1.25rem;">
+    <div class="cover-wrap">
+      <div class="cover"></div>
+      <div class="avatar-wrap">
+        <div class="avatar-ring">
+          <img id="profileImg" src="https://i.pravatar.cc/150?img=3" alt="Profile">
+        </div>
+      </div>
+      <div class="cover-actions">
+        <button class="btn btn-ghost" onclick="toggleEdit()" style="font-size:0.78rem;padding:0.4rem 0.9rem;backdrop-filter:blur(12px);">
+          ✏️ Edit
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-body">
+      <div id="name" class="profile-name">
+        <span class="skeleton" style="width:180px;height:28px;display:inline-block;">&nbsp;</span>
+      </div>
+      <div id="email" class="profile-email"></div>
+      <p id="bio" class="profile-bio"></p>
+      <span id="phone" class="profile-phone">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.6 19.79 19.79 0 01.22 1a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 6.91a16 16 0 006.59 6.59l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"></path></svg>
+        <span id="phoneText">—</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row fade-up delay-1">
+    <div class="stat-chip">
+      <div class="stat-num" id="stat-listings">—</div>
+      <div class="stat-label">Listings Viewed</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-num" id="stat-saved">—</div>
+      <div class="stat-label">Saved Properties</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-num" id="stat-days">—</div>
+      <div class="stat-label">Days Active</div>
+    </div>
+    <div class="stat-chip">
+      <div class="stat-num">AI</div>
+      <div class="stat-label">Matches Ready</div>
+    </div>
+  </div>
+
+  <!-- RECENT ACTIVITY -->
+  <div class="card fade-up delay-2" style="padding: 1.5rem;">
+    <div class="section-title">Recent Activity</div>
+    <div id="activity-feed">
+      <div class="activity-item">
+        <div class="activity-icon badge-blue">🏠</div>
+        <div class="activity-text">
+          <strong>Viewed 3 new listings in Downtown</strong>
+          <span>2 hours ago</span>
+        </div>
+        <span class="activity-badge badge-blue">New</span>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon badge-green">💬</div>
+        <div class="activity-text">
+          <strong>Message sent to Landlord — Apt #402</strong>
+          <span>Yesterday</span>
+        </div>
+        <span class="activity-badge badge-green">Sent</span>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon badge-yellow">⭐</div>
+        <div class="activity-text">
+          <strong>Saved "Modern Studio — Midtown" to favorites</strong>
+          <span>2 days ago</span>
+        </div>
+        <span class="activity-badge badge-yellow">Saved</span>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon badge-purple">🤖</div>
+        <div class="activity-text">
+          <strong>AI found 5 new matches based on your preferences</strong>
+          <span>3 days ago</span>
+        </div>
+        <span class="activity-badge badge-purple">AI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="fade-up delay-3" style="display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap;">
+    <button class="btn btn-primary" style="flex:1;min-width:150px;justify-content:center;">
+      🤖 AI Recommendations
+    </button>
+    <button class="btn btn-ghost" style="flex:1;min-width:150px;justify-content:center;">
+      🏘️ My Saved Homes
+    </button>
+    <button class="btn btn-ghost" style="flex:1;min-width:150px;justify-content:center;">
+      📋 My Applications
+    </button>
+  </div>
+
+</div><!-- end .page -->
+
+<!-- ── EDIT MODAL ── -->
+<div class="modal-overlay" id="editOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="editModal">
+    <div class="modal-title">
+      Edit Profile
+      <button class="modal-close" onclick="toggleEdit()">✕</button>
+    </div>
+
+    <!-- Avatar upload -->
+    <div class="avatar-upload" onclick="document.getElementById('file').click()">
+      <img id="preview" src="https://i.pravatar.cc/150?img=3" alt="preview">
+      <div class="avatar-upload-text">
+        <strong>Change Photo</strong>
+        <span>Click to upload · JPG, PNG, WEBP</span>
+      </div>
+    </div>
+    <input id="file" type="file" accept="image/*">
+
+    <div class="field">
+      <label>Full Name</label>
+      <input id="newName" placeholder="Your full name" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Bio</label>
+      <textarea id="newBio" placeholder="Tell landlords a bit about yourself…"></textarea>
+    </div>
+    <div class="field">
+      <label>Phone</label>
+      <input id="newPhone" placeholder="+1 (555) 000-0000" type="tel">
+    </div>
+
+    <button onclick="saveProfile()" class="btn btn-primary" style="width:100%;justify-content:center;padding:0.8rem;font-size:0.95rem;margin-top:0.5rem;">
+      💾 Save Changes
+    </button>
+  </div>
 </div>
 
-<!-- 🔥 EDIT SECTION -->
-<div id="editBox" class="hidden glass p-6 mt-6 shadow-xl">
-
-<h3 class="text-xl mb-4">Edit Profile</h3>
-
-<input id="newName" placeholder="Name"
-class="w-full p-2 mb-3 rounded text-black">
-
-<input id="newBio" placeholder="Bio"
-class="w-full p-2 mb-3 rounded text-black">
-
-<input id="newPhone" placeholder="Phone"
-class="w-full p-2 mb-3 rounded text-black">
-
-<input id="file" type="file" accept="image/*"
-class="mb-3">
-
-<img id="preview"
-class="w-20 h-20 rounded-full hidden mb-3">
-
-<button onclick="saveProfile()"
-class="w-full bg-green-500 py-2 rounded hover:scale-105 transition">
-Save Changes
-</button>
-
-</div>
-
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg">Saved!</span>
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-getAuth, 
-onAuthStateChanged,
-signOut 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { 
-getFirestore, 
-doc, 
-getDoc, 
-updateDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-/* CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
   authDomain: "smart-property-portal.firebaseapp.com",
   projectId: "smart-property-portal"
 };
 
-const app = initializeApp(firebaseConfig);
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db   = getFirestore(app);
 
-/* LOAD USER */
-onAuthStateChanged(auth, async (user)=>{
+/* ── LOAD USER ── */
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = "login.html"; return; }
 
-  if(!user){
-    window.location.href = "login.html";
-    return;
-  }
-
-  const ref = doc(db,"users",user.uid);
-  const snap = await getDoc(ref);
-
-  if(snap.exists()){
+  const snap = await getDoc(doc(db, "users", user.uid));
+  if (snap.exists()) {
     const d = snap.data();
 
-    document.getElementById("name").innerText = d.name || "User";
-    document.getElementById("email").innerText = d.email;
-    document.getElementById("bio").innerText = d.bio || "";
-    document.getElementById("phone").innerText = d.phone || "";
-    document.getElementById("profileImg").src = d.photo || "https://i.pravatar.cc/150";
-  }
+    // Clear skeletons
+    document.getElementById("name").innerHTML = '';
 
+    document.getElementById("name").textContent      = d.name  || "User";
+    document.getElementById("email").textContent     = d.email || "";
+    document.getElementById("bio").textContent       = d.bio   || "No bio yet — add one!";
+    document.getElementById("phoneText").textContent = d.phone || "No phone";
+    document.getElementById("profileImg").src        = d.photo || "https://i.pravatar.cc/150?img=3";
+    document.getElementById("preview").src           = d.photo || "https://i.pravatar.cc/150?img=3";
+
+    // Prefill edit fields
+    document.getElementById("newName").value  = d.name  || "";
+    document.getElementById("newBio").value   = d.bio   || "";
+    document.getElementById("newPhone").value = d.phone || "";
+
+    // Fake stats (replace with real Firestore data if you have it)
+    animateNumber("stat-listings", d.listingsViewed || 47);
+    animateNumber("stat-saved",    d.savedCount     || 12);
+    animateNumber("stat-days", Math.floor((Date.now() - (d.createdAt?.toMillis?.() || Date.now() - 864e7)) / 864e5));
+  }
 });
 
-/* TOGGLE EDIT */
-window.toggleEdit = ()=>{
-  document.getElementById("editBox").classList.toggle("hidden");
+function animateNumber(id, target) {
+  const el = document.getElementById(id);
+  let current = 0;
+  const step = Math.ceil(target / 30);
+  const t = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = current;
+    if (current >= target) clearInterval(t);
+  }, 35);
 }
 
-/* IMAGE PREVIEW */
-const fileInput = document.getElementById("file");
-const preview = document.getElementById("preview");
+/* ── TOGGLE MODAL ── */
+window.toggleEdit = () => {
+  const overlay = document.getElementById("editOverlay");
+  overlay.classList.toggle("open");
+  document.body.style.overflow = overlay.classList.contains("open") ? "hidden" : "";
+};
 
-fileInput.addEventListener("change", ()=>{
-  const file = fileInput.files[0];
-  if(file){
-    preview.src = URL.createObjectURL(file);
-    preview.classList.remove("hidden");
+window.handleOverlayClick = (e) => {
+  if (e.target === document.getElementById("editOverlay")) window.toggleEdit();
+};
+
+/* ── IMAGE PREVIEW ── */
+document.getElementById("file").addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const url = URL.createObjectURL(file);
+    document.getElementById("preview").src = url;
   }
 });
 
-/* SAVE PROFILE */
-window.saveProfile = async ()=>{
-
+/* ── SAVE PROFILE ── */
+window.saveProfile = async () => {
   const user = auth.currentUser;
+  if (!user) return;
 
-  const name = document.getElementById("newName").value;
-  const bio = document.getElementById("newBio").value;
-  const phone = document.getElementById("newPhone").value;
+  const name  = document.getElementById("newName").value.trim();
+  const bio   = document.getElementById("newBio").value.trim();
+  const phone = document.getElementById("newPhone").value.trim();
+  const photo = document.getElementById("preview").src;
 
-  let photo = document.getElementById("profileImg").src;
+  try {
+    await updateDoc(doc(db, "users", user.uid), { name, bio, phone, photo });
 
-  if(preview.src){
-    photo = preview.src;
+    // Update DOM live (no reload needed!)
+    document.getElementById("name").textContent      = name  || "User";
+    document.getElementById("bio").textContent       = bio   || "No bio yet";
+    document.getElementById("phoneText").textContent = phone || "No phone";
+    document.getElementById("profileImg").src        = photo;
+
+    window.toggleEdit();
+    showToast("Profile updated successfully!", "success");
+
+  } catch (err) {
+    showToast("Error saving profile.", "error");
   }
+};
 
-  try{
-    await updateDoc(doc(db,"users",user.uid),{
-      name,
-      bio,
-      phone,
-      photo
-    });
-
-    alert("Profile updated 🎉");
-    location.reload();
-
-  }catch(e){
-    alert("Error updating profile");
-  }
-
-}
-
-/* LOGOUT */
-window.logout = async ()=>{
+/* ── LOGOUT ── */
+window.logout = async () => {
   await signOut(auth);
   window.location.href = "login.html";
-}
+};
 
+/* ── TOAST ── */
+function showToast(msg, type = "success") {
+  const t = document.getElementById("toast");
+  document.getElementById("toastMsg").textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => { t.classList.remove("show"); }, 3500);
+}
+window.showToast = showToast;
 </script>
 
 </body>

@@ -1,211 +1,564 @@
+<!-- provider-register.html (premium + advanced JS version) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Become a Provider</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Become a Provider</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-<style>
-body{
-background:linear-gradient(to right,#020617,#0f172a);
-color:white;
-font-family:Inter;
-}
-.glass{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-border-radius:16px;
-}
-.step{
-display:none;
-}
-.step.active{
-display:block;
-}
-</style>
+  <style>
+    body{
+      background: radial-gradient(900px 500px at 15% 15%, rgba(59,130,246,.35), transparent 55%),
+                  radial-gradient(800px 450px at 85% 25%, rgba(34,211,238,.25), transparent 50%),
+                  linear-gradient(to right,#020617,#0f172a);
+      color:white;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .glass{
+      background:rgba(255,255,255,0.07);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius:20px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.35);
+    }
+    .step { display:none; }
+    .step.active { display:block; }
+
+    /* smooth step animation */
+    .stepWrap{ position:relative; overflow:hidden; }
+    .stepPane{
+      transition: transform .35s ease, opacity .25s ease;
+      will-change: transform;
+    }
+
+    /* premium focus */
+    input:focus, button:focus, textarea:focus, select:focus{
+      outline:none;
+      box-shadow: 0 0 0 4px rgba(59,130,246,.25);
+    }
+  </style>
 </head>
 
-<body class="flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen p-4">
+  <div class="glass p-6 w-full max-w-xl">
 
-<div class="glass p-6 w-full max-w-xl">
+    <!-- Header -->
+    <div class="flex items-start justify-between gap-4 mb-4">
+      <div>
+        <h2 class="text-2xl font-extrabold text-center">
+          🚀 Become a Service Provider
+        </h2>
+        <p class="text-sm text-white/70 text-center mt-1">
+          Create your profile in minutes. Earn faster with the right pricing.
+        </p>
+      </div>
 
-<h2 class="text-2xl font-bold text-center mb-4">
-🚀 Become a Service Provider
-</h2>
+      <div class="hidden sm:block text-right">
+        <div id="authBadge" class="text-xs inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+          <span class="w-2 h-2 rounded-full bg-emerald-400" id="authDot"></span>
+          <span id="authText">Checking login…</span>
+        </div>
+      </div>
+    </div>
 
-<!-- STEP INDICATOR -->
-<div class="flex justify-between text-xs mb-4">
-<span id="s1">● Info</span>
-<span id="s2">● Service</span>
-<span id="s3">● Pricing</span>
-</div>
+    <!-- Step indicator -->
+    <div class="relative mb-6">
+      <div class="flex justify-between text-xs text-white/70">
+        <span class="step-ind" data-step="1" id="s1">● Info</span>
+        <span class="step-ind" data-step="2" id="s2">● Service</span>
+        <span class="step-ind" data-step="3" id="s3">● Pricing</span>
+      </div>
 
-<!-- STEP 1 -->
-<div class="step active" id="step1">
+      <div class="mt-2 h-2 bg-white/10 rounded-full overflow-hidden">
+        <div id="progressBar" class="h-full w-1/3 bg-gradient-to-r from-blue-500 via-cyan-400 to-emerald-400 transition-all duration-300"></div>
+      </div>
+    </div>
 
-<input id="name" placeholder="Full Name"
-class="w-full p-2 rounded text-black mb-3">
+    <!-- Step 1 -->
+    <div class="step active" id="step1" aria-live="polite">
+      <div class="stepPane">
+        <div class="grid grid-cols-1 gap-3">
+          <div>
+            <label class="text-sm text-white/80">Full Name</label>
+            <input id="name" autocomplete="name" placeholder="Full Name"
+                   class="w-full mt-1 p-3 rounded-xl text-black bg-white/90" />
+            <p class="text-xs text-red-300 mt-1 hidden" id="errName"></p>
+          </div>
 
-<input id="phone" placeholder="Phone Number"
-class="w-full p-2 rounded text-black mb-3">
+          <div>
+            <label class="text-sm text-white/80">Phone Number</label>
+            <input id="phone" inputmode="tel" autocomplete="tel" placeholder="Phone Number"
+                   class="w-full mt-1 p-3 rounded-xl text-black bg-white/90" />
+            <p class="text-xs text-red-300 mt-1 hidden" id="errPhone"></p>
+          </div>
 
-<input id="city" placeholder="City"
-class="w-full p-2 rounded text-black mb-3">
+          <div>
+            <label class="text-sm text-white/80">City</label>
+            <input id="city" autocomplete="address-level2" placeholder="City"
+                   class="w-full mt-1 p-3 rounded-xl text-black bg-white/90" />
+            <p class="text-xs text-red-300 mt-1 hidden" id="errCity"></p>
+          </div>
 
-<label class="text-sm">Upload Profile Image</label>
-<input type="file" id="image"
-class="w-full mb-3">
+          <div class="mt-2">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-sm text-white/80">Upload Profile Image</label>
+              <span class="text-xs text-white/60">Optional</span>
+            </div>
 
-<button onclick="next(2)"
-class="w-full bg-blue-600 py-2 rounded">
-Next →
-</button>
+            <input type="file" id="image" accept="image/*"
+                   class="w-full text-sm text-white/70 file:mr-4 file:py-2 file:px-4
+                          file:rounded-full file:border-0
+                          file:bg-gradient-to-r file:from-blue-500 file:to-cyan-400
+                          file:text-black hover:file:opacity-95" />
 
-</div>
+            <!-- Premium preview -->
+            <div class="mt-3 flex items-center gap-3">
+              <div class="w-16 h-16 rounded-2xl bg-white/10 border border-white/10 overflow-hidden flex items-center justify-center">
+                <img id="imgPreview" alt="Preview" class="w-full h-full object-cover hidden" />
+                <span id="imgPlaceholder" class="text-2xl">👤</span>
+              </div>
 
-<!-- STEP 2 -->
-<div class="step" id="step2">
+              <div class="min-w-0">
+                <p id="imgHint" class="text-sm text-white/70">
+                  Choose an image to preview.
+                </p>
+                <p id="imgFileName" class="text-xs text-white/50 mt-1 hidden"></p>
+              </div>
+            </div>
+          </div>
 
-<p class="mb-2">Select Services</p>
+          <div class="mt-4">
+            <button id="btnNext1"
+                    class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95
+                           py-3 rounded-xl font-bold transition text-black">
+              Next →
+            </button>
 
-<div class="grid grid-cols-2 gap-2">
+            <p class="text-xs text-white/60 mt-2 text-center">
+              We’ll verify your details before activating your profile.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<label><input type="checkbox" value="plumbing"> Plumbing</label>
-<label><input type="checkbox" value="electric"> Electric</label>
-<label><input type="checkbox" value="furniture"> Furniture</label>
-<label><input type="checkbox" value="cleaning"> Cleaning</label>
-<label><input type="checkbox" value="painting"> Painting</label>
-<label><input type="checkbox" value="appliance"> Appliances</label>
+    <!-- Step 2 -->
+    <div class="step" id="step2" aria-live="polite">
+      <div class="stepPane">
+        <div>
+          <p class="text-sm text-white/80 mb-2">Select Services</p>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="plumbing" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Plumbing</span>
+            </label>
 
-</div>
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="electric" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Electric</span>
+            </label>
 
-<div class="flex gap-2 mt-4">
-<button onclick="next(1)" class="w-1/2 bg-gray-600 py-2 rounded">← Back</button>
-<button onclick="next(3)" class="w-1/2 bg-blue-600 py-2 rounded">Next →</button>
-</div>
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="furniture" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Furniture</span>
+            </label>
 
-</div>
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="cleaning" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Cleaning</span>
+            </label>
 
-<!-- STEP 3 -->
-<div class="step" id="step3">
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="painting" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Painting</span>
+            </label>
 
-<input id="price" type="number"
-placeholder="Base Price ₹"
-class="w-full p-2 rounded text-black mb-3">
+            <label class="premiumCheck rounded-xl bg-white/5 border border-white/10 p-3 cursor-pointer hover:bg-white/10 transition">
+              <input type="checkbox" value="appliance" class="accent-blue-500" />
+              <span class="ml-2 text-sm text-white/90">Appliances</span>
+            </label>
+          </div>
 
-<p id="aiSuggest" class="text-sm text-cyan-400 mb-2"></p>
+          <p class="text-xs text-red-300 mt-2 hidden" id="errServices"></p>
 
-<label class="flex items-center gap-2">
-<input type="checkbox" id="available" checked>
-Available for work
-</label>
+          <div class="flex gap-3 mt-5">
+            <button id="btnBack2" class="w-1/2 bg-white/10 hover:bg-white/15 py-3 rounded-xl transition font-semibold">
+              ← Back
+            </button>
+            <button id="btnNext2"
+                    class="w-1/2 bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-95
+                           py-3 rounded-xl font-bold transition text-black">
+              Next →
+            </button>
+          </div>
 
-<button onclick="register()"
-class="w-full bg-green-600 py-2 mt-4 rounded font-bold">
-🚀 Register Now
-</button>
+          <div class="mt-4 p-3 rounded-xl bg-white/5 border border-white/10 text-xs text-white/70">
+            Tip: Pick the services you’re confident delivering—this improves job matching.
+          </div>
+        </div>
+      </div>
+    </div>
 
-<button onclick="next(2)"
-class="w-full mt-2 text-gray-400">
-← Back
-</button>
+    <!-- Step 3 -->
+    <div class="step" id="step3" aria-live="polite">
+      <div class="stepPane">
+        <div class="grid gap-3">
+          <div>
+            <label class="text-sm text-white/80">Base Price (₹)</label>
+            <input id="price" type="number" min="0" step="1"
+                   placeholder="Base Price ₹"
+                   class="w-full mt-1 p-3 rounded-xl text-black bg-white/90" />
+            <p id="aiSuggest" class="text-sm text-cyan-300 mt-2"></p>
+            <p class="text-xs text-red-300 mt-2 hidden" id="errPrice"></p>
+          </div>
 
-</div>
+          <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+            <label class="flex items-center justify-between gap-3 cursor-pointer select-none">
+              <span class="text-sm text-white/85">Available for work</span>
+              <input type="checkbox" id="available" checked class="w-5 h-5 accent-emerald-400" />
+            </label>
+            <p class="text-xs text-white/60 mt-2">
+              If unchecked, you can still edit later.
+            </p>
+          </div>
 
-</div>
+          <div class="flex gap-3">
+            <button id="btnBack3" class="w-1/2 bg-white/10 hover:bg-white/15 py-3 rounded-xl transition font-semibold">
+              ← Back
+            </button>
 
-<script type="module">
+            <button id="btnRegister"
+                    class="w-1/2 bg-gradient-to-r from-emerald-500 to-teal-400 hover:opacity-95
+                           py-3 rounded-xl font-extrabold transition text-black">
+              🚀 Register Now
+            </button>
+          </div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-import {
-getFirestore,
-collection,
-addDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"
+          <button id="btnLoadingGhost"
+                  class="hidden w-full mt-1 py-3 rounded-xl bg-white/10 border border-white/10 text-white/70 cursor-not-allowed">
+            <span class="inline-flex items-center gap-2 justify-center">
+              <span class="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></span>
+              Creating your provider profile…
+            </span>
+          </button>
 
-import {
-getAuth,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
+          <div id="formError" class="hidden p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-200 text-sm"></div>
 
-/* CONFIG */
-const firebaseConfig = {
-apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-authDomain:"smart-property-portal.firebaseapp.com",
-projectId:"smart-property-portal"
-}
+          <p class="text-xs text-white/60 text-center">
+            By registering, you agree to our service terms.
+          </p>
+        </div>
+      </div>
+    </div>
 
-const app = initializeApp(firebaseConfig)
-const db = getFirestore(app)
-const auth = getAuth(app)
+    <!-- Footer mini trust -->
+    <div class="mt-5 pt-4 border-t border-white/10 text-xs text-white/60 flex items-center justify-between">
+      <span>🔒 Secure signup</span>
+      <span>⚡ Fast onboarding</span>
+      <span>✅ Verified profile</span>
+    </div>
+  </div>
 
-let currentUser=null
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-onAuthStateChanged(auth,(user)=>{
-if(!user){
-alert("Login first")
-window.location.href="login.html"
-}else{
-currentUser=user
-}
-})
+    // =========================
+    // CONFIG (IMPORTANT)
+    // =========================
+    const firebaseConfig = {
+      apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+      authDomain: "smart-property-portal.firebaseapp.com",
+      projectId: "smart-property-portal"
+    };
 
-/* STEP NAV */
-window.next = function(step){
+    // =========================
+    // State
+    // =========================
+    const state = {
+      currentUser: null,
+      currentStep: 1,
+      busy: false
+    };
 
-document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"))
-document.getElementById("step"+step).classList.add("active")
+    // =========================
+    // Firebase init
+    // =========================
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-}
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-/* AI PRICE SUGGESTION */
-price.addEventListener("input",()=>{
-let p = Number(price.value)
+    // =========================
+    // Auth handling
+    // =========================
+    const authText = $("authText");
+    const authDot  = $("authDot");
 
-if(p < 200){
-aiSuggest.innerText = "💡 Try ₹300–₹500 for better earnings"
-}else if(p < 500){
-aiSuggest.innerText = "🔥 Competitive pricing!"
-}else{
-aiSuggest.innerText = "🚀 Premium provider level"
-}
-})
+    authDot.className = "w-2 h-2 rounded-full bg-amber-300";
 
-/* REGISTER */
-window.register = async function(){
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        authText.textContent = "Login required";
+        authDot.className = "w-2 h-2 rounded-full bg-red-400";
+        window.location.href = "login.html";
+      } else {
+        state.currentUser = user;
+        authText.textContent = "Signed in ✓";
+        authDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+      }
+    });
 
-let services = []
-document.querySelectorAll("input[type=checkbox]:checked").forEach(c=>{
-if(c.value) services.push(c.value)
-})
+    // =========================
+    // Step UI helpers
+    // =========================
+    const stepEls = [1,2,3].map(n => $("step"+n));
+    const stepInds = [1,2,3].map(n => $("s"+n));
+    const progressBar = $("progressBar");
 
-const data={
-name: name.value,
-phone: phone.value,
-city: city.value,
-services: services,
-price: Number(price.value),
+    function setActiveStep(step) {
+      state.currentStep = step;
 
-rating: 5,
-jobs: 0,
-verified: false,
-available: available.checked,
+      stepEls.forEach(el => el.classList.remove("active"));
+      $("step"+step).classList.add("active");
 
-ownerId: currentUser.uid,
-createdAt: Date.now()
-}
+      stepInds.forEach((el, idx) => {
+        const n = idx + 1;
+        const isActive = n === step;
+        el.classList.toggle("text-white", isActive);
+        el.classList.toggle("text-white/70", !isActive);
+        el.classList.toggle("font-bold", isActive);
+      });
 
-await addDoc(collection(db,"providers"),data)
+      const w = (step === 1) ? "33.333%" : (step === 2) ? "66.666%" : "100%";
+      progressBar.style.width = w;
+    }
 
-alert("🎉 Registered Successfully!")
+    // =========================
+    // Premium errors
+    // =========================
+    function showErr(elId, msg) {
+      const el = $(elId);
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.remove("hidden");
+    }
+    function hideErr(elId) {
+      const el = $(elId);
+      if (!el) return;
+      el.classList.add("hidden");
+    }
+    function setFormError(msg) {
+      const box = $("formError");
+      if (!msg) {
+        box.classList.add("hidden");
+        box.textContent = "";
+        return;
+      }
+      box.textContent = msg;
+      box.classList.remove("hidden");
+    }
 
-window.location.href="provider.html"
+    // =========================
+    // Image preview
+    // =========================
+    const imageInput = $("image");
+    const imgPreview = $("imgPreview");
+    const imgPlaceholder = $("imgPlaceholder");
+    const imgHint = $("imgHint");
+    const imgFileName = $("imgFileName");
 
-}
+    imageInput?.addEventListener("change", () => {
+      const file = imageInput.files && imageInput.files[0];
+      if (!file) return;
 
-</script>
+      if (!file.type.startsWith("image/")) {
+        imgHint.textContent = "Please select an image file.";
+        imgFileName.classList.add("hidden");
+        imgPreview.classList.add("hidden");
+        imgPlaceholder.classList.remove("hidden");
+        return;
+      }
 
+      imgFileName.textContent = file.name;
+      imgFileName.classList.remove("hidden");
+      imgHint.textContent = "Preview loaded ✓";
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        imgPreview.src = String(reader.result);
+        imgPreview.classList.remove("hidden");
+        imgPlaceholder.classList.add("hidden");
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // =========================
+    // AI price suggestion (local)
+    // =========================
+    const price = $("price");
+    const aiSuggest = $("aiSuggest");
+
+    function updateAiSuggest() {
+      const p = Number(price.value);
+      if (!Number.isFinite(p) || price.value === "") {
+        aiSuggest.textContent = "";
+        return;
+      }
+      if (p < 200) aiSuggest.textContent = "💡 Try ₹300–₹500 for better earnings";
+      else if (p < 500) aiSuggest.textContent = "🔥 Competitive pricing!";
+      else aiSuggest.textContent = "🚀 Premium provider level";
+    }
+
+    price?.addEventListener("input", updateAiSuggest);
+
+    // =========================
+    // Validation
+    // =========================
+    function validateStep1() {
+      let ok = true;
+
+      const name = $("name").value.trim();
+      const phone = $("phone").value.trim();
+      const city = $("city").value.trim();
+
+      hideErr("errName");
+      hideErr("errPhone");
+      hideErr("errCity");
+
+      if (!name || name.length < 2) { showErr("errName", "Enter your full name."); ok = false; }
+      if (!phone || phone.replace(/\D/g,"").length < 10) { showErr("errPhone", "Enter a valid phone number (10+ digits)."); ok = false; }
+      if (!city || city.length < 2) { showErr("errCity", "Enter your city."); ok = false; }
+
+      return ok;
+    }
+
+    function getSelectedServices() {
+      return $$("input[type=checkbox][value]:checked").map(c => c.value);
+    }
+
+    function validateStep2() {
+      const services = getSelectedServices();
+      const err = $("errServices");
+      err.classList.add("hidden");
+      err.textContent = "";
+
+      if (services.length === 0) {
+        err.textContent = "Select at least one service.";
+        err.classList.remove("hidden");
+        return false;
+      }
+      return true;
+    }
+
+    function validateStep3() {
+      hideErr("errPrice");
+      const p = Number($("price").value);
+
+      if (!Number.isFinite(p) || p <= 0) {
+        showErr("errPrice", "Enter a valid base price greater than 0.");
+        return false;
+      }
+      return true;
+    }
+
+    // =========================
+    // Buttons
+    // =========================
+    $("btnNext1").addEventListener("click", () => {
+      setFormError("");
+      if (!validateStep1()) return;
+      setActiveStep(2);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    $("btnBack2").addEventListener("click", () => setActiveStep(1));
+
+    $("btnNext2").addEventListener("click", () => {
+      setFormError("");
+      if (!validateStep2()) return;
+      setActiveStep(3);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    $("btnBack3").addEventListener("click", () => setActiveStep(2));
+
+    // =========================
+    // Register
+    // =========================
+    async function register() {
+      setFormError("");
+      if (state.busy) return;
+
+      // Ensure auth + step validation
+      if (!state.currentUser) {
+        setFormError("You must be logged in to register.");
+        return;
+      }
+
+      if (!validateStep3()) return;
+
+      const services = getSelectedServices();
+      const data = {
+        name: $("name").value.trim(),
+        phone: $("phone").value.trim(),
+        city: $("city").value.trim(),
+        services,
+        price: Number($("price").value),
+        rating: 5,
+        jobs: 0,
+        verified: false,
+        available: $("available").checked,
+        ownerId: state.currentUser.uid,
+        createdAt: serverTimestamp()
+      };
+
+      // Premium UX: disable + show loading
+      state.busy = true;
+      $("btnRegister").disabled = true;
+      $("btnRegister").classList.add("opacity-70", "cursor-not-allowed");
+      $("btnLoadingGhost").classList.remove("hidden");
+
+      try {
+        await addDoc(collection(db, "providers"), data);
+        alert("🎉 Registered Successfully!");
+        window.location.href = "provider.html";
+      } catch (err) {
+        console.error(err);
+        setFormError("Something went wrong while registering. Please try again.");
+      } finally {
+        state.busy = false;
+        $("btnRegister").disabled = false;
+        $("btnRegister").classList.remove("opacity-70", "cursor-not-allowed");
+        $("btnLoadingGhost").classList.add("hidden");
+      }
+    }
+
+    $("btnRegister").addEventListener("click", register);
+
+    // =========================
+    // Accessibility / keyboard niceties
+    // =========================
+    // Enter on input triggers next step where appropriate
+    ["name","phone","city"].forEach(id => {
+      const el = $(id);
+      el?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") $("btnNext1").click();
+      });
+    });
+
+    price?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") $("btnRegister").click();
+    });
+
+    // Start at step 1
+    setActiveStep(1);
+    updateAiSuggest();
+  </script>
 </body>
 </html>

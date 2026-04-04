@@ -1,0 +1,138 @@
+/**
+ * Maps integration for “respective properties”
+ * - Works with Google Maps JavaScript API
+ * - Shows a map per property card/section
+ * - Updates marker + camera when property changes
+ *
+ * Requirements:
+ * 1) Include Google Maps JS API:
+ *    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"></script>
+ * 2) Put a container with data attributes:
+ *
+ * Example HTML:
+ *   <div class="property-map" data-map-id="map-1"
+ *        data-lat="19.0760" data-lng="72.8777"></div>
+ *
+ * Optional property selector:
+ *   <button class="property-select" data-lat="19.0760" data-lng="72.8777">View</button>
+ */
+
+(function () {
+  // -------------------------
+  // CONFIG
+  // -------------------------
+  const MAP_DEFAULTS = {
+    zoom: 14,
+    mapTypeId: "roadmap",
+    disableDefaultUI: true
+  };
+
+  // Keep references so we don’t recreate maps unnecessarily
+  const maps = new Map(); // mapId -> { map, marker }
+
+  // Read containers and mount maps
+  function initPropertyMaps() {
+    const containers = document.querySelectorAll(".property-map");
+
+    if (!containers.length) {
+      console.warn("[maps] No .property-map containers found.");
+      return;
+    }
+
+    containers.forEach((el) => {
+      const mapId = el.getAttribute("data-map-id") || crypto.randomUUID();
+      el.dataset.mapId = mapId;
+
+      const lat = parseFloat(el.getAttribute("data-lat"));
+      const lng = parseFloat(el.getAttribute("data-lng"));
+
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+        // Optional: show message if coords missing
+        el.innerHTML = `<div class="text-sm text-white/70 p-3">Location not available.</div>`;
+        return;
+      }
+
+      // Ensure container has a size
+      if (!el.style.height) el.style.height = "320px";
+
+      // Create map if not exists
+      if (!maps.has(mapId)) {
+        const map = new google.maps.Map(el, {
+          center: { lat, lng },
+          zoom: MAP_DEFAULTS.zoom,
+          mapTypeId: MAP_DEFAULTS.mapTypeId,
+          disableDefaultUI: MAP_DEFAULTS.disableDefaultUI
+        });
+
+        const marker = new google.maps.Marker({
+          position: { lat, lng },
+          map,
+          title: "Property Location"
+        });
+
+        maps.set(mapId, { map, marker });
+      } else {
+        // Update if already created
+        const { map, marker } = maps.get(mapId);
+        const pos = { lat, lng };
+        marker.setPosition(pos);
+        map.panTo(pos);
+      }
+    });
+  }
+
+  /**
+   * Update map for a specific property (e.g., when switching tabs/cards)
+   * @param {string|HTMLElement} mapIdOrEl - mapId or the container element
+   * @param {{lat:number,lng:number}} coords
+   */
+  function updatePropertyMap(mapIdOrEl, coords) {
+    const mapId = typeof mapIdOrEl === "string" ? mapIdOrEl : mapIdOrEl?.dataset?.mapId;
+    if (!mapId || !maps.has(mapId)) return;
+
+    const { map, marker } = maps.get(mapId);
+    const { lat, lng } = coords;
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+    const pos = { lat, lng };
+    marker.setPosition(pos);
+    map.panTo(pos);
+    map.setZoom(MAP_DEFAULTS.zoom);
+  }
+
+  // Optional: if you have buttons that change the selected property
+  function initPropertySwitchers() {
+    const switchers = document.querySelectorAll(".property-select");
+    switchers.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const lat = parseFloat(btn.getAttribute("data-lat"));
+        const lng = parseFloat(btn.getAttribute("data-lng"));
+        const targetMapId = btn.getAttribute("data-map-id"); // optional
+
+        // If targetMapId not provided, update the first map container
+        const target = targetMapId
+          ? document.querySelector(`.property-map[data-map-id="${targetMapId}"]`)
+          : document.querySelector(".property-map");
+
+        if (!target) return;
+        updatePropertyMap(target, { lat, lng });
+      });
+    });
+  }
+
+  // Run after Maps JS API is ready
+  // If you load maps with script tag, this is usually enough:
+  window.__initPropertyMaps = function () {
+    if (!window.google || !google.maps) {
+      console.warn("[maps] Google Maps not loaded yet.");
+      return;
+    }
+    initPropertyMaps();
+    initPropertySwitchers();
+  };
+
+  // Auto-init if google maps already exists
+  if (window.google && google.maps) {
+    window.__initPropertyMaps();
+  }
+})();

@@ -4,90 +4,1312 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PGs & Hostels | SmartRent</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-    color: white;
-}
+  :root {
+    --bg-primary: #080c10;
+    --bg-card: #0d1117;
+    --bg-glass: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(99,210,255,0.3);
+    --accent: #63d2ff;
+    --accent-gold: #f0b429;
+    --accent-green: #34d399;
+    --accent-rose: #fb7185;
+    --text-primary: #e8edf3;
+    --text-secondary: #8a9bb0;
+    --text-muted: #4a5568;
+    --glow: rgba(99,210,255,0.15);
+    --card-shadow: 0 25px 60px rgba(0,0,0,0.6);
+  }
 
-header {
-    padding: 20px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
+  html { scroll-behavior: smooth; }
 
-.card {
-    background: rgba(255,255,255,0.1);
-    padding: 15px;
-    border-radius: 15px;
-    transition: 0.3s;
-}
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-.card:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.2);
-}
+  /* ── Background ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(99,210,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(240,180,41,0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 50% 50%, rgba(13,17,23,0.9) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.card img {
-    width: 100%;
-    border-radius: 10px;
-}
+  /* ── Grain overlay ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-.card h3 {
-    margin: 10px 0 5px;
-}
+  * { position: relative; z-index: 1; }
 
-.btn {
-    display: inline-block;
-    margin-top: 10px;
-    padding: 8px 12px;
-    background: #00c6ff;
-    color: black;
-    border-radius: 8px;
+  /* ── Nav ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+    background: rgba(8,12,16,0.85);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text-primary);
+  }
+
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-secondary);
     text-decoration: none;
-}
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+
+  .btn-ghost {
+    padding: 9px 20px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-primary {
+    padding: 9px 22px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #080c10;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px rgba(99,210,255,0.25);
+  }
+
+  .btn-primary:hover {
+    background: #89dcff;
+    box-shadow: 0 0 30px rgba(99,210,255,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: 80px 48px 56px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid rgba(99,210,255,0.2);
+    border-radius: 50px;
+    background: rgba(99,210,255,0.05);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: fadeSlideDown 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+    margin-bottom: 16px;
+    animation: fadeSlideDown 0.7s ease 0.1s both;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: var(--text-secondary);
+    font-size: 17px;
+    max-width: 560px;
+    line-height: 1.7;
+    animation: fadeSlideDown 0.7s ease 0.2s both;
+    margin-bottom: 32px;
+  }
+
+  /* ── Search Bar ── */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 6px 6px 6px 20px;
+    max-width: 720px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    animation: fadeSlideDown 0.7s ease 0.3s both;
+    transition: border-color 0.3s;
+  }
+
+  .search-bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--glow), 0 8px 40px rgba(0,0,0,0.4); }
+
+  .search-bar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text-primary);
+    padding: 10px 0;
+  }
+
+  .search-bar input::placeholder { color: var(--text-muted); }
+
+  .search-divider { width: 1px; height: 28px; background: var(--border); margin: 0 16px; }
+
+  .search-select {
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .search-select option { background: var(--bg-card); }
+
+  .search-btn {
+    padding: 12px 26px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #080c10;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    margin-left: 12px;
+  }
+
+  .search-btn:hover { background: #89dcff; transform: translateY(-1px); }
+
+  /* ── Stats ── */
+  .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+    animation: fadeSlideDown 0.7s ease 0.4s both;
+  }
+
+  .stat-item { display: flex; flex-direction: column; }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.5px; }
+
+  /* ── Filters ── */
+  .filters-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px 32px;
+    animation: fadeSlideDown 0.7s ease 0.5s both;
+  }
+
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .filter-label { font-size: 12px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
+
+  .filter-chip {
+    padding: 8px 18px;
+    border-radius: 50px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-chip.active { border-color: var(--accent); background: rgba(99,210,255,0.1); color: var(--accent); }
+
+  .filter-sep { flex: 1; }
+
+  .sort-select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .sort-select option { background: var(--bg-card); }
+
+  .view-toggle { display: flex; gap: 4px; }
+
+  .view-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .view-btn.active { border-color: var(--accent); background: rgba(99,210,255,0.1); color: var(--accent); }
+
+  /* ── Grid ── */
+  .listings-section {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .section-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .result-count { font-size: 14px; color: var(--text-muted); }
+  .result-count span { color: var(--text-primary); font-weight: 600; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+    cursor: pointer;
+    animation: cardIn 0.5s ease both;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-6px);
+    box-shadow: var(--card-shadow), 0 0 0 1px rgba(99,210,255,0.1);
+  }
+
+  .card-image-wrap {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+  }
+
+  .card-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+
+  .card:hover .card-image-wrap img { transform: scale(1.06); }
+
+  .card-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    backdrop-filter: blur(10px);
+  }
+
+  .badge-boys { background: rgba(99,210,255,0.2); color: var(--accent); border: 1px solid rgba(99,210,255,0.3); }
+  .badge-girls { background: rgba(251,113,133,0.2); color: var(--accent-rose); border: 1px solid rgba(251,113,133,0.3); }
+  .badge-coliving { background: rgba(52,211,153,0.2); color: var(--accent-green); border: 1px solid rgba(52,211,153,0.3); }
+  .badge-mixed { background: rgba(240,180,41,0.2); color: var(--accent-gold); border: 1px solid rgba(240,180,41,0.3); }
+
+  .card-actions-top {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    backdrop-filter: blur(10px);
+    background: rgba(8,12,16,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+  }
+
+  .icon-btn:hover { background: rgba(99,210,255,0.2); color: var(--accent); border-color: rgba(99,210,255,0.3); }
+  .icon-btn.favorited { color: var(--accent-rose); background: rgba(251,113,133,0.15); border-color: rgba(251,113,133,0.3); }
+
+  .card-rating {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    background: rgba(8,12,16,0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .star { color: var(--accent-gold); font-size: 11px; }
+
+  .card-body { padding: 20px; }
+
+  .card-location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  .card-location svg { flex-shrink: 0; }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .card-subtitle { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+
+  .amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .amenity {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .price { display: flex; flex-direction: column; }
+  .price-amount {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .price-label { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .view-btn-card {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(99,210,255,0.25);
+    background: rgba(99,210,255,0.07);
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .view-btn-card:hover { background: rgba(99,210,255,0.15); border-color: var(--accent); transform: translateX(2px); }
+
+  /* ── Featured card ── */
+  .card.featured {
+    border-color: rgba(240,180,41,0.2);
+    background: linear-gradient(145deg, #0d1117, #111820);
+  }
+
+  .card.featured::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(240,180,41,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ── Modal ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 760px;
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.8);
+    transform: scale(0.95) translateY(20px);
+    transition: all 0.35s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-header {
+    position: sticky;
+    top: 0;
+    background: rgba(13,17,23,0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+
+  .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 600; }
+
+  .modal-close {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+
+  .modal-img { width: 100%; height: 280px; object-fit: cover; }
+
+  .modal-body { padding: 28px 24px; }
+
+  .modal-meta { display: flex; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+
+  .meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
+  .meta-value { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .meta-value.accent { color: var(--accent); font-family: 'Cormorant Garamond', serif; font-size: 22px; }
+
+  .modal-amenities { margin-bottom: 24px; }
+  .modal-amenities h4 { font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+
+  .modal-amenities-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .modal-amenity {
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .modal-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 28px; }
+
+  .modal-actions { display: flex; gap: 12px; }
+
+  .modal-btn-primary {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent);
+    color: #080c10;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .modal-btn-primary:hover { background: #89dcff; transform: translateY(-1px); }
+
+  .modal-btn-secondary {
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .modal-btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Scroll */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: rgba(99,210,255,0.2); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(99,210,255,0.4); }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); flex-shrink: 0; }
+
+  /* ── Animations ── */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.19s; }
+  .card:nth-child(4) { animation-delay: 0.26s; }
+  .card:nth-child(5) { animation-delay: 0.33s; }
+  .card:nth-child(6) { animation-delay: 0.40s; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 48px 20px 40px; }
+    .filters-section, .listings-section { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+    .stats { gap: 24px; }
+    .search-bar { flex-wrap: wrap; }
+    .search-divider { display: none; }
+  }
+
+  /* ── Empty State ── */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-muted);
+    display: none;
+  }
+
+  .empty-state svg { margin-bottom: 16px; opacity: 0.4; }
+  .empty-state h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--text-secondary); margin-bottom: 8px; }
+
+  /* ── Map CTA ── */
+  .map-cta {
+    max-width: 1280px;
+    margin: 0 auto 80px;
+    padding: 0 48px;
+  }
+
+  .map-cta-inner {
+    background: linear-gradient(135deg, rgba(99,210,255,0.06) 0%, rgba(240,180,41,0.04) 100%);
+    border: 1px solid rgba(99,210,255,0.12);
+    border-radius: 20px;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .map-cta h3 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 600; margin-bottom: 6px; }
+  .map-cta p { color: var(--text-muted); font-size: 14px; }
 </style>
 </head>
 
 <body>
 
-<header>PGs & Hostels</header>
+<!-- ── Navigation ── -->
+<nav>
+  <div class="nav-logo">Smart<span>Rent</span></div>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Apartments</a></li>
+    <li><a href="#" style="color:var(--accent)">PGs & Hostels</a></li>
+    <li><a href="#">Co-Living</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-primary">List Property</button>
+  </div>
+</nav>
 
-<div class="container">
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-badge">250+ verified listings</div>
+  <h1>Find Your Perfect<br><em>PG & Hostel</em></h1>
+  <p>Curated paying guest accommodations and hostels — verified, affordable, and ready to move in.</p>
 
-    <div class="card">
-        <img src="https://via.placeholder.com/300" alt="">
-        <h3>Boys PG</h3>
-        <p>₹5000/month • WiFi • Food Included</p>
-        <a href="#" class="btn">View Details</a>
+  <div class="search-bar">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="searchInput" placeholder="Search by location, name, or amenity…" oninput="filterCards()">
+    <div class="search-divider"></div>
+    <select class="search-select" id="budgetFilter" onchange="filterCards()">
+      <option value="">Any Budget</option>
+      <option value="5000">Under ₹5,000</option>
+      <option value="7000">Under ₹7,000</option>
+      <option value="10000">Under ₹10,000</option>
+    </select>
+    <button class="search-btn" onclick="filterCards()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Search
+    </button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-item">
+      <span class="stat-number">250+</span>
+      <span class="stat-label">Active Listings</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">48h</span>
+      <span class="stat-label">Avg. Move-In</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">4.8★</span>
+      <span class="stat-label">Avg. Rating</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">100%</span>
+      <span class="stat-label">Verified</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── Filters ── -->
+<section class="filters-section">
+  <div class="filter-bar">
+    <span class="filter-label">Type</span>
+    <button class="filter-chip active" onclick="setFilter(this,'all')">All</button>
+    <button class="filter-chip" onclick="setFilter(this,'boys')">Boys PG</button>
+    <button class="filter-chip" onclick="setFilter(this,'girls')">Girls Hostel</button>
+    <button class="filter-chip" onclick="setFilter(this,'coliving')">Co-Living</button>
+    <button class="filter-chip" onclick="setFilter(this,'mixed')">Mixed</button>
+    <div class="filter-sep"></div>
+    <select class="sort-select" onchange="sortCards(this.value)">
+      <option value="default">Sort: Featured</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="rating">Highest Rated</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-btn active" title="Grid view">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ── Listings ── -->
+<section class="listings-section">
+  <div class="section-meta">
+    <div class="result-count"><span id="countNum">6</span> properties found</div>
+  </div>
+  <div class="grid" id="grid">
+
+    <!-- Card 1 -->
+    <div class="card" data-type="boys" data-price="5000" data-rating="4.7"
+         onclick="openModal('Boys Premium PG','Koramangala, Bangalore','boys','5000','4.7',
+         'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&q=80',
+         'A premium paying guest accommodation exclusively for boys, located in the heart of Koramangala. Spacious rooms, hygienic food, and a secure environment make this a top choice for working professionals and students alike.',
+         ['WiFi','Food Included','CCTV','Laundry','Parking','Study Room'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=75" alt="Boys PG">
+        <span class="card-badge badge-boys">Boys PG</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'Boys Premium PG')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 4.7 <span style="color:var(--text-muted)">(42)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Koramangala, Bangalore
+        </div>
+        <div class="card-title">Boys Premium PG</div>
+        <div class="card-subtitle">Furnished rooms with all meals included. Ideal for IT professionals.</div>
+        <div class="amenities">
+          <span class="amenity">📶 WiFi</span>
+          <span class="amenity">🍽️ Food</span>
+          <span class="amenity">📹 CCTV</span>
+          <span class="amenity">🧺 Laundry</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹5,000</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-        <img src="https://via.placeholder.com/300" alt="">
-        <h3>Girls Hostel</h3>
-        <p>₹6000/month • Security • AC Rooms</p>
-        <a href="#" class="btn">View Details</a>
+    <!-- Card 2 -->
+    <div class="card featured" data-type="girls" data-price="6000" data-rating="4.9"
+         onclick="openModal('Serenity Girls Hostel','Indiranagar, Bangalore','girls','6000','4.9',
+         'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+         'An award-winning girls hostel designed with safety and comfort as top priorities. AC rooms, biometric access, CCTV surveillance, and a lively community of like-minded women.',
+         ['24/7 Security','AC Rooms','WiFi','Housekeeping','Power Backup','Gym Access'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=75" alt="Girls Hostel">
+        <span class="card-badge badge-girls">Girls Hostel</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'Serenity Girls Hostel')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 4.9 <span style="color:var(--text-muted)">(81)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Indiranagar, Bangalore
+        </div>
+        <div class="card-title">Serenity Girls Hostel</div>
+        <div class="card-subtitle">Premium women-only hostel with biometric security & AC rooms.</div>
+        <div class="amenities">
+          <span class="amenity">🔒 Security</span>
+          <span class="amenity">❄️ AC</span>
+          <span class="amenity">📶 WiFi</span>
+          <span class="amenity">🏋️ Gym</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹6,000</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-        <img src="https://via.placeholder.com/300" alt="">
-        <h3>Co-Living Space</h3>
-        <p>₹7000/month • Gym • Modern Rooms</p>
-        <a href="#" class="btn">View Details</a>
+    <!-- Card 3 -->
+    <div class="card" data-type="coliving" data-price="7000" data-rating="4.6"
+         onclick="openModal('Urban Nest Co-Living','HSR Layout, Bangalore','coliving','7000','4.6',
+         'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80',
+         'A modern co-living space built for young professionals who value community and convenience. Enjoy a fully equipped gym, rooftop lounge, high-speed internet, and spacious private rooms.',
+         ['Gym','Rooftop Lounge','WiFi','Modern Rooms','Community Events','Housekeeping'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=75" alt="Co-Living">
+        <span class="card-badge badge-coliving">Co-Living</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'Urban Nest Co-Living')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 4.6 <span style="color:var(--text-muted)">(29)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          HSR Layout, Bangalore
+        </div>
+        <div class="card-title">Urban Nest Co-Living</div>
+        <div class="card-subtitle">Community-first co-living with rooftop lounge and gym access.</div>
+        <div class="amenities">
+          <span class="amenity">🏋️ Gym</span>
+          <span class="amenity">🛋️ Lounge</span>
+          <span class="amenity">📶 WiFi</span>
+          <span class="amenity">🎉 Events</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹7,000</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
 
+    <!-- Card 4 -->
+    <div class="card" data-type="mixed" data-price="4500" data-rating="4.4"
+         onclick="openModal('Budget Stay Hostel','Marathahalli, Bangalore','mixed','4500','4.4',
+         'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80',
+         'Budget-friendly mixed hostel perfect for students and short-term travellers. Clean dormitory and private rooms, common kitchen, and a great social atmosphere.',
+         ['Common Kitchen','WiFi','Lockers','24/7 Access','Common Area','Hot Water'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=75" alt="Mixed Hostel">
+        <span class="card-badge badge-mixed">Mixed</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'Budget Stay Hostel')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 4.4 <span style="color:var(--text-muted)">(17)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Marathahalli, Bangalore
+        </div>
+        <div class="card-title">Budget Stay Hostel</div>
+        <div class="card-subtitle">Clean, safe, and affordable accommodation for students & travellers.</div>
+        <div class="amenities">
+          <span class="amenity">🍳 Kitchen</span>
+          <span class="amenity">📶 WiFi</span>
+          <span class="amenity">🔐 Lockers</span>
+          <span class="amenity">♨️ Hot Water</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹4,500</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="card" data-type="boys" data-price="8500" data-rating="4.8"
+         onclick="openModal('The Loft - Executive PG','Whitefield, Bangalore','boys','8500','4.8',
+         'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',
+         'An executive-class PG for senior professionals demanding luxury and privacy. Private attached bathrooms, dedicated workspaces, premium interiors, and concierge services.',
+         ['Private Bath','Work Desk','AC','Premium WiFi','Housekeeping','Parking'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=75" alt="Executive PG">
+        <span class="card-badge badge-boys">Boys PG</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'The Loft Executive PG')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 4.8 <span style="color:var(--text-muted)">(63)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Whitefield, Bangalore
+        </div>
+        <div class="card-title">The Loft — Executive PG</div>
+        <div class="card-subtitle">Luxury private rooms with attached baths for senior professionals.</div>
+        <div class="amenities">
+          <span class="amenity">🛁 Private Bath</span>
+          <span class="amenity">💼 Work Desk</span>
+          <span class="amenity">❄️ AC</span>
+          <span class="amenity">🚗 Parking</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹8,500</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="card featured" data-type="girls" data-price="9000" data-rating="5.0"
+         onclick="openModal('Bloom Women\'s Co-Living','Jayanagar, Bangalore','girls','9000','5.0',
+         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+         'The finest women-only co-living in the city. Thoughtfully designed spaces, a spa & wellness area, rooftop garden, gourmet café, and a curated community of inspiring women professionals.',
+         ['Spa & Wellness','Rooftop Garden','Gourmet Café','Private Rooms','Yoga Studio','Concierge'])">
+      <div class="card-image-wrap">
+        <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=75" alt="Women Co-Living">
+        <span class="card-badge badge-girls">Girls Hostel</span>
+        <div class="card-actions-top">
+          <div class="icon-btn" onclick="toggleFav(event,this)" title="Wishlist">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="icon-btn" onclick="shareCard(event,'Bloom Womens Co-Living')" title="Share">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span> 5.0 <span style="color:var(--text-muted)">(104)</span></div>
+      </div>
+      <div class="card-body">
+        <div class="card-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Jayanagar, Bangalore
+        </div>
+        <div class="card-title">Bloom Women's Co-Living</div>
+        <div class="card-subtitle">5-star women-only co-living with spa, café, and rooftop garden.</div>
+        <div class="amenities">
+          <span class="amenity">🧖 Spa</span>
+          <span class="amenity">🌿 Rooftop</span>
+          <span class="amenity">☕ Café</span>
+          <span class="amenity">🧘 Yoga</span>
+        </div>
+        <div class="card-footer">
+          <div class="price">
+            <span class="price-amount">₹9,000</span>
+            <span class="price-label">per month</span>
+          </div>
+          <a href="#" class="view-btn-card" onclick="event.stopPropagation()">
+            View Details
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <h3>No properties found</h3>
+      <p>Try adjusting your filters or search term</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Map CTA ── -->
+<div class="map-cta">
+  <div class="map-cta-inner">
+    <div>
+      <h3>Explore on Map</h3>
+      <p>View all listings on an interactive map and find properties near your workplace or college.</p>
+    </div>
+    <button class="btn-primary" style="font-size:15px;padding:14px 28px;white-space:nowrap" onclick="showToast('🗺️ Map view coming soon!')">
+      Open Map View →
+    </button>
+  </div>
 </div>
 
+<!-- ── Modal ── -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Property Details</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <img id="modalImg" src="" alt="" class="modal-img">
+    <div class="modal-body">
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-amenities">
+        <h4>Amenities Included</h4>
+        <div class="modal-amenities-grid" id="modalAmenities"></div>
+      </div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="modal-actions">
+        <button class="modal-btn-primary" onclick="showToast('📅 Booking request sent!')">Book a Visit</button>
+        <button class="modal-btn-secondary" onclick="showToast('📞 Owner will contact you shortly!')">Contact Owner</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg">Done!</span>
+</div>
+
+<script>
+  let activeFilter = 'all';
+
+  function setFilter(btn, type) {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = type;
+    filterCards();
+  }
+
+  function filterCards() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    const budget = parseInt(document.getElementById('budgetFilter').value) || Infinity;
+    const cards = document.querySelectorAll('#grid .card');
+    let visible = 0;
+
+    cards.forEach(card => {
+      const type = card.dataset.type;
+      const price = parseInt(card.dataset.price);
+      const text = card.innerText.toLowerCase();
+      const typeMatch = activeFilter === 'all' || type === activeFilter;
+      const budgetMatch = price <= budget;
+      const searchMatch = !q || text.includes(q);
+
+      if (typeMatch && budgetMatch && searchMatch) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    document.getElementById('countNum').textContent = visible;
+    document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function sortCards(val) {
+    const grid = document.getElementById('grid');
+    const cards = [...grid.querySelectorAll('.card')];
+
+    cards.sort((a, b) => {
+      if (val === 'price-asc')  return parseInt(a.dataset.price) - parseInt(b.dataset.price);
+      if (val === 'price-desc') return parseInt(b.dataset.price) - parseInt(a.dataset.price);
+      if (val === 'rating')     return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+      return 0;
+    });
+
+    cards.forEach(c => grid.appendChild(c));
+  }
+
+  function toggleFav(e, btn) {
+    e.stopPropagation();
+    btn.classList.toggle('favorited');
+    showToast(btn.classList.contains('favorited') ? '❤️ Added to wishlist' : '🤍 Removed from wishlist');
+  }
+
+  function shareCard(e, name) {
+    e.stopPropagation();
+    if (navigator.share) {
+      navigator.share({ title: name, text: 'Check out ' + name + ' on SmartRent!', url: window.location.href });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      showToast('🔗 Link copied to clipboard!');
+    }
+  }
+
+  const amenityIcons = {
+    'WiFi': '📶', 'Food Included': '🍽️', 'CCTV': '📹', 'Laundry': '🧺',
+    'Parking': '🚗', 'Study Room': '📚', '24/7 Security': '🔒', 'AC Rooms': '❄️',
+    'Housekeeping': '🧹', 'Power Backup': '🔋', 'Gym Access': '🏋️',
+    'Rooftop Lounge': '🛋️', 'Community Events': '🎉', 'Common Kitchen': '🍳',
+    'Lockers': '🔐', '24/7 Access': '🕐', 'Common Area': '🛋️', 'Hot Water': '♨️',
+    'Private Bath': '🛁', 'Work Desk': '💼', 'AC': '❄️', 'Premium WiFi': '📡',
+    'Spa & Wellness': '🧖', 'Rooftop Garden': '🌿', 'Gourmet Café': '☕',
+    'Private Rooms': '🚪', 'Yoga Studio': '🧘', 'Concierge': '🛎️',
+    'Gym': '🏋️', 'Modern Rooms': '🏠'
+  };
+
+  function openModal(title, loc, type, price, rating, img, desc, amenities) {
+    document.getElementById('modalTitle').textContent = title;
+    document.getElementById('modalImg').src = img;
+    document.getElementById('modalDesc').textContent = desc;
+
+    const typeLabels = { boys: 'Boys PG', girls: 'Girls Hostel', coliving: 'Co-Living', mixed: 'Mixed' };
+    document.getElementById('modalMeta').innerHTML = `
+      <div class="meta-item"><div class="meta-label">Type</div><div class="meta-value">${typeLabels[type] || type}</div></div>
+      <div class="meta-item"><div class="meta-label">Monthly Rent</div><div class="meta-value accent">₹${parseInt(price).toLocaleString('en-IN')}</div></div>
+      <div class="meta-item"><div class="meta-label">Rating</div><div class="meta-value">⭐ ${rating} / 5.0</div></div>
+      <div class="meta-item"><div class="meta-label">Location</div><div class="meta-value">${loc}</div></div>
+    `;
+
+    document.getElementById('modalAmenities').innerHTML = amenities.map(a =>
+      `<div class="modal-amenity">${amenityIcons[a] || '✓'} ${a}</div>`
+    ).join('');
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+  }
+</script>
 </body>
 </html>

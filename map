@@ -1,138 +1,1101 @@
-/**
- * Maps integration for “respective properties”
- * - Works with Google Maps JavaScript API
- * - Shows a map per property card/section
- * - Updates marker + camera when property changes
- *
- * Requirements:
- * 1) Include Google Maps JS API:
- *    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&libraries=places"></script>
- * 2) Put a container with data attributes:
- *
- * Example HTML:
- *   <div class="property-map" data-map-id="map-1"
- *        data-lat="19.0760" data-lng="72.8777"></div>
- *
- * Optional property selector:
- *   <button class="property-select" data-lat="19.0760" data-lng="72.8777">View</button>
- */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explore Map | SmartRent</title>
 
-(function () {
-  // -------------------------
-  // CONFIG
-  // -------------------------
-  const MAP_DEFAULTS = {
-    zoom: 14,
-    mapTypeId: "roadmap",
-    disableDefaultUI: true
-  };
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  // Keep references so we don’t recreate maps unnecessarily
-  const maps = new Map(); // mapId -> { map, marker }
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  // Read containers and mount maps
-  function initPropertyMaps() {
-    const containers = document.querySelectorAll(".property-map");
+<style>
+/* ══════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════ */
+:root {
+  --bg0:    #07090d;
+  --bg1:    #0c1018;
+  --bg2:    #111620;
+  --bg3:    #181e2c;
+  --border: rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --accent: #4ef0c4;      /* teal-mint */
+  --accent2:#f5c542;      /* gold */
+  --accent3:#e05cff;      /* violet */
+  --red:    #ff5f6d;
+  --txt0:   #edf1f7;
+  --txt1:   #8ea0b8;
+  --txt2:   #4a5872;
+  --glow:   rgba(78,240,196,0.18);
+  --shadow: 0 32px 80px rgba(0,0,0,0.7);
+}
 
-    if (!containers.length) {
-      console.warn("[maps] No .property-map containers found.");
-      return;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg0);
+  color: var(--txt0);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Ambient background ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 0%,   rgba(78,240,196,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 90% 100%, rgba(224,92,255,0.05) 0%, transparent 55%);
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+nav {
+  position: relative; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 28px;
+  background: rgba(7,9,13,0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  flex-shrink: 0;
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 700; letter-spacing: -0.3px;
+  color: var(--txt0);
+}
+.nav-logo em { font-style: italic; color: var(--accent); }
+
+.nav-center {
+  display: flex; gap: 6px; align-items: center;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 10px 6px 14px;
+  width: 340px;
+}
+.nav-center svg { color: var(--txt2); flex-shrink: 0; }
+.nav-center input {
+  flex: 1; background: transparent; border: none; outline: none;
+  font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--txt0);
+}
+.nav-center input::placeholder { color: var(--txt2); }
+
+.nav-search-btn {
+  padding: 7px 16px; border-radius: 8px; border: none;
+  background: var(--accent); color: var(--bg0);
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.nav-search-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+.nav-right { display: flex; gap: 10px; align-items: center; }
+
+.nav-pill {
+  padding: 7px 16px; border-radius: 10px;
+  border: 1px solid var(--border2);
+  background: transparent; color: var(--txt1);
+  font-family: 'Outfit', sans-serif; font-size: 13px;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.nav-pill:hover { border-color: var(--accent); color: var(--accent); }
+.nav-pill.active { background: rgba(78,240,196,0.1); border-color: var(--accent); color: var(--accent); }
+
+/* ══════════════════════════════════════════
+   LAYOUT — sidebar + map
+══════════════════════════════════════════ */
+.layout {
+  flex: 1; display: flex; overflow: hidden; position: relative; z-index: 1;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 390px; flex-shrink: 0;
+  display: flex; flex-direction: column;
+  background: var(--bg1);
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.sidebar-head {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sidebar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; margin-bottom: 14px;
+}
+.sidebar-title span { color: var(--accent); }
+
+/* Filter chips */
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 5px 14px; border-radius: 50px; font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border); background: transparent; color: var(--txt1);
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active { background: rgba(78,240,196,0.1); border-color: var(--accent); color: var(--accent); }
+
+/* Sort row */
+.sort-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.result-label { font-size: 12px; color: var(--txt2); }
+.result-label b { color: var(--txt0); }
+.sort-sel {
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--txt1); font-family: 'Outfit', sans-serif; font-size: 12px;
+  border-radius: 8px; padding: 5px 10px; outline: none; cursor: pointer;
+}
+.sort-sel option { background: var(--bg1); }
+
+/* Property list */
+.prop-list { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.prop-list::-webkit-scrollbar { width: 4px; }
+.prop-list::-webkit-scrollbar-thumb { background: rgba(78,240,196,0.2); border-radius: 4px; }
+
+/* Property card */
+.prop-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.2,0,0,1);
+  animation: slideIn 0.4s ease both;
+}
+.prop-card:hover {
+  border-color: rgba(78,240,196,0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.prop-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 12px 40px rgba(78,240,196,0.12);
+}
+
+.prop-img-wrap { position: relative; height: 140px; }
+.prop-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.prop-img-badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+.badge-boys    { background: rgba(78,240,196,0.2);  color: var(--accent);  border: 1px solid rgba(78,240,196,0.35); }
+.badge-girls   { background: rgba(255,95,109,0.2);  color: var(--red);     border: 1px solid rgba(255,95,109,0.35); }
+.badge-coliving{ background: rgba(245,197,66,0.2);  color: var(--accent2); border: 1px solid rgba(245,197,66,0.35); }
+.badge-mixed   { background: rgba(224,92,255,0.2);  color: var(--accent3); border: 1px solid rgba(224,92,255,0.35); }
+
+.prop-star {
+  position: absolute; bottom: 10px; right: 10px;
+  background: rgba(7,9,13,0.8); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px; padding: 4px 8px; font-size: 11px; font-weight: 600;
+  backdrop-filter: blur(6px);
+}
+
+.prop-fav {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(7,9,13,0.7); border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px); cursor: pointer; transition: all 0.2s;
+  font-size: 13px;
+}
+.prop-fav:hover { background: rgba(255,95,109,0.2); border-color: var(--red); }
+.prop-fav.loved { color: var(--red); background: rgba(255,95,109,0.2); border-color: var(--red); }
+
+.prop-body { padding: 14px; }
+.prop-loc {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--txt2); margin-bottom: 5px;
+}
+.prop-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 700; color: var(--txt0); margin-bottom: 4px;
+}
+.prop-desc { font-size: 12px; color: var(--txt1); margin-bottom: 10px; line-height: 1.5; }
+
+.prop-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+.prop-tag {
+  padding: 3px 9px; border-radius: 5px; font-size: 10px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  color: var(--txt1);
+}
+
+.prop-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+.prop-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--accent);
+}
+.prop-price span { font-family: 'Outfit', sans-serif; font-size: 11px; color: var(--txt2); font-weight: 400; }
+
+.prop-btns { display: flex; gap: 6px; }
+.pin-btn {
+  padding: 7px 13px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  border: 1px solid rgba(78,240,196,0.25); background: rgba(78,240,196,0.07);
+  color: var(--accent); cursor: pointer; transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+.pin-btn:hover { background: rgba(78,240,196,0.15); }
+
+/* ══════════════════════════════════════════
+   MAP AREA
+══════════════════════════════════════════ */
+.map-area {
+  flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative;
+}
+
+/* Map toolbar */
+.map-toolbar {
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 500;
+  display: flex; gap: 8px; align-items: center;
+  background: rgba(7,9,13,0.88);
+  border: 1px solid var(--border2);
+  border-radius: 14px; padding: 8px 12px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+.tb-btn {
+  padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); background: transparent; color: var(--txt1);
+  cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 5px;
+  font-family: 'Outfit', sans-serif; white-space: nowrap;
+}
+.tb-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tb-btn.active { background: rgba(78,240,196,0.12); border-color: var(--accent); color: var(--accent); }
+.tb-sep { width: 1px; height: 22px; background: var(--border); }
+
+/* Map controls (zoom) */
+.map-controls {
+  position: absolute; right: 16px; bottom: 120px; z-index: 500;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.ctrl-btn {
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(7,9,13,0.88); border: 1px solid var(--border2);
+  color: var(--txt1); font-size: 18px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(12px);
+}
+.ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* My location btn */
+.locate-btn {
+  position: absolute; right: 16px; bottom: 70px; z-index: 500;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent); border: none; color: var(--bg0);
+  font-size: 18px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 20px rgba(78,240,196,0.3);
+}
+.locate-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+/* Map legend */
+.map-legend {
+  position: absolute; left: 16px; bottom: 16px; z-index: 500;
+  background: rgba(7,9,13,0.88); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; backdrop-filter: blur(12px);
+  font-size: 11px; color: var(--txt1);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.legend-title { font-weight: 600; color: var(--txt0); margin-bottom: 2px; font-size: 12px; }
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* Stats bar */
+.stats-bar {
+  position: absolute; right: 16px; top: 16px; z-index: 500;
+  background: rgba(7,9,13,0.88); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; backdrop-filter: blur(12px);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.stat-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--txt0); line-height: 1; }
+.stat-lbl { color: var(--txt2); font-size: 10px; }
+
+/* The actual map */
+#map {
+  flex: 1; width: 100%; height: 100%;
+}
+
+/* ══════════════════════════════════════════
+   LEAFLET CUSTOM STYLES
+══════════════════════════════════════════ */
+.leaflet-container { background: var(--bg0) !important; }
+
+/* Custom popup */
+.leaflet-popup-content-wrapper {
+  background: var(--bg2) !important;
+  border: 1px solid var(--border2) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7) !important;
+  color: var(--txt0) !important;
+}
+.leaflet-popup-tip { background: var(--bg2) !important; }
+.leaflet-popup-close-button { color: var(--txt1) !important; font-size: 16px !important; top: 10px !important; right: 12px !important; }
+.leaflet-popup-close-button:hover { color: var(--txt0) !important; }
+
+.popup-inner { font-family: 'Outfit', sans-serif; min-width: 220px; }
+.popup-img { width: 100%; height: 110px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; display: block; }
+.popup-type { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.popup-name { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+.popup-loc { font-size: 11px; color: var(--txt2); margin-bottom: 8px; }
+.popup-price { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--accent); }
+.popup-price span { font-family: 'Outfit', sans-serif; font-size: 11px; color: var(--txt2); font-weight: 400; }
+.popup-btn {
+  display: block; margin-top: 10px; padding: 8px; border-radius: 8px;
+  background: rgba(78,240,196,0.1); border: 1px solid rgba(78,240,196,0.25);
+  color: var(--accent); text-align: center; font-size: 12px; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.2s;
+}
+.popup-btn:hover { background: rgba(78,240,196,0.2); }
+
+/* ── Detail panel (slides in from right) ── */
+.detail-panel {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 340px; z-index: 600;
+  background: var(--bg1);
+  border-left: 1px solid var(--border);
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.2,0,0,1);
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+.detail-panel.open { transform: translateX(0); }
+.detail-panel::-webkit-scrollbar { width: 4px; }
+.detail-panel::-webkit-scrollbar-thumb { background: rgba(78,240,196,0.2); border-radius: 4px; }
+
+.detail-close {
+  position: absolute; top: 14px; right: 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--txt1); font-size: 16px; cursor: pointer; z-index: 10;
+  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+.detail-close:hover { color: var(--txt0); border-color: var(--border2); }
+
+.detail-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+.detail-body { padding: 20px; }
+.detail-badge { display: inline-block; padding: 4px 12px; border-radius: 50px; font-size: 10px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; }
+.detail-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.detail-loc { font-size: 12px; color: var(--txt2); margin-bottom: 14px; display: flex; align-items: center; gap: 4px; }
+.detail-price-row { display: flex; align-items: flex-end; gap: 6px; margin-bottom: 16px; }
+.detail-price { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--accent); line-height: 1; }
+.detail-per { font-size: 12px; color: var(--txt2); padding-bottom: 4px; }
+.detail-rating { margin-left: auto; background: rgba(245,197,66,0.12); border: 1px solid rgba(245,197,66,0.25); border-radius: 8px; padding: 5px 10px; font-size: 13px; font-weight: 600; color: var(--accent2); }
+
+.detail-section-title { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--txt2); margin-bottom: 8px; }
+
+.detail-amenities { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
+.detail-amenity {
+  padding: 5px 12px; border-radius: 7px; font-size: 11px;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--txt1);
+  display: flex; align-items: center; gap: 5px;
+}
+
+.detail-desc { font-size: 13px; color: var(--txt1); line-height: 1.7; margin-bottom: 20px; }
+
+.detail-map-mini {
+  height: 140px; border-radius: 12px; overflow: hidden; margin-bottom: 18px;
+  border: 1px solid var(--border);
+}
+
+.detail-actions { display: flex; flex-direction: column; gap: 8px; }
+.d-btn-primary {
+  padding: 13px; border-radius: 10px; border: none;
+  background: var(--accent); color: var(--bg0);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s;
+}
+.d-btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.d-btn-secondary {
+  padding: 12px; border-radius: 10px;
+  border: 1px solid var(--border2); background: transparent; color: var(--txt1);
+  font-family: 'Outfit', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s;
+}
+.d-btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Toast ── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  z-index: 9999; opacity: 0; pointer-events: none; transition: all 0.3s;
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 12px 20px;
+  font-size: 13px; color: var(--txt0);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  display: flex; align-items: center; gap: 10px; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast-icon { font-size: 16px; }
+
+/* ── Animations ── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .sidebar { width: 310px; }
+  .stats-bar { display: none; }
+  .detail-panel { width: 100%; border-left: none; }
+}
+@media (max-width: 640px) {
+  .sidebar { display: none; }
+  .nav-center { display: none; }
+  .map-legend { display: none; }
+}
+
+/* Leaflet dark tile override */
+.leaflet-tile { filter: brightness(0.85) saturate(0.7) hue-rotate(185deg); }
+
+/* user location pulse */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+.user-marker-pulse {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent); position: relative;
+  box-shadow: 0 0 0 0 var(--glow);
+}
+.user-marker-pulse::after {
+  content: ''; position: absolute; inset: -6px; border-radius: 50%;
+  background: rgba(78,240,196,0.3);
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav>
+  <div class="nav-logo">Smart<em>Rent</em></div>
+
+  <div class="nav-center">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input id="globalSearch" type="text" placeholder="Search area, PG or hostel…" oninput="handleGlobalSearch()">
+    <button class="nav-search-btn" onclick="handleGlobalSearch()">Search</button>
+  </div>
+
+  <div class="nav-right">
+    <button class="nav-pill active" id="btnMapView" onclick="setView('map',this)">🗺 Map View</button>
+    <button class="nav-pill" id="btnListView" onclick="setView('list',this)">☰ List</button>
+    <button class="nav-pill" onclick="showToast('📋 Compare feature coming soon!')">⚖️ Compare</button>
+  </div>
+</nav>
+
+<!-- ══ LAYOUT ══ -->
+<div class="layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-title">Nearby <span>Properties</span></div>
+      <div class="chips">
+        <button class="chip active" onclick="filterType('all',this)">All</button>
+        <button class="chip" onclick="filterType('boys',this)">Boys PG</button>
+        <button class="chip" onclick="filterType('girls',this)">Girls Hostel</button>
+        <button class="chip" onclick="filterType('coliving',this)">Co-Living</button>
+        <button class="chip" onclick="filterType('mixed',this)">Mixed</button>
+      </div>
+    </div>
+
+    <div class="sort-row">
+      <div class="result-label">Showing <b id="countLabel">6</b> properties</div>
+      <select class="sort-sel" onchange="sortProps(this.value)">
+        <option value="default">Featured</option>
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+        <option value="rating">Top Rated</option>
+        <option value="dist">Nearest</option>
+      </select>
+    </div>
+
+    <div class="prop-list" id="propList">
+      <!-- Injected by JS -->
+    </div>
+  </aside>
+
+  <!-- ── Map Area ── -->
+  <div class="map-area">
+
+    <!-- Toolbar -->
+    <div class="map-toolbar">
+      <button class="tb-btn active" id="tb-roadmap" onclick="setMapType('roadmap',this)">🛣 Road</button>
+      <button class="tb-btn" id="tb-satellite" onclick="setMapType('satellite',this)">🛰 Satellite</button>
+      <button class="tb-btn" id="tb-terrain" onclick="setMapType('terrain',this)">⛰ Terrain</button>
+      <div class="tb-sep"></div>
+      <button class="tb-btn" onclick="toggleHeatmap()">🔥 Heatmap</button>
+      <button class="tb-btn" onclick="fitAllMarkers()">⊡ Fit All</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div>
+        <div class="stat-num" id="statCount">6</div>
+        <div class="stat-lbl">Properties Nearby</div>
+      </div>
+      <div style="height:1px;background:var(--border)"></div>
+      <div>
+        <div class="stat-num" style="color:var(--accent)">₹4.5K</div>
+        <div class="stat-lbl">Lowest Price</div>
+      </div>
+      <div style="height:1px;background:var(--border)"></div>
+      <div>
+        <div class="stat-num" style="color:var(--accent2)">4.8★</div>
+        <div class="stat-lbl">Avg Rating</div>
+      </div>
+    </div>
+
+    <!-- Zoom controls -->
+    <div class="map-controls">
+      <button class="ctrl-btn" onclick="map.zoomIn()" title="Zoom in">+</button>
+      <button class="ctrl-btn" onclick="map.zoomOut()" title="Zoom out">−</button>
+    </div>
+
+    <!-- Locate me -->
+    <button class="locate-btn" onclick="locateMe()" title="My Location">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+    </button>
+
+    <!-- Legend -->
+    <div class="map-legend">
+      <div class="legend-title">Property Types</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4ef0c4"></div> Boys PG</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#ff5f6d"></div> Girls Hostel</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f5c542"></div> Co-Living</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e05cff"></div> Mixed</div>
+    </div>
+
+    <!-- The Map -->
+    <div id="map"></div>
+
+    <!-- Detail panel -->
+    <div class="detail-panel" id="detailPanel">
+      <button class="detail-close" onclick="closeDetail()">✕</button>
+      <img id="dImg" src="" alt="" class="detail-img">
+      <div class="detail-body">
+        <div id="dBadge" class="detail-badge"></div>
+        <div id="dName" class="detail-name"></div>
+        <div id="dLoc" class="detail-loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span id="dLocTxt"></span>
+        </div>
+        <div class="detail-price-row">
+          <div id="dPrice" class="detail-price"></div>
+          <div class="detail-per">/month</div>
+          <div id="dRating" class="detail-rating"></div>
+        </div>
+        <div class="detail-section-title">Amenities</div>
+        <div id="dAmenities" class="detail-amenities"></div>
+        <div class="detail-section-title">About</div>
+        <p id="dDesc" class="detail-desc"></p>
+        <div class="detail-section-title">Location on Map</div>
+        <div class="detail-map-mini" id="miniMapDiv"></div>
+        <div class="detail-actions">
+          <button class="d-btn-primary" onclick="showToast('📅 Visit request sent!')">📅 Book a Visit</button>
+          <button class="d-btn-secondary" onclick="showToast('📞 Owner will contact you!')">📞 Contact Owner</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">✓</span><span id="toastMsg">Done</span></div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════ */
+const PROPERTIES = [
+  {
+    id: 'p1', type: 'boys',
+    name: 'Boys Premium PG',
+    loc: 'Koramangala, Bangalore',
+    lat: 12.9352, lng: 77.6245,
+    price: 5000, rating: 4.7, reviews: 42,
+    img: 'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&q=75',
+    desc: 'Premium PG for boys in the heart of Koramangala. Spacious rooms, hygienic food, and a secure environment for working professionals and students.',
+    amenities: ['📶 WiFi','🍽️ Food','📹 CCTV','🧺 Laundry','🚗 Parking','📚 Study Room'],
+    color: '#4ef0c4'
+  },
+  {
+    id: 'p2', type: 'girls',
+    name: 'Serenity Girls Hostel',
+    loc: 'Indiranagar, Bangalore',
+    lat: 12.9784, lng: 77.6408,
+    price: 6000, rating: 4.9, reviews: 81,
+    img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=75',
+    desc: 'Award-winning girls hostel with biometric security, AC rooms, and a curated community of inspiring women professionals.',
+    amenities: ['🔒 Security','❄️ AC','📶 WiFi','🏋️ Gym','🧹 Housekeeping','🔋 Backup'],
+    color: '#ff5f6d'
+  },
+  {
+    id: 'p3', type: 'coliving',
+    name: 'Urban Nest Co-Living',
+    loc: 'HSR Layout, Bangalore',
+    lat: 12.9116, lng: 77.6389,
+    price: 7000, rating: 4.6, reviews: 29,
+    img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=75',
+    desc: 'Community-first co-living for young professionals. Rooftop lounge, gym, high-speed internet, and regular social events.',
+    amenities: ['🏋️ Gym','🛋️ Lounge','📶 WiFi','🎉 Events','🚪 Private Rooms','🧹 Housekeeping'],
+    color: '#f5c542'
+  },
+  {
+    id: 'p4', type: 'mixed',
+    name: 'Budget Stay Hostel',
+    loc: 'Marathahalli, Bangalore',
+    lat: 12.9591, lng: 77.6974,
+    price: 4500, rating: 4.4, reviews: 17,
+    img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=75',
+    desc: 'Clean, safe, and affordable mixed hostel. Dormitory and private rooms. Great for students and short-term travellers.',
+    amenities: ['🍳 Kitchen','📶 WiFi','🔐 Lockers','♨️ Hot Water','🕐 24/7 Access','🛋️ Common Area'],
+    color: '#e05cff'
+  },
+  {
+    id: 'p5', type: 'boys',
+    name: 'The Loft — Executive PG',
+    loc: 'Whitefield, Bangalore',
+    lat: 12.9698, lng: 77.7500,
+    price: 8500, rating: 4.8, reviews: 63,
+    img: 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=75',
+    desc: 'Executive-class PG for senior professionals demanding luxury and privacy. Private baths, dedicated workspaces, premium interiors.',
+    amenities: ['🛁 Private Bath','💼 Work Desk','❄️ AC','📡 Fiber WiFi','🧹 Housekeeping','🚗 Parking'],
+    color: '#4ef0c4'
+  },
+  {
+    id: 'p6', type: 'girls',
+    name: "Bloom Women's Co-Living",
+    loc: 'Jayanagar, Bangalore',
+    lat: 12.9250, lng: 77.5938,
+    price: 9000, rating: 5.0, reviews: 104,
+    img: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=75',
+    desc: 'The finest women-only co-living in the city — spa, rooftop garden, gourmet café, yoga studio, and a curated community.',
+    amenities: ['🧖 Spa','🌿 Rooftop','☕ Café','🧘 Yoga','🚪 Private Rooms','🛎️ Concierge'],
+    color: '#ff5f6d'
+  }
+];
+
+const TYPE_LABELS = { boys:'Boys PG', girls:'Girls Hostel', coliving:'Co-Living', mixed:'Mixed' };
+const BADGE_CLASSES = { boys:'badge-boys', girls:'badge-girls', coliving:'badge-coliving', mixed:'badge-mixed' };
+
+/* ═══════════════════════════════════════════════
+   MAP INIT — Leaflet + OpenStreetMap (no API key)
+═══════════════════════════════════════════════ */
+const map = L.map('map', {
+  center: [12.9716, 77.6459],
+  zoom: 12,
+  zoomControl: false,
+  attributionControl: false
+});
+
+// Dark tile layer
+const tileLayers = {
+  roadmap: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }),
+  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 19 }),
+  terrain: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { maxZoom: 17 })
+};
+tileLayers.roadmap.addTo(map);
+
+let currentTile = 'roadmap';
+
+// Attribution (small)
+L.control.attribution({ prefix: '© SmartRent | © OpenStreetMap' }).addTo(map);
+
+/* ═══════════════════════════════════════════════
+   MARKERS
+═══════════════════════════════════════════════ */
+const markerMap = {}; // id -> marker
+let miniMap = null;
+
+function createMarkerIcon(color, selected = false) {
+  const size = selected ? 48 : 40;
+  return L.divIcon({
+    className: '',
+    html: `
+      <div style="
+        width:${size}px; height:${size}px; border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        background:${color};
+        border: 3px solid rgba(255,255,255,0.9);
+        box-shadow: 0 4px 20px ${color}66, 0 2px 8px rgba(0,0,0,0.5);
+        display:flex; align-items:center; justify-content:center;
+        transition: all 0.2s;
+        ${selected ? 'filter: brightness(1.2);' : ''}
+      ">
+        <div style="transform:rotate(45deg);font-size:${selected?'16px':'13px'}">🏠</div>
+      </div>`,
+    iconSize: [size, size],
+    iconAnchor: [size/2, size],
+    popupAnchor: [0, -size - 4]
+  });
+}
+
+function createPopupHTML(p) {
+  return `
+    <div class="popup-inner">
+      <img src="${p.img}" class="popup-img" alt="${p.name}">
+      <div class="popup-type">${TYPE_LABELS[p.type]}</div>
+      <div class="popup-name">${p.name}</div>
+      <div class="popup-loc">📍 ${p.loc}</div>
+      <div class="popup-price">₹${p.price.toLocaleString('en-IN')} <span>/month</span></div>
+      <div style="font-size:11px;color:var(--txt2);margin-top:3px">⭐ ${p.rating} · ${p.reviews} reviews</div>
+      <div class="popup-btn" onclick="openDetail('${p.id}')">View Full Details →</div>
+    </div>`;
+}
+
+PROPERTIES.forEach(p => {
+  const marker = L.marker([p.lat, p.lng], { icon: createMarkerIcon(p.color) })
+    .addTo(map)
+    .bindPopup(createPopupHTML(p), {
+      maxWidth: 260, minWidth: 240,
+      closeButton: true,
+      className: ''
+    });
+
+  marker.on('click', () => {
+    highlightCard(p.id);
+  });
+
+  markerMap[p.id] = marker;
+});
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR CARDS
+═══════════════════════════════════════════════ */
+let currentFilter = 'all';
+let currentSort   = 'default';
+let searchQ       = '';
+
+function renderCards() {
+  let list = PROPERTIES.filter(p => {
+    const typeOk = currentFilter === 'all' || p.type === currentFilter;
+    const searchOk = !searchQ || p.name.toLowerCase().includes(searchQ) ||
+                     p.loc.toLowerCase().includes(searchQ) ||
+                     p.amenities.join(' ').toLowerCase().includes(searchQ);
+    return typeOk && searchOk;
+  });
+
+  // sort
+  if (currentSort === 'price-asc')  list.sort((a,b) => a.price - b.price);
+  if (currentSort === 'price-desc') list.sort((a,b) => b.price - a.price);
+  if (currentSort === 'rating')     list.sort((a,b) => b.rating - a.rating);
+  if (currentSort === 'dist')       list.sort((a,b) => distFromCenter(a) - distFromCenter(b));
+
+  const container = document.getElementById('propList');
+  container.innerHTML = '';
+  document.getElementById('countLabel').textContent = list.length;
+  document.getElementById('statCount').textContent = list.length;
+
+  list.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'prop-card';
+    div.id = 'card-' + p.id;
+    div.style.animationDelay = (i * 0.06) + 's';
+    div.innerHTML = `
+      <div class="prop-img-wrap">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        <span class="prop-img-badge ${BADGE_CLASSES[p.type]}">${TYPE_LABELS[p.type]}</span>
+        <div class="prop-star">⭐ ${p.rating}</div>
+        <div class="prop-fav" onclick="toggleFav(event,'${p.id}',this)" title="Save">♡</div>
+      </div>
+      <div class="prop-body">
+        <div class="prop-loc">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${p.loc}
+        </div>
+        <div class="prop-name">${p.name}</div>
+        <div class="prop-desc">${p.desc.substring(0,80)}…</div>
+        <div class="prop-tags">${p.amenities.slice(0,3).map(a=>`<span class="prop-tag">${a}</span>`).join('')}</div>
+        <div class="prop-footer">
+          <div class="prop-price">₹${p.price.toLocaleString('en-IN')}<span>/mo</span></div>
+          <div class="prop-btns">
+            <button class="pin-btn" onclick="flyToMarker(event,'${p.id}')">📍 Map</button>
+            <button class="pin-btn" onclick="openDetail('${p.id}')">→</button>
+          </div>
+        </div>
+      </div>`;
+    div.addEventListener('click', e => {
+      if (e.target.closest('.prop-fav') || e.target.closest('.pin-btn')) return;
+      flyToMarker(e, p.id);
+      openDetail(p.id);
+    });
+    container.appendChild(div);
+  });
+
+  // show/hide markers
+  PROPERTIES.forEach(p => {
+    const shown = list.find(l => l.id === p.id);
+    if (shown) {
+      if (!map.hasLayer(markerMap[p.id])) markerMap[p.id].addTo(map);
+    } else {
+      if (map.hasLayer(markerMap[p.id])) map.removeLayer(markerMap[p.id]);
     }
+  });
+}
 
-    containers.forEach((el) => {
-      const mapId = el.getAttribute("data-map-id") || crypto.randomUUID();
+renderCards();
+
+/* ═══════════════════════════════════════════════
+   INTERACTIONS
+═══════════════════════════════════════════════ */
+function filterType(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function sortProps(val) {
+  currentSort = val;
+  renderCards();
+}
+
+function handleGlobalSearch() {
+  searchQ = document.getElementById('globalSearch').value.toLowerCase().trim();
+  renderCards();
+}
+
+function flyToMarker(e, id) {
+  if (e) e.stopPropagation();
+  const p = PROPERTIES.find(x => x.id === id);
+  if (!p) return;
+  map.flyTo([p.lat, p.lng], 15, { duration: 1.2, easeLinearity: 0.3 });
+  setTimeout(() => markerMap[id].openPopup(), 1300);
+  highlightCard(id);
+}
+
+function highlightCard(id) {
+  document.querySelectorAll('.prop-card').forEach(c => c.classList.remove('selected'));
+  const card = document.getElementById('card-' + id);
+  if (card) { card.classList.add('selected'); card.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
+
+  // Update marker icons
+  PROPERTIES.forEach(p => {
+    if (!map.hasLayer(markerMap[p.id])) return;
+    markerMap[p.id].setIcon(createMarkerIcon(p.color, p.id === id));
+  });
+}
+
+function fitAllMarkers() {
+  const visible = PROPERTIES.filter(p => map.hasLayer(markerMap[p.id]));
+  if (!visible.length) return;
+  const bounds = L.latLngBounds(visible.map(p => [p.lat, p.lng]));
+  map.fitBounds(bounds, { padding: [60, 60] });
+}
+
+function setMapType(type, btn) {
+  if (currentTile === type) return;
+  map.removeLayer(tileLayers[currentTile]);
+  tileLayers[type].addTo(map);
+  currentTile = type;
+  document.querySelectorAll('.tb-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+let heatmapCircles = [];
+let heatmapOn = false;
+function toggleHeatmap() {
+  if (!heatmapOn) {
+    PROPERTIES.forEach(p => {
+      const c = L.circle([p.lat, p.lng], {
+        radius: 600,
+        color: p.color,
+        fillColor: p.color,
+        fillOpacity: 0.12,
+        weight: 0
+      }).addTo(map);
+      heatmapCircles.push(c);
+    });
+    heatmapOn = true;
+    showToast('🔥 Price heatmap enabled');
+  } else {
+    heatmapCircles.forEach(c => map.removeLayer(c));
+    heatmapCircles = [];
+    heatmapOn = false;
+    showToast('Heatmap disabled');
+  }
+}
+
+let userMarker = null;
+function locateMe() {
+  if (!navigator.geolocation) { showToast('⚠️ Geolocation not supported'); return; }
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude: lat, longitude: lng } = pos.coords;
+    if (userMarker) map.removeLayer(userMarker);
+    userMarker = L.marker([lat, lng], {
+      icon: L.divIcon({
+        className: '',
+        html: `<div class="user-marker-pulse"></div>`,
+        iconSize: [16, 16], iconAnchor: [8, 8]
+      })
+    }).addTo(map).bindPopup('📍 You are here').openPopup();
+    map.flyTo([lat, lng], 14, { duration: 1.5 });
+    showToast('📍 Location found!');
+  }, () => showToast('⚠️ Unable to get location'));
+}
+
+function toggleFav(e, id, btn) {
+  e.stopPropagation();
+  btn.classList.toggle('loved');
+  btn.textContent = btn.classList.contains('loved') ? '♥' : '♡';
+  showToast(btn.classList.contains('loved') ? '❤️ Saved to wishlist' : '🤍 Removed from wishlist');
+}
+
+function distFromCenter(p) {
+  const c = map.getCenter();
+  const dlat = p.lat - c.lat, dlng = p.lng - c.lng;
+  return Math.sqrt(dlat*dlat + dlng*dlng);
+}
+
+function setView(v, btn) {
+  document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (v === 'list') showToast('☰ List view — check the PGs & Hostels page!');
+}
+
+/* ═══════════════════════════════════════════════
+   DETAIL PANEL
+═══════════════════════════════════════════════ */
+function openDetail(id) {
+  const p = PROPERTIES.find(x => x.id === id);
+  if (!p) return;
+
+  document.getElementById('dImg').src = p.img;
+  const badge = document.getElementById('dBadge');
+  badge.textContent = TYPE_LABELS[p.type];
+  badge.className = 'detail-badge ' + BADGE_CLASSES[p.type];
+  document.getElementById('dName').textContent = p.name;
+  document.getElementById('dLocTxt').textContent = p.loc;
+  document.getElementById('dPrice').textContent = '₹' + p.price.toLocaleString('en-IN');
+  document.getElementById('dRating').textContent = '⭐ ' + p.rating;
+  document.getElementById('dDesc').textContent = p.desc;
+  document.getElementById('dAmenities').innerHTML = p.amenities.map(a =>
+    `<div class="detail-amenity">${a}</div>`).join('');
+
+  // Mini map
+  const miniDiv = document.getElementById('miniMapDiv');
+  miniDiv.innerHTML = '';
+  if (miniMap) { miniMap.remove(); miniMap = null; }
+  setTimeout(() => {
+    miniMap = L.map(miniDiv, { zoomControl: false, attributionControl: false, dragging: false, scrollWheelZoom: false });
+    tileLayers.roadmap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(miniMap);
+    miniMap.setView([p.lat, p.lng], 15);
+    L.marker([p.lat, p.lng], { icon: createMarkerIcon(p.color, true) }).addTo(miniMap);
+  }, 100);
+
+  document.getElementById('detailPanel').classList.add('open');
+  flyToMarker(null, id);
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  if (miniMap) { miniMap.remove(); miniMap = null; }
+  document.querySelectorAll('.prop-card').forEach(c => c.classList.remove('selected'));
+  PROPERTIES.forEach(p => {
+    if (map.hasLayer(markerMap[p.id])) markerMap[p.id].setIcon(createMarkerIcon(p.color, false));
+  });
+}
+
+/* ═══════════════════════════════════════════════
+   ORIGINAL JS INTEGRATION
+   (Enhanced version of the uploaded property map logic)
+═══════════════════════════════════════════════ */
+const PropertyMaps = (function () {
+  const _maps = new Map();
+
+  function updatePropertyMap(mapIdOrEl, coords) {
+    const mapId = typeof mapIdOrEl === 'string' ? mapIdOrEl : mapIdOrEl?.dataset?.mapId;
+    if (!mapId || !_maps.has(mapId)) return;
+    const { marker } = _maps.get(mapId);
+    const { lat, lng } = coords;
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+    marker.setLatLng([lat, lng]);
+    map.flyTo([lat, lng], 14, { duration: 1 });
+  }
+
+  function initPropertyMaps() {
+    document.querySelectorAll('.property-map').forEach(el => {
+      const mapId = el.getAttribute('data-map-id') || crypto.randomUUID();
       el.dataset.mapId = mapId;
-
-      const lat = parseFloat(el.getAttribute("data-lat"));
-      const lng = parseFloat(el.getAttribute("data-lng"));
-
+      const lat = parseFloat(el.getAttribute('data-lat'));
+      const lng = parseFloat(el.getAttribute('data-lng'));
       if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
-        // Optional: show message if coords missing
-        el.innerHTML = `<div class="text-sm text-white/70 p-3">Location not available.</div>`;
+        el.innerHTML = `<div style="padding:12px;color:var(--txt1);font-size:13px">Location not available.</div>`;
         return;
       }
-
-      // Ensure container has a size
-      if (!el.style.height) el.style.height = "320px";
-
-      // Create map if not exists
-      if (!maps.has(mapId)) {
-        const map = new google.maps.Map(el, {
-          center: { lat, lng },
-          zoom: MAP_DEFAULTS.zoom,
-          mapTypeId: MAP_DEFAULTS.mapTypeId,
-          disableDefaultUI: MAP_DEFAULTS.disableDefaultUI
-        });
-
-        const marker = new google.maps.Marker({
-          position: { lat, lng },
-          map,
-          title: "Property Location"
-        });
-
-        maps.set(mapId, { map, marker });
+      if (!_maps.has(mapId)) {
+        const marker = L.marker([lat, lng]).addTo(map);
+        _maps.set(mapId, { marker });
       } else {
-        // Update if already created
-        const { map, marker } = maps.get(mapId);
-        const pos = { lat, lng };
-        marker.setPosition(pos);
-        map.panTo(pos);
+        updatePropertyMap(mapId, { lat, lng });
       }
     });
   }
 
-  /**
-   * Update map for a specific property (e.g., when switching tabs/cards)
-   * @param {string|HTMLElement} mapIdOrEl - mapId or the container element
-   * @param {{lat:number,lng:number}} coords
-   */
-  function updatePropertyMap(mapIdOrEl, coords) {
-    const mapId = typeof mapIdOrEl === "string" ? mapIdOrEl : mapIdOrEl?.dataset?.mapId;
-    if (!mapId || !maps.has(mapId)) return;
-
-    const { map, marker } = maps.get(mapId);
-    const { lat, lng } = coords;
-    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
-
-    const pos = { lat, lng };
-    marker.setPosition(pos);
-    map.panTo(pos);
-    map.setZoom(MAP_DEFAULTS.zoom);
-  }
-
-  // Optional: if you have buttons that change the selected property
   function initPropertySwitchers() {
-    const switchers = document.querySelectorAll(".property-select");
-    switchers.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const lat = parseFloat(btn.getAttribute("data-lat"));
-        const lng = parseFloat(btn.getAttribute("data-lng"));
-        const targetMapId = btn.getAttribute("data-map-id"); // optional
-
-        // If targetMapId not provided, update the first map container
+    document.querySelectorAll('.property-select').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lat = parseFloat(btn.getAttribute('data-lat'));
+        const lng = parseFloat(btn.getAttribute('data-lng'));
+        const targetMapId = btn.getAttribute('data-map-id');
         const target = targetMapId
           ? document.querySelector(`.property-map[data-map-id="${targetMapId}"]`)
-          : document.querySelector(".property-map");
-
-        if (!target) return;
-        updatePropertyMap(target, { lat, lng });
+          : document.querySelector('.property-map');
+        if (target) updatePropertyMap(target, { lat, lng });
       });
     });
   }
 
-  // Run after Maps JS API is ready
-  // If you load maps with script tag, this is usually enough:
-  window.__initPropertyMaps = function () {
-    if (!window.google || !google.maps) {
-      console.warn("[maps] Google Maps not loaded yet.");
-      return;
-    }
-    initPropertyMaps();
-    initPropertySwitchers();
-  };
-
-  // Auto-init if google maps already exists
-  if (window.google && google.maps) {
-    window.__initPropertyMaps();
-  }
+  return { init: function() { initPropertyMaps(); initPropertySwitchers(); }, updatePropertyMap };
 })();
+
+PropertyMaps.init();
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// Keyboard shortcuts
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDetail();
+  if (e.key === 'f' && !e.target.closest('input')) fitAllMarkers();
+});
+
+// Close detail on map click
+map.on('click', () => closeDetail());
+</script>
+</body>
+</html>

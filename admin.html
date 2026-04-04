@@ -3,85 +3,1294 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartRent Admin Panel</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
+<title>SmartRent · Admin Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-body{
-    font-family:'Inter',sans-serif;
-    background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
-    color:white;
-    min-height:100vh;
+:root {
+  --bg-void: #020408;
+  --bg-deep: #060d14;
+  --bg-surface: #0a1520;
+  --bg-card: #0d1d2e;
+  --bg-hover: #112233;
+  --accent-cyan: #00e5ff;
+  --accent-gold: #ffd166;
+  --accent-rose: #ff4d6d;
+  --accent-violet: #a855f7;
+  --accent-emerald: #06d6a0;
+  --border-dim: rgba(255,255,255,0.06);
+  --border-glow: rgba(0,229,255,0.3);
+  --text-primary: #e8f4ff;
+  --text-secondary: rgba(200,220,240,0.6);
+  --text-muted: rgba(150,180,210,0.4);
 }
-.glass{
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(12px);
-    border-radius: 15px;
-    padding:15px;
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
-.card:hover{
-    transform:scale(1.03);
-    transition:0.3s;
-    box-shadow:0 0 25px rgba(255,255,255,0.2);
+
+/* Animated background grid */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ambient blobs */
+.ambient {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+  animation: drift 8s ease-in-out infinite alternate;
+}
+.ambient-1 { width:500px; height:500px; background:rgba(0,229,255,0.04); top:-200px; right:-200px; }
+.ambient-2 { width:400px; height:400px; background:rgba(168,85,247,0.04); bottom:-100px; left:-100px; animation-delay:3s; }
+.ambient-3 { width:300px; height:300px; background:rgba(255,77,109,0.03); top:50%; left:40%; animation-delay:1.5s; }
+
+@keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(30px,20px) scale(1.1);} }
+
+/* Layout */
+.app-wrap { position:relative; z-index:1; display:flex; min-height:100vh; }
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  background: rgba(6,13,20,0.95);
+  border-right: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.sidebar-logo {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.logo-text { font-size: 16px; font-weight: 700; letter-spacing: 0.02em; }
+.logo-sub { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); letter-spacing: 0.15em; }
+
+.sidebar-nav { flex: 1; padding: 16px 12px; overflow-y: auto; }
+
+.nav-section-title {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  padding: 16px 8px 8px;
+  text-transform: uppercase;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 2px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-dim);
+}
+
+.nav-item.active {
+  background: rgba(0,229,255,0.08);
+  color: var(--accent-cyan);
+  border-color: rgba(0,229,255,0.2);
+}
+
+.nav-item .icon { width: 18px; height: 18px; flex-shrink: 0; }
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--accent-rose);
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 1px 6px;
+  border-radius: 20px;
+  color: white;
+}
+
+.sidebar-footer {
+  padding: 16px 12px;
+  border-top: 1px solid var(--border-dim);
+}
+
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+}
+
+.avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bg-void);
+  flex-shrink: 0;
+}
+
+.profile-name { font-size: 13px; font-weight: 600; }
+.profile-role { font-size: 10px; color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; }
+
+/* Main content */
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  height: 64px;
+  background: rgba(6,13,20,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.topbar-title { font-size: 18px; font-weight: 700; flex: 1; }
+.topbar-title span { color: var(--accent-cyan); }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  padding: 7px 14px;
+  width: 280px;
+  transition: border-color 0.2s;
+}
+
+.search-bar:focus-within { border-color: var(--accent-cyan); }
+
+.search-bar input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  width: 100%;
+}
+
+.search-bar input::placeholder { color: var(--text-muted); }
+
+.topbar-actions { display: flex; gap: 8px; }
+
+.icon-btn {
+  width: 36px; height: 36px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.icon-btn:hover { border-color: var(--border-glow); background: var(--bg-hover); }
+
+.icon-btn .notif-dot {
+  position: absolute;
+  top: 5px; right: 5px;
+  width: 7px; height: 7px;
+  background: var(--accent-rose);
+  border-radius: 50%;
+  border: 1px solid var(--bg-void);
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(255,77,109,0.1);
+  border: 1px solid rgba(255,77,109,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--accent-rose);
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover { background: rgba(255,77,109,0.2); border-color: var(--accent-rose); }
+
+/* Content */
+.content-area { padding: 28px; flex: 1; }
+
+/* Notification toast */
+.toast-container {
+  position: fixed;
+  top: 80px; right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toast {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-left: 3px solid var(--accent-cyan);
+  border-radius: 10px;
+  padding: 14px 16px;
+  min-width: 300px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  animation: slideIn 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.toast.warning { border-left-color: var(--accent-gold); }
+.toast.error { border-left-color: var(--accent-rose); }
+.toast.success { border-left-color: var(--accent-emerald); }
+
+@keyframes slideIn {
+  from { transform: translateX(120%); opacity:0; }
+  to { transform: translateX(0); opacity:1; }
+}
+
+.toast-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.toast-msg { font-size: 12px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+
+/* Stat cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s;
+  cursor: default;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent-cyan)), transparent);
+}
+
+.stat-card:hover {
+  border-color: var(--card-accent, var(--accent-cyan));
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.stat-card .card-glow {
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--card-accent, var(--accent-cyan)), transparent 70%);
+  opacity: 0.06;
+}
+
+.stat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-change {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-change.up { color: var(--accent-emerald); }
+.stat-change.down { color: var(--accent-rose); }
+
+/* Charts grid */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.chart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 14px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.chart-card:hover { border-color: rgba(255,255,255,0.1); }
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chart-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.chart-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px;
+}
+
+.chart-badge {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.chart-canvas-wrap { position: relative; }
+
+/* Section */
+.section { margin-bottom: 28px; }
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-count {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.section-actions { display: flex; gap: 8px; }
+
+/* Filter tabs */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  padding: 3px;
+}
+
+.filter-tab {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text-muted);
+  border: none;
+  background: none;
+  font-family: 'Syne', sans-serif;
+}
+
+.filter-tab.active { background: rgba(0,229,255,0.15); color: var(--accent-cyan); }
+.filter-tab:hover:not(.active) { color: var(--text-secondary); }
+
+/* Property grid */
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.property-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.25s;
+}
+
+.property-card:hover {
+  border-color: rgba(0,229,255,0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.property-img {
+  height: 120px;
+  background: linear-gradient(135deg, #0d2137, #1a3a5c);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+}
+
+.property-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, var(--bg-card));
+}
+
+.property-status-badge {
+  position: absolute;
+  top: 10px; right: 10px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  z-index: 1;
+  letter-spacing: 0.1em;
+}
+
+.badge-approved { background: rgba(6,214,160,0.2); color: var(--accent-emerald); border: 1px solid rgba(6,214,160,0.3); }
+.badge-pending { background: rgba(255,209,102,0.2); color: var(--accent-gold); border: 1px solid rgba(255,209,102,0.3); }
+.badge-rejected { background: rgba(255,77,109,0.2); color: var(--accent-rose); border: 1px solid rgba(255,77,109,0.3); }
+
+.property-body { padding: 14px; }
+
+.property-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.property-meta { font-size: 11px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.property-meta span { background: var(--bg-surface); padding: 2px 6px; border-radius: 3px; border: 1px solid var(--border-dim); }
+
+.property-owner { font-size: 11px; color: var(--text-muted); margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.property-actions { display: flex; gap: 6px; }
+
+.btn {
+  flex: 1;
+  padding: 7px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid;
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.btn-approve { background: rgba(6,214,160,0.1); color: var(--accent-emerald); border-color: rgba(6,214,160,0.3); }
+.btn-approve:hover { background: rgba(6,214,160,0.2); }
+.btn-reject { background: rgba(255,209,102,0.1); color: var(--accent-gold); border-color: rgba(255,209,102,0.3); }
+.btn-reject:hover { background: rgba(255,209,102,0.2); }
+.btn-delete { background: rgba(255,77,109,0.1); color: var(--accent-rose); border-color: rgba(255,77,109,0.3); }
+.btn-delete:hover { background: rgba(255,77,109,0.2); }
+.btn-view { background: rgba(0,229,255,0.1); color: var(--accent-cyan); border-color: rgba(0,229,255,0.3); }
+.btn-view:hover { background: rgba(0,229,255,0.2); }
+
+/* User table */
+.user-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+table { width: 100%; border-collapse: collapse; }
+
+thead tr {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-dim);
+}
+
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border-dim);
+  transition: background 0.15s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg-hover); }
+
+td {
+  padding: 13px 16px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.user-info { display: flex; align-items: center; gap: 10px; }
+.user-avatar {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.user-name { font-weight: 600; font-size: 13px; }
+.user-email { font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+.plan-badge {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+}
+
+.plan-pro { background: rgba(168,85,247,0.2); color: var(--accent-violet); border: 1px solid rgba(168,85,247,0.3); }
+.plan-premium { background: rgba(255,209,102,0.2); color: var(--accent-gold); border: 1px solid rgba(255,209,102,0.3); }
+.plan-free { background: rgba(150,180,210,0.1); color: var(--text-muted); border: 1px solid var(--border-dim); }
+
+.status-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.status-dot::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+.status-active::before { background: var(--accent-emerald); box-shadow: 0 0 6px var(--accent-emerald); }
+.status-inactive::before { background: var(--text-muted); }
+.status-banned::before { background: var(--accent-rose); box-shadow: 0 0 6px var(--accent-rose); }
+
+.td-actions { display: flex; gap: 5px; }
+.td-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  transition: all 0.15s;
+}
+.td-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.td-btn.danger:hover { border-color: var(--accent-rose); color: var(--accent-rose); }
+
+/* Loading spinner */
+.spinner {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border-dim);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 60px auto;
+  display: block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-muted);
+}
+.empty-state .icon { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { font-size: 13px; }
+
+/* Quick actions */
+.quick-actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.quick-action {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-action:hover {
+  border-color: var(--card-accent, var(--accent-cyan));
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+}
+
+.qa-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.qa-label { font-size: 13px; font-weight: 600; }
+.qa-sub { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+/* Activity feed */
+.activity-feed {
+  background: var(--bg-card);
+  border: 1px solid var(--border-dim);
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-dim);
+  transition: background 0.15s;
+}
+
+.activity-item:last-child { border-bottom: none; }
+.activity-item:hover { background: var(--bg-hover); }
+
+.activity-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.activity-text { flex: 1; }
+.activity-main { font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+.activity-time { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(2,4,8,0.8);
+  backdrop-filter: blur(8px);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 28px;
+  width: 90%;
+  max-width: 480px;
+  transform: scale(0.95);
+  transition: transform 0.2s;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+}
+
+.modal-overlay.open .modal { transform: scale(1); }
+
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.modal-sub { font-size: 13px; color: var(--text-secondary); margin-bottom: 24px; }
+
+.modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+.btn-secondary {
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border-dim);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+}
+
+.btn-primary-red {
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid rgba(255,77,109,0.4);
+  background: rgba(255,77,109,0.15);
+  color: var(--accent-rose);
+  font-family: 'Syne', sans-serif;
+  transition: all 0.2s;
+}
+
+.btn-primary-red:hover { background: rgba(255,77,109,0.25); }
+
+/* Responsive tweaks */
+@media (max-width: 1200px) {
+  .stats-grid { grid-template-columns: repeat(2,1fr); }
+  .charts-grid { grid-template-columns: 1fr 1fr; }
+  .quick-actions { grid-template-columns: repeat(2,1fr); }
+}
+
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .main-content { margin-left: 0; }
+  .charts-grid { grid-template-columns: 1fr; }
+}
+
+/* Pulse animation for live indicator */
+.live-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 0 0 rgba(6,214,160,0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(6,214,160,0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(6,214,160,0); }
+  100% { box-shadow: 0 0 0 0 rgba(6,214,160,0); }
+}
+
+/* Page sections */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* Stagger animations */
+.stagger-in > * {
+  animation: fadeUp 0.4s cubic-bezier(0.4,0,0.2,1) both;
+}
+.stagger-in > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-in > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-in > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-in > *:nth-child(4) { animation-delay: 0.2s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Top metrics row */
+.mini-metric {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-dim);
+  font-size: 12px;
+}
+.mini-metric:last-child { border-bottom: none; }
+.mini-metric-label { color: var(--text-secondary); }
+.mini-metric-value { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+/* Search highlights */
+.hl { background: rgba(0,229,255,0.2); color: var(--accent-cyan); border-radius: 2px; padding: 0 2px; }
+
+/* Gradient text */
+.grad-text {
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="flex justify-between items-center p-6">
-    <h1 class="text-3xl font-bold">💎 SmartRent Admin</h1>
-    <button id="logoutBtn" class="bg-red-500 px-4 py-2 rounded hover:scale-105 transition">Logout</button>
+<!-- Ambient blobs -->
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+<div class="ambient ambient-3"></div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">Confirm Action</div>
+    <div class="modal-sub" id="modalSub">Are you sure?</div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary-red" id="modalConfirmBtn">Confirm</button>
+    </div>
+  </div>
 </div>
 
-<!-- ALERT BOX -->
-<div id="alertBox" class="fixed top-20 right-6 hidden bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50">
-New property awaiting approval!
-</div>
+<div class="app-wrap">
 
-<!-- SEARCH -->
-<div class="max-w-6xl mx-auto p-6 flex gap-3 flex-wrap">
-<input id="searchProperty" placeholder="Search Property" class="px-3 py-2 rounded text-black flex-1">
-<input id="searchUser" placeholder="Search User" class="px-3 py-2 rounded text-black flex-1">
-<button onclick="applyAdminSearch()" class="bg-blue-600 px-4 py-2 rounded">Search</button>
-</div>
+  <!-- ─── SIDEBAR ─── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">💎</div>
+      <div>
+        <div class="logo-text">SmartRent</div>
+        <div class="logo-sub">ADMIN PANEL</div>
+      </div>
+    </div>
 
-<!-- ANALYTICS -->
-<div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-6 p-6">
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Overview</div>
+      <a class="nav-item active" onclick="showPage('dashboard',this)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        Dashboard
+      </a>
+      <a class="nav-item" onclick="showPage('analytics',this)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Analytics
+      </a>
 
-<div class="glass p-6 text-center">
-<h2 class="font-bold text-xl">Total Properties</h2>
-<p id="totalProperties" class="text-3xl mt-2">0</p>
-<canvas id="cityChart" class="mt-4"></canvas>
-</div>
+      <div class="nav-section-title">Management</div>
+      <a class="nav-item" onclick="showPage('properties',this)" id="navProperties">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Properties
+        <span class="badge" id="pendingBadge" style="display:none">0</span>
+      </a>
+      <a class="nav-item" onclick="showPage('users',this)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Users
+      </a>
 
-<div class="glass p-6 text-center">
-<h2 class="font-bold text-xl">Users by Plan</h2>
-<p id="totalUsers" class="text-3xl mt-2">0</p>
-<canvas id="planChart" class="mt-4"></canvas>
-</div>
+      <div class="nav-section-title">System</div>
+      <a class="nav-item" onclick="showPage('activity',this)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Activity Log
+      </a>
+      <a class="nav-item" onclick="showPage('settings',this)">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Settings
+      </a>
+    </nav>
 
-<div class="glass p-6 text-center">
-<h2 class="font-bold text-xl">Revenue (₹)</h2>
-<p id="totalRevenue" class="text-3xl mt-2">0</p>
-<canvas id="revenueChart" class="mt-4"></canvas>
-</div>
+    <div class="sidebar-footer">
+      <div class="admin-profile">
+        <div class="avatar">A</div>
+        <div>
+          <div class="profile-name">Admin</div>
+          <div class="profile-role">SUPER ADMIN</div>
+        </div>
+        <div class="live-dot" style="margin-left:auto;" title="Online"></div>
+      </div>
+    </div>
+  </aside>
 
-</div>
+  <!-- ─── MAIN CONTENT ─── -->
+  <main class="main-content">
 
-<!-- PROPERTY MANAGEMENT -->
-<div class="max-w-6xl mx-auto p-6">
-<h2 class="text-2xl font-bold mb-4">Property Management</h2>
-<div id="propertyList" class="grid md:grid-cols-2 gap-4"></div>
-</div>
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title">
+        <span class="grad-text" id="pageTitle">Dashboard</span>
+      </div>
 
-<!-- USER MANAGEMENT -->
-<div class="max-w-6xl mx-auto p-6">
-<h2 class="text-2xl font-bold mb-4">User Management</h2>
-<div id="userList" class="grid md:grid-cols-2 gap-4"></div>
-</div>
+      <div class="search-bar">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--text-muted);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input id="globalSearch" placeholder="Search properties, users..." oninput="handleGlobalSearch(this.value)">
+      </div>
+
+      <div class="topbar-actions">
+        <div class="icon-btn" id="refreshBtn" onclick="refreshAll()" title="Refresh">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </div>
+        <div class="icon-btn" onclick="showNotificationsPanel()" title="Alerts">
+          🔔
+          <span class="notif-dot" id="notifDot" style="display:none"></span>
+        </div>
+        <button class="btn-logout" id="logoutBtn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <div class="content-area">
+
+      <!-- ═══ DASHBOARD PAGE ═══ -->
+      <div class="page-section active" id="page-dashboard">
+
+        <!-- Stats -->
+        <div class="stats-grid stagger-in" id="statsGrid">
+          <div class="stat-card" style="--card-accent:var(--accent-cyan)">
+            <div class="card-glow"></div>
+            <div class="stat-icon">🏠</div>
+            <div class="stat-label">Total Properties</div>
+            <div class="stat-value" id="statProperties">—</div>
+            <div class="stat-change up" id="statPropChange">↑ Loading...</div>
+          </div>
+          <div class="stat-card" style="--card-accent:var(--accent-emerald)">
+            <div class="card-glow"></div>
+            <div class="stat-icon">👥</div>
+            <div class="stat-label">Registered Users</div>
+            <div class="stat-value" id="statUsers">—</div>
+            <div class="stat-change up" id="statUserChange">↑ Loading...</div>
+          </div>
+          <div class="stat-card" style="--card-accent:var(--accent-gold)">
+            <div class="card-glow"></div>
+            <div class="stat-icon">💰</div>
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" id="statRevenue">—</div>
+            <div class="stat-change up" id="statRevChange">↑ Loading...</div>
+          </div>
+          <div class="stat-card" style="--card-accent:var(--accent-rose)">
+            <div class="card-glow"></div>
+            <div class="stat-icon">⏳</div>
+            <div class="stat-label">Pending Approval</div>
+            <div class="stat-value" id="statPending">—</div>
+            <div class="stat-change" id="statPendChange" style="color:var(--text-muted)">Awaiting review</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="charts-grid" id="chartsGrid">
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Revenue Trend</div>
+                <div class="chart-sub">Monthly earnings overview</div>
+              </div>
+              <span class="chart-badge" style="color:var(--accent-emerald);border-color:rgba(6,214,160,0.3);background:rgba(6,214,160,0.08)">LIVE</span>
+            </div>
+            <div class="chart-canvas-wrap" style="height:180px">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Properties by City</div>
+                <div class="chart-sub">Geographic distribution</div>
+              </div>
+            </div>
+            <div class="chart-canvas-wrap" style="height:180px">
+              <canvas id="cityChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">User Plans</div>
+                <div class="chart-sub">Subscription breakdown</div>
+              </div>
+            </div>
+            <div class="chart-canvas-wrap" style="height:180px">
+              <canvas id="planChart"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-actions">
+          <div class="quick-action" style="--card-accent:var(--accent-cyan)" onclick="showPage('properties',document.querySelector('.nav-item:nth-child(4)'));document.getElementById('filterPending').click()">
+            <div class="qa-icon" style="background:rgba(0,229,255,0.1)">⏳</div>
+            <div>
+              <div class="qa-label">Review Pending</div>
+              <div class="qa-sub">Approve or reject listings</div>
+            </div>
+          </div>
+          <div class="quick-action" style="--card-accent:var(--accent-emerald)" onclick="showPage('users',document.querySelectorAll('.nav-item')[4])">
+            <div class="qa-icon" style="background:rgba(6,214,160,0.1)">👤</div>
+            <div>
+              <div class="qa-label">Manage Users</div>
+              <div class="qa-sub">View all registered accounts</div>
+            </div>
+          </div>
+          <div class="quick-action" style="--card-accent:var(--accent-gold)" onclick="showPage('analytics',document.querySelectorAll('.nav-item')[1])">
+            <div class="qa-icon" style="background:rgba(255,209,102,0.1)">📊</div>
+            <div>
+              <div class="qa-label">Deep Analytics</div>
+              <div class="qa-sub">Revenue & growth insights</div>
+            </div>
+          </div>
+          <div class="quick-action" style="--card-accent:var(--accent-violet)" onclick="exportCSV()">
+            <div class="qa-icon" style="background:rgba(168,85,247,0.1)">📥</div>
+            <div>
+              <div class="qa-label">Export Data</div>
+              <div class="qa-sub">Download CSV reports</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">
+              🕐 Recent Activity
+              <span class="live-dot"></span>
+            </div>
+          </div>
+          <div class="activity-feed" id="activityFeed">
+            <div class="spinner"></div>
+          </div>
+        </div>
+
+      </div><!-- end dashboard -->
+
+      <!-- ═══ ANALYTICS PAGE ═══ -->
+      <div class="page-section" id="page-analytics">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">Revenue by Month</div></div>
+            <div style="height:250px"><canvas id="analyticsRevenue"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">New Users Growth</div></div>
+            <div style="height:250px"><canvas id="analyticsUsers"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">Property Status Breakdown</div></div>
+            <div style="height:250px"><canvas id="analyticsPropStatus"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header"><div class="chart-title">BHK Distribution</div></div>
+            <div style="height:250px"><canvas id="analyticsBhk"></canvas></div>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div class="chart-title">City vs Revenue Heatmap</div></div>
+          <div style="height:220px"><canvas id="analyticsCityRev"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ═══ PROPERTIES PAGE ═══ -->
+      <div class="page-section" id="page-properties">
+        <div class="section-header">
+          <div class="section-title">
+            🏠 All Properties
+            <span class="section-count" id="propCount">0</span>
+          </div>
+          <div class="section-actions">
+            <div class="filter-tabs">
+              <button class="filter-tab active" id="filterAll" onclick="filterProperties('all',this)">All</button>
+              <button class="filter-tab" id="filterPending" onclick="filterProperties('pending',this)">Pending</button>
+              <button class="filter-tab" onclick="filterProperties('approved',this)">Approved</button>
+              <button class="filter-tab" onclick="filterProperties('paid',this)">Paid</button>
+            </div>
+          </div>
+        </div>
+        <div class="property-grid" id="propertyGrid">
+          <div style="grid-column:1/-1"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <!-- ═══ USERS PAGE ═══ -->
+      <div class="page-section" id="page-users">
+        <div class="section-header">
+          <div class="section-title">
+            👥 All Users
+            <span class="section-count" id="userCount">0</span>
+          </div>
+          <div class="section-actions">
+            <div class="filter-tabs">
+              <button class="filter-tab active" onclick="filterUsers('all',this)">All</button>
+              <button class="filter-tab" onclick="filterUsers('Pro',this)">Pro</button>
+              <button class="filter-tab" onclick="filterUsers('Premium',this)">Premium</button>
+              <button class="filter-tab" onclick="filterUsers('Free',this)">Free</button>
+            </div>
+          </div>
+        </div>
+        <div class="user-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Plan</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Properties</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <tr><td colspan="6"><div class="spinner"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ═══ ACTIVITY PAGE ═══ -->
+      <div class="page-section" id="page-activity">
+        <div class="section-header">
+          <div class="section-title">🕐 Activity Log</div>
+        </div>
+        <div class="activity-feed" style="max-height:none" id="activityFeedFull">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- ═══ SETTINGS PAGE ═══ -->
+      <div class="page-section" id="page-settings">
+        <div style="max-width:560px">
+          <div class="chart-card" style="margin-bottom:16px">
+            <div class="chart-title" style="margin-bottom:16px">⚙️ Admin Settings</div>
+            <div class="mini-metric"><span class="mini-metric-label">Admin Email</span><span class="mini-metric-value" id="settingsEmail" style="color:var(--accent-cyan)">—</span></div>
+            <div class="mini-metric"><span class="mini-metric-label">Firebase Project</span><span class="mini-metric-value">smart-property-portal</span></div>
+            <div class="mini-metric"><span class="mini-metric-label">Data Refresh</span><span class="mini-metric-value" style="color:var(--accent-emerald)">Real-time</span></div>
+            <div class="mini-metric"><span class="mini-metric-label">Panel Version</span><span class="mini-metric-value">v2.0 · 2024</span></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:16px">🔔 Notification Settings</div>
+            <div class="mini-metric">
+              <span class="mini-metric-label">Pending property alerts</span>
+              <span style="display:flex;align-items:center;gap:6px">
+                <span style="font-size:11px;color:var(--accent-emerald);font-family:'JetBrains Mono',monospace">ENABLED</span>
+                <div class="live-dot"></div>
+              </span>
+            </div>
+            <div class="mini-metric">
+              <span class="mini-metric-label">Alert interval</span>
+              <span class="mini-metric-value">Every 10 seconds</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end content-area -->
+  </main>
+</div><!-- end app-wrap -->
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
@@ -89,194 +1298,458 @@ import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from "ht
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"
 
 const firebaseConfig = {
-    apiKey:"",
-    authDomain:"smart-property-portal.firebaseapp.com",
-    projectId:"smart-property-portal"
+  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain: "smart-property-portal.firebaseapp.com",
+  projectId: "smart-property-portal"
 }
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 const auth = getAuth(app)
 
-const propertyList = document.getElementById("propertyList")
-const userList = document.getElementById("userList")
-const totalProperties = document.getElementById("totalProperties")
-const totalUsers = document.getElementById("totalUsers")
-const totalRevenue = document.getElementById("totalRevenue")
-const alertBox = document.getElementById("alertBox")
+const adminEmail = "piyushmishra1903@gmail.com"
 
-let allProperties=[]
-let allUsers=[]
+let allProperties = []
+let allUsers = []
+let activityLog = []
+let charts = {}
 
-// Logout
-logoutBtn.addEventListener("click",()=>signOut(auth).then(()=>location.href="login.html"))
+// ── Auth ────────────────────────────────────────────
+onAuthStateChanged(auth, async user => {
+  if (!user) { alert("Please log in as admin!"); location.href = "login.html"; return; }
+  if (user.email !== adminEmail) { alert("Unauthorized!"); location.href = "login.html"; return; }
+  document.getElementById('settingsEmail').textContent = user.email;
+  await loadDashboard();
+});
 
-// Admin email for access
-const adminEmail = "piyushmishra1903@gmail.com" // replace with your admin email
+document.getElementById('logoutBtn').addEventListener('click', () =>
+  signOut(auth).then(() => location.href = "login.html")
+);
 
-// Auth check
-onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        alert("Please log in as admin!")
-        location.href = "login.html"
-    } else {
-        if (user.email !== adminEmail) {
-            alert("Unauthorized! Only admin can access.")
-            location.href = "login.html"
-        } else {
-            await loadDashboard()
-        }
-    }
-})
+// ── Load Data ─────────────────────────────────────
+async function loadDashboard() {
+  // Properties
+  const propSnap = await getDocs(collection(db, "properties"))
+  allProperties = []
+  let revenue = 0
+  propSnap.forEach(d => {
+    const p = d.data(); p.id = d.id; allProperties.push(p);
+    if (p.paid) revenue += p.amount || 0;
+  })
 
-// Load Dashboard
-async function loadDashboard(){
-    // Properties
-    const propSnap = await getDocs(collection(db,"properties"))
-    allProperties=[]
-    let revenue=0
-    propertyList.innerHTML=""
-    propSnap.forEach(doc=>{
-        const d=doc.data()
-        d.id=doc.id
-        allProperties.push(d)
-        propertyList.innerHTML+=propertyCard(d,doc.id)
-        if(d.paid) revenue+=d.amount||0
-    })
-    totalProperties.innerText=propSnap.size
-    totalRevenue.innerText=revenue
+  // Users
+  const userSnap = await getDocs(collection(db, "users"))
+  allUsers = []
+  userSnap.forEach(d => { const u = d.data(); u.id = d.id; allUsers.push(u); })
 
-    // Users
-    const userSnap = await getDocs(collection(db,"users"))
-    allUsers=[]
-    userList.innerHTML=""
-    userSnap.forEach(doc=>{
-        const u=doc.data()
-        u.id=doc.id
-        allUsers.push(u)
-        userList.innerHTML+=userCard(u,doc.id)
-    })
-    totalUsers.innerText=userSnap.size
+  // Build activity log
+  activityLog = buildActivityLog(allProperties, allUsers);
 
-    // Render Charts
-    renderCharts(allProperties, allUsers)
+  // Update stats
+  const pending = allProperties.filter(p => !p.approved).length
+  animateCount('statProperties', allProperties.length)
+  animateCount('statUsers', allUsers.length)
+  animateCount('statRevenue', revenue, '₹')
+  animateCount('statPending', pending)
+
+  document.getElementById('statPropChange').textContent = `↑ ${allProperties.length} total`
+  document.getElementById('statUserChange').textContent = `↑ ${allUsers.length} total`
+  document.getElementById('statRevChange').textContent = `₹${revenue.toLocaleString('en-IN')} earned`
+  document.getElementById('statPendChange').textContent = pending > 0 ? `${pending} awaiting review` : 'All clear ✓'
+  document.getElementById('statPendChange').className = 'stat-change ' + (pending > 0 ? 'down' : 'up')
+
+  // Pending badge
+  if (pending > 0) {
+    document.getElementById('pendingBadge').style.display = 'inline'
+    document.getElementById('pendingBadge').textContent = pending
+    document.getElementById('notifDot').style.display = 'block'
+  }
+
+  // Render charts
+  renderCharts()
+
+  // Render pages
+  renderPropertyGrid(allProperties)
+  renderUserTable(allUsers)
+  renderActivityFeed()
+
+  // Expose globals
+  window.allProperties = allProperties
+  window.allUsers = allUsers
 }
 
-// Property Card
-function propertyCard(p,id){
-    return `
-    <div class="glass p-4">
-        <h3 class="font-bold">${p.title}</h3>
-        <p>${p.city} • ${p.bhk} • ₹${p.rent}</p>
-        <p>Owner: ${p.ownerId}</p>
-        <div class="flex gap-2 mt-3">
-            <button onclick="approveProperty('${id}')" class="bg-green-600 px-3 py-1 rounded text-sm">Approve</button>
-            <button onclick="deleteProperty('${id}')" class="bg-red-600 px-3 py-1 rounded text-sm">Delete</button>
+function buildActivityLog(props, users) {
+  const log = []
+  props.forEach(p => {
+    log.push({ type: p.approved ? 'approved' : 'pending', icon: '🏠', text: `Property "${p.title || 'Untitled'}" ${p.approved ? 'approved' : 'submitted for approval'}`, time: p.createdAt ? new Date(p.createdAt.seconds * 1000) : new Date(), color: p.approved ? 'rgba(6,214,160,0.15)' : 'rgba(255,209,102,0.15)' })
+  })
+  users.forEach(u => {
+    log.push({ type: 'user', icon: '👤', text: `User "${u.name || u.email || 'Unknown'}" registered (${u.plan || 'Free'} plan)`, time: u.createdAt ? new Date(u.createdAt.seconds * 1000) : new Date(), color: 'rgba(0,229,255,0.1)' })
+  })
+  return log.sort((a, b) => b.time - a.time).slice(0, 40)
+}
+
+// ── Charts ────────────────────────────────────────
+function renderCharts() {
+  const chartDefaults = {
+    plugins: { legend: { display: false } },
+    responsive: true,
+    maintainAspectRatio: false,
+  }
+  const gridColor = 'rgba(255,255,255,0.04)'
+  const tickColor = 'rgba(150,180,210,0.4)'
+
+  // Revenue line chart
+  const monthsMap = {}
+  allProperties.forEach(p => {
+    if (p.paid && p.createdAt) {
+      const m = new Date(p.createdAt.seconds * 1000).toLocaleString('default', { month: 'short' })
+      monthsMap[m] = (monthsMap[m] || 0) + (p.amount || 0)
+    }
+  })
+  if (Object.keys(monthsMap).length === 0) { monthsMap['Jan'] = 0; monthsMap['Feb'] = 0; }
+
+  destroyChart('revenueChart')
+  charts.revenue = new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: Object.keys(monthsMap),
+      datasets: [{ label: 'Revenue', data: Object.values(monthsMap), borderColor: '#00e5ff', backgroundColor: 'rgba(0,229,255,0.08)', fill: true, tension: 0.4, pointBackgroundColor: '#00e5ff', pointRadius: 4, borderWidth: 2 }]
+    },
+    options: { ...chartDefaults, scales: { x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } }, y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } } } }
+  })
+
+  // City bar chart
+  const cityMap = {}
+  allProperties.forEach(p => cityMap[p.city || 'Unknown'] = (cityMap[p.city || 'Unknown'] || 0) + 1)
+
+  destroyChart('cityChart')
+  charts.city = new Chart(document.getElementById('cityChart'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(cityMap),
+      datasets: [{ data: Object.values(cityMap), backgroundColor: ['#00e5ff','#a855f7','#ffd166','#ff4d6d','#06d6a0','#3b82f6'].map(c => c + '99'), borderRadius: 6, borderSkipped: false }]
+    },
+    options: { ...chartDefaults, scales: { x: { grid: { display: false }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 9 } } }, y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { family: 'JetBrains Mono', size: 9 } } } } }
+  })
+
+  // Plan donut
+  const planMap = {}
+  allUsers.forEach(u => planMap[u.plan || 'Free'] = (planMap[u.plan || 'Free'] || 0) + 1)
+
+  destroyChart('planChart')
+  charts.plan = new Chart(document.getElementById('planChart'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(planMap),
+      datasets: [{ data: Object.values(planMap), backgroundColor: ['#a855f7','#ffd166','#00e5ff','#06d6a0'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: { ...chartDefaults, plugins: { legend: { display: true, position: 'bottom', labels: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 }, padding: 10, boxWidth: 10 } } }, cutout: '65%' }
+  })
+
+  // Analytics page charts
+  renderAnalyticsCharts(cityMap, planMap, monthsMap)
+}
+
+function renderAnalyticsCharts(cityMap, planMap, monthsMap) {
+  const gridColor = 'rgba(255,255,255,0.04)'
+  const tickColor = 'rgba(150,180,210,0.4)'
+
+  destroyChart('analyticsRevenue')
+  charts.anaRev = new Chart(document.getElementById('analyticsRevenue'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(monthsMap),
+      datasets: [{ label: 'Revenue (₹)', data: Object.values(monthsMap), backgroundColor: 'rgba(255,209,102,0.3)', borderColor: '#ffd166', borderWidth: 2, borderRadius: 6 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { color: gridColor }, ticks: { color: tickColor } }, y: { grid: { color: gridColor }, ticks: { color: tickColor } } } }
+  })
+
+  destroyChart('analyticsUsers')
+  const planLabels = Object.keys(planMap)
+  charts.anaUsers = new Chart(document.getElementById('analyticsUsers'), {
+    type: 'bar',
+    data: {
+      labels: planLabels,
+      datasets: [{ label: 'Users', data: Object.values(planMap), backgroundColor: ['rgba(168,85,247,0.4)','rgba(255,209,102,0.4)','rgba(0,229,255,0.4)'].slice(0, planLabels.length), borderRadius: 6 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: tickColor } }, y: { grid: { color: gridColor }, ticks: { color: tickColor } } } }
+  })
+
+  const approved = allProperties.filter(p => p.approved).length
+  const pending = allProperties.filter(p => !p.approved).length
+
+  destroyChart('analyticsPropStatus')
+  charts.anaPropStatus = new Chart(document.getElementById('analyticsPropStatus'), {
+    type: 'pie',
+    data: {
+      labels: ['Approved', 'Pending'],
+      datasets: [{ data: [approved, pending], backgroundColor: ['rgba(6,214,160,0.7)','rgba(255,209,102,0.7)'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } } } }
+  })
+
+  const bhkMap = {}
+  allProperties.forEach(p => bhkMap[p.bhk || 'N/A'] = (bhkMap[p.bhk || 'N/A'] || 0) + 1)
+
+  destroyChart('analyticsBhk')
+  charts.anaBhk = new Chart(document.getElementById('analyticsBhk'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(bhkMap),
+      datasets: [{ data: Object.values(bhkMap), backgroundColor: ['#ff4d6d99','#00e5ff99','#a855f799','#ffd16699','#06d6a099'], borderWidth: 0 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: true, position: 'bottom', labels: { color: tickColor, font: { family: 'JetBrains Mono', size: 10 } } } }, cutout: '55%' }
+  })
+
+  const cityRevMap = {}
+  allProperties.forEach(p => { if (p.paid) cityRevMap[p.city || 'Unknown'] = (cityRevMap[p.city || 'Unknown'] || 0) + (p.amount || 0) })
+
+  destroyChart('analyticsCityRev')
+  charts.anaCityRev = new Chart(document.getElementById('analyticsCityRev'), {
+    type: 'bar',
+    data: {
+      labels: Object.keys(cityRevMap).length ? Object.keys(cityRevMap) : ['No Data'],
+      datasets: [{ label: 'Revenue (₹)', data: Object.values(cityRevMap).length ? Object.values(cityRevMap) : [0], backgroundColor: 'rgba(0,229,255,0.3)', borderColor: '#00e5ff', borderWidth: 2, borderRadius: 8 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: tickColor } }, y: { grid: { color: gridColor }, ticks: { color: tickColor } } } }
+  })
+}
+
+function destroyChart(id) {
+  const el = document.getElementById(id)
+  const existing = Chart.getChart(el)
+  if (existing) existing.destroy()
+}
+
+// ── Property Grid ───────────────────────────────
+function renderPropertyGrid(props) {
+  document.getElementById('propCount').textContent = props.length
+  const grid = document.getElementById('propertyGrid')
+  if (!props.length) { grid.innerHTML = '<div class="empty-state"><div class="icon">🏠</div><p>No properties found</p></div>'; return; }
+  const emojis = ['🏠','🏢','🏗️','🏡','🏘️','🏬']
+  grid.innerHTML = props.map(p => `
+    <div class="property-card" id="pcard-${p.id}">
+      <div class="property-img">
+        ${emojis[Math.floor(Math.random() * emojis.length)]}
+        <span class="property-status-badge ${p.approved ? 'badge-approved' : 'badge-pending'}">${p.approved ? '✓ APPROVED' : '⏳ PENDING'}</span>
+      </div>
+      <div class="property-body">
+        <div class="property-name">${p.title || 'Untitled Property'}</div>
+        <div class="property-meta">
+          <span>📍 ${p.city || '—'}</span>
+          <span>${p.bhk || '—'}</span>
+          <span>₹${(p.rent || 0).toLocaleString('en-IN')}/mo</span>
+          ${p.paid ? '<span style="color:var(--accent-emerald)">💳 Paid</span>' : ''}
         </div>
-    </div>
-    `
+        <div class="property-owner">👤 Owner: ${p.ownerId || 'Unknown'}</div>
+        <div class="property-actions">
+          ${!p.approved ? `<button class="btn btn-approve" onclick="approveProperty('${p.id}')">✓ Approve</button>` : ''}
+          ${p.approved ? `<button class="btn btn-reject" onclick="rejectProperty('${p.id}')">↩ Revoke</button>` : ''}
+          <button class="btn btn-delete" onclick="confirmDelete('${p.id}','${(p.title||'this property').replace(/'/g,"\\'")}')">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`).join('')
 }
 
-// User Card
-function userCard(u,id){
-    return `
-    <div class="glass p-4">
-        <h3 class="font-bold">${u.name||"Anonymous"}</h3>
-        <p>Email: ${u.email||"N/A"}</p>
-        <p>Plan: ${u.plan||"Free"}</p>
-        <p>Status: ${u.status||"-"}</p>
-    </div>
-    `
+// ── User Table ──────────────────────────────────
+function renderUserTable(users) {
+  document.getElementById('userCount').textContent = users.length
+  const tbody = document.getElementById('userTableBody')
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><div class="icon">👤</div><p>No users found</p></div></td></tr>'; return; }
+  const propCount = {}
+  allProperties.forEach(p => propCount[p.ownerId] = (propCount[p.ownerId] || 0) + 1)
+
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td>
+        <div class="user-info">
+          <div class="user-avatar">${(u.name || u.email || '?')[0].toUpperCase()}</div>
+          <div>
+            <div class="user-name">${u.name || 'Anonymous'}</div>
+            <div class="user-email">${u.email || 'N/A'}</div>
+          </div>
+        </div>
+      </td>
+      <td><span class="plan-badge ${u.plan === 'Pro' ? 'plan-pro' : u.plan === 'Premium' ? 'plan-premium' : 'plan-free'}">${u.plan || 'Free'}</span></td>
+      <td><span class="status-dot ${u.status === 'banned' ? 'status-banned' : u.status === 'inactive' ? 'status-inactive' : 'status-active'}">${u.status || 'Active'}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted)">${u.createdAt ? new Date(u.createdAt.seconds*1000).toLocaleDateString() : '—'}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent-cyan)">${propCount[u.id] || 0}</td>
+      <td>
+        <div class="td-actions">
+          <button class="td-btn" onclick="upgradeUser('${u.id}','${u.plan||'Free'}')">Upgrade</button>
+          <button class="td-btn danger" onclick="banUser('${u.id}','${u.name||u.email||'Unknown'}')">Ban</button>
+        </div>
+      </td>
+    </tr>`).join('')
 }
 
-// Approve/Delete
-window.approveProperty=async (id)=>{
-    await updateDoc(doc(db,"properties",id),{approved:true})
-    loadDashboard()
-}
-window.deleteProperty=async (id)=>{
-    await deleteDoc(doc(db,"properties",id))
-    loadDashboard()
-}
+// ── Activity Feed ───────────────────────────────
+function renderActivityFeed() {
+  const html = activityLog.length ? activityLog.map(a => `
+    <div class="activity-item">
+      <div class="activity-icon" style="background:${a.color}">${a.icon}</div>
+      <div class="activity-text">
+        <div class="activity-main">${a.text}</div>
+        <div class="activity-time">${timeAgo(a.time)}</div>
+      </div>
+    </div>`).join('') : '<div class="empty-state"><div class="icon">🕐</div><p>No recent activity</p></div>'
 
-// Admin Search
-function applyAdminSearch(){
-    let pSearch = searchProperty.value.toLowerCase()
-    let uSearch = searchUser.value.toLowerCase()
-    propertyList.innerHTML=""
-    userList.innerHTML=""
-    allProperties.filter(p=>p.title.toLowerCase().includes(pSearch) || p.city.toLowerCase().includes(pSearch))
-        .forEach(p=>propertyList.innerHTML+=propertyCard(p,p.id))
-    allUsers.filter(u=>(u.name||'').toLowerCase().includes(uSearch) || (u.email||'').toLowerCase().includes(uSearch))
-        .forEach(u=>userList.innerHTML+=userCard(u,u.id))
+  document.getElementById('activityFeed').innerHTML = html
+  document.getElementById('activityFeedFull').innerHTML = html
 }
 
-// Premium Charts
-function renderCharts(properties, users){
-    // City Chart
-    let cityMap={}
-    properties.forEach(p=>cityMap[p.city]=(cityMap[p.city]||0)+1)
-    new Chart(cityChart,{
-        type:'bar',
-        data:{
-            labels:Object.keys(cityMap),
-            datasets:[{
-                label:'Properties per City',
-                data:Object.values(cityMap),
-                backgroundColor:'rgba(255,99,132,0.6)',
-                borderRadius:5
-            }]
-        },
-        options:{plugins:{legend:{display:false}}}
-    })
-
-    // Plan Chart
-    let planMap={}
-    users.forEach(u=>planMap[u.plan||"Free"]=(planMap[u.plan||"Free"]||0)+1)
-    new Chart(planChart,{
-        type:'pie',
-        data:{
-            labels:Object.keys(planMap),
-            datasets:[{
-                data:Object.values(planMap),
-                backgroundColor:['#ff6384','#36a2eb','#ffcd56','#4bc0c0']
-            }]
-        }
-    })
-
-    // Revenue Chart
-    let months={}
-    properties.forEach(p=>{
-        if(p.paid && p.createdAt){
-            let m=new Date(p.createdAt.seconds*1000).toLocaleString('default',{month:'short'})
-            months[m]=(months[m]||0)+(p.amount||0)
-        }
-    })
-    new Chart(revenueChart,{
-        type:'line',
-        data:{
-            labels:Object.keys(months),
-            datasets:[{
-                label:'Revenue',
-                data:Object.values(months),
-                borderColor:'#ffcd56',
-                backgroundColor:'rgba(255,205,86,0.2)',
-                fill:true,
-                tension:0.3
-            }]
-        }
-    })
+// ── Filters ─────────────────────────────────────
+window.filterProperties = (type, el) => {
+  document.querySelectorAll('#page-properties .filter-tab').forEach(t => t.classList.remove('active'))
+  el.classList.add('active')
+  let filtered = allProperties
+  if (type === 'pending') filtered = allProperties.filter(p => !p.approved)
+  else if (type === 'approved') filtered = allProperties.filter(p => p.approved)
+  else if (type === 'paid') filtered = allProperties.filter(p => p.paid)
+  renderPropertyGrid(filtered)
 }
 
-// Real-time alerts
-setInterval(()=>{
-    let pending = allProperties.filter(p=>!p.approved)
-    if(pending.length>0){
-        alertBox.style.display='block'
-        setTimeout(()=>{alertBox.style.display='none'},4000)
-    }
-},10000)
+window.filterUsers = (plan, el) => {
+  document.querySelectorAll('#page-users .filter-tab').forEach(t => t.classList.remove('active'))
+  el.classList.add('active')
+  let filtered = plan === 'all' ? allUsers : allUsers.filter(u => (u.plan || 'Free') === plan)
+  renderUserTable(filtered)
+}
 
+// ── Actions ─────────────────────────────────────
+window.approveProperty = async id => {
+  await updateDoc(doc(db, 'properties', id), { approved: true })
+  showToast('Property Approved', 'Listing is now live', 'success')
+  await loadDashboard()
+}
+
+window.rejectProperty = async id => {
+  await updateDoc(doc(db, 'properties', id), { approved: false })
+  showToast('Approval Revoked', 'Property moved to pending', 'warning')
+  await loadDashboard()
+}
+
+window.confirmDelete = (id, name) => {
+  document.getElementById('modalTitle').textContent = 'Delete Property?'
+  document.getElementById('modalSub').textContent = `"${name}" will be permanently removed. This action cannot be undone.`
+  document.getElementById('modalConfirmBtn').onclick = async () => {
+    closeModal()
+    await deleteDoc(doc(db, 'properties', id))
+    showToast('Property Deleted', `"${name}" removed`, 'error')
+    await loadDashboard()
+  }
+  document.getElementById('confirmModal').classList.add('open')
+}
+
+window.closeModal = () => document.getElementById('confirmModal').classList.remove('open')
+
+window.upgradeUser = async (id, currentPlan) => {
+  const plans = ['Free', 'Pro', 'Premium']
+  const next = plans[(plans.indexOf(currentPlan) + 1) % plans.length]
+  await updateDoc(doc(db, 'users', id), { plan: next })
+  showToast('Plan Updated', `User upgraded to ${next}`, 'success')
+  await loadDashboard()
+}
+
+window.banUser = (id, name) => {
+  document.getElementById('modalTitle').textContent = 'Ban User?'
+  document.getElementById('modalSub').textContent = `"${name}" will be marked as banned. They will lose access.`
+  document.getElementById('modalConfirmBtn').onclick = async () => {
+    closeModal()
+    await updateDoc(doc(db, 'users', id), { status: 'banned' })
+    showToast('User Banned', `${name} has been banned`, 'error')
+    await loadDashboard()
+  }
+  document.getElementById('confirmModal').classList.add('open')
+}
+
+// ── Global Search ────────────────────────────────
+window.handleGlobalSearch = q => {
+  if (!q) { renderPropertyGrid(allProperties); renderUserTable(allUsers); return; }
+  q = q.toLowerCase()
+  renderPropertyGrid(allProperties.filter(p => (p.title||'').toLowerCase().includes(q) || (p.city||'').toLowerCase().includes(q) || (p.ownerId||'').toLowerCase().includes(q)))
+  renderUserTable(allUsers.filter(u => (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q)))
+}
+
+// ── Refresh ──────────────────────────────────────
+window.refreshAll = async () => {
+  const btn = document.getElementById('refreshBtn')
+  btn.style.animation = 'spin 0.6s linear infinite'
+  await loadDashboard()
+  btn.style.animation = ''
+  showToast('Refreshed', 'All data updated', 'success')
+}
+
+// ── Export CSV ───────────────────────────────────
+window.exportCSV = () => {
+  const rows = [['Title','City','BHK','Rent','Owner','Approved','Paid']]
+  allProperties.forEach(p => rows.push([p.title||'', p.city||'', p.bhk||'', p.rent||0, p.ownerId||'', p.approved||false, p.paid||false]))
+  const csv = rows.map(r => r.join(',')).join('\n')
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }))
+  a.download = `smartrent_export_${Date.now()}.csv`
+  a.click()
+  showToast('Export Complete', 'CSV downloaded successfully', 'success')
+}
+
+// ── Page Navigation ──────────────────────────────
+window.showPage = (id, el) => {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
+  document.getElementById('page-' + id).classList.add('active')
+  if (el) el.classList.add('active')
+  const titles = { dashboard: 'Dashboard', analytics: 'Analytics', properties: 'Property Management', users: 'User Management', activity: 'Activity Log', settings: 'Settings' }
+  document.getElementById('pageTitle').textContent = titles[id] || id
+}
+
+// ── Toast ────────────────────────────────────────
+window.showToast = (title, msg, type = '') => {
+  const container = document.getElementById('toastContainer')
+  const toast = document.createElement('div')
+  toast.className = `toast ${type}`
+  const icons = { success: '✅', error: '❌', warning: '⚠️', '': 'ℹ️' }
+  toast.innerHTML = `<span style="font-size:16px">${icons[type]}</span><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`
+  container.appendChild(toast)
+  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(120%)'; toast.style.transition = '0.3s'; setTimeout(() => toast.remove(), 300); }, 3500)
+}
+
+// ── Notifications Panel ──────────────────────────
+window.showNotificationsPanel = () => {
+  const pending = allProperties.filter(p => !p.approved)
+  if (pending.length > 0) showToast(`${pending.length} Pending Properties`, 'Click Properties to review', 'warning')
+  else showToast('All Clear', 'No pending approvals', 'success')
+}
+
+// ── Utils ────────────────────────────────────────
+function timeAgo(date) {
+  const diff = Math.floor((Date.now() - date) / 1000)
+  if (diff < 60) return `${diff}s ago`
+  if (diff < 3600) return `${Math.floor(diff/60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff/3600)}h ago`
+  return `${Math.floor(diff/86400)}d ago`
+}
+
+function animateCount(id, target, prefix = '') {
+  const el = document.getElementById(id)
+  const start = 0
+  const duration = 800
+  const startTime = performance.now()
+  const tick = now => {
+    const elapsed = now - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const eased = 1 - Math.pow(1 - progress, 3)
+    el.textContent = prefix + Math.floor(eased * target).toLocaleString('en-IN')
+    if (progress < 1) requestAnimationFrame(tick)
+  }
+  requestAnimationFrame(tick)
+}
+
+// ── Real-time alerts ─────────────────────────────
+setInterval(() => {
+  const pending = allProperties.filter(p => !p.approved)
+  if (pending.length > 0) showToast('Pending Approval', `${pending.length} propert${pending.length > 1 ? 'ies need' : 'y needs'} review`, 'warning')
+}, 30000)
 </script>
 </body>
 </html>

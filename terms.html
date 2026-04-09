@@ -1,95 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terms & Conditions - SmartRent AI</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-body {
-    font-family:'Inter',sans-serif;
-    background: linear-gradient(to right,#0f2027,#203a43,#2c5364);
-    color:white;
-    min-height:100vh;
-}
-.glass{
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 25px;
-}
-a{
-    color: #38bdf8; /* Tailwind cyan-400 */
-    text-decoration: underline;
-}
-a:hover{
-    color: #ffffff;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms & Conditions — SmartRent</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+  </style>
 </head>
-<body>
 
-<!-- NAV -->
-<div class="flex justify-between items-center p-6">
-    <h1 class="text-3xl font-bold">SmartRent AI</h1>
-    <a href="index.html" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-700 transition">Back</a>
-</div>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <header class="sticky top-0 z-20 border-b border-white/10 bg-slate-950/70 backdrop-blur">
+    <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+          🏠
+        </div>
+        <div>
+          <div class="font-semibold">SmartRent</div>
+          <div class="text-xs text-slate-400">Terms & Conditions</div>
+        </div>
+      </div>
 
-<!-- CONTENT -->
-<div class="max-w-6xl mx-auto p-6 glass">
-<h2 class="text-2xl font-bold mb-4">Terms & Conditions</h2>
-
-<p>Effective Date: 19 March 2026</p>
-
-<h3 class="text-xl font-bold mt-4">1. Use of Platform</h3>
-<ul class="list-disc list-inside">
-    <li>SmartRent AI provides a platform for listing, browsing, and contacting rental properties.</li>
-    <li>Users must provide accurate and truthful information in profiles and property listings.</li>
-    <li>Demo properties are clearly labeled and for demonstration purposes only.</li>
-</ul>
-
-<h3 class="text-xl font-bold mt-4">2. User Accounts</h3>
-<ul class="list-disc list-inside">
-    <li>You must be 18 years or older to create an account.</li>
-    <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
-    <li>Only owners of a property can edit or remove their own listings.</li>
-</ul>
-
-<h3 class="text-xl font-bold mt-4">3. Payments & Subscriptions</h3>
-<ul class="list-disc list-inside">
-    <li>Premium features or plans may require payment via UPI.</li>
-    <li>Refunds, cancellations, and disputes are handled as per our payment policy.</li>
-    <li>SmartRent is not responsible for payment delays or failures due to banking systems.</li>
-</ul>
-
-<h3 class="text-xl font-bold mt-4">4. Chat & Communication</h3>
-<ul class="list-disc list-inside">
-    <li>Chat and contact features allow communication between users and property owners.</li>
-    <li>SmartRent AI does not guarantee responses or accuracy of property details.</li>
-    <li>Harassment or abuse via chat is prohibited; users may be blocked or reported.</li>
-</ul>
-
-<h3 class="text-xl font-bold mt-4">5. Intellectual Property</h3>
-<p>All website content, design, logos, and code are the property of SmartRent AI. Users may not copy, reproduce, or distribute our intellectual property without permission.</p>
-
-<h3 class="text-xl font-bold mt-4">6. Limitation of Liability</h3>
-<p>SmartRent AI acts as a platform connecting users and property owners. We are not liable for any disputes, damages, or losses arising from use of the platform or property transactions.</p>
-
-<h3 class="text-xl font-bold mt-4">7. Governing Law</h3>
-<p>These Terms are governed by the laws of [Insert Jurisdiction, e.g., India]. Disputes will be resolved in courts within the jurisdiction.</p>
-
-<h3 class="text-xl font-bold mt-4">8. Contact Us</h3>
-<p>For inquiries about these Terms, contact: <a href="mailto:support@smartrent.ai">support@smartrent.ai</a></p>
-</div>
-
-<!-- FOOTER -->
-<footer class="max-w-6xl mx-auto p-6 text-center text-gray-400 text-sm">
-    <div class="flex justify-center gap-6">
-        <a href="privacy.html" class="underline hover:text-white transition">Privacy Policy</a>
-        <a href="terms.html" class="underline hover:text-white transition">Terms & Conditions</a>
+      <a href="index.html" class="text-sm px-3 py-2 rounded-xl border border-white/10 hover:bg-white/5 transition">
+        ← Back
+      </a>
     </div>
-    <p class="mt-3">&copy; 2026 SmartRent AI. All rights reserved.</p>
-</footer>
+  </header>
 
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <div class="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8 shadow-2xl">
+      <h1 class="text-2xl md:text-3xl font-bold">Terms & Conditions</h1>
+      <p class="mt-2 text-sm text-slate-400">
+        Last updated: <span id="lastUpdated">April 9, 2026</span>
+      </p>
+
+      <div class="mt-6 text-sm text-slate-300 space-y-6">
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">1. Acceptance of Terms</h2>
+          <p>
+            By accessing or using SmartRent (the “Website” and “Service”), including any account, messaging,
+            listings, and booking-related functionality, you agree to be bound by these Terms & Conditions
+            (the “Terms”). If you do not agree, do not use the Service.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">2. Eligibility (Adults Only)</h2>
+          <p>
+            You must be at least <strong>18 years</strong> of age to use the Service.
+            By using the Service, you represent that you are an adult and have legal capacity to enter into binding terms.
+            If you do not meet this requirement, you must not use the Service.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">3. Our Role; User-to-User Rentals</h2>
+          <p>
+            SmartRent provides an online platform to enable users to browse property listings and communicate through
+            messaging. The actual rental/booking arrangement is strictly between the relevant host/landlord and tenant/guest.
+          </p>
+          <p>
+            Unless explicitly stated otherwise on the Website, SmartRent is not a party to any rental agreement and does not
+            guarantee the condition, legality, availability, or fitness for purpose of any property.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">4. Accounts and Responsibility</h2>
+          <ul class="list-disc ml-5 space-y-2">
+            <li>You are responsible for maintaining the confidentiality of your account credentials.</li>
+            <li>You agree to provide accurate information and keep it updated.</li>
+            <li>You must not impersonate others or provide false information.</li>
+            <li>We may suspend or terminate access where we reasonably believe there is a violation of these Terms or applicable law.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">5. User Conduct and Prohibited Activities</h2>
+          <p>You agree not to, directly or indirectly:</p>
+          <ul class="list-disc ml-5 space-y-2">
+            <li>Engage in fraud, misleading conduct, or unlawful acts.</li>
+            <li>Harass, threaten, or abuse other users.</li>
+            <li>Request, facilitate, or transmit illegal payments or contravene applicable Indian laws.</li>
+            <li>Upload malware or attempt to disrupt the Service.</li>
+            <li>Attempt unauthorized access to accounts, systems, or data.</li>
+            <li>Violate intellectual property rights or use the Service for prohibited commercial activities.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">6. Listings and Communications</h2>
+          <ul class="list-disc ml-5 space-y-2">
+            <li>Hosts/landlords are responsible for the accuracy of their listings.</li>
+            <li>Tenants/guests are responsible for verifying property details and rental terms before booking.</li>
+            <li>All communications through messaging are between users, and you use messaging at your own risk.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">7. Payments (If Enabled) and Payment Processing</h2>
+          <p>
+            Where payments are enabled on the Service, they are processed via payment partners/gateways (“Payment Processors”).
+            You agree to comply with the Payment Processor’s applicable terms.
+          </p>
+          <p>
+            To the extent permitted by law, SmartRent is not responsible for transaction issues arising between users (e.g., disputes,
+            refunds, chargebacks), and any settlement or refund obligations primarily relate to the user-to-user booking arrangement.
+          </p>
+          <p class="text-slate-200">
+            If your platform takes money on behalf of users, you should add the exact workflow and refund policy your team uses.
+            (I can customize this section if you tell me your payment flow.)
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">8. Deposits, Refunds, Cancellations (User Responsibility)</h2>
+          <p>
+            Deposits, cancellations, rescheduling, and refunds (if any) are governed by the rental/booking terms agreed between
+            the host/landlord and tenant/guest. SmartRent does not control the outcome of such disputes unless explicitly required by law.
+          </p>
+          <p>
+            You agree to resolve disputes directly with the other user, and to cooperate with any reasonable moderation or
+            reporting process.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">9. Content You Submit (License to Us)</h2>
+          <p>
+            You retain ownership of content you submit (e.g., messages, images, listing text) but you grant SmartRent a
+            non-exclusive, worldwide, royalty-free license to host, store, reproduce, and display such content for the purpose
+            of operating and improving the Service.
+          </p>
+          <p>
+            You represent that you have the rights to submit the content and that it does not violate applicable laws or third-party rights.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">10. Moderation, Removal, and Suspension</h2>
+          <p>
+            We may review, moderate, restrict access, or remove content that we reasonably believe violates these Terms,
+            infringes rights, or is unlawful. We may also suspend accounts for repeated or serious violations.
+          </p>
+          <p>
+            You acknowledge that we may not be able to review every piece of content in real time.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">11. Disclaimers</h2>
+          <p>
+            The Service is provided on an “as is” and “as available” basis. To the maximum extent permitted by law:
+          </p>
+          <ul class="list-disc ml-5 space-y-2">
+            <li>We do not warrant that the Service will be uninterrupted or error-free.</li>
+            <li>We do not guarantee the accuracy, completeness, or reliability of listings or communications.</li>
+            <li>We do not guarantee property condition, safety, compliance, or suitability.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">12. Limitation of Liability</h2>
+          <p>
+            To the maximum extent permitted by law, SmartRent will not be liable for any indirect, incidental, special, consequential,
+            or punitive damages, or for any loss of profits, revenue, goodwill, data, or similar losses.
+          </p>
+          <p>
+            Our total liability (if any) arising out of or related to the Service shall not exceed the amounts paid by you to SmartRent
+            in the <strong>three (3) months</strong> preceding the event giving rise to the claim, except where liability cannot be limited by applicable law.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">13. Indemnification</h2>
+          <p>
+            You agree to indemnify and hold harmless SmartRent, its affiliates, and partners from claims, liabilities, damages, losses, and
+            expenses (including reasonable legal fees) arising out of:
+          </p>
+          <ul class="list-disc ml-5 space-y-2">
+            <li>your use of the Service;</li>
+            <li>your violation of these Terms or applicable law;</li>
+            <li>your infringement of any third-party rights; and/or</li>
+            <li>any content or conduct you submit or engage in through the Service.</li>
+          </ul>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">14. Intellectual Property</h2>
+          <p>
+            SmartRent and its logos, designs, and technology are owned by SmartRent or its licensors. You may not copy, distribute,
+            modify, or create derivative works of the Service without prior written permission.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">15. Third-Party Links and Services</h2>
+          <p>
+            The Service may link to third-party websites or services. We do not control and are not responsible for third-party policies,
+            content, or practices.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">16. Privacy</h2>
+          <p>
+            Your use of the Service is also governed by our Privacy Policy: <strong>[privacy.html]</strong>.
+            By using the Service, you consent to the processing of your data as described there.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">17. Governing Law (India)</h2>
+          <p>
+            These Terms are governed by the laws of <strong>India</strong>. Disputes shall be subject to the jurisdiction of the competent
+            courts in <strong>[Your City/State]</strong>, unless otherwise required by applicable law.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">18. Changes to Terms</h2>
+          <p>
+            We may update these Terms from time to time. Your continued use of the Service after the changes become effective
+            constitutes acceptance of the updated Terms.
+          </p>
+        </section>
+
+        <section class="space-y-2">
+          <h2 class="text-lg font-semibold text-slate-100">19. Contact</h2>
+          <p>
+            Questions about these Terms should be sent to:
+            <strong>[support@yourdomain.com]</strong>
+          </p>
+        </section>
+
+      </div>
+
+      <div class="mt-8 border-t border-white/10 pt-6">
+        <p class="text-xs text-slate-400">
+          Disclaimer: This is a template and should be reviewed by a qualified legal professional in India for your specific business model,
+          payment flow, and compliance requirements.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("lastUpdated").textContent =
+      new Date().toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  </script>
 </body>
 </html>

@@ -3,419 +3,1330 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartRent AI — Post Your PG / Hostel</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>SmartRent AI — Post PG / Hostel Property</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════════ */
 :root {
-  --void: #07090f;
-  --deep: #0b0e1a;
-  --surface: #0f1421;
-  --card: #131826;
-  --border: rgba(255,255,255,0.06);
-  --border-md: rgba(255,255,255,0.1);
-  --border-hi: rgba(255,255,255,0.18);
-  --cyan: #00d4e8;
-  --cyan-glow: rgba(0,212,232,0.12);
-  --cyan-border: rgba(0,212,232,0.28);
-  --violet: #8b5cf6;
-  --violet-dim: rgba(139,92,246,0.12);
-  --violet-border: rgba(139,92,246,0.3);
-  --amber: #f59e0b;
-  --amber-dim: rgba(245,158,11,0.1);
-  --amber-border: rgba(245,158,11,0.3);
-  --emerald: #10b981;
-  --emerald-dim: rgba(16,185,129,0.1);
-  --emerald-border: rgba(16,185,129,0.28);
-  --rose: #f43f5e;
-  --rose-dim: rgba(244,63,94,0.1);
-  --rose-border: rgba(244,63,94,0.28);
-  --text: #dde4f0;
-  --text-soft: rgba(200,210,230,0.65);
-  --text-muted: rgba(150,175,210,0.4);
-  --radius: 14px;
+  --bg0: #06080f;
+  --bg1: #0b0e1c;
+  --bg2: #101525;
+  --bg3: #161c2e;
+  --bg4: #1c2438;
+  --bg5: #222b44;
+
+  --c1: #22d3ee;   /* cyan */
+  --c1d: rgba(34,211,238,0.12);
+  --c1b: rgba(34,211,238,0.22);
+  --c2: #a78bfa;   /* violet */
+  --c2d: rgba(167,139,250,0.12);
+  --c2b: rgba(167,139,250,0.25);
+  --c3: #fb923c;   /* orange */
+  --c3d: rgba(251,146,60,0.1);
+  --c3b: rgba(251,146,60,0.25);
+  --c4: #34d399;   /* emerald */
+  --c4d: rgba(52,211,153,0.1);
+  --c4b: rgba(52,211,153,0.25);
+  --c5: #f87171;   /* red */
+  --c5d: rgba(248,113,113,0.1);
+  --c5b: rgba(248,113,113,0.25);
+  --c6: #fbbf24;   /* amber */
+  --c6d: rgba(251,191,36,0.1);
+  --c6b: rgba(251,191,36,0.25);
+
+  --line: rgba(255,255,255,0.055);
+  --line2: rgba(255,255,255,0.1);
+  --line3: rgba(255,255,255,0.17);
+
+  --t0: #f0f4ff;
+  --t1: rgba(220,230,250,0.75);
+  --t2: rgba(180,200,230,0.45);
+  --t3: rgba(150,175,210,0.28);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--void);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-.bg-fx{position:fixed;inset:0;pointer-events:none;z-index:0}
-.bg-fx::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 0% 0%,rgba(0,212,232,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 100% 100%,rgba(139,92,246,.07) 0%,transparent 60%)}
-.bg-fx::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,232,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,232,.022) 1px,transparent 1px);background-size:44px 44px}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-nav{position:sticky;top:0;z-index:300;background:rgba(7,9,15,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);height:62px;display:flex;align-items:center;padding:0 28px;gap:14px}
-.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;color:var(--text);text-decoration:none}
-.logo-gem{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--violet));border-radius:7px;font-size:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 14px rgba(0,212,232,.3)}
-.nav-sep{width:1px;height:22px;background:var(--border)}
-.nav-crumb{font-size:13px;color:var(--text-soft);display:flex;align-items:center;gap:7px}
-.nav-right{margin-left:auto;display:flex;gap:8px;align-items:center}
-.nav-save-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:7px;color:var(--amber);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
-.nav-save-btn:hover{background:rgba(245,158,11,.2)}
-.nav-exit{padding:7px 14px;background:none;border:1px solid var(--border-md);border-radius:7px;color:var(--text-soft);font-family:'Syne',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
-.nav-exit:hover{border-color:var(--rose-border);color:var(--rose)}
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg0);
+  color: var(--t0);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: default;
+}
 
-.progress-wrap{background:var(--deep);border-bottom:1px solid var(--border);padding:0 28px}
-.steps-row{max-width:960px;margin:0 auto;display:flex;align-items:flex-start;padding:18px 0 14px}
-.step-item{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;cursor:pointer}
-.step-item:not(:last-child)::after{content:'';position:absolute;top:16px;left:calc(50% + 20px);right:calc(-50% + 20px);height:2px;background:rgba(150,175,210,.25);transition:background .4s;z-index:0}
-.step-item.done:not(:last-child)::after{background:var(--emerald)}
-.step-circle{width:32px;height:32px;border-radius:50%;border:2px solid rgba(150,175,210,.3);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-muted);transition:all .3s;position:relative;z-index:1;font-family:'JetBrains Mono',monospace}
-.step-item.active .step-circle{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,232,.08);box-shadow:0 0 14px rgba(0,212,232,.2)}
-.step-item.done .step-circle{border-color:var(--emerald);background:var(--emerald-dim);color:var(--emerald)}
-.step-label{margin-top:6px;font-size:10px;font-weight:700;color:var(--text-muted);text-align:center;font-family:'Syne',sans-serif;letter-spacing:.01em;transition:color .3s}
-.step-item.active .step-label{color:var(--cyan)}
-.step-item.done .step-label{color:var(--emerald)}
-.step-sublabel{font-size:9px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;text-align:center;margin-top:1px}
+/* ── AMBIENT BACKGROUND ─────────────────────────── */
+.bg-ambient {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
 
-.page{position:relative;z-index:1;display:flex;flex-direction:column;min-height:100vh}
-.main{display:flex;max-width:1080px;margin:0 auto;width:100%;padding:32px 24px 90px;gap:24px}
-.form-col{flex:1;min-width:0}
+.bg-ambient::before {
+  content: '';
+  position: absolute;
+  width: 900px; height: 900px;
+  top: -300px; left: -200px;
+  background: radial-gradient(circle, rgba(34,211,238,0.055) 0%, transparent 65%);
+  animation: ambientDrift 12s ease-in-out infinite alternate;
+}
 
-.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:18px;animation:panelIn .35s cubic-bezier(.4,0,.2,1) both}
-@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.panel-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px}
-.panel-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
-.icon-c{background:var(--cyan-glow)}.icon-v{background:var(--violet-dim)}.icon-a{background:var(--amber-dim)}.icon-e{background:var(--emerald-dim)}.icon-r{background:var(--rose-dim)}
-.panel-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
-.panel-sub{font-size:11px;color:var(--text-muted);margin-top:2px;font-family:'JetBrains Mono',monospace}
-.panel-body{padding:20px}
+.bg-ambient::after {
+  content: '';
+  position: absolute;
+  width: 700px; height: 700px;
+  bottom: -200px; right: -150px;
+  background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 65%);
+  animation: ambientDrift 9s ease-in-out infinite alternate-reverse;
+}
 
-.form-row{display:grid;gap:12px;margin-bottom:12px}
-.r2{grid-template-columns:1fr 1fr}.r3{grid-template-columns:1fr 1fr 1fr}.r1{grid-template-columns:1fr}
-.form-field{display:flex;flex-direction:column;gap:5px}
-label{font-size:12px;font-weight:600;color:var(--text-soft);font-family:'Syne',sans-serif;letter-spacing:.01em;display:flex;align-items:center;gap:5px}
-label .req{color:var(--rose)}
-label .hint{font-family:'JetBrains Mono',monospace;font-weight:400;font-size:10px;color:var(--text-muted);margin-left:auto}
-input[type=text],input[type=number],input[type=tel],input[type=email],input[type=url],input[type=date],input[type=time],select,textarea{background:var(--surface);border:1px solid var(--border-md);border-radius:9px;padding:10px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:all .2s;width:100%;-webkit-appearance:none}
-input:focus,select:focus,textarea:focus{border-color:var(--cyan-border);background:rgba(0,212,232,.025);box-shadow:0 0 0 3px rgba(0,212,232,.05)}
-input::placeholder,textarea::placeholder{color:var(--text-muted)}
-select option{background:var(--deep)}
-textarea{resize:vertical;min-height:88px;line-height:1.65}
-.iw{position:relative}
-.iw input,.iw select{padding-left:36px}
-.iw .ii{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--text-muted);pointer-events:none}
-.sw{position:relative}
-.sw input{padding-right:46px}
-.sfx{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);pointer-events:none}
+.bg-grid {
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 42px 42px;
+  pointer-events: none; z-index: 0;
+}
 
-/* Type cards */
-.type-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.type-card{background:var(--surface);border:2px solid var(--border-md);border-radius:11px;padding:16px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
-.type-card:hover{border-color:var(--border-hi);transform:translateY(-1px)}
-.type-card.sel-pg{border-color:var(--cyan);background:rgba(0,212,232,.04)}
-.type-card.sel-hostel{border-color:var(--violet);background:rgba(139,92,246,.04)}
-.tc-check{position:absolute;top:11px;right:11px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:9px;color:transparent;transition:all .2s;z-index:1}
-.type-card.sel-pg .tc-check{border-color:var(--cyan);background:var(--cyan);color:var(--void)}
-.type-card.sel-hostel .tc-check{border-color:var(--violet);background:var(--violet);color:#fff}
-.tc-icon{font-size:28px;margin-bottom:8px}
-.tc-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.tc-desc{font-size:11px;color:var(--text-soft);line-height:1.5}
+@keyframes ambientDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, 30px) scale(1.08); }
+}
 
-/* Gender */
-.gender-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.gender-opt{border:1.5px solid var(--border-md);border-radius:9px;padding:11px 7px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface);user-select:none}
-.gender-opt:hover{border-color:var(--border-hi)}
-.g-icon{font-size:20px;margin-bottom:4px}
-.g-label{font-size:11px;font-weight:600;font-family:'Syne',sans-serif;color:var(--text-soft)}
-.gb{border-color:var(--cyan);background:rgba(0,212,232,.08)}.gb .g-label{color:var(--cyan)}
-.gg{border-color:var(--rose);background:var(--rose-dim)}.gg .g-label{color:var(--rose)}
-.gc{border-color:var(--emerald);background:var(--emerald-dim)}.gc .g-label{color:var(--emerald)}
+/* ── NAV ─────────────────────────────────────────── */
+.topnav {
+  position: sticky; top: 0; z-index: 500;
+  background: rgba(6,8,15,0.92);
+  backdrop-filter: blur(28px) saturate(1.5);
+  border-bottom: 1px solid var(--line);
+  height: 60px;
+  display: flex; align-items: center;
+  padding: 0 24px; gap: 14px;
+}
 
-/* Room table */
-.room-table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px}
-.room-table thead tr{background:var(--surface);border-bottom:1px solid var(--border)}
-.room-table th{padding:9px 10px;text-align:left;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);font-weight:500}
-.room-table tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
-.room-table tbody tr:last-child{border-bottom:none}
-.room-table tbody tr:hover{background:rgba(255,255,255,.015)}
-.room-table td{padding:9px 10px;vertical-align:middle}
-.room-table input{padding:6px 8px;font-size:12px}
-.del-row{width:26px;height:26px;border:1px solid var(--rose-border);background:var(--rose-dim);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--rose);transition:all .15s}
-.del-row:hover{background:rgba(244,63,94,.2)}
-.add-row-btn{display:flex;align-items:center;gap:6px;padding:8px 13px;background:var(--emerald-dim);border:1px dashed var(--emerald-border);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--emerald);font-family:'Syne',sans-serif;transition:all .2s}
-.add-row-btn:hover{background:rgba(16,185,129,.2)}
+.nav-brand {
+  display: flex; align-items: center; gap: 9px;
+  text-decoration: none;
+}
 
-/* Amenities */
-.amenity-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.a-chip{display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 5px;background:var(--surface);border:1.5px solid var(--border);border-radius:9px;cursor:pointer;transition:all .2s;user-select:none;text-align:center}
-.a-chip:hover{border-color:var(--border-hi)}
-.a-chip.on{border-color:var(--cyan);background:var(--cyan-glow)}
-.a-chip.on .a-lbl{color:var(--cyan)}
-.a-ico{font-size:18px}
-.a-lbl{font-size:10px;color:var(--text-soft);font-weight:500;line-height:1.3}
+.brand-gem {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--c1), var(--c2));
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  box-shadow: 0 0 18px rgba(34,211,238,0.28);
+  flex-shrink: 0;
+}
 
-/* Photo upload */
-.drop-zone{border:2px dashed var(--border-md);border-radius:11px;padding:32px 20px;text-align:center;cursor:pointer;transition:all .25s;background:var(--surface);position:relative}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--cyan-border);background:var(--cyan-glow)}
-.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
-.drop-icon{font-size:38px;margin-bottom:8px}
-.drop-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.drop-sub{font-size:12px;color:var(--text-muted)}
-.drop-hint{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);margin-top:6px}
-.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:7px;margin-top:10px}
-.prev-item{aspect-ratio:1;border-radius:8px;background:var(--surface);border:1px solid var(--border-md);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:24px}
-.prev-item:hover .prev-rm{opacity:1}
-.prev-rm{position:absolute;inset:0;background:rgba(244,63,94,.6);display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;cursor:pointer;opacity:0;transition:opacity .2s;border-radius:8px}
+.brand-name {
+  font-size: 16px; font-weight: 800;
+  color: var(--t0); letter-spacing: -0.01em;
+}
 
-/* Toggle */
-.tog-row{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:9px;margin-bottom:7px;transition:all .2s}
-.tog-row:hover{border-color:var(--border-md)}
-.tog-lbl{font-size:13px;font-weight:500;color:var(--text-soft);display:flex;align-items:center;gap:7px}
-.tog-switch{width:38px;height:20px;background:var(--border-md);border-radius:10px;position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
-.tog-switch.on{background:var(--cyan)}
-.tog-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.tog-switch.on .tog-thumb{left:20px}
+.nav-divider { width: 1px; height: 20px; background: var(--line2); }
 
-/* Rules */
-.rules-list{display:flex;flex-direction:column;gap:7px}
-.rule-row{display:flex;gap:7px;align-items:center}
-.rule-row input{flex:1}
-.add-rule-btn{display:flex;align-items:center;gap:6px;padding:8px 13px;background:none;border:1px dashed var(--border-md);border-radius:8px;cursor:pointer;font-size:12px;font-weight:600;color:var(--text-muted);font-family:'Syne',sans-serif;transition:all .2s;width:100%;margin-top:7px}
-.add-rule-btn:hover{border-color:var(--cyan-border);color:var(--cyan)}
+.nav-breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--t2);
+  font-family: 'JetBrains Mono', monospace;
+}
 
-/* Map placeholder */
-.map-ph{height:160px;background:var(--surface);border:1px solid var(--border-md);border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:all .2s;font-size:13px;color:var(--text-muted);margin-top:12px}
-.map-ph:hover{border-color:var(--cyan-border);color:var(--cyan)}
+.nav-breadcrumb .crumb-active { color: var(--c1); }
 
-/* Preview sidebar */
-.preview-col{width:290px;flex-shrink:0;position:sticky;top:98px;height:fit-content}
-.prev-card{background:var(--card);border:1px solid var(--border-md);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
-.prev-img{height:145px;background:linear-gradient(135deg,#0d1f35,#1a3a5c);display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
-.prev-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.6))}
-.prev-body{padding:13px}
-.prev-type-badge{display:inline-block;font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;background:var(--cyan-glow);color:var(--cyan);border:1px solid var(--cyan-border);margin-bottom:7px}
-.prev-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prev-loc{font-size:12px;color:var(--text-soft);margin-bottom:9px}
-.prev-price{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:9px}
-.prev-price span{font-size:12px;font-weight:400;color:var(--text-muted)}
-.prev-amenities{display:flex;flex-wrap:wrap;gap:4px}
-.prev-amenity{font-size:10px;padding:2px 6px;background:var(--surface);border:1px solid var(--border);border-radius:3px;color:var(--text-soft)}
+.nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
-/* Completeness */
-.comp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:15px;margin-bottom:14px}
-.comp-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.comp-pct{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan)}
-.comp-bar-bg{height:5px;background:var(--surface);border-radius:3px;margin-bottom:11px}
-.comp-bar{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--emerald));transition:width .4s cubic-bezier(.4,0,.2,1)}
-.comp-items{display:flex;flex-direction:column;gap:5px}
-.comp-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text-soft)}
-.comp-check{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--border-md);display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0;transition:all .2s}
-.comp-check.done{background:var(--emerald-dim);border-color:var(--emerald);color:var(--emerald)}
+.nbtn {
+  padding: 6px 14px;
+  border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: all 0.2s; border: 1px solid;
+  display: flex; align-items: center; gap: 5px;
+}
 
-/* Tips */
-.tips-card{background:rgba(245,158,11,.05);border:1px solid var(--amber-border);border-radius:var(--radius);padding:13px}
-.tips-title{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--amber);margin-bottom:7px}
-.tip-item{font-size:11px;color:var(--text-soft);margin-bottom:5px;display:flex;gap:5px;line-height:1.5}
-.tip-item::before{content:'💡';flex-shrink:0}
+.nbtn-ghost {
+  background: none; border-color: var(--line2); color: var(--t2);
+}
+.nbtn-ghost:hover { border-color: var(--line3); color: var(--t1); background: rgba(255,255,255,0.03); }
 
-/* Bottom nav */
-.bottom-nav{position:sticky;bottom:0;z-index:200;background:rgba(7,9,15,.97);backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:13px 28px;display:flex;align-items:center;gap:12px}
-.bot-info{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--text-muted)}
-.bot-info strong{color:var(--text-soft)}
-.bot-actions{margin-left:auto;display:flex;gap:9px}
-.btn-back{padding:9px 20px;background:none;border:1px solid var(--border-md);border-radius:9px;color:var(--text-soft);font-family:'Syne',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.btn-back:hover{border-color:var(--border-hi);color:var(--text)}
-.btn-next{padding:9px 24px;background:linear-gradient(135deg,var(--cyan),#007a8f);border:none;border-radius:9px;color:var(--void);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.btn-next:hover{box-shadow:0 0 22px rgba(0,212,232,.4);transform:translateY(-1px)}
-.btn-submit{padding:9px 24px;background:linear-gradient(135deg,var(--emerald),#059669);border:none;border-radius:9px;color:#fff;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.btn-submit:hover{box-shadow:0 0 22px rgba(16,185,129,.4);transform:translateY(-1px)}
+.nbtn-draft {
+  background: var(--c6d); border-color: var(--c6b); color: var(--c6);
+}
+.nbtn-draft:hover { background: rgba(251,191,36,0.18); }
 
-/* Step pages */
-.step-page{display:none}
-.step-page.active{display:block}
+.nbtn-exit {
+  background: var(--c5d); border-color: var(--c5b); color: var(--c5);
+}
+.nbtn-exit:hover { background: rgba(248,113,113,0.18); }
 
-/* Success */
-.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px;min-height:60vh}
-.success-icon{font-size:70px;margin-bottom:22px;animation:bounceIn .6s cubic-bezier(.4,0,.2,1)}
-@keyframes bounceIn{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-.success-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;color:#fff;margin-bottom:10px}
-.success-sub{font-size:15px;color:var(--text-soft);max-width:460px;line-height:1.7;margin-bottom:28px}
-.success-id{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);background:var(--cyan-glow);border:1px solid var(--cyan-border);padding:9px 18px;border-radius:7px;margin-bottom:26px}
-.success-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.sbtn{padding:11px 22px;border-radius:9px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid}
-.sbtn-p{background:linear-gradient(135deg,var(--cyan),#007a8f);color:var(--void);border-color:transparent}
-.sbtn-o{background:none;color:var(--text-soft);border-color:var(--border-md)}
-.sbtn-o:hover{border-color:var(--border-hi);color:var(--text)}
+/* ── STEP HEADER ────────────────────────────────── */
+.step-header {
+  background: var(--bg1);
+  border-bottom: 1px solid var(--line);
+  padding: 0 24px;
+  position: sticky; top: 60px; z-index: 400;
+}
 
-/* Toast */
-.toast-wrap{position:fixed;bottom:80px;right:22px;z-index:1000;display:flex;flex-direction:column;gap:7px}
-.toast{background:var(--card);border:1px solid var(--border-md);border-left:3px solid var(--cyan);border-radius:9px;padding:10px 14px;min-width:230px;box-shadow:0 8px 32px rgba(0,0,0,.4);display:flex;align-items:center;gap:8px;font-size:12px;animation:tsIn .3s ease}
-@keyframes tsIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-.toast.err{border-left-color:var(--rose)}.toast.ok{border-left-color:var(--emerald)}.toast.warn{border-left-color:var(--amber)}
+.step-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; align-items: center;
+  padding: 16px 0; gap: 0;
+}
 
-.check-item{display:flex;align-items:flex-start;gap:9px;cursor:pointer;font-size:13px;color:var(--text-soft)}
-.check-box{width:17px;height:17px;border-radius:4px;border:1.5px solid var(--border-md);background:var(--surface);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .15s;margin-top:1px}
-.check-box.done{background:var(--emerald-dim);border-color:var(--emerald);color:var(--emerald)}
+.step-node {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative; cursor: pointer;
+  min-width: 0;
+}
 
-@media(max-width:900px){.preview-col{display:none}.form-row.r3{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.main{padding:16px 14px 80px}.form-row.r2,.form-row.r3{grid-template-columns:1fr}.amenity-grid{grid-template-columns:repeat(3,1fr)}.type-cards{grid-template-columns:1fr}.steps-row{padding:12px 0 8px}.step-sublabel{display:none}.step-label{font-size:9px}}
+.step-node:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: calc(50% + 18px);
+  right: calc(-50% + 18px);
+  height: 1.5px;
+  background: var(--line2);
+  transition: background 0.4s;
+  z-index: 0;
+}
+
+.step-node.s-done:not(:last-child)::after { background: var(--c4); }
+.step-node.s-active:not(:last-child)::after { background: var(--c1); opacity: 0.35; }
+
+.step-bubble {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line2);
+  background: var(--bg2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--t3);
+  transition: all 0.3s;
+  position: relative; z-index: 1;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.step-node.s-active .step-bubble {
+  border-color: var(--c1);
+  color: var(--c1);
+  background: rgba(34,211,238,0.1);
+  box-shadow: 0 0 0 4px rgba(34,211,238,0.08), 0 0 14px rgba(34,211,238,0.18);
+}
+
+.step-node.s-done .step-bubble {
+  border-color: var(--c4);
+  background: var(--c4d);
+  color: var(--c4);
+}
+
+.step-title {
+  margin-top: 5px;
+  font-size: 10px; font-weight: 700;
+  color: var(--t3); text-align: center;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: 0.01em;
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+
+.step-node.s-active .step-title { color: var(--c1); }
+.step-node.s-done .step-title { color: var(--c4); }
+
+/* ── MAIN BODY ──────────────────────────────────── */
+.body-wrap {
+  display: flex;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 24px 100px;
+  gap: 22px;
+  position: relative; z-index: 1;
+}
+
+/* ── FORM AREA ──────────────────────────────────── */
+.form-area { flex: 1; min-width: 0; }
+
+/* ── BLOCK / CARD ────────────────────────────────── */
+.block {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 16px;
+  animation: blockIn 0.38s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.block:nth-child(2) { animation-delay: 0.07s; }
+.block:nth-child(3) { animation-delay: 0.14s; }
+
+@keyframes blockIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.block-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.015), transparent);
+}
+
+.block-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+
+.bi-c1 { background: var(--c1d); box-shadow: inset 0 0 0 1px var(--c1b); }
+.bi-c2 { background: var(--c2d); box-shadow: inset 0 0 0 1px var(--c2b); }
+.bi-c3 { background: var(--c3d); box-shadow: inset 0 0 0 1px var(--c3b); }
+.bi-c4 { background: var(--c4d); box-shadow: inset 0 0 0 1px var(--c4b); }
+.bi-c5 { background: var(--c5d); box-shadow: inset 0 0 0 1px var(--c5b); }
+.bi-c6 { background: var(--c6d); box-shadow: inset 0 0 0 1px var(--c6b); }
+
+.block-head-text {}
+.block-head-title {
+  font-size: 14px; font-weight: 700; color: var(--t0);
+  margin-bottom: 2px; letter-spacing: -0.01em;
+}
+
+.block-head-sub {
+  font-size: 11px; color: var(--t3);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.block-body { padding: 20px; }
+
+/* ── FORM FIELDS ─────────────────────────────────── */
+.fg { display: grid; gap: 12px; margin-bottom: 12px; }
+.fg-1 { grid-template-columns: 1fr; }
+.fg-2 { grid-template-columns: 1fr 1fr; }
+.fg-3 { grid-template-columns: 1fr 1fr 1fr; }
+.fg-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+.ff { display: flex; flex-direction: column; gap: 6px; }
+
+.fl {
+  font-size: 11.5px; font-weight: 600; color: var(--t1);
+  display: flex; align-items: center; gap: 5px;
+  letter-spacing: 0.01em;
+}
+
+.fl .req { color: var(--c5); }
+.fl .hint-tag {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 400; font-size: 10px;
+  color: var(--t3);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  background: var(--bg1);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-sm);
+  padding: 10px 13px;
+  color: var(--t0);
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+  -webkit-appearance: none;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--c1b);
+  background: rgba(34,211,238,0.03);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.06), 0 0 18px rgba(34,211,238,0.06);
+}
+
+input.err, select.err, textarea.err { border-color: var(--c5b) !important; box-shadow: 0 0 0 3px rgba(248,113,113,0.06) !important; }
+
+input::placeholder, textarea::placeholder { color: var(--t3); }
+select option { background: var(--bg1); }
+textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+
+.input-wrap { position: relative; }
+.input-wrap .pre-icon {
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  font-size: 14px; pointer-events: none; z-index: 1;
+}
+.input-wrap input, .input-wrap select { padding-left: 34px; }
+
+.input-suf-wrap { position: relative; }
+.input-suf-wrap input { padding-right: 44px; }
+.input-suf {
+  position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+  font-size: 11px; font-family: 'JetBrains Mono', monospace;
+  color: var(--t3); pointer-events: none;
+}
+
+.field-error {
+  font-size: 10px; color: var(--c5);
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px; display: none;
+}
+
+/* ── PROPERTY TYPE SELECTOR ─────────────────────── */
+.prop-type-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 14px;
+}
+
+.prop-type-card {
+  background: var(--bg1);
+  border: 2px solid var(--line2);
+  border-radius: var(--r-md);
+  padding: 18px 16px;
+  cursor: pointer; position: relative;
+  transition: all 0.22s;
+  overflow: hidden;
+  user-select: none;
+}
+
+.prop-type-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.22s;
+}
+
+.prop-type-card:hover { border-color: var(--line3); transform: translateY(-1px); }
+.prop-type-card:hover::before { opacity: 1; background: rgba(255,255,255,0.015); }
+
+.prop-type-card.ptc-pg.chosen { border-color: var(--c1); box-shadow: 0 0 0 3px rgba(34,211,238,0.07), inset 0 0 40px rgba(34,211,238,0.04); }
+.prop-type-card.ptc-hostel.chosen { border-color: var(--c2); box-shadow: 0 0 0 3px rgba(167,139,250,0.07), inset 0 0 40px rgba(167,139,250,0.04); }
+
+.ptc-radio {
+  position: absolute; top: 12px; right: 12px;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; transition: all 0.2s;
+}
+
+.ptc-pg.chosen .ptc-radio { border-color: var(--c1); background: var(--c1); color: #000; }
+.ptc-hostel.chosen .ptc-radio { border-color: var(--c2); background: var(--c2); color: #fff; }
+
+.ptc-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+.ptc-name { font-size: 15px; font-weight: 800; color: var(--t0); margin-bottom: 4px; letter-spacing: -0.01em; }
+.ptc-desc { font-size: 11px; color: var(--t2); line-height: 1.5; }
+
+.ptc-features {
+  display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px;
+}
+
+.ptc-feat {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 7px; border-radius: 3px;
+  background: rgba(255,255,255,0.05);
+  color: var(--t2); border: 1px solid var(--line);
+}
+
+/* ── GENDER SELECTOR ─────────────────────────────── */
+.gender-selector {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+.gs-opt {
+  border: 1.5px solid var(--line2);
+  border-radius: var(--r-md);
+  padding: 12px 6px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--bg1);
+  user-select: none;
+}
+
+.gs-opt:hover { border-color: var(--line3); }
+.gs-opt .gs-emoji { font-size: 20px; margin-bottom: 5px; }
+.gs-opt .gs-label { font-size: 11px; font-weight: 600; color: var(--t2); }
+
+.gs-boys.chosen { border-color: var(--c1); background: var(--c1d); }
+.gs-boys.chosen .gs-label { color: var(--c1); }
+.gs-girls.chosen { border-color: var(--c5); background: var(--c5d); }
+.gs-girls.chosen .gs-label { color: var(--c5); }
+.gs-coed.chosen { border-color: var(--c4); background: var(--c4d); }
+.gs-coed.chosen .gs-label { color: var(--c4); }
+.gs-senior.chosen { border-color: var(--c6); background: var(--c6d); }
+.gs-senior.chosen .gs-label { color: var(--c6); }
+
+/* ── OCCUPANT TYPE ───────────────────────────────── */
+.occ-type-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.occ-opt {
+  border: 1.5px solid var(--line2);
+  border-radius: var(--r-sm);
+  padding: 10px 8px;
+  text-align: center; cursor: pointer;
+  transition: all 0.2s; background: var(--bg1);
+  user-select: none; display: flex; align-items: center; gap: 7px;
+  justify-content: flex-start; padding: 9px 12px;
+}
+
+.occ-opt:hover { border-color: var(--line3); }
+.occ-opt .occ-e { font-size: 16px; flex-shrink: 0; }
+.occ-opt .occ-l { font-size: 11px; font-weight: 600; color: var(--t2); }
+.occ-opt.chosen { border-color: var(--c3); background: var(--c3d); }
+.occ-opt.chosen .occ-l { color: var(--c3); }
+
+/* ── ROOM TABLE ──────────────────────────────────── */
+.rtable-wrap { overflow-x: auto; border-radius: var(--r-md); border: 1px solid var(--line); margin-bottom: 12px; }
+
+.rtable {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; min-width: 660px;
+}
+
+.rtable thead tr { background: var(--bg3); }
+
+.rtable th {
+  padding: 10px 11px; text-align: left;
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--t3); font-weight: 500;
+  border-bottom: 1px solid var(--line);
+}
+
+.rtable tbody tr { border-bottom: 1px solid var(--line); transition: background 0.12s; }
+.rtable tbody tr:last-child { border-bottom: none; }
+.rtable tbody tr:hover { background: rgba(255,255,255,0.015); }
+.rtable td { padding: 9px 10px; vertical-align: middle; }
+.rtable input, .rtable select { padding: 7px 9px; font-size: 12px; border-radius: 6px; }
+
+.rtable-del {
+  width: 28px; height: 28px;
+  border: 1px solid var(--c5b);
+  background: var(--c5d);
+  border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: var(--c5);
+  transition: all 0.15s;
+}
+
+.rtable-del:hover { background: rgba(248,113,113,0.2); transform: scale(1.05); }
+
+.add-room-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: var(--c4d); border: 1px dashed var(--c4b);
+  border-radius: var(--r-sm); cursor: pointer;
+  font-size: 12px; font-weight: 700; color: var(--c4);
+  font-family: 'Outfit', sans-serif; transition: all 0.2s;
+}
+
+.add-room-btn:hover { background: rgba(52,211,153,0.18); border-style: solid; }
+
+/* ── AMENITY SELECTOR ────────────────────────────── */
+.amenity-section { margin-bottom: 20px; }
+
+.amenity-section-title {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.amenity-section-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: var(--line);
+}
+
+.amenity-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 7px;
+}
+
+.a-chip {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 5px; padding: 11px 6px;
+  background: var(--bg1); border: 1.5px solid var(--line);
+  border-radius: var(--r-md); cursor: pointer;
+  transition: all 0.2s; user-select: none; text-align: center;
+  position: relative; overflow: hidden;
+}
+
+.a-chip::before {
+  content: ''; position: absolute; inset: 0;
+  opacity: 0; transition: opacity 0.2s;
+}
+
+.a-chip:hover { border-color: var(--line2); }
+.a-chip:hover::before { opacity: 1; background: rgba(255,255,255,0.02); }
+
+.a-chip.on { border-color: var(--c1b); background: var(--c1d); }
+.a-chip.on .a-label { color: var(--c1); }
+.a-chip.on::before { background: rgba(34,211,238,0.03); opacity: 1; }
+
+.a-icon { font-size: 20px; position: relative; z-index: 1; }
+.a-label { font-size: 10px; color: var(--t2); font-weight: 600; line-height: 1.3; position: relative; z-index: 1; }
+
+.a-check-mark {
+  position: absolute; top: 5px; right: 5px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--c1);
+  color: #000; font-size: 8px;
+  display: none; align-items: center; justify-content: center;
+  font-weight: 800; z-index: 2;
+}
+
+.a-chip.on .a-check-mark { display: flex; }
+
+/* ── TOGGLE ROW ──────────────────────────────────── */
+.tog-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 14px;
+  background: var(--bg1); border: 1px solid var(--line);
+  border-radius: var(--r-sm); margin-bottom: 7px;
+  transition: all 0.2s; cursor: pointer;
+}
+
+.tog-row:hover { border-color: var(--line2); background: var(--bg2); }
+.tog-row:last-child { margin-bottom: 0; }
+
+.tog-left { display: flex; align-items: center; gap: 10px; }
+.tog-emoji { font-size: 17px; }
+.tog-text {}
+.tog-name { font-size: 13px; font-weight: 500; color: var(--t1); }
+.tog-sub { font-size: 10px; color: var(--t3); margin-top: 1px; font-family: 'JetBrains Mono', monospace; }
+
+.tog-switch {
+  width: 40px; height: 22px;
+  background: var(--line2); border-radius: 11px;
+  position: relative; transition: background 0.25s; flex-shrink: 0;
+}
+
+.tog-switch.on { background: var(--c1); }
+.tog-switch.on-violet.on { background: var(--c2); }
+.tog-switch.on-orange.on { background: var(--c3); }
+.tog-switch.on-emerald.on { background: var(--c4); }
+
+.tog-knob {
+  position: absolute; top: 3px; left: 3px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; transition: left 0.25s;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+}
+
+.tog-switch.on .tog-knob { left: 21px; }
+
+/* ── PHOTO UPLOADER ──────────────────────────────── */
+.photo-drop {
+  border: 2px dashed var(--line2);
+  border-radius: var(--r-lg);
+  padding: 36px 24px;
+  text-align: center; cursor: pointer;
+  transition: all 0.25s;
+  background: var(--bg1);
+  position: relative;
+}
+
+.photo-drop:hover, .photo-drop.drag-active {
+  border-color: var(--c1b);
+  background: var(--c1d);
+}
+
+.photo-drop input[type="file"] {
+  position: absolute; inset: 0; opacity: 0; cursor: pointer;
+}
+
+.pd-icon { font-size: 44px; margin-bottom: 12px; }
+.pd-title { font-size: 15px; font-weight: 700; color: var(--t0); margin-bottom: 4px; }
+.pd-sub { font-size: 12px; color: var(--t2); }
+.pd-hint { font-size: 10px; color: var(--t3); font-family: 'JetBrains Mono', monospace; margin-top: 7px; }
+
+.photo-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 8px; margin-top: 12px;
+}
+
+.photo-thumb {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  background: var(--bg3);
+  border: 1px solid var(--line2);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  transition: all 0.2s;
+}
+
+.photo-thumb:hover .photo-rm { opacity: 1; }
+.photo-thumb.cover-photo { border-color: var(--c1); box-shadow: 0 0 0 2px rgba(34,211,238,0.3); }
+
+.photo-rm {
+  position: absolute; inset: 0;
+  background: rgba(248,113,113,0.7);
+  backdrop-filter: blur(2px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; opacity: 0;
+  transition: opacity 0.2s; border-radius: 10px;
+}
+
+.photo-cover-badge {
+  position: absolute; bottom: 4px; left: 0; right: 0;
+  text-align: center;
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  background: rgba(34,211,238,0.8); color: #000;
+  font-weight: 700; padding: 2px 0;
+}
+
+.photo-tips {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; margin-top: 14px;
+}
+
+.photo-tip {
+  font-size: 11px; color: var(--t1);
+  border-radius: var(--r-sm); padding: 10px 12px; line-height: 1.5;
+}
+
+.photo-tip.good { background: var(--c4d); border: 1px solid var(--c4b); }
+.photo-tip.bad  { background: var(--c5d); border: 1px solid var(--c5b); }
+.photo-tip strong { display: block; margin-bottom: 4px; }
+.photo-tip.good strong { color: var(--c4); }
+.photo-tip.bad  strong { color: var(--c5); }
+
+/* ── RULES BUILDER ───────────────────────────────── */
+.rules-list { display: flex; flex-direction: column; gap: 7px; }
+
+.rule-item {
+  display: flex; gap: 8px; align-items: center;
+}
+
+.rule-num {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: var(--bg3); border: 1px solid var(--line);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--t3); display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; font-weight: 600;
+}
+
+.rule-item input { flex: 1; }
+
+.rule-del {
+  width: 28px; height: 28px;
+  border: 1px solid var(--line2); background: var(--bg1);
+  border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--t3); transition: all 0.15s; flex-shrink: 0;
+}
+
+.rule-del:hover { border-color: var(--c5b); color: var(--c5); background: var(--c5d); }
+
+.add-rule-btn {
+  display: flex; align-items: center; gap: 6px;
+  width: 100%; padding: 9px 14px; margin-top: 8px;
+  background: none; border: 1px dashed var(--line2);
+  border-radius: var(--r-sm); cursor: pointer;
+  font-size: 12px; font-weight: 600; color: var(--t3);
+  font-family: 'Outfit', sans-serif; transition: all 0.2s;
+}
+
+.add-rule-btn:hover { border-color: var(--c1b); color: var(--c1); background: var(--c1d); }
+
+/* ── REVIEW SECTION ──────────────────────────────── */
+.review-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin-bottom: 16px;
+}
+
+.review-item {
+  background: var(--bg1); border: 1px solid var(--line);
+  border-radius: var(--r-sm); padding: 12px 14px;
+}
+
+.review-label {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--t3); margin-bottom: 5px;
+}
+
+.review-value { font-size: 14px; font-weight: 600; color: var(--t0); }
+.review-value-sub { font-size: 11px; color: var(--t2); margin-top: 2px; }
+
+.review-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+
+.rev-chip {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 8px; border-radius: 4px;
+}
+
+.rev-chip-c { background: var(--c1d); color: var(--c1); border: 1px solid var(--c1b); }
+.rev-chip-v { background: var(--c2d); color: var(--c2); border: 1px solid var(--c2b); }
+.rev-chip-e { background: var(--c4d); color: var(--c4); border: 1px solid var(--c4b); }
+
+.terms-box {
+  background: rgba(52,211,153,0.04);
+  border: 1px solid var(--c4b);
+  border-radius: var(--r-md); padding: 18px 20px;
+  margin-top: 14px;
+}
+
+.terms-check-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  cursor: pointer;
+}
+
+.tcb {
+  width: 18px; height: 18px; border-radius: 5px;
+  border: 1.5px solid var(--line2); background: var(--bg1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; transition: all 0.15s; flex-shrink: 0; margin-top: 1px;
+}
+
+.tcb.checked { background: var(--c4d); border-color: var(--c4); color: var(--c4); }
+
+/* ── SIDEBAR PANEL ───────────────────────────────── */
+.sidebar-col {
+  width: 300px; flex-shrink: 0;
+  position: sticky; top: 130px;
+  height: fit-content;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+/* Live preview card */
+.preview-widget {
+  background: var(--bg2); border: 1px solid var(--line2);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+
+.pw-banner {
+  height: 140px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+}
+
+.pw-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.65));
+}
+
+.pw-meta {
+  position: absolute; bottom: 10px; left: 12px; right: 12px;
+  display: flex; justify-content: space-between; align-items: center;
+  z-index: 2;
+}
+
+.pw-rating {
+  background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
+  font-size: 11px; padding: 2px 8px; border-radius: 4px; color: #fff;
+}
+
+.pw-distance {
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 8px; border-radius: 4px; color: rgba(255,255,255,0.8);
+}
+
+.pw-badges {
+  position: absolute; top: 10px; left: 12px; z-index: 2;
+  display: flex; gap: 5px; flex-wrap: wrap;
+}
+
+.pw-badge {
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 7px; border-radius: 3px; backdrop-filter: blur(6px);
+}
+
+.pwb-type-pg     { background: rgba(34,211,238,0.2); color: var(--c1); border: 1px solid rgba(34,211,238,0.3); }
+.pwb-type-hostel { background: rgba(167,139,250,0.2); color: var(--c2); border: 1px solid rgba(167,139,250,0.3); }
+.pwb-verified    { background: rgba(52,211,153,0.2); color: var(--c4); border: 1px solid rgba(52,211,153,0.3); }
+.pwb-new         { background: rgba(251,191,36,0.2); color: var(--c6); border: 1px solid rgba(251,191,36,0.3); }
+
+.pw-save {
+  position: absolute; top: 10px; right: 12px; z-index: 2;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+  border: 1px solid var(--line2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+}
+
+.pw-body { padding: 13px 14px; }
+
+.pw-type-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pw-type-badge {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 8px; border-radius: 3px;
+  background: var(--c1d); color: var(--c1); border: 1px solid var(--c1b);
+}
+
+.pw-gender-tag { font-size: 10px; color: var(--t3); }
+
+.pw-name {
+  font-size: 14px; font-weight: 800; color: var(--t0);
+  margin-bottom: 4px; letter-spacing: -0.01em;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.pw-loc { font-size: 11px; color: var(--t2); margin-bottom: 10px; }
+
+.pw-rooms { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+
+.pw-room-chip {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  background: var(--bg3); border: 1px solid var(--line);
+  padding: 2px 7px; border-radius: 4px; color: var(--t2);
+}
+
+.pw-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--line); padding-top: 10px;
+}
+
+.pw-price { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; color: #fff; }
+.pw-price-sub { font-size: 10px; color: var(--t3); }
+
+.pw-cta {
+  padding: 7px 14px; border-radius: 7px;
+  background: linear-gradient(135deg, var(--c1), #0e9ab5);
+  color: #000; font-size: 11px; font-weight: 800;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* Completeness widget */
+.comp-widget {
+  background: var(--bg2); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: 16px;
+}
+
+.cw-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.cw-title { font-size: 13px; font-weight: 700; color: var(--t0); }
+.cw-pct { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--c1); }
+
+.cw-track { height: 6px; background: var(--bg1); border-radius: 3px; overflow: hidden; margin-bottom: 14px; position: relative; }
+.cw-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--c1), var(--c4)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.cw-fill::after { content: ''; position: absolute; right: 0; top: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--c4); box-shadow: 0 0 6px var(--c4); }
+
+.cw-items { display: flex; flex-direction: column; gap: 5px; }
+
+.cw-item { display: flex; align-items: center; gap: 8px; }
+
+.cw-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--line2);
+  background: var(--bg1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; flex-shrink: 0; transition: all 0.2s;
+}
+
+.cw-dot.done { background: var(--c4d); border-color: var(--c4); color: var(--c4); }
+
+.cw-label { font-size: 11px; color: var(--t2); }
+.cw-item .cw-label.done-label { color: var(--c4); }
+
+/* Tips widget */
+.tips-widget {
+  background: var(--c6d); border: 1px solid var(--c6b);
+  border-radius: var(--r-lg); padding: 14px;
+}
+
+.tw-title { font-size: 12px; font-weight: 700; color: var(--c6); margin-bottom: 9px; }
+
+.tw-item {
+  display: flex; gap: 7px; font-size: 11px;
+  color: var(--t1); margin-bottom: 7px; line-height: 1.55;
+}
+
+.tw-item::before { content: '💡'; flex-shrink: 0; }
+.tw-item:last-child { margin-bottom: 0; }
+
+/* ── BOTTOM BAR ──────────────────────────────────── */
+.bottom-bar {
+  position: sticky; bottom: 0; z-index: 400;
+  background: rgba(6,8,15,0.97);
+  backdrop-filter: blur(28px);
+  border-top: 1px solid var(--line);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.bb-step-info {
+  font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--t3);
+}
+
+.bb-step-info strong { color: var(--t1); }
+
+.bb-progress-mini {
+  flex: 1; max-width: 120px;
+  height: 3px; background: var(--bg3); border-radius: 2px; overflow: hidden;
+}
+
+.bb-progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--c1), var(--c4));
+  border-radius: 2px; transition: width 0.4s;
+}
+
+.bb-actions { margin-left: auto; display: flex; gap: 9px; }
+
+.bb-btn {
+  padding: 9px 22px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+  transition: all 0.2s; border: 1px solid;
+  display: flex; align-items: center; gap: 7px;
+}
+
+.bb-back { background: none; border-color: var(--line2); color: var(--t2); }
+.bb-back:hover { border-color: var(--line3); color: var(--t0); }
+
+.bb-next { background: linear-gradient(135deg, var(--c1), #0e9ab5); border-color: transparent; color: #000; }
+.bb-next:hover { box-shadow: 0 0 24px rgba(34,211,238,0.4); transform: translateY(-1px); }
+.bb-next:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.bb-submit { background: linear-gradient(135deg, var(--c4), #059669); border-color: transparent; color: #fff; }
+.bb-submit:hover { box-shadow: 0 0 24px rgba(52,211,153,0.4); transform: translateY(-1px); }
+
+/* ── SUCCESS ─────────────────────────────────────── */
+.success-screen {
+  display: none; flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 80px 24px; min-height: 65vh;
+}
+
+.success-anim {
+  font-size: 80px; margin-bottom: 24px;
+  animation: successBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes successBounce {
+  0%  { transform: scale(0) rotate(-15deg); opacity: 0; }
+  60% { transform: scale(1.15) rotate(5deg); }
+  100%{ transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.success-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 32px; font-weight: 900; color: #fff;
+  margin-bottom: 12px; letter-spacing: -0.02em;
+}
+
+.success-sub { font-size: 15px; color: var(--t1); max-width: 460px; line-height: 1.75; margin-bottom: 28px; }
+
+.success-id-box {
+  background: var(--c1d); border: 1px solid var(--c1b);
+  border-radius: var(--r-md); padding: 12px 24px;
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: var(--c1); margin-bottom: 30px; letter-spacing: 0.05em;
+}
+
+.success-btns { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.sbtn {
+  padding: 11px 24px; border-radius: var(--r-sm);
+  font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; border: 1px solid;
+}
+
+.sbtn-primary { background: linear-gradient(135deg, var(--c1), #0e9ab5); color: #000; border-color: transparent; }
+.sbtn-primary:hover { box-shadow: 0 0 22px rgba(34,211,238,0.4); transform: translateY(-1px); }
+.sbtn-outline { background: none; color: var(--t1); border-color: var(--line2); }
+.sbtn-outline:hover { border-color: var(--line3); color: var(--t0); }
+
+/* ── STEP PAGES ──────────────────────────────────── */
+.step-page { display: none; }
+.step-page.sp-active { display: block; }
+
+/* ── TOAST ───────────────────────────────────────── */
+.toast-stack {
+  position: fixed; bottom: 76px; right: 22px;
+  z-index: 1000; display: flex; flex-direction: column; gap: 8px;
+}
+
+.toast-item {
+  background: var(--bg3); border: 1px solid var(--line2);
+  border-left: 3px solid var(--c1);
+  border-radius: var(--r-sm); padding: 11px 15px;
+  min-width: 250px; max-width: 340px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  display: flex; align-items: center; gap: 9px;
+  font-size: 12px; font-weight: 500;
+  animation: toastIn 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes toastIn { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.toast-item.t-ok   { border-left-color: var(--c4); }
+.toast-item.t-warn { border-left-color: var(--c6); }
+.toast-item.t-err  { border-left-color: var(--c5); }
+.toast-item.t-info { border-left-color: var(--c2); }
+
+/* ── CUSTOM AMENITY INPUT ────────────────────────── */
+.custom-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+.ctag {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--c2d); border: 1px solid var(--c2b);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11px; color: var(--c2);
+}
+
+.ctag-del { cursor: pointer; font-size: 13px; color: var(--c5); transition: color 0.15s; }
+.ctag-del:hover { color: #ff0000; }
+
+/* ── FLOATING LABEL PAIR ─────────────────────────── */
+.price-range-visual {
+  background: var(--bg3); border-radius: var(--r-sm);
+  padding: 14px 16px; margin-bottom: 10px;
+  border: 1px solid var(--line);
+}
+
+.prv-label { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: var(--t3); margin-bottom: 8px; letter-spacing: 0.12em; }
+.prv-val { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800; color: var(--c1); }
+
+/* ── MAP EMBED STUB ──────────────────────────────── */
+.map-stub {
+  height: 155px; background: var(--bg3);
+  border: 1px solid var(--line2); border-radius: var(--r-md);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px; cursor: pointer; transition: all 0.2s;
+  color: var(--t3); font-size: 13px; margin-top: 12px;
+  position: relative; overflow: hidden;
+}
+
+.map-stub:hover { border-color: var(--c1b); color: var(--c1); }
+
+.map-stub::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.5;
+}
+
+.map-icon { font-size: 30px; position: relative; z-index: 1; }
+.map-text { position: relative; z-index: 1; }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 960px) {
+  .sidebar-col { display: none; }
+  .amenity-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .body-wrap { padding: 16px 14px 90px; }
+  .fg-2, .fg-3, .fg-4 { grid-template-columns: 1fr; }
+  .prop-type-grid { grid-template-columns: 1fr; }
+  .gender-selector { grid-template-columns: repeat(2, 1fr); }
+  .amenity-grid { grid-template-columns: repeat(3, 1fr); }
+  .review-grid { grid-template-columns: 1fr; }
+  .photo-tips { grid-template-columns: 1fr; }
+  .step-inner { padding: 12px 0 8px; }
+  .step-sublabel { display: none; }
+  .step-bubble { width: 26px; height: 26px; font-size: 10px; }
+  .step-title { font-size: 9px; }
+}
 </style>
 </head>
 <body>
-<div class="bg-fx"></div>
-<div class="toast-wrap" id="toastWrap"></div>
 
-<nav>
-  <a href="index.html" class="nav-logo">
-    <div class="logo-gem">💎</div>SmartRent AI
+<!-- AMBIENT -->
+<div class="bg-ambient"></div>
+<div class="bg-grid"></div>
+
+<!-- TOAST STACK -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════ -->
+<nav class="topnav">
+  <a href="pg-hostel-listings.html" class="nav-brand">
+    <div class="brand-gem">💎</div>
+    <span class="brand-name">SmartRent AI</span>
   </a>
-  <div class="nav-sep"></div>
-  <div class="nav-crumb">
-    <span style="color:var(--text-muted)">List Property</span>
-    ›
-    <span id="navStepLabel" style="color:var(--cyan)">Property Type</span>
+  <div class="nav-divider"></div>
+  <div class="nav-breadcrumb">
+    <a href="pg-hostel-listings.html" style="color:var(--t2);text-decoration:none;transition:color .2s" onmouseover="this.style.color='var(--c1)'" onmouseout="this.style.color='var(--t2)'">PG & Hostels</a>
+    <span>›</span>
+    <span class="crumb-active" id="navCrumb">Property Type</span>
   </div>
   <div class="nav-right">
-    <button class="nav-save-btn" onclick="saveDraft()">💾 Save Draft</button>
-    <button class="nav-exit" onclick="confirmExit()">✕ Exit</button>
+    <button class="nbtn nbtn-draft" onclick="saveDraft()">💾 Save Draft</button>
+    <button class="nbtn nbtn-ghost" onclick="location.href='booking-dashboard.html'">📋 Dashboard</button>
+    <button class="nbtn nbtn-exit" onclick="exitForm()">✕ Exit</button>
   </div>
 </nav>
 
-<!-- PROGRESS STEPS -->
-<div class="progress-wrap">
-  <div class="steps-row" id="stepsRow">
-    <div class="step-item active" onclick="jumpToStep(1)">
-      <div class="step-circle">1</div>
-      <div class="step-label">Type</div>
-      <div class="step-sublabel">PG or Hostel</div>
+<!-- ══════════════════════════════════════
+     STEP INDICATOR
+══════════════════════════════════════ -->
+<div class="step-header">
+  <div class="step-inner" id="stepInner">
+    <div class="step-node s-active" data-step="1" onclick="jumpStep(1)">
+      <div class="step-bubble">1</div>
+      <div class="step-title">Type & Owner</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(2)">
-      <div class="step-circle">2</div>
-      <div class="step-label">Basic Info</div>
-      <div class="step-sublabel">Name & Location</div>
+    <div class="step-node" data-step="2" onclick="jumpStep(2)">
+      <div class="step-bubble">2</div>
+      <div class="step-title">Property Info</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(3)">
-      <div class="step-circle">3</div>
-      <div class="step-label">Rooms</div>
-      <div class="step-sublabel">Types & Pricing</div>
+    <div class="step-node" data-step="3" onclick="jumpStep(3)">
+      <div class="step-bubble">3</div>
+      <div class="step-title">Location</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(4)">
-      <div class="step-circle">4</div>
-      <div class="step-label">Amenities</div>
-      <div class="step-sublabel">Facilities</div>
+    <div class="step-node" data-step="4" onclick="jumpStep(4)">
+      <div class="step-bubble">4</div>
+      <div class="step-title">Rooms & Pricing</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(5)">
-      <div class="step-circle">5</div>
-      <div class="step-label">Photos</div>
-      <div class="step-sublabel">Images</div>
+    <div class="step-node" data-step="5" onclick="jumpStep(5)">
+      <div class="step-bubble">5</div>
+      <div class="step-title">Amenities</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(6)">
-      <div class="step-circle">6</div>
-      <div class="step-label">Rules</div>
-      <div class="step-sublabel">Policies</div>
+    <div class="step-node" data-step="6" onclick="jumpStep(6)">
+      <div class="step-bubble">6</div>
+      <div class="step-title">Photos & Video</div>
     </div>
-    <div class="step-item" onclick="jumpToStep(7)">
-      <div class="step-circle">7</div>
-      <div class="step-label">Review</div>
-      <div class="step-sublabel">Publish</div>
+    <div class="step-node" data-step="7" onclick="jumpStep(7)">
+      <div class="step-bubble">7</div>
+      <div class="step-title">Rules & Docs</div>
+    </div>
+    <div class="step-node" data-step="8" onclick="jumpStep(8)">
+      <div class="step-bubble">8</div>
+      <div class="step-title">Review & Publish</div>
     </div>
   </div>
 </div>
 
-<div class="page">
-<div class="main" id="mainWrap">
-<div class="form-col" id="formCol">
+<!-- ══════════════════════════════════════
+     MAIN BODY
+══════════════════════════════════════ -->
+<div class="body-wrap" id="mainWrap">
+<div class="form-area" id="formArea">
 
-  <!-- SUCCESS -->
+  <!-- SUCCESS SCREEN -->
   <div class="success-screen" id="successScreen">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">Listing Submitted!</div>
-    <div class="success-sub">Your PG / Hostel has been submitted for verification. Our team will review and publish it within 24 hours. You'll be notified on your registered contact.</div>
-    <div class="success-id" id="successId">Listing ID: #SRA-000000</div>
-    <div class="success-actions">
-      <button class="sbtn sbtn-p" onclick="location.href='pg-hostel-listings.html'">🏠 Browse Listings</button>
-      <button class="sbtn sbtn-o" onclick="location.href='booking-dashboard.html'">📋 My Dashboard</button>
-      <button class="sbtn sbtn-o" onclick="location.reload()">+ Post Another</button>
+    <div class="success-anim">🎉</div>
+    <div class="success-title">You're Live!</div>
+    <div class="success-sub">Your property has been submitted for verification. Our team will review and publish it within 24 hours. Verified listings appear first in search results.</div>
+    <div class="success-id-box" id="successIdBox">Listing ID: #SRA-PENDING</div>
+    <div class="success-btns">
+      <button class="sbtn sbtn-primary" onclick="location.href='pg-hostel-listings.html'">🏠 Browse Listings</button>
+      <button class="sbtn sbtn-outline" onclick="location.href='booking-dashboard.html'">📋 My Dashboard</button>
+      <button class="sbtn sbtn-outline" onclick="location.reload()">+ Post Another</button>
     </div>
   </div>
 
-  <!-- STEP 1: TYPE -->
-  <div class="step-page active" id="step-1">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-c">🏗️</div>
-        <div>
-          <div class="panel-title">What are you listing?</div>
-          <div class="panel-sub">Choose the property category</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="type-cards">
-          <div class="type-card sel-pg" id="typePG" onclick="selectType('PG')">
-            <div class="tc-check">✓</div>
-            <div class="tc-icon">🏠</div>
-            <div class="tc-name">PG / Paying Guest</div>
-            <div class="tc-desc">Private or semi-private rooms in a residential setup. Ideal for working professionals and students.</div>
-          </div>
-          <div class="type-card" id="typeHostel" onclick="selectType('Hostel')">
-            <div class="tc-check">✓</div>
-            <div class="tc-icon">🏢</div>
-            <div class="tc-name">Hostel</div>
-            <div class="tc-desc">Dorm-style or budget accommodation with shared spaces. Perfect for backpackers and short stays.</div>
-          </div>
-        </div>
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Gender Preference <span class="req">*</span></label>
-            <div class="gender-grid">
-              <div class="gender-opt gb" id="gBoys" onclick="selectGender('Boys')"><div class="g-icon">👨</div><div class="g-label">Boys</div></div>
-              <div class="gender-opt" id="gGirls" onclick="selectGender('Girls')"><div class="g-icon">👩</div><div class="g-label">Girls</div></div>
-              <div class="gender-opt" id="gCoed" onclick="selectGender('Co-ed')"><div class="g-icon">🤝</div><div class="g-label">Co-ed</div></div>
-            </div>
-          </div>
-          <div>
-            <div class="form-field" style="margin-bottom:10px">
-              <label>Target Occupants <span class="req">*</span></label>
-              <select id="targetOcc">
-                <option value="">Select preference</option>
-                <option value="students">Students</option>
-                <option value="working">Working Professionals</option>
-                <option value="both">Students & Professionals</option>
-                <option value="backpackers">Backpackers / Travellers</option>
-                <option value="any">Any / Open to All</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label>Total Capacity <span class="req">*</span></label>
-              <div class="sw"><input type="number" id="totalBeds" placeholder="e.g. 20" min="1" oninput="updateCompleteness()"><span class="sfx">beds</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- ─── STEP 1: TYPE & OWNER ─── -->
+  <div class="step-page sp-active" id="sp-1">
 
-    <div class="panel" style="animation-delay:.07s">
-      <div class="panel-header">
-        <div class="panel-icon icon-v">👤</div>
-        <div>
-          <div class="panel-title">Owner / Manager Details</div>
-          <div class="panel-sub">Your contact for tenant inquiries</div>
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c1">🏗️</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Property Category</div>
+          <div class="block-head-sub">Choose PG or Hostel — determines your listing structure</div>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Full Name <span class="req">*</span></label>
-            <div class="iw"><span class="ii">👤</span><input type="text" id="ownerName" placeholder="Your full name" oninput="updateCompleteness()"></div>
+      <div class="block-body">
+        <div class="prop-type-grid">
+          <div class="prop-type-card ptc-pg chosen" id="ptc-PG" onclick="choosePropType('PG')">
+            <div class="ptc-radio">✓</div>
+            <span class="ptc-emoji">🏠</span>
+            <div class="ptc-name">PG / Paying Guest</div>
+            <div class="ptc-desc">Private or semi-private furnished rooms with common facilities. Perfect for students and working professionals seeking a home-like environment.</div>
+            <div class="ptc-features">
+              <span class="ptc-feat">Monthly rent</span>
+              <span class="ptc-feat">Home-like</span>
+              <span class="ptc-feat">Meals optional</span>
+              <span class="ptc-feat">Long stays</span>
+            </div>
           </div>
-          <div class="form-field">
-            <label>Contact Number <span class="req">*</span></label>
-            <div class="iw"><span class="ii">📞</span><input type="tel" id="ownerPhone" placeholder="+91 98765 43210" oninput="updateCompleteness()"></div>
+          <div class="prop-type-card ptc-hostel" id="ptc-Hostel" onclick="choosePropType('Hostel')">
+            <div class="ptc-radio">✓</div>
+            <span class="ptc-emoji">🏢</span>
+            <div class="ptc-name">Hostel</div>
+            <div class="ptc-desc">Dorm-style or shared accommodation with communal areas. Ideal for backpackers, travellers, and short-term stays with social atmosphere.</div>
+            <div class="ptc-features">
+              <span class="ptc-feat">Dorm beds</span>
+              <span class="ptc-feat">Social vibe</span>
+              <span class="ptc-feat">Short stays ok</span>
+              <span class="ptc-feat">Budget</span>
+            </div>
           </div>
         </div>
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Email Address <span class="req">*</span></label>
-            <div class="iw"><span class="ii">📧</span><input type="email" id="ownerEmail" placeholder="owner@email.com" oninput="updateCompleteness()"></div>
+
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Gender Preference <span class="req">*</span></label>
+            <div class="gender-selector">
+              <div class="gs-opt gs-boys chosen" id="g-Boys" onclick="chooseGender('Boys')">
+                <div class="gs-emoji">👨</div><div class="gs-label">Boys</div>
+              </div>
+              <div class="gs-opt gs-girls" id="g-Girls" onclick="chooseGender('Girls')">
+                <div class="gs-emoji">👩</div><div class="gs-label">Girls</div>
+              </div>
+              <div class="gs-opt gs-coed" id="g-Coed" onclick="chooseGender('Co-ed')">
+                <div class="gs-emoji">🤝</div><div class="gs-label">Co-ed</div>
+              </div>
+              <div class="gs-opt gs-senior" id="g-Senior" onclick="chooseGender('Seniors')">
+                <div class="gs-emoji">👴</div><div class="gs-label">Seniors</div>
+              </div>
+            </div>
           </div>
-          <div class="form-field">
-            <label>WhatsApp Number</label>
-            <div class="iw"><span class="ii">💬</span><input type="tel" id="ownerWA" placeholder="Same or different number"></div>
+          <div class="ff">
+            <label class="fl">Target Occupants <span class="req">*</span></label>
+            <div class="occ-type-grid">
+              <div class="occ-opt" id="occ-students" onclick="chooseOcc('Students')"><span class="occ-e">🎓</span><span class="occ-l">Students</span></div>
+              <div class="occ-opt" id="occ-working" onclick="chooseOcc('Working Professionals')"><span class="occ-e">💼</span><span class="occ-l">Professionals</span></div>
+              <div class="occ-opt" id="occ-both" onclick="chooseOcc('Both')"><span class="occ-e">🙋</span><span class="occ-l">Both</span></div>
+              <div class="occ-opt" id="occ-backpackers" onclick="chooseOcc('Backpackers')"><span class="occ-e">🎒</span><span class="occ-l">Backpackers</span></div>
+              <div class="occ-opt" id="occ-corporate" onclick="chooseOcc('Corporate')"><span class="occ-e">🏢</span><span class="occ-l">Corporate</span></div>
+              <div class="occ-opt" id="occ-any" onclick="chooseOcc('Any')"><span class="occ-e">✅</span><span class="occ-l">Anyone</span></div>
+            </div>
           </div>
         </div>
-        <div class="form-row r1">
-          <div class="form-field">
-            <label>Management Type</label>
+
+        <div class="fg fg-3">
+          <div class="ff">
+            <label class="fl">Total Beds / Capacity <span class="req">*</span></label>
+            <div class="input-suf-wrap">
+              <input type="number" id="totalBeds" placeholder="e.g. 20" min="1" max="500" oninput="updateComp()">
+              <span class="input-suf">beds</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Establishment Year</label>
+            <input type="number" id="estYear" placeholder="e.g. 2019" min="1990" max="2026">
+          </div>
+          <div class="ff">
+            <label class="fl">Management Type</label>
             <select id="mgmtType">
               <option value="owner">Owner-managed</option>
               <option value="agent">Property Agent</option>
@@ -426,360 +1337,644 @@ textarea{resize:vertical;min-height:88px;line-height:1.65}
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- STEP 2: BASIC INFO -->
-  <div class="step-page" id="step-2">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-c">📝</div>
-        <div>
-          <div class="panel-title">Property Details</div>
-          <div class="panel-sub">Name, description & property specifics</div>
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c2">👤</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Owner / Manager Contact</div>
+          <div class="block-head-sub">Tenants will reach out on these details</div>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="form-row r1">
-          <div class="form-field">
-            <label>Property Name <span class="req">*</span> <span class="hint" id="nameCount">0/80</span></label>
-            <input type="text" id="propName" maxlength="80" placeholder="e.g. Green Valley PG for Girls, Urban Nest Hostel..." oninput="updatePreview();countChars(this,'nameCount',80)">
-          </div>
-        </div>
-        <div class="form-row r1">
-          <div class="form-field">
-            <label>Description <span class="req">*</span> <span class="hint" id="descCount">0/800</span></label>
-            <textarea id="propDesc" maxlength="800" rows="5" placeholder="Describe your property — what makes it special, vibe, nearby conveniences, safety, and ideal tenant type..." oninput="updateCompleteness();countChars(this,'descCount',800)"></textarea>
-          </div>
-        </div>
-        <div class="form-row r3">
-          <div class="form-field">
-            <label>Established Year</label>
-            <input type="number" id="estYear" placeholder="e.g. 2018" min="1990" max="2026">
-          </div>
-          <div class="form-field">
-            <label>Number of Floors</label>
-            <div class="sw"><input type="number" id="numFloors" placeholder="3" min="1"><span class="sfx">floors</span></div>
-          </div>
-          <div class="form-field">
-            <label>Total Rooms</label>
-            <div class="sw"><input type="number" id="totalRooms" placeholder="12" min="1"><span class="sfx">rooms</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" style="animation-delay:.07s">
-      <div class="panel-header">
-        <div class="panel-icon icon-a">📍</div>
-        <div>
-          <div class="panel-title">Location & Address</div>
-          <div class="panel-sub">Accurate address helps tenants find you faster</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="form-row r1">
-          <div class="form-field">
-            <label>Full Address <span class="req">*</span></label>
-            <div class="iw"><span class="ii">🏠</span><input type="text" id="address" placeholder="Door No., Street Name, Landmark..." oninput="updatePreview()"></div>
-          </div>
-        </div>
-        <div class="form-row r3">
-          <div class="form-field">
-            <label>Area / Locality <span class="req">*</span></label>
-            <input type="text" id="area" placeholder="Banjara Hills" oninput="updatePreview()">
-          </div>
-          <div class="form-field">
-            <label>City <span class="req">*</span></label>
-            <div class="iw"><span class="ii">🏙️</span>
-              <select id="city" onchange="updatePreview()">
-                <option value="">Select city</option>
-                <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
-                <option>Delhi</option><option>Chennai</option><option>Pune</option>
-                <option>Kolkata</option><option>Ahmedabad</option><option>Noida</option><option>Gurgaon</option>
-              </select>
+      <div class="block-body">
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Full Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pre-icon">👤</span>
+              <input type="text" id="ownerName" placeholder="Your full name" oninput="updateComp()">
             </div>
           </div>
-          <div class="form-field">
-            <label>PIN Code <span class="req">*</span></label>
-            <input type="text" id="pincode" placeholder="500034" maxlength="6">
+          <div class="ff">
+            <label class="fl">Phone Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pre-icon">📞</span>
+              <input type="tel" id="ownerPhone" placeholder="+91 98765 43210" oninput="updateComp()">
+            </div>
           </div>
         </div>
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Nearest Metro / Transit</label>
-            <div class="iw"><span class="ii">🚇</span><input type="text" id="nearMetro" placeholder="e.g. 0.5 km from Ameerpet Metro" oninput="updatePreview()"></div>
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Email Address <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pre-icon">📧</span>
+              <input type="email" id="ownerEmail" placeholder="owner@email.com" oninput="updateComp()">
+            </div>
           </div>
-          <div class="form-field">
-            <label>Nearby Landmark</label>
-            <div class="iw"><span class="ii">🏛️</span><input type="text" id="landmark" placeholder="e.g. Near HITEC City flyover"></div>
+          <div class="ff">
+            <label class="fl">WhatsApp Number</label>
+            <div class="input-wrap">
+              <span class="pre-icon">💬</span>
+              <input type="tel" id="ownerWA" placeholder="Same or alternate number">
+            </div>
           </div>
         </div>
-        <div class="map-ph" onclick="toast('🗺️','Map pin requires Google Maps API integration','warn')">
-          <div style="font-size:30px">🗺️</div>
-          <div>Click to pin exact location on map</div>
-          <div style="font-size:10px;font-family:'JetBrains Mono',monospace;margin-top:3px">Precise coordinates improve search ranking</div>
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Alternate Contact Name</label>
+            <input type="text" id="altName" placeholder="Caretaker or spouse name">
+          </div>
+          <div class="ff">
+            <label class="fl">Alternate Contact Number</label>
+            <input type="tel" id="altPhone" placeholder="For emergencies">
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- STEP 3: ROOMS -->
-  <div class="step-page" id="step-3">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-v">🛏️</div>
-        <div>
-          <div class="panel-title">Room Types & Pricing</div>
-          <div class="panel-sub">Add all room categories with their pricing</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div style="overflow-x:auto">
-          <table class="room-table" id="roomTable">
-            <thead>
-              <tr>
-                <th>Room Type</th>
-                <th>Occupancy</th>
-                <th>Rent/Month (₹)</th>
-                <th>Deposit (₹)</th>
-                <th>Available Rooms</th>
-                <th>AC</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="roomBody"></tbody>
-          </table>
-        </div>
-        <button class="add-row-btn" onclick="addRoomRow()">+ Add Room Type</button>
-      </div>
-    </div>
+  </div><!-- /sp-1 -->
 
-    <div class="panel" style="animation-delay:.07s">
-      <div class="panel-header">
-        <div class="panel-icon icon-a">💰</div>
-        <div>
-          <div class="panel-title">Charges & Policies</div>
-          <div class="panel-sub">Transparent pricing builds tenant trust</div>
+  <!-- ─── STEP 2: PROPERTY INFO ─── -->
+  <div class="step-page" id="sp-2">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c1">📝</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Property Name & Description</div>
+          <div class="block-head-sub">Your listing's first impression — make it compelling</div>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="form-row r3">
-          <div class="form-field">
-            <label>Security Deposit</label>
-            <div class="sw"><input type="number" id="secDeposit" placeholder="5000"><span class="sfx">₹</span></div>
-          </div>
-          <div class="form-field">
-            <label>Maintenance / month</label>
-            <div class="sw"><input type="number" id="maintenance" placeholder="500"><span class="sfx">₹</span></div>
-          </div>
-          <div class="form-field">
-            <label>Notice Period</label>
-            <div class="sw"><input type="number" id="noticePeriod" placeholder="30"><span class="sfx">days</span></div>
+      <div class="block-body">
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">Property Name <span class="req">*</span> <span class="hint-tag" id="nameCount">0 / 80</span></label>
+            <input type="text" id="propName" maxlength="80" placeholder="e.g. Lotus Premium PG for Girls, Urban Nest Hostel Madhapur..." oninput="upPreview(); countChars(this,'nameCount',80)">
           </div>
         </div>
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Lock-in Period</label>
-            <div class="sw"><input type="number" id="lockin" placeholder="3"><span class="sfx">months</span></div>
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">Short Tagline <span class="hint-tag" id="tagCount">0 / 100</span></label>
+            <input type="text" id="propTag" maxlength="100" placeholder="e.g. Premium co-living near HITEC City with meals included..." oninput="countChars(this,'tagCount',100)">
           </div>
-          <div class="form-field">
-            <label>Electricity Billing</label>
-            <select id="elecType">
-              <option value="included">Included in Rent</option>
-              <option value="per_unit">Per Unit Basis</option>
-              <option value="fixed">Fixed Monthly Amount</option>
-              <option value="direct">Direct EB Connection</option>
+        </div>
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">Detailed Description <span class="req">*</span> <span class="hint-tag" id="descCount">0 / 1000</span></label>
+            <textarea id="propDesc" maxlength="1000" rows="6" placeholder="Describe your property thoroughly — the vibe and atmosphere, room quality, nearby offices or colleges, what makes it the best choice for tenants, safety measures, community culture, nearby conveniences..." oninput="updateComp(); countChars(this,'descCount',1000)"></textarea>
+          </div>
+        </div>
+        <div class="fg fg-4">
+          <div class="ff">
+            <label class="fl">Total Rooms</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="totalRooms" placeholder="12" min="1">
+              <span class="input-suf">rooms</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Total Floors</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="totalFloors" placeholder="3" min="1">
+              <span class="input-suf">floors</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Age of Building</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="buildingAge" placeholder="5" min="0">
+              <span class="input-suf">yrs</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Furnishing</label>
+            <select id="furnishing">
+              <option value="fully">Fully Furnished</option>
+              <option value="semi">Semi-Furnished</option>
+              <option value="unfurnished">Unfurnished</option>
             </select>
           </div>
         </div>
-        <div style="margin-top:14px">
-          <div class="tog-row"><div class="tog-lbl">🍽️ Meals Included in Rent</div><div class="tog-switch" id="tMeals" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">📶 WiFi Included</div><div class="tog-switch on" id="tWifi" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🧺 Laundry Service Available</div><div class="tog-switch on" id="tLaundry" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🚗 Parking Available</div><div class="tog-switch" id="tParking" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-        </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 4: AMENITIES -->
-  <div class="step-page" id="step-4">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-e">✨</div>
-        <div>
-          <div class="panel-title">Amenities & Facilities</div>
-          <div class="panel-sub">Select all available amenities — more = better ranking</div>
+  <!-- ─── STEP 3: LOCATION ─── -->
+  <div class="step-page" id="sp-3">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c3">📍</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Property Location</div>
+          <div class="block-head-sub">Accurate address boosts search visibility and tenant trust</div>
         </div>
       </div>
-      <div class="panel-body">
-        <div style="margin-bottom:18px">
-          <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px">BASIC AMENITIES</div>
-          <div class="amenity-grid" id="gridBasic"></div>
-        </div>
-        <div style="margin-bottom:18px">
-          <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px">SAFETY & SECURITY</div>
-          <div class="amenity-grid" id="gridSafety"></div>
-        </div>
-        <div style="margin-bottom:18px">
-          <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px">RECREATION & LIFESTYLE</div>
-          <div class="amenity-grid" id="gridLife"></div>
-        </div>
-        <div class="form-field">
-          <label>Add Custom Amenity <span class="hint">Press Enter to add</span></label>
-          <div class="iw"><span class="ii">➕</span><input type="text" id="customA" placeholder="e.g. Yoga room, Rooftop lounge..." onkeydown="addCustomAmenity(event)"></div>
-          <div id="customAWrap" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 5: PHOTOS -->
-  <div class="step-page" id="step-5">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-r">📸</div>
-        <div>
-          <div class="panel-title">Property Photos</div>
-          <div class="panel-sub">Good photos get 3x more inquiries</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="drop-zone" id="dropZone" ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')">
-          <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotoSelect(this)">
-          <div class="drop-icon">📷</div>
-          <div class="drop-title">Drag & drop photos here</div>
-          <div class="drop-sub">or click to browse your files</div>
-          <div class="drop-hint">JPG, PNG, WEBP · Max 10MB each · Up to 20 photos</div>
-        </div>
-        <div class="photo-grid" id="photoGrid"></div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px">
-          <div style="font-size:11px;color:var(--text-soft);background:var(--emerald-dim);border:1px solid var(--emerald-border);border-radius:8px;padding:10px">✅ <strong style="color:var(--emerald)">Upload:</strong> Well-lit rooms, bathroom, common areas, entrance, terrace, kitchen</div>
-          <div style="font-size:11px;color:var(--text-soft);background:var(--rose-dim);border:1px solid var(--rose-border);border-radius:8px;padding:10px">❌ <strong style="color:var(--rose)">Avoid:</strong> Blurry, dark, stock photos, occupied rooms with personal items</div>
-        </div>
-      </div>
-    </div>
-    <div class="panel" style="animation-delay:.07s">
-      <div class="panel-header">
-        <div class="panel-icon icon-v">🎬</div>
-        <div>
-          <div class="panel-title">Video Tour (Optional)</div>
-          <div class="panel-sub">A walkthrough video boosts bookings by 40%</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="form-field">
-          <label>YouTube / Google Drive Video Link</label>
-          <div class="iw"><span class="ii">🔗</span><input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=..."></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- STEP 6: RULES -->
-  <div class="step-page" id="step-6">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-a">📋</div>
-        <div>
-          <div class="panel-title">House Rules & Policies</div>
-          <div class="panel-sub">Clear rules prevent future disputes</div>
-        </div>
-      </div>
-      <div class="panel-body">
-        <div class="form-row r2" style="margin-bottom:16px">
-          <div class="form-field">
-            <label>Check-in Time <span class="req">*</span></label>
-            <div class="iw"><span class="ii">🕐</span><input type="time" id="checkinTime" value="11:00"></div>
-          </div>
-          <div class="form-field">
-            <label>Curfew / Gate Close Time</label>
-            <div class="iw"><span class="ii">🔒</span><input type="time" id="curfewTime" value="22:00"></div>
+      <div class="block-body">
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">Full Street Address <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pre-icon">🏠</span>
+              <input type="text" id="fullAddress" placeholder="Plot No., House No., Street Name, Colony..." oninput="upPreview()">
+            </div>
           </div>
         </div>
-        <div class="form-field" style="margin-bottom:14px">
-          <label>Food Preference</label>
-          <select id="foodPref">
-            <option value="any">No Restriction</option>
-            <option value="veg">Vegetarian Only</option>
-            <option value="nonveg">Both Veg & Non-Veg</option>
-            <option value="jain">Jain Food Available</option>
-          </select>
+        <div class="fg fg-3">
+          <div class="ff">
+            <label class="fl">Area / Locality <span class="req">*</span></label>
+            <input type="text" id="area" placeholder="e.g. Banjara Hills" oninput="upPreview(); updateComp()">
+          </div>
+          <div class="ff">
+            <label class="fl">City <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="pre-icon">🏙️</span>
+              <select id="city" onchange="upPreview(); updateComp()">
+                <option value="">Select City</option>
+                <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
+                <option>Delhi</option><option>Chennai</option><option>Pune</option>
+                <option>Kolkata</option><option>Ahmedabad</option><option>Noida</option>
+                <option>Gurgaon</option><option>Jaipur</option><option>Kochi</option>
+                <option>Chandigarh</option><option>Indore</option><option>Vizag</option>
+              </select>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">PIN Code <span class="req">*</span></label>
+            <input type="text" id="pincode" placeholder="500034" maxlength="6">
+          </div>
         </div>
-        <div style="margin-bottom:16px">
-          <div class="tog-row"><div class="tog-lbl">🚬 Smoking Allowed on Premises</div><div class="tog-switch" id="tSmoke" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🍺 Alcohol Allowed in Rooms</div><div class="tog-switch" id="tAlcohol" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🐾 Pets Allowed</div><div class="tog-switch" id="tPets" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">👥 Guests Allowed in Rooms</div><div class="tog-switch on" id="tGuests" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🕛 24/7 Entry (No Curfew)</div><div class="tog-switch" id="t24hr" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
-          <div class="tog-row"><div class="tog-lbl">🍳 Cooking Allowed in Rooms</div><div class="tog-switch" id="tCooking" onclick="toggleSw(this)"><div class="tog-thumb"></div></div></div>
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">State</label>
+            <select id="state">
+              <option value="">Select State</option>
+              <option>Telangana</option><option>Karnataka</option><option>Maharashtra</option>
+              <option>Delhi</option><option>Tamil Nadu</option><option>Uttar Pradesh</option>
+              <option>West Bengal</option><option>Gujarat</option><option>Rajasthan</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Country</label>
+            <select id="country">
+              <option value="India">India</option>
+            </select>
+          </div>
         </div>
-        <label style="margin-bottom:8px">Custom House Rules</label>
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Nearest Metro / Bus Stand</label>
+            <div class="input-wrap">
+              <span class="pre-icon">🚇</span>
+              <input type="text" id="nearTransit" placeholder="e.g. 0.5 km from Ameerpet Metro" oninput="upPreview()">
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Nearest Landmark</label>
+            <div class="input-wrap">
+              <span class="pre-icon">🏛️</span>
+              <input type="text" id="nearLandmark" placeholder="e.g. Opposite to Forum Mall">
+            </div>
+          </div>
+        </div>
+        <div class="fg fg-3">
+          <div class="ff">
+            <label class="fl">Walking Distance to IT Hub</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="distITHub" placeholder="0.5" min="0" step="0.1">
+              <span class="input-suf">km</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Walking Distance to College</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="distCollege" placeholder="1.2" min="0" step="0.1">
+              <span class="input-suf">km</span>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Distance to Hospital</label>
+            <div class="input-suf-wrap">
+              <input type="number" id="distHospital" placeholder="2.0" min="0" step="0.1">
+              <span class="input-suf">km</span>
+            </div>
+          </div>
+        </div>
+        <div class="map-stub" onclick="toast('🗺️','Google Maps integration active in production','info')">
+          <span class="map-icon">🗺️</span>
+          <span class="map-text">Click to pin exact location on map</span>
+          <span style="font-size:10px;font-family:'JetBrains Mono',monospace;margin-top:3px">GPS coordinates improve search ranking by 45%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 4: ROOMS & PRICING ─── -->
+  <div class="step-page" id="sp-4">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c2">🛏️</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Room Types & Pricing</div>
+          <div class="block-head-sub">Add every room category you offer — tenants can filter by these</div>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="rtable-wrap">
+          <table class="rtable">
+            <thead>
+              <tr>
+                <th>Room Type</th>
+                <th>Sharing</th>
+                <th>Rent / Month (₹)</th>
+                <th>Deposit (₹)</th>
+                <th>Available</th>
+                <th>Size (sqft)</th>
+                <th>AC</th>
+                <th>Attached Bath</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="roomTbody"></tbody>
+          </table>
+        </div>
+        <button class="add-room-btn" onclick="addRoomRow()">+ Add Room Type</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c6">💰</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Additional Charges & Billing</div>
+          <div class="block-head-sub">Transparent pricing reduces disputes later</div>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="fg fg-4">
+          <div class="ff">
+            <label class="fl">Security Deposit</label>
+            <div class="input-suf-wrap"><input type="number" id="secDeposit" placeholder="5000"><span class="input-suf">₹</span></div>
+          </div>
+          <div class="ff">
+            <label class="fl">Maintenance / Month</label>
+            <div class="input-suf-wrap"><input type="number" id="maintenance" placeholder="500"><span class="input-suf">₹</span></div>
+          </div>
+          <div class="ff">
+            <label class="fl">Notice Period</label>
+            <div class="input-suf-wrap"><input type="number" id="noticePeriod" placeholder="30"><span class="input-suf">days</span></div>
+          </div>
+          <div class="ff">
+            <label class="fl">Lock-in Period</label>
+            <div class="input-suf-wrap"><input type="number" id="lockin" placeholder="3"><span class="input-suf">months</span></div>
+          </div>
+        </div>
+        <div class="fg fg-3">
+          <div class="ff">
+            <label class="fl">Electricity Billing</label>
+            <select id="elecBilling">
+              <option value="included">Included in Rent</option>
+              <option value="per_unit">Per Unit (₹/unit)</option>
+              <option value="fixed">Fixed Monthly Charge</option>
+              <option value="direct">Direct EB Connection</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Water Charges</label>
+            <select id="waterBilling">
+              <option value="included">Included in Rent</option>
+              <option value="fixed">Fixed Monthly</option>
+              <option value="metered">Metered Usage</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Accepted Payment Modes</label>
+            <select id="paymentMode">
+              <option value="all">All Modes</option>
+              <option value="upi">UPI / Bank Transfer</option>
+              <option value="cash">Cash Only</option>
+              <option value="cheque">Cheque Accepted</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <div class="tog-row" onclick="toggleSw('tMeals')">
+            <div class="tog-left"><span class="tog-emoji">🍽️</span><div class="tog-text"><div class="tog-name">Meals Included in Rent</div><div class="tog-sub">Breakfast, lunch, dinner provided</div></div></div>
+            <div class="tog-switch on-emerald" id="tMeals"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('tWifi')">
+            <div class="tog-left"><span class="tog-emoji">📶</span><div class="tog-text"><div class="tog-name">High-Speed WiFi Included</div><div class="tog-sub">Broadband / fiber internet</div></div></div>
+            <div class="tog-switch on on-emerald" id="tWifi"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('tLaundry')">
+            <div class="tog-left"><span class="tog-emoji">🧺</span><div class="tog-text"><div class="tog-name">Laundry Service</div><div class="tog-sub">Free or at extra cost</div></div></div>
+            <div class="tog-switch on on-emerald" id="tLaundry"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('tParking')">
+            <div class="tog-left"><span class="tog-emoji">🚗</span><div class="tog-text"><div class="tog-name">Parking Available</div><div class="tog-sub">Two-wheeler or four-wheeler</div></div></div>
+            <div class="tog-switch" id="tParking"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('tHouseKeep')">
+            <div class="tog-left"><span class="tog-emoji">🧹</span><div class="tog-text"><div class="tog-name">Daily Housekeeping</div><div class="tog-sub">Room cleaning included</div></div></div>
+            <div class="tog-switch" id="tHouseKeep"><div class="tog-knob"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 5: AMENITIES ─── -->
+  <div class="step-page" id="sp-5">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c4">✨</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Amenities & Facilities</div>
+          <div class="block-head-sub">Select all — more amenities = higher search ranking</div>
+        </div>
+      </div>
+      <div class="block-body">
+
+        <div class="amenity-section">
+          <div class="amenity-section-title">Basic Facilities</div>
+          <div class="amenity-grid" id="ag-basic"></div>
+        </div>
+
+        <div class="amenity-section">
+          <div class="amenity-section-title">Safety & Security</div>
+          <div class="amenity-grid" id="ag-safety"></div>
+        </div>
+
+        <div class="amenity-section">
+          <div class="amenity-section-title">Recreation & Lifestyle</div>
+          <div class="amenity-grid" id="ag-life"></div>
+        </div>
+
+        <div class="amenity-section">
+          <div class="amenity-section-title">Kitchen & Dining</div>
+          <div class="amenity-grid" id="ag-food"></div>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <label class="fl" style="margin-bottom: 8px;">Add Custom Amenity <span class="hint-tag">Press Enter to add</span></label>
+          <div class="input-wrap">
+            <span class="pre-icon">➕</span>
+            <input type="text" id="customAmenityInput" placeholder="e.g. Yoga room, Rooftop terrace, Swimming pool..." onkeydown="addCustomAmenity(event)">
+          </div>
+          <div class="custom-tags" id="customTagsWrap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 6: PHOTOS & VIDEO ─── -->
+  <div class="step-page" id="sp-6">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c5">📸</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Property Photos</div>
+          <div class="block-head-sub">Listings with 10+ photos get 4x more inquiries</div>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="photo-drop" id="photoDrop"
+          ondrop="handleDrop(event)"
+          ondragover="event.preventDefault(); this.classList.add('drag-active')"
+          ondragleave="this.classList.remove('drag-active')">
+          <input type="file" id="photoInput" accept="image/*" multiple onchange="handleFiles(this.files)">
+          <div class="pd-icon">📷</div>
+          <div class="pd-title">Drag & drop photos here</div>
+          <div class="pd-sub">or click anywhere to browse files</div>
+          <div class="pd-hint">Supports JPG, PNG, WEBP · Max 10 MB per image · Up to 20 photos</div>
+        </div>
+        <div class="photo-preview-grid" id="photoPreviewGrid"></div>
+
+        <div class="photo-tips">
+          <div class="photo-tip good">
+            <strong>✅ Great Photos Include:</strong>
+            Well-lit rooms, clean bathrooms, common areas, kitchen, entrance gate, terrace, gym/recreation
+          </div>
+          <div class="photo-tip bad">
+            <strong>❌ Avoid Uploading:</strong>
+            Blurry / dark photos, occupied rooms with personal items, stock or watermarked images, exterior only
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c2">🎬</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Video Tour (Optional but Powerful)</div>
+          <div class="block-head-sub">Properties with video tours get 40% more qualified inquiries</div>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">YouTube / Google Drive Link</label>
+            <div class="input-wrap">
+              <span class="pre-icon">🔗</span>
+              <input type="url" id="videoUrl" placeholder="https://youtube.com/watch?v=... or drive.google.com/...">
+            </div>
+          </div>
+        </div>
+        <div class="fg fg-1">
+          <div class="ff">
+            <label class="fl">Virtual Tour Link (360° / Matterport)</label>
+            <div class="input-wrap">
+              <span class="pre-icon">🌐</span>
+              <input type="url" id="tourUrl" placeholder="https://my.matterport.com/...">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── STEP 7: RULES & DOCS ─── -->
+  <div class="step-page" id="sp-7">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c6">📋</div>
+        <div class="block-head-text">
+          <div class="block-head-title">House Rules & Policies</div>
+          <div class="block-head-sub">Clear rules prevent disputes and attract the right tenants</div>
+        </div>
+      </div>
+      <div class="block-body">
+        <div class="fg fg-3" style="margin-bottom: 14px;">
+          <div class="ff">
+            <label class="fl">Check-in Time</label>
+            <div class="input-wrap"><span class="pre-icon">🕐</span><input type="time" id="checkinTime" value="11:00"></div>
+          </div>
+          <div class="ff">
+            <label class="fl">Check-out Time</label>
+            <div class="input-wrap"><span class="pre-icon">🕓</span><input type="time" id="checkoutTime" value="10:00"></div>
+          </div>
+          <div class="ff">
+            <label class="fl">Gate / Curfew Time</label>
+            <div class="input-wrap"><span class="pre-icon">🔒</span><input type="time" id="curfewTime" value="22:00"></div>
+          </div>
+        </div>
+
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Food Preference</label>
+            <select id="foodPref">
+              <option value="any">No Restriction</option>
+              <option value="veg">Vegetarian Only (Kitchen)</option>
+              <option value="nonveg">Veg & Non-Veg Both</option>
+              <option value="jain">Jain Food Available</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Minimum Stay Period</label>
+            <select id="minStay">
+              <option value="any">Any Duration</option>
+              <option value="1month">1 Month</option>
+              <option value="3months">3 Months</option>
+              <option value="6months">6 Months</option>
+              <option value="1year">1 Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin: 14px 0;">
+          <div class="tog-row" onclick="toggleSw('rSmoke')">
+            <div class="tog-left"><span class="tog-emoji">🚬</span><div class="tog-text"><div class="tog-name">Smoking Allowed on Premises</div><div class="tog-sub">Anywhere on property</div></div></div>
+            <div class="tog-switch" id="rSmoke"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('rAlcohol')">
+            <div class="tog-left"><span class="tog-emoji">🍺</span><div class="tog-text"><div class="tog-name">Alcohol Allowed in Rooms</div><div class="tog-sub">Consumption in private rooms</div></div></div>
+            <div class="tog-switch" id="rAlcohol"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('rPets')">
+            <div class="tog-left"><span class="tog-emoji">🐾</span><div class="tog-text"><div class="tog-name">Pets Allowed</div><div class="tog-sub">Dogs, cats, small pets</div></div></div>
+            <div class="tog-switch" id="rPets"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('rGuests')">
+            <div class="tog-left"><span class="tog-emoji">👥</span><div class="tog-text"><div class="tog-name">Guests Allowed in Rooms</div><div class="tog-sub">Visitors can enter rooms</div></div></div>
+            <div class="tog-switch on on-emerald" id="rGuests"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('r24hr')">
+            <div class="tog-left"><span class="tog-emoji">🕛</span><div class="tog-text"><div class="tog-name">24/7 Entry Access (No Curfew)</div><div class="tog-sub">Especially for working professionals</div></div></div>
+            <div class="tog-switch" id="r24hr"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('rCooking')">
+            <div class="tog-left"><span class="tog-emoji">🍳</span><div class="tog-text"><div class="tog-name">Cooking Allowed in Rooms</div><div class="tog-sub">Personal cooking devices permitted</div></div></div>
+            <div class="tog-switch" id="rCooking"><div class="tog-knob"></div></div>
+          </div>
+          <div class="tog-row" onclick="toggleSw('rOustaiders')">
+            <div class="tog-left"><span class="tog-emoji">🚪</span><div class="tog-text"><div class="tog-name">Outsiders Allowed in Common Areas</div><div class="tog-sub">Guests in lounge / terrace</div></div></div>
+            <div class="tog-switch on on-emerald" id="rOustaiders"><div class="tog-knob"></div></div>
+          </div>
+        </div>
+
+        <label class="fl" style="margin-bottom: 8px;">Custom House Rules</label>
         <div class="rules-list" id="rulesList">
-          <div class="rule-row"><input type="text" placeholder="e.g. Keep common areas clean at all times"><button class="del-row" onclick="removeRule(this)">✕</button></div>
-          <div class="rule-row"><input type="text" placeholder="e.g. No loud music after 10 PM"><button class="del-row" onclick="removeRule(this)">✕</button></div>
+          <div class="rule-item">
+            <div class="rule-num">1</div>
+            <input type="text" placeholder="e.g. Keep common areas clean — no littering">
+            <button class="rule-del" onclick="removeRule(this)">✕</button>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">2</div>
+            <input type="text" placeholder="e.g. No loud music or noise after 10:00 PM">
+            <button class="rule-del" onclick="removeRule(this)">✕</button>
+          </div>
+          <div class="rule-item">
+            <div class="rule-num">3</div>
+            <input type="text" placeholder="e.g. Rent due by 5th of every month — late fee applies">
+            <button class="rule-del" onclick="removeRule(this)">✕</button>
+          </div>
         </div>
         <button class="add-rule-btn" onclick="addRule()">+ Add House Rule</button>
       </div>
     </div>
 
-    <div class="panel" style="animation-delay:.07s">
-      <div class="panel-header">
-        <div class="panel-icon icon-e">🔐</div>
-        <div>
-          <div class="panel-title">Verification Documents</div>
-          <div class="panel-sub">Verified listings get 5x more inquiries</div>
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c4">🔐</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Verification & Documents</div>
+          <div class="block-head-sub">Verified listings rank 5× higher and get more trust</div>
         </div>
       </div>
-      <div class="panel-body">
-        <div class="form-row r2">
-          <div class="form-field">
-            <label>Ownership Proof Type</label>
-            <select id="ownerProof">
-              <option value="">Select document</option>
-              <option>Sale Deed</option><option>Khata Certificate</option>
-              <option>Municipal Tax Receipt</option><option>Rental Agreement (Subletting)</option>
+      <div class="block-body">
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">Ownership Proof Document</label>
+            <select id="ownerDoc">
+              <option value="">Select document type</option>
+              <option>Sale Deed / Title Deed</option>
+              <option>Khata / Patta Certificate</option>
+              <option>Municipal Tax Receipt</option>
+              <option>Rental Agreement (Subletting)</option>
+              <option>Property Tax Receipt</option>
             </select>
           </div>
-          <div class="form-field">
-            <label>Owner ID Type</label>
-            <select id="idType">
-              <option value="">Select ID</option>
-              <option>Aadhaar Card</option><option>PAN Card</option>
-              <option>Passport</option><option>Driving License</option>
+          <div class="ff">
+            <label class="fl">Owner Government ID Type</label>
+            <select id="ownerID">
+              <option value="">Select ID type</option>
+              <option>Aadhaar Card</option>
+              <option>PAN Card</option>
+              <option>Passport</option>
+              <option>Driving License</option>
+              <option>Voter ID</option>
             </select>
           </div>
         </div>
-        <div style="background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:8px;padding:11px;font-size:12px;color:var(--text-soft)">
-          ⚠️ <strong style="color:var(--amber)">Note:</strong> Actual document upload required post-submission. Our verification team will contact you within 24 hours.
+        <div class="fg fg-2">
+          <div class="ff">
+            <label class="fl">GST Registration (if applicable)</label>
+            <input type="text" id="gstNum" placeholder="22AAAAA0000A1Z5">
+          </div>
+          <div class="ff">
+            <label class="fl">Fire Safety Certificate</label>
+            <select id="fireCert">
+              <option value="">Select status</option>
+              <option>Valid certificate available</option>
+              <option>Applied / Pending</option>
+              <option>Not applicable (small property)</option>
+            </select>
+          </div>
+        </div>
+        <div style="background: var(--c6d); border: 1px solid var(--c6b); border-radius: var(--r-sm); padding: 12px 14px; font-size: 12px; color: var(--t1); margin-top: 4px;">
+          ⚠️ <strong style="color: var(--c6)">Important:</strong> Actual document upload will be required after submission. Our verification team will contact you within 24 hours to complete the process.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 7: REVIEW -->
-  <div class="step-page" id="step-7">
-    <div class="panel">
-      <div class="panel-header">
-        <div class="panel-icon icon-e">🔍</div>
-        <div>
-          <div class="panel-title">Review & Publish</div>
-          <div class="panel-sub">Confirm all details before going live</div>
+  <!-- ─── STEP 8: REVIEW & PUBLISH ─── -->
+  <div class="step-page" id="sp-8">
+    <div class="block">
+      <div class="block-head">
+        <div class="block-icon bi-c4">🔍</div>
+        <div class="block-head-text">
+          <div class="block-head-title">Review Your Listing</div>
+          <div class="block-head-sub">Verify all details before going live</div>
         </div>
       </div>
-      <div class="panel-body" id="reviewBody"><!-- populated by JS --></div>
+      <div class="block-body" id="reviewContent"><!-- populated by JS --></div>
     </div>
-    <div class="panel" style="animation-delay:.07s;background:rgba(16,185,129,.03);border-color:var(--emerald-border)">
-      <div class="panel-body">
-        <div style="display:flex;align-items:flex-start;gap:13px">
-          <div style="font-size:26px">✅</div>
-          <div>
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:5px">Ready to Publish?</div>
-            <div style="font-size:13px;color:var(--text-soft);line-height:1.7;margin-bottom:13px">By submitting, you confirm that all information is accurate and you are the authorized owner or manager. Fake or misleading listings will be permanently removed and may result in legal action.</div>
-            <label class="check-item" style="cursor:pointer">
-              <input type="checkbox" id="termsCheck" style="display:none">
-              <span class="check-box" id="termsBox" onclick="toggleTerms()"></span>
-              <span>I agree to SmartRent AI's <a href="privacy-policy.html" style="color:var(--cyan)" target="_blank">Terms of Service</a> and <a href="privacy-policy.html" style="color:var(--cyan)" target="_blank">Privacy Policy</a></span>
+
+    <div class="block" style="background: rgba(52,211,153,0.03); border-color: var(--c4b);">
+      <div class="block-body">
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+          <div style="font-size: 28px;">🚀</div>
+          <div style="flex:1;">
+            <div style="font-family:'Outfit',sans-serif; font-size:15px; font-weight:800; color:var(--t0); margin-bottom:6px; letter-spacing:-0.01em;">Ready to go live?</div>
+            <div style="font-size:13px; color:var(--t1); line-height:1.75; margin-bottom:16px;">By publishing this listing, you confirm that all information provided is accurate and you are the authorized owner or manager of this property. SmartRent AI will review and verify your listing within 24 hours before it appears in search results.</div>
+            <div style="font-size:12px; color:var(--t2); background:var(--c5d); border:1px solid var(--c5b); border-radius:var(--r-sm); padding:10px 13px; margin-bottom:16px;">
+              ⚠️ False or misleading property listings violate our Terms of Service and may result in permanent account suspension and potential legal action under applicable consumer protection laws.
+            </div>
+            <label class="terms-check-row" onclick="toggleTerms()">
+              <div class="tcb" id="termsCB"></div>
+              <span style="font-size:13px; color:var(--t1); line-height:1.6;">I confirm all information is accurate, I am legally authorized to list this property, and I agree to SmartRent AI's <a href="privacy-policy.html" target="_blank" style="color:var(--c1)">Terms of Service</a>, <a href="privacy-policy.html" target="_blank" style="color:var(--c1)">Privacy Policy</a>, and <a href="#" style="color:var(--c1)">Listing Guidelines</a>.</span>
             </label>
           </div>
         </div>
@@ -787,515 +1982,880 @@ textarea{resize:vertical;min-height:88px;line-height:1.65}
     </div>
   </div>
 
-</div><!-- end form-col -->
+</div><!-- /form-area -->
 
-<!-- PREVIEW SIDEBAR -->
-<aside class="preview-col">
-  <div class="comp-card">
-    <div class="comp-title">Listing Quality <span class="comp-pct" id="compPct">0%</span></div>
-    <div class="comp-bar-bg"><div class="comp-bar" id="compBar" style="width:0%"></div></div>
-    <div class="comp-items">
-      <div class="comp-item"><div class="comp-check" id="cOwner">○</div>Owner details</div>
-      <div class="comp-item"><div class="comp-check" id="cName">○</div>Property name</div>
-      <div class="comp-item"><div class="comp-check" id="cDesc">○</div>Description</div>
-      <div class="comp-item"><div class="comp-check" id="cLoc">○</div>Location</div>
-      <div class="comp-item"><div class="comp-check" id="cRooms">○</div>Room pricing</div>
-      <div class="comp-item"><div class="comp-check" id="cAmen">○</div>Amenities</div>
-      <div class="comp-item"><div class="comp-check" id="cPhotos">○</div>Photos</div>
-      <div class="comp-item"><div class="comp-check" id="cRules">○</div>House rules</div>
-    </div>
-  </div>
+<!-- ═══════════════════
+     SIDEBAR
+═══════════════════ -->
+<aside class="sidebar-col">
 
-  <div class="prev-card">
-    <div class="prev-img img-bg" id="prevImg" style="background:linear-gradient(135deg,#0d1f35,#1a3a5c)">
-      <span style="position:relative;z-index:2;font-size:46px" id="prevEmoji">🏠</span>
-      <div class="prev-img-ov"></div>
-      <div style="position:absolute;bottom:9px;left:11px;right:11px;z-index:2;display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:11px;color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:4px">⭐ New</span>
-        <span style="font-size:10px;color:rgba(255,255,255,.75);background:rgba(0,0,0,.45);padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace" id="prevDist">📍 Location</span>
+  <!-- Live Preview -->
+  <div class="preview-widget">
+    <div class="pw-banner" id="pwBanner" style="background: linear-gradient(135deg, #0d1f35, #1a3a5c);">
+      <span style="position:relative;z-index:2;font-size:50px" id="pwEmoji">🏠</span>
+      <div class="pw-overlay"></div>
+      <div class="pw-badges">
+        <span class="pw-badge pwb-type-pg" id="pwTypeBadge">PG</span>
+        <span class="pw-badge pwb-verified">✓ Verified</span>
+        <span class="pw-badge pwb-new">✨ New</span>
+      </div>
+      <div class="pw-save">🤍</div>
+      <div class="pw-meta">
+        <span class="pw-rating">⭐ New listing</span>
+        <span class="pw-distance" id="pwDist">📍 Location</span>
       </div>
     </div>
-    <div class="prev-body">
-      <div class="prev-type-badge" id="prevTypeBadge">PG</div>
-      <div class="prev-name" id="prevName">Your Property Name</div>
-      <div class="prev-loc" id="prevLoc">📍 Area, City</div>
-      <div class="prev-price">₹<span id="prevPrice">—</span> <span>/month</span></div>
-      <div class="prev-amenities" id="prevAmenities">
-        <span class="prev-amenity">📶 WiFi</span>
-        <span class="prev-amenity">🔒 Security</span>
+    <div class="pw-body">
+      <div class="pw-type-row">
+        <span class="pw-type-badge" id="pwTypeTag">PG</span>
+        <span class="pw-gender-tag" id="pwGender">👨 Boys</span>
+      </div>
+      <div class="pw-name" id="pwName">Your Property Name</div>
+      <div class="pw-loc" id="pwLoc">📍 Area, City</div>
+      <div class="pw-rooms" id="pwRooms">
+        <span class="pw-room-chip">Rooms TBD</span>
+      </div>
+      <div class="pw-footer">
+        <div>
+          <div class="pw-price">₹<span id="pwPrice">—</span></div>
+          <div class="pw-price-sub">/month onwards</div>
+        </div>
+        <div class="pw-cta">View →</div>
       </div>
     </div>
   </div>
 
-  <div class="tips-card">
-    <div class="tips-title">💡 Tips for More Bookings</div>
-    <div class="tip-item">Upload 8+ photos — listings with photos get 300% more clicks</div>
-    <div class="tip-item">Highlight nearby IT parks, colleges, or metro stations in your description</div>
-    <div class="tip-item">Respond to inquiries within 1 hour to rank higher in search</div>
-    <div class="tip-item">Offer a free trial night to build your first reviews quickly</div>
+  <!-- Completeness Score -->
+  <div class="comp-widget">
+    <div class="cw-header">
+      <span class="cw-title">Listing Quality</span>
+      <span class="cw-pct" id="cwPct">0%</span>
+    </div>
+    <div class="cw-track">
+      <div class="cw-fill" id="cwFill" style="width:0%"></div>
+    </div>
+    <div class="cw-items">
+      <div class="cw-item"><div class="cw-dot" id="cd-owner">○</div><span class="cw-label">Owner details filled</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-name">○</div><span class="cw-label">Property name added</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-desc">○</div><span class="cw-label">Description written</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-loc">○</div><span class="cw-label">Location set</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-rooms">○</div><span class="cw-label">Room pricing added</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-amen">○</div><span class="cw-label">3+ amenities selected</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-photos">○</div><span class="cw-label">2+ photos uploaded</span></div>
+      <div class="cw-item"><div class="cw-dot" id="cd-rules">○</div><span class="cw-label">House rules set</span></div>
+    </div>
   </div>
+
+  <!-- Tips -->
+  <div class="tips-widget">
+    <div class="tw-title">💡 Pro Listing Tips</div>
+    <div class="tw-item">Upload 10+ photos — listings with photos get 400% more clicks than text-only</div>
+    <div class="tw-item">Mention nearest IT parks, colleges, or metro in your description for better discovery</div>
+    <div class="tw-item">Respond within 1 hour — fast responses rank higher in SmartRent search</div>
+    <div class="tw-item">Enable video tour — 40% more qualified inquiries from serious tenants</div>
+    <div class="tw-item">Set competitive pricing — compare with nearby PGs before listing</div>
+  </div>
+
 </aside>
 
-</div><!-- end main -->
+</div><!-- /body-wrap -->
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav" id="bottomNav">
-  <div class="bot-info">Step <strong id="curStep">1</strong> of <strong>7</strong> · <span id="curLabel">Property Type</span></div>
-  <div class="bot-actions">
-    <button class="btn-back" id="btnBack" onclick="prevStep()" style="display:none">← Back</button>
-    <button class="btn-next" id="btnNext" onclick="nextStep()">Continue →</button>
-    <button class="btn-submit" id="btnSubmit" onclick="submitListing()" style="display:none">🚀 Publish Listing</button>
+<!-- ══════════════════════════════════════
+     BOTTOM ACTION BAR
+══════════════════════════════════════ -->
+<div class="bottom-bar" id="bottomBar">
+  <div class="bb-step-info">Step <strong id="bbStepNum">1</strong> of <strong>8</strong> · <span id="bbStepName">Property Type & Owner</span></div>
+  <div class="bb-progress-mini">
+    <div class="bb-progress-fill" id="bbProgressFill" style="width: 12.5%"></div>
+  </div>
+  <div class="bb-actions">
+    <button class="bb-btn bb-back" id="btnBack" onclick="prevStep()" style="display:none">← Back</button>
+    <button class="bb-btn bb-next" id="btnNext" onclick="nextStep()">Continue →</button>
+    <button class="bb-btn bb-submit" id="btnSubmit" onclick="submitListing()" style="display:none">🚀 Publish Listing</button>
   </div>
 </div>
-</div><!-- end page -->
 
+<!-- ══════════════════════════════════════
+     FIREBASE MODULE
+══════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
   authDomain: "smart-property-portal.firebaseapp.com",
   projectId: "smart-property-portal"
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
+// Auto-fill owner email from Firebase Auth
 onAuthStateChanged(auth, user => {
   window._fbUser = user;
-  if (user?.email) document.getElementById('ownerEmail').value = user.email;
+  if (user?.email) {
+    const emailEl = document.getElementById('ownerEmail');
+    if (emailEl && !emailEl.value) emailEl.value = user.email;
+  }
 });
 
-window.submitToFirebase = async () => {
-  const termsCheck = document.getElementById('termsCheck');
-  if (!termsCheck.checked) { toast('⚠️','Please agree to Terms of Service','warn'); return; }
+// Main submit function
+window.firebaseSubmit = async () => {
+  const btn = document.getElementById('btnSubmit');
+  btn.textContent = '⏳ Uploading...'; btn.disabled = true;
 
+  // Gather rooms
   const rooms = [];
-  document.querySelectorAll('#roomBody tr').forEach(row => {
-    const sel = row.querySelector('select');
-    const inputs = row.querySelectorAll('input[type=number]');
-    const acCb = row.querySelector('input[type=checkbox]');
-    if (inputs[0] && parseInt(inputs[0].value) > 0) {
-      rooms.push({ type: sel?.value||'', occupancy: inputs[0]?.value||1, rent: parseInt(inputs[1]?.value)||0, deposit: parseInt(inputs[2]?.value)||0, available: parseInt(inputs[3]?.value)||0, ac: acCb?.checked||false });
+  document.querySelectorAll('#roomTbody tr').forEach(tr => {
+    const cells = tr.querySelectorAll('td');
+    const sel = cells[0]?.querySelector('select');
+    const ins = tr.querySelectorAll('input[type=number]');
+    const cbs = tr.querySelectorAll('input[type=checkbox]');
+    if (ins[0] && parseInt(ins[0].value) > 0) {
+      rooms.push({
+        type: sel?.value || '',
+        sharing: tr.querySelectorAll('select')[1]?.value || '',
+        rent: parseInt(ins[0]?.value) || 0,
+        deposit: parseInt(ins[1]?.value) || 0,
+        available: parseInt(ins[2]?.value) || 0,
+        size: parseInt(ins[3]?.value) || 0,
+        ac: cbs[0]?.checked || false,
+        attachedBath: cbs[1]?.checked || false
+      });
     }
   });
 
-  const amenities = Array.from(document.querySelectorAll('.a-chip.on')).map(c => c.querySelector('.a-lbl').textContent);
+  // Gather amenities
+  const amenities = Array.from(document.querySelectorAll('.a-chip.on')).map(c =>
+    c.querySelector('.a-label').textContent
+  );
+  const customAmenities = Array.from(document.querySelectorAll('#customTagsWrap .ctag')).map(t =>
+    t.childNodes[0].textContent.trim()
+  );
+
+  // Gather rules
   const rules = Array.from(document.querySelectorAll('#rulesList input')).map(i => i.value.trim()).filter(Boolean);
 
-  const data = {
-    type: window._selType || 'PG',
-    gender: window._selGender || 'Boys',
-    targetOcc: document.getElementById('targetOcc').value,
+  const tgSw = id => document.getElementById(id)?.classList.contains('on') || false;
+
+  const payload = {
+    type: window._propType || 'PG',
+    gender: window._gender || 'Boys',
+    occupant: window._occupant || 'Any',
     totalBeds: parseInt(document.getElementById('totalBeds').value) || 0,
+    estYear: document.getElementById('estYear').value,
+    mgmtType: document.getElementById('mgmtType').value,
+
     owner: {
       name: document.getElementById('ownerName').value,
       phone: document.getElementById('ownerPhone').value,
       email: document.getElementById('ownerEmail').value,
       whatsapp: document.getElementById('ownerWA').value,
-      mgmtType: document.getElementById('mgmtType').value,
+      altName: document.getElementById('altName').value,
+      altPhone: document.getElementById('altPhone').value,
       uid: window._fbUser?.uid || null
     },
+
     title: document.getElementById('propName').value,
+    tagline: document.getElementById('propTag').value,
     description: document.getElementById('propDesc').value,
-    estYear: document.getElementById('estYear').value,
-    numFloors: document.getElementById('numFloors').value,
     totalRooms: document.getElementById('totalRooms').value,
+    totalFloors: document.getElementById('totalFloors').value,
+    buildingAge: document.getElementById('buildingAge').value,
+    furnishing: document.getElementById('furnishing').value,
+
     address: {
-      full: document.getElementById('address').value,
+      full: document.getElementById('fullAddress').value,
       area: document.getElementById('area').value,
       city: document.getElementById('city').value,
+      state: document.getElementById('state').value,
       pincode: document.getElementById('pincode').value,
-      metro: document.getElementById('nearMetro').value,
-      landmark: document.getElementById('landmark').value
+      transit: document.getElementById('nearTransit').value,
+      landmark: document.getElementById('nearLandmark').value,
+      distIT: document.getElementById('distITHub').value,
+      distCollege: document.getElementById('distCollege').value,
+      distHospital: document.getElementById('distHospital').value,
     },
+
     rooms,
+    amenities: [...amenities, ...customAmenities],
     secDeposit: document.getElementById('secDeposit').value,
     maintenance: document.getElementById('maintenance').value,
     noticePeriod: document.getElementById('noticePeriod').value,
     lockin: document.getElementById('lockin').value,
-    electricType: document.getElementById('elecType').value,
-    amenities,
-    photoCount: window._photos?.length || 0,
-    videoUrl: document.getElementById('videoUrl').value,
+    elecBilling: document.getElementById('elecBilling').value,
+    waterBilling: document.getElementById('waterBilling').value,
+    paymentMode: document.getElementById('paymentMode').value,
+
+    services: {
+      meals: tgSw('tMeals'), wifi: tgSw('tWifi'),
+      laundry: tgSw('tLaundry'), parking: tgSw('tParking'),
+      housekeeping: tgSw('tHouseKeep')
+    },
+
     rules,
     policies: {
-      meals: document.getElementById('tMeals').classList.contains('on'),
-      wifi: document.getElementById('tWifi').classList.contains('on'),
-      laundry: document.getElementById('tLaundry').classList.contains('on'),
-      parking: document.getElementById('tParking').classList.contains('on'),
-      smoking: document.getElementById('tSmoke').classList.contains('on'),
-      alcohol: document.getElementById('tAlcohol').classList.contains('on'),
-      pets: document.getElementById('tPets').classList.contains('on'),
-      guests: document.getElementById('tGuests').classList.contains('on'),
-      access24hr: document.getElementById('t24hr').classList.contains('on'),
-      cooking: document.getElementById('tCooking').classList.contains('on'),
+      smoking: tgSw('rSmoke'), alcohol: tgSw('rAlcohol'),
+      pets: tgSw('rPets'), guests: tgSw('rGuests'),
+      access24hr: tgSw('r24hr'), cooking: tgSw('rCooking'),
+      outsiders: tgSw('rOustaiders'),
       foodPref: document.getElementById('foodPref').value,
+      minStay: document.getElementById('minStay').value,
       checkinTime: document.getElementById('checkinTime').value,
+      checkoutTime: document.getElementById('checkoutTime').value,
       curfewTime: document.getElementById('curfewTime').value
     },
-    basePrice: rooms.length ? Math.min(...rooms.map(r => r.rent).filter(r => r > 0)) : 0,
-    approved: false,
+
+    docs: {
+      ownerDoc: document.getElementById('ownerDoc').value,
+      ownerID: document.getElementById('ownerID').value,
+      gstNum: document.getElementById('gstNum').value,
+      fireCert: document.getElementById('fireCert').value
+    },
+
+    videoUrl: document.getElementById('videoUrl').value,
+    virtualTour: document.getElementById('tourUrl').value,
+    photoCount: window._photos?.length || 0,
+
+    basePrice: rooms.length ? Math.min(...rooms.map(r => r.rent).filter(r => r > 0), Infinity) : 0,
     status: 'pending',
-    createdAt: serverTimestamp()
+    approved: false,
+    featured: false,
+    views: 0,
+    inquiries: 0,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
   };
 
   try {
-    const ref = await addDoc(collection(db, 'pg_hostels'), data);
-    showSuccess(ref.id);
-  } catch(err) {
-    console.error(err);
-    toast('❌','Submission failed. Please try again.','err');
-    document.getElementById('btnSubmit').textContent = '🚀 Publish Listing';
-    document.getElementById('btnSubmit').disabled = false;
+    const docRef = await addDoc(collection(db, 'pg_hostels'), payload);
+
+    // Upload photos if any
+    if (window._photos?.length > 0) {
+      btn.textContent = `⏳ Uploading ${window._photos.length} photos...`;
+      const urls = [];
+      for (let i = 0; i < window._photos.length; i++) {
+        const file = window._photos[i];
+        const storageRef = ref(storage, `pg_hostels/${docRef.id}/photos/${Date.now()}_${i}_${file.name}`);
+        const snap = await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(snap.ref);
+        urls.push(url);
+      }
+      // Could update doc with photo URLs here
+    }
+
+    showSuccess(docRef.id);
+  } catch (err) {
+    console.error('Firebase error:', err);
+    toast('❌', 'Submission failed. Please try again.', 'err');
+    btn.textContent = '🚀 Publish Listing'; btn.disabled = false;
   }
 };
 </script>
 
+<!-- ══════════════════════════════════════
+     MAIN APP SCRIPT
+══════════════════════════════════════ -->
 <script>
-// ── GLOBALS ──────────────────────────────────────────────
+// ── GLOBALS ──────────────────────────────────────────────────────
 let _step = 1;
-window._selType = 'PG';
-window._selGender = 'Boys';
+const TOTAL_STEPS = 8;
+window._propType = 'PG';
+window._gender = 'Boys';
+window._occupant = '';
 window._photos = [];
+let _termsChecked = false;
 
-const STEP_NAMES = ['Property Type','Basic Info','Rooms & Pricing','Amenities','Photos','Rules','Review & Publish'];
+const STEP_NAMES = [
+  'Property Type & Owner',
+  'Property Information',
+  'Location & Address',
+  'Rooms & Pricing',
+  'Amenities & Facilities',
+  'Photos & Video Tour',
+  'House Rules & Documents',
+  'Review & Publish'
+];
 
-const AMENITIES = {
-  basic: [{i:'📶',l:'WiFi'},{i:'❄️',l:'Air Conditioning'},{i:'🍽️',l:'Meals Included'},{i:'🧺',l:'Laundry'},{i:'💧',l:'RO Water'},{i:'🚿',l:'Hot Water / Geyser'},{i:'🛗',l:'Lift / Elevator'},{i:'💡',l:'Power Backup'},{i:'📺',l:'TV Lounge'},{i:'🍳',l:'Shared Kitchen'},{i:'🧊',l:'Refrigerator'},{i:'🧹',l:'Housekeeping'}],
-  safety: [{i:'🔒',l:'24/7 Security'},{i:'📷',l:'CCTV Cameras'},{i:'🆘',l:'Emergency Exit'},{i:'🔐',l:'Biometric Entry'},{i:'👮',l:'Security Guard'},{i:'🚪',l:'Main Gate Lock'},{i:'🔑',l:'Digital Lock Rooms'},{i:'💊',l:'First Aid Kit'}],
-  life: [{i:'💪',l:'Gym / Fitness'},{i:'🏊',l:'Swimming Pool'},{i:'🎮',l:'Game Room'},{i:'☕',l:'Café / Canteen'},{i:'📚',l:'Study Room'},{i:'🎵',l:'Music Room'},{i:'🚗',l:'Parking'},{i:'🚲',l:'Cycle Stand'},{i:'🌿',l:'Garden / Terrace'},{i:'🛒',l:'Mini Store'},{i:'💻',l:'Work Station'},{i:'🗺️',l:'Co-working Space'}]
+// ── AMENITIES DATA ───────────────────────────────────────────────
+const AMENITY_DATA = {
+  basic: [
+    {i:'📶',l:'WiFi'},{i:'❄️',l:'AC'},{i:'💡',l:'Power Backup'},
+    {i:'🛗',l:'Lift / Elevator'},{i:'💧',l:'RO Water'},
+    {i:'🚿',l:'Hot Water'},{i:'🧺',l:'Laundry'},{i:'📺',l:'TV Lounge'},
+    {i:'🅿️',l:'Parking'},{i:'🪑',l:'Study Table'}
+  ],
+  safety: [
+    {i:'🔒',l:'24/7 Security'},{i:'📷',l:'CCTV'},{i:'🔐',l:'Biometric Entry'},
+    {i:'👮',l:'Security Guard'},{i:'🆘',l:'Emergency Exit'},{i:'🚒',l:'Fire Safety'},
+    {i:'🔑',l:'Digital Locks'},{i:'💊',l:'First Aid Kit'},
+    {i:'🚨',l:'Panic Button'},{i:'🪟',l:'Grills & Locks'}
+  ],
+  life: [
+    {i:'💪',l:'Gym'},{i:'🏊',l:'Swimming Pool'},{i:'🎮',l:'Game Room'},
+    {i:'📚',l:'Study Room'},{i:'🎵',l:'Music Room'},{i:'🌿',l:'Garden'},
+    {i:'☀️',l:'Rooftop Terrace'},{i:'💻',l:'Co-working'},
+    {i:'🏓',l:'TT / Carrom'},{i:'🎯',l:'Recreation Area'}
+  ],
+  food: [
+    {i:'🍽️',l:'Dining Hall'},{i:'🍳',l:'Shared Kitchen'},{i:'☕',l:'Café / Canteen'},
+    {i:'🧊',l:'Refrigerator'},{i:'🫖',l:'Tea / Coffee'},
+    {i:'🥣',l:'Breakfast Provided'},{i:'🍱',l:'Tiffin Service'},
+    {i:'🛒',l:'Mini Grocery'},{i:'🍕',l:'Vending Machine'},{i:'💧',l:'Purified Water'}
+  ]
 };
 
-const ROOM_TYPES = ['Single Sharing','Double Sharing','Triple Sharing','4-Bed Sharing','Dorm (6-bed)','Dorm (8-bed)','Dorm (12-bed)','Private Room','Studio / Suite'];
+const ROOM_TYPES = [
+  'Single Sharing','Double Sharing','Triple Sharing','4-Bed Sharing',
+  'Dorm (6-bed)','Dorm (8-bed)','Dorm (12-bed)','Private Room','Studio','Suite'
+];
 
-// ── INIT ─────────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  renderAmenities();
+  renderAmenityGrids();
   addRoomRow(); addRoomRow();
-  updatePreview(); updateCompleteness();
+  upPreview(); updateComp();
 });
 
-// ── AMENITIES ─────────────────────────────────────────────
-function renderAmenities() {
-  ['basic','safety','life'].forEach((k, i) => {
-    const ids = ['gridBasic','gridSafety','gridLife'];
-    document.getElementById(ids[i]).innerHTML = AMENITIES[k].map(a =>
-      `<div class="a-chip" onclick="toggleAmenity(this)"><span class="a-ico">${a.i}</span><span class="a-lbl">${a.l}</span></div>`
-    ).join('');
+// ── AMENITY GRIDS ────────────────────────────────────────────────
+function renderAmenityGrids() {
+  Object.entries(AMENITY_DATA).forEach(([key, items]) => {
+    const el = document.getElementById('ag-' + key);
+    if (!el) return;
+    el.innerHTML = items.map(a => `
+      <div class="a-chip" onclick="toggleAmenity(this)">
+        <div class="a-check-mark">✓</div>
+        <span class="a-icon">${a.i}</span>
+        <span class="a-label">${a.l}</span>
+      </div>`).join('');
   });
 }
 
 function toggleAmenity(el) {
   el.classList.toggle('on');
-  updateCompleteness(); updatePreviewAmenities();
+  updateComp(); upPreviewAmen();
 }
 
 function addCustomAmenity(e) {
   if (e.key !== 'Enter') return;
-  const v = e.target.value.trim(); if (!v) return;
-  const wrap = document.getElementById('customAWrap');
-  const d = document.createElement('div');
-  d.className = 'a-chip on'; d.style.cssText = 'flex-direction:row;padding:5px 9px;gap:5px';
-  d.innerHTML = `<span class="a-lbl">${v}</span><span style="cursor:pointer;color:var(--rose);font-size:12px" onclick="this.parentElement.remove()">×</span>`;
-  wrap.appendChild(d); e.target.value = '';
+  const inp = e.target, val = inp.value.trim();
+  if (!val) return;
+  const wrap = document.getElementById('customTagsWrap');
+  const tag = document.createElement('span');
+  tag.className = 'ctag';
+  tag.innerHTML = `${val} <span class="ctag-del" onclick="this.parentElement.remove()">×</span>`;
+  wrap.appendChild(tag);
+  inp.value = '';
+  toast('✅', `Amenity "${val}" added`, 'ok');
 }
 
-// ── ROOM TABLE ─────────────────────────────────────────────
+// ── PROP TYPE / GENDER / OCCUPANT ────────────────────────────────
+function choosePropType(t) {
+  window._propType = t;
+  ['PG','Hostel'].forEach(x => {
+    const el = document.getElementById('ptc-' + x);
+    el.classList.remove('chosen');
+  });
+  document.getElementById('ptc-' + t).classList.add('chosen');
+
+  // Update preview
+  const badge = document.getElementById('pwTypeBadge');
+  const tag = document.getElementById('pwTypeTag');
+  const emoji = document.getElementById('pwEmoji');
+  const banner = document.getElementById('pwBanner');
+
+  if (t === 'PG') {
+    emoji.textContent = '🏠';
+    banner.style.background = 'linear-gradient(135deg, #0d1f35, #1a3a5c)';
+    badge.className = 'pw-badge pwb-type-pg';
+    tag.style.cssText = 'background:var(--c1d);color:var(--c1);border-color:var(--c1b)';
+  } else {
+    emoji.textContent = '🏢';
+    banner.style.background = 'linear-gradient(135deg, #1a0d35, #3a1a5c)';
+    badge.className = 'pw-badge pwb-type-hostel';
+    tag.style.cssText = 'background:var(--c2d);color:var(--c2);border-color:var(--c2b)';
+  }
+  badge.textContent = t;
+  tag.textContent = t;
+}
+
+function chooseGender(g) {
+  window._gender = g;
+  ['Boys','Girls','Coed','Senior'].forEach(x => document.getElementById('g-' + x)?.classList.remove('chosen'));
+  const map = { 'Boys':'Boys','Girls':'Girls','Co-ed':'Coed','Seniors':'Senior' };
+  document.getElementById('g-' + (map[g] || g))?.classList.add('chosen');
+  document.getElementById('pwGender').textContent =
+    g === 'Boys' ? '👨 Boys' : g === 'Girls' ? '👩 Girls' : g === 'Co-ed' ? '🤝 Co-ed' : '👴 Seniors';
+}
+
+function chooseOcc(o) {
+  window._occupant = o;
+  document.querySelectorAll('.occ-opt').forEach(el => el.classList.remove('chosen'));
+  const id = 'occ-' + o.toLowerCase().split(' ')[0];
+  const el = document.getElementById(id);
+  if (el) el.classList.add('chosen');
+  else document.querySelectorAll('.occ-opt').forEach((el2, i) => {
+    if (el2.querySelector('.occ-l').textContent.toLowerCase() === o.toLowerCase().split(' ')[0]) el2.classList.add('chosen');
+  });
+}
+
+// ── ROOM TABLE ───────────────────────────────────────────────────
 function addRoomRow() {
-  const tbody = document.getElementById('roomBody');
+  const tbody = document.getElementById('roomTbody');
   const tr = document.createElement('tr');
   tr.innerHTML = `
-    <td><select style="min-width:130px">${ROOM_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></td>
-    <td><input type="number" placeholder="1" min="1" max="12" style="width:55px" oninput="updateCompleteness()"></td>
-    <td><input type="number" placeholder="6000" min="0" style="width:85px" oninput="updatePreviewPrice();updateCompleteness()"></td>
-    <td><input type="number" placeholder="10000" min="0" style="width:85px"></td>
+    <td><select style="min-width:120px">${ROOM_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></td>
+    <td>
+      <select style="min-width:90px">
+        <option>1 Person</option><option>2 Persons</option>
+        <option>3 Persons</option><option>4-6 Persons</option>
+        <option>6-12 Persons</option>
+      </select>
+    </td>
+    <td><input type="number" placeholder="6000" min="0" style="width:80px" oninput="upPreviewPrice();updateComp()"></td>
+    <td><input type="number" placeholder="10000" min="0" style="width:80px"></td>
     <td><input type="number" placeholder="3" min="0" style="width:55px"></td>
-    <td style="text-align:center"><input type="checkbox" style="width:auto;accent-color:var(--cyan)"></td>
-    <td><button class="del-row" onclick="removeRow(this)">✕</button></td>`;
+    <td><input type="number" placeholder="120" min="0" style="width:65px"></td>
+    <td style="text-align:center"><input type="checkbox" style="width:auto;accent-color:var(--c1);transform:scale(1.2)"></td>
+    <td style="text-align:center"><input type="checkbox" style="width:auto;accent-color:var(--c2);transform:scale(1.2)"></td>
+    <td><button class="rtable-del" onclick="removeRoomRow(this)">✕</button></td>`;
   tbody.appendChild(tr);
 }
 
-function removeRow(btn) {
-  const rows = document.querySelectorAll('#roomBody tr');
-  if (rows.length > 1) btn.closest('tr').remove();
-  else toast('⚠️','Keep at least one room type','warn');
+function removeRoomRow(btn) {
+  const rows = document.querySelectorAll('#roomTbody tr');
+  if (rows.length > 1) { btn.closest('tr').remove(); upPreviewPrice(); }
+  else toast('⚠️', 'At least one room type required', 'warn');
 }
 
-// ── PHOTOS ─────────────────────────────────────────────────
-function handlePhotoSelect(inp) { Array.from(inp.files).forEach(addPhoto); }
-
+// ── PHOTOS ───────────────────────────────────────────────────────
 function handleDrop(e) {
   e.preventDefault();
-  document.getElementById('dropZone').classList.remove('dragover');
-  Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')).forEach(addPhoto);
+  document.getElementById('photoDrop').classList.remove('drag-active');
+  handleFiles(e.dataTransfer.files);
+}
+
+function handleFiles(files) {
+  Array.from(files).filter(f => f.type.startsWith('image/')).forEach(addPhoto);
 }
 
 function addPhoto(file) {
-  if (window._photos.length >= 20) { toast('⚠️','Max 20 photos','warn'); return; }
+  if (window._photos.length >= 20) { toast('⚠️', 'Maximum 20 photos allowed', 'warn'); return; }
   window._photos.push(file);
-  const grid = document.getElementById('photoGrid');
-  const item = document.createElement('div');
-  item.className = 'prev-item';
-  const reader = new FileReader();
-  reader.onload = e => {
-    item.style.backgroundImage = `url(${e.target.result})`;
-    item.style.backgroundSize = 'cover';
-    item.style.backgroundPosition = 'center';
-    item.innerHTML = `<div class="prev-rm" onclick="removePhoto(this.parentElement)">🗑️</div>`;
+  const grid = document.getElementById('photoPreviewGrid');
+  const thumb = document.createElement('div');
+  const isCover = window._photos.length === 1;
+  thumb.className = 'photo-thumb' + (isCover ? ' cover-photo' : '');
+  const r = new FileReader();
+  r.onload = ev => {
+    thumb.style.backgroundImage = `url(${ev.target.result})`;
+    thumb.style.backgroundSize = 'cover';
+    thumb.style.backgroundPosition = 'center';
+    thumb.innerHTML = `<div class="photo-rm" onclick="removePhoto(this.parentElement)">🗑️</div>
+      ${isCover ? '<div class="photo-cover-badge">COVER</div>' : ''}`;
   };
-  reader.readAsDataURL(file);
-  grid.appendChild(item);
-  updateCompleteness();
-  toast('📸',`Photo added (${window._photos.length}/20)`,'ok');
+  r.readAsDataURL(file);
+  grid.appendChild(thumb);
+  updateComp();
+  toast('📸', `Photo added (${window._photos.length}/20)`, 'ok');
 }
 
-function removePhoto(el) { el.remove(); window._photos.pop(); updateCompleteness(); }
-
-// ── TYPE / GENDER ───────────────────────────────────────────
-function selectType(t) {
-  window._selType = t;
-  document.getElementById('typePG').className = 'type-card' + (t==='PG'?' sel-pg':'');
-  document.getElementById('typeHostel').className = 'type-card' + (t==='Hostel'?' sel-hostel':'');
-  const badge = document.getElementById('prevTypeBadge');
-  if (t === 'PG') {
-    document.getElementById('prevEmoji').textContent = '🏠';
-    document.getElementById('prevImg').style.background = 'linear-gradient(135deg,#0d1f35,#1a3a5c)';
-    badge.style.cssText = 'background:var(--cyan-glow);color:var(--cyan);border-color:var(--cyan-border)';
-  } else {
-    document.getElementById('prevEmoji').textContent = '🏢';
-    document.getElementById('prevImg').style.background = 'linear-gradient(135deg,#1a0d35,#3a1a5c)';
-    badge.style.cssText = 'background:var(--violet-dim);color:var(--violet);border-color:var(--violet-border)';
-  }
-  badge.textContent = t;
+function removePhoto(el) {
+  el.remove();
+  window._photos.pop();
+  updateComp();
 }
 
-function selectGender(g) {
-  window._selGender = g;
-  document.getElementById('gBoys').className = 'gender-opt' + (g==='Boys'?' gb':'');
-  document.getElementById('gGirls').className = 'gender-opt' + (g==='Girls'?' gg':'');
-  document.getElementById('gCoed').className = 'gender-opt' + (g==='Co-ed'?' gc':'');
-}
-
-// ── TOGGLES ──────────────────────────────────────────────────
-function toggleSw(el) { el.classList.toggle('on'); }
-
-function toggleTerms() {
-  const cb = document.getElementById('termsCheck');
-  const box = document.getElementById('termsBox');
-  cb.checked = !cb.checked;
-  box.classList.toggle('done', cb.checked);
-  box.textContent = cb.checked ? '✓' : '';
-}
-
-// ── RULES ─────────────────────────────────────────────────────
+// ── RULES ─────────────────────────────────────────────────────────
 function addRule() {
   const list = document.getElementById('rulesList');
-  const row = document.createElement('div');
-  row.className = 'rule-row';
-  row.innerHTML = `<input type="text" placeholder="Add a house rule..."><button class="del-row" onclick="removeRule(this)">✕</button>`;
-  list.appendChild(row); row.querySelector('input').focus();
+  const n = list.querySelectorAll('.rule-item').length + 1;
+  const item = document.createElement('div');
+  item.className = 'rule-item';
+  item.innerHTML = `<div class="rule-num">${n}</div><input type="text" placeholder="Add a rule..."><button class="rule-del" onclick="removeRule(this)">✕</button>`;
+  list.appendChild(item);
+  item.querySelector('input').focus();
+  updateComp();
 }
 
-function removeRule(btn) { btn.closest('.rule-row').remove(); }
+function removeRule(btn) {
+  btn.closest('.rule-item').remove();
+  // Re-number
+  document.querySelectorAll('#rulesList .rule-num').forEach((n, i) => n.textContent = i + 1);
+}
 
-// ── PREVIEW UPDATE ────────────────────────────────────────────
-function updatePreview() {
+// ── TOGGLE SWITCHES ───────────────────────────────────────────────
+function toggleSw(id) {
+  document.getElementById(id)?.classList.toggle('on');
+}
+
+// ── TERMS ────────────────────────────────────────────────────────
+function toggleTerms() {
+  _termsChecked = !_termsChecked;
+  const cb = document.getElementById('termsCB');
+  cb.classList.toggle('checked', _termsChecked);
+  cb.textContent = _termsChecked ? '✓' : '';
+}
+
+// ── PREVIEW UPDATE ────────────────────────────────────────────────
+function upPreview() {
   const name = document.getElementById('propName')?.value || '';
   const area = document.getElementById('area')?.value || '';
   const city = document.getElementById('city')?.value || '';
-  const metro = document.getElementById('nearMetro')?.value || '';
-  document.getElementById('prevName').textContent = name || 'Your Property Name';
-  document.getElementById('prevLoc').textContent = '📍 ' + ([area,city].filter(Boolean).join(', ') || 'Area, City');
-  document.getElementById('prevDist').textContent = metro ? '📍 ' + metro.slice(0,22) : '📍 Location';
-  updatePreviewPrice(); updatePreviewAmenities();
+  const transit = document.getElementById('nearTransit')?.value || '';
+  document.getElementById('pwName').textContent = name || 'Your Property Name';
+  document.getElementById('pwLoc').textContent = '📍 ' + ([area, city].filter(Boolean).join(', ') || 'Area, City');
+  document.getElementById('pwDist').textContent = transit ? '📍 ' + transit.slice(0, 24) : '📍 Location';
+  upPreviewPrice();
+  upPreviewAmen();
 }
 
-function updatePreviewPrice() {
-  const rents = Array.from(document.querySelectorAll('#roomBody input[type=number]:nth-child(3),#roomBody td:nth-child(3) input')).map(i => parseInt(i.value)||0).filter(r=>r>0);
-  // fallback: get all number inputs from room rows
-  const allRents = [];
-  document.querySelectorAll('#roomBody tr').forEach(row => {
-    const ins = row.querySelectorAll('input[type=number]');
-    if (ins[1] && parseInt(ins[1].value) > 0) allRents.push(parseInt(ins[1].value));
+function upPreviewPrice() {
+  const rents = [];
+  document.querySelectorAll('#roomTbody tr').forEach(tr => {
+    const numInputs = tr.querySelectorAll('input[type=number]');
+    if (numInputs[0] && parseInt(numInputs[0].value) > 0) rents.push(parseInt(numInputs[0].value));
   });
-  const min = allRents.length ? Math.min(...allRents) : 0;
-  document.getElementById('prevPrice').textContent = min > 0 ? min.toLocaleString('en-IN') : '—';
+  const minRent = rents.length ? Math.min(...rents) : 0;
+  document.getElementById('pwPrice').textContent = minRent > 0 ? minRent.toLocaleString('en-IN') : '—';
+
+  // Update room chips
+  const chips = document.getElementById('pwRooms');
+  if (rents.length > 0) {
+    const rows = Array.from(document.querySelectorAll('#roomTbody tr')).slice(0, 3);
+    chips.innerHTML = rows.map(tr => {
+      const sel = tr.querySelector('select');
+      const inp = tr.querySelectorAll('input[type=number]')[0];
+      const rent = parseInt(inp?.value) || 0;
+      if (!rent) return '';
+      return `<span class="pw-room-chip">${sel?.value?.split(' ')[0] || 'Room'}: ₹${rent.toLocaleString('en-IN')}</span>`;
+    }).filter(Boolean).join('');
+  }
 }
 
-function updatePreviewAmenities() {
-  const on = Array.from(document.querySelectorAll('.a-chip.on')).slice(0,5);
-  document.getElementById('prevAmenities').innerHTML = on.map(a =>
-    `<span class="prev-amenity">${a.querySelector('.a-ico').textContent} ${a.querySelector('.a-lbl').textContent}</span>`
-  ).join('') || '<span class="prev-amenity">No amenities yet</span>';
+function upPreviewAmen() {
+  // no-op — preview doesn't show amenities (space)
 }
 
-// ── COMPLETENESS ───────────────────────────────────────────────
-function updateCompleteness() {
+// ── COMPLETENESS ─────────────────────────────────────────────────
+function updateComp() {
   const hasRent = (() => {
-    let found = false;
-    document.querySelectorAll('#roomBody tr').forEach(row => {
-      const ins = row.querySelectorAll('input[type=number]');
-      if (ins[1] && parseInt(ins[1].value) > 0) found = true;
+    let ok = false;
+    document.querySelectorAll('#roomTbody tr').forEach(tr => {
+      const ins = tr.querySelectorAll('input[type=number]');
+      if (ins[0] && parseInt(ins[0].value) > 0) ok = true;
     });
-    return found;
+    return ok;
   })();
 
   const checks = {
-    cOwner: !!(document.getElementById('ownerName')?.value && document.getElementById('ownerPhone')?.value && document.getElementById('ownerEmail')?.value),
-    cName: document.getElementById('propName')?.value?.length > 5,
-    cDesc: document.getElementById('propDesc')?.value?.length > 30,
-    cLoc: !!(document.getElementById('area')?.value && document.getElementById('city')?.value),
-    cRooms: hasRent,
-    cAmen: document.querySelectorAll('.a-chip.on').length >= 3,
-    cPhotos: window._photos.length >= 2,
-    cRules: document.querySelectorAll('#rulesList input').length > 0
+    'cd-owner': !!(document.getElementById('ownerName')?.value && document.getElementById('ownerPhone')?.value && document.getElementById('ownerEmail')?.value),
+    'cd-name': (document.getElementById('propName')?.value?.length || 0) > 5,
+    'cd-desc': (document.getElementById('propDesc')?.value?.length || 0) > 30,
+    'cd-loc': !!(document.getElementById('area')?.value && document.getElementById('city')?.value),
+    'cd-rooms': hasRent,
+    'cd-amen': document.querySelectorAll('.a-chip.on').length >= 3,
+    'cd-photos': window._photos.length >= 2,
+    'cd-rules': document.querySelectorAll('#rulesList input').length > 0
   };
 
   let done = 0;
   Object.entries(checks).forEach(([id, ok]) => {
-    const el = document.getElementById(id); if (!el) return;
+    const el = document.getElementById(id);
+    if (!el) return;
     if (ok) { done++; el.classList.add('done'); el.textContent = '✓'; }
     else { el.classList.remove('done'); el.textContent = '○'; }
   });
 
   const pct = Math.round((done / 8) * 100);
-  document.getElementById('compPct').textContent = pct + '%';
-  document.getElementById('compBar').style.width = pct + '%';
+  document.getElementById('cwPct').textContent = pct + '%';
+  document.getElementById('cwFill').style.width = pct + '%';
 }
 
-// ── CHAR COUNT ──────────────────────────────────────────────────
-function countChars(el, cid, max) {
+// ── CHAR COUNT ────────────────────────────────────────────────────
+function countChars(el, id, max) {
   const len = el.value.length;
-  document.getElementById(cid).textContent = `${len}/${max}`;
-  updatePreview();
+  const span = document.getElementById(id);
+  if (span) span.textContent = `${len} / ${max}`;
+  upPreview();
 }
 
-// ── NAVIGATION ──────────────────────────────────────────────────
-function nextStep() { if (!validateStep(_step)) return; if (_step < 7) goToStep(_step + 1); }
-function prevStep() { if (_step > 1) goToStep(_step - 1); }
-function jumpToStep(n) { if (n <= _step) goToStep(n); }
+// ── STEP NAVIGATION ───────────────────────────────────────────────
+function nextStep() {
+  if (!validateStep(_step)) return;
+  if (_step < TOTAL_STEPS) goToStep(_step + 1);
+}
+
+function prevStep() {
+  if (_step > 1) goToStep(_step - 1);
+}
+
+function jumpStep(n) {
+  if (n <= _step) goToStep(n);
+}
 
 function goToStep(n) {
   _step = n;
-  document.querySelectorAll('.step-item').forEach((item, i) => {
-    item.classList.remove('active','done');
-    const circle = item.querySelector('.step-circle');
-    if (i + 1 < n) { item.classList.add('done'); circle.textContent = '✓'; }
-    else if (i + 1 === n) { item.classList.add('active'); circle.textContent = i + 1; }
-    else circle.textContent = i + 1;
+
+  // Update step nodes
+  document.querySelectorAll('.step-node').forEach((node, i) => {
+    node.classList.remove('s-active', 's-done');
+    const b = node.querySelector('.step-bubble');
+    if (i + 1 < n) { node.classList.add('s-done'); b.textContent = '✓'; }
+    else if (i + 1 === n) { node.classList.add('s-active'); b.textContent = i + 1; }
+    else b.textContent = i + 1;
   });
-  document.querySelectorAll('.step-page').forEach((p, i) => p.classList.toggle('active', i + 1 === n));
-  document.getElementById('navStepLabel').textContent = STEP_NAMES[n - 1];
-  document.getElementById('curStep').textContent = n;
-  document.getElementById('curLabel').textContent = STEP_NAMES[n - 1];
+
+  // Show correct step page
+  document.querySelectorAll('.step-page').forEach((p, i) => {
+    p.classList.toggle('sp-active', i + 1 === n);
+  });
+
+  // Update nav crumb + bottom bar
+  document.getElementById('navCrumb').textContent = STEP_NAMES[n - 1];
+  document.getElementById('bbStepNum').textContent = n;
+  document.getElementById('bbStepName').textContent = STEP_NAMES[n - 1];
+  document.getElementById('bbProgressFill').style.width = (n / TOTAL_STEPS * 100) + '%';
+
+  // Buttons
   document.getElementById('btnBack').style.display = n > 1 ? 'flex' : 'none';
-  document.getElementById('btnNext').style.display = n < 7 ? 'flex' : 'none';
-  document.getElementById('btnSubmit').style.display = n === 7 ? 'flex' : 'none';
-  if (n === 7) buildReview();
-  window.scrollTo({top:0,behavior:'smooth'});
-  updateCompleteness();
+  document.getElementById('btnNext').style.display = n < TOTAL_STEPS ? 'flex' : 'none';
+  document.getElementById('btnSubmit').style.display = n === TOTAL_STEPS ? 'flex' : 'none';
+
+  if (n === TOTAL_STEPS) buildReview();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateComp();
 }
 
+// ── VALIDATION ────────────────────────────────────────────────────
 function validateStep(s) {
+  const req = (id, msg) => {
+    const el = document.getElementById(id);
+    if (!el || !el.value?.trim()) { el?.classList.add('err'); toast('⚠️', msg, 'warn'); setTimeout(() => el?.classList.remove('err'), 3000); return false; }
+    return true;
+  };
+
   if (s === 1) {
-    if (!document.getElementById('ownerName').value) { toast('⚠️','Please enter your name','warn'); return false; }
-    if (!document.getElementById('ownerPhone').value) { toast('⚠️','Please enter your phone number','warn'); return false; }
-    if (!document.getElementById('ownerEmail').value) { toast('⚠️','Please enter your email address','warn'); return false; }
+    if (!req('ownerName', 'Please enter your full name')) return false;
+    if (!req('ownerPhone', 'Please enter your phone number')) return false;
+    if (!req('ownerEmail', 'Please enter your email address')) return false;
+    toast('✅', 'Owner details saved', 'ok');
   }
+
   if (s === 2) {
-    if (!document.getElementById('propName').value) { toast('⚠️','Property name is required','warn'); return false; }
-    if (!document.getElementById('propDesc').value) { toast('⚠️','Please add a description','warn'); return false; }
-    if (!document.getElementById('area').value) { toast('⚠️','Please enter the area/locality','warn'); return false; }
-    if (!document.getElementById('city').value) { toast('⚠️','Please select a city','warn'); return false; }
-    if (!document.getElementById('address').value) { toast('⚠️','Full address is required','warn'); return false; }
+    if (!req('propName', 'Property name is required')) return false;
+    if (!req('propDesc', 'Please write a description')) return false;
+    if ((document.getElementById('propDesc').value?.length || 0) < 30) {
+      toast('⚠️', 'Description should be at least 30 characters', 'warn');
+      document.getElementById('propDesc').classList.add('err');
+      setTimeout(() => document.getElementById('propDesc').classList.remove('err'), 3000);
+      return false;
+    }
+    toast('✅', 'Property info saved', 'ok');
   }
+
   if (s === 3) {
-    let hasRent = false;
-    document.querySelectorAll('#roomBody tr').forEach(row => {
-      const ins = row.querySelectorAll('input[type=number]');
-      if (ins[1] && parseInt(ins[1].value) > 0) hasRent = true;
-    });
-    if (!hasRent) { toast('⚠️','Please add at least one room with pricing','warn'); return false; }
+    if (!req('area', 'Please enter the area/locality')) return false;
+    if (!req('city', 'Please select a city')) return false;
+    if (!req('fullAddress', 'Full address is required')) return false;
+    toast('✅', 'Location saved', 'ok');
   }
+
+  if (s === 4) {
+    let hasRent = false;
+    document.querySelectorAll('#roomTbody tr').forEach(tr => {
+      const ins = tr.querySelectorAll('input[type=number]');
+      if (ins[0] && parseInt(ins[0].value) > 0) hasRent = true;
+    });
+    if (!hasRent) { toast('⚠️', 'Please add at least one room type with rent', 'warn'); return false; }
+    toast('✅', 'Rooms & pricing saved', 'ok');
+  }
+
+  if (s === 5) {
+    if (document.querySelectorAll('.a-chip.on').length < 3) {
+      toast('⚠️', 'Please select at least 3 amenities', 'warn'); return false;
+    }
+    toast('✅', 'Amenities saved', 'ok');
+  }
+
+  if (s === 6) {
+    if (window._photos.length < 2) {
+      toast('⚠️', 'Please upload at least 2 photos', 'warn'); return false;
+    }
+    toast('✅', `${window._photos.length} photos ready`, 'ok');
+  }
+
+  if (s === 7) {
+    toast('✅', 'Rules & documents saved', 'ok');
+  }
+
   return true;
 }
 
-// ── REVIEW ──────────────────────────────────────────────────────
+// ── REVIEW BUILDER ────────────────────────────────────────────────
 function buildReview() {
   const rooms = [];
-  document.querySelectorAll('#roomBody tr').forEach(row => {
-    const sel = row.querySelector('select');
-    const ins = row.querySelectorAll('input[type=number]');
-    rooms.push({ type: sel?.value||'—', rent: ins[1]?.value||'—' });
+  document.querySelectorAll('#roomTbody tr').forEach(tr => {
+    const sel = tr.querySelector('select');
+    const ins = tr.querySelectorAll('input[type=number]');
+    if (ins[0] && parseInt(ins[0].value) > 0) rooms.push({ type: sel?.value || '—', rent: ins[0]?.value || '—' });
   });
-  const amenities = Array.from(document.querySelectorAll('.a-chip.on')).map(c => c.querySelector('.a-ico').textContent + ' ' + c.querySelector('.a-lbl').textContent);
+
+  const amenities = Array.from(document.querySelectorAll('.a-chip.on')).map(c =>
+    c.querySelector('.a-icon').textContent + ' ' + c.querySelector('.a-label').textContent
+  );
+
   const photos = window._photos.length;
 
-  document.getElementById('reviewBody').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
-      <div><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:5px">TYPE</div><div style="font-weight:600;color:var(--text)">${window._selType} · ${window._selGender}</div></div>
-      <div><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:5px">PROPERTY NAME</div><div style="font-weight:600;color:var(--text)">${document.getElementById('propName').value||'—'}</div></div>
-      <div><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:5px">LOCATION</div><div style="font-weight:600;color:var(--text)">${document.getElementById('area').value}, ${document.getElementById('city').value}</div></div>
-      <div><div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:5px">OWNER</div><div style="font-weight:600;color:var(--text)">${document.getElementById('ownerName').value||'—'}</div><div style="font-size:11px;color:var(--text-muted)">${document.getElementById('ownerPhone').value||''}</div></div>
+  document.getElementById('reviewContent').innerHTML = `
+    <div class="review-grid">
+      <div class="review-item">
+        <div class="review-label">Property Type</div>
+        <div class="review-value">${window._propType}</div>
+        <div class="review-value-sub">${window._gender} · ${window._occupant || 'Any'}</div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Property Name</div>
+        <div class="review-value">${document.getElementById('propName').value || '—'}</div>
+        <div class="review-value-sub">${document.getElementById('propTag').value || 'No tagline'}</div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Location</div>
+        <div class="review-value">${document.getElementById('area').value}, ${document.getElementById('city').value}</div>
+        <div class="review-value-sub">${document.getElementById('fullAddress').value || '—'}</div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Owner Contact</div>
+        <div class="review-value">${document.getElementById('ownerName').value || '—'}</div>
+        <div class="review-value-sub">${document.getElementById('ownerPhone').value} · ${document.getElementById('ownerEmail').value}</div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Total Capacity</div>
+        <div class="review-value">${document.getElementById('totalBeds').value || '—'} beds</div>
+        <div class="review-value-sub">${document.getElementById('totalRooms').value || '—'} rooms · ${document.getElementById('totalFloors').value || '—'} floors</div>
+      </div>
+      <div class="review-item">
+        <div class="review-label">Photos & Media</div>
+        <div class="review-value" style="color:${photos >= 2 ? 'var(--c4)' : 'var(--c6)'}">${photos} photo${photos !== 1 ? 's' : ''} ${photos >= 2 ? '✅' : '⚠️'}</div>
+        <div class="review-value-sub">${document.getElementById('videoUrl').value ? '🎬 Video tour added' : 'No video tour'}</div>
+      </div>
     </div>
-    <div style="padding-top:14px;border-top:1px solid var(--border);margin-bottom:14px">
-      <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:7px">ROOM TYPES (${rooms.length})</div>
-      <div style="display:flex;flex-wrap:wrap;gap:5px">${rooms.map(r=>`<span style="background:var(--surface);border:1px solid var(--border);padding:3px 9px;border-radius:5px;font-size:11px;color:var(--text-soft)">${r.type}: ₹${parseInt(r.rent||0).toLocaleString('en-IN')}/mo</span>`).join('')}</div>
+
+    <div style="margin-top:14px">
+      <div class="review-label" style="margin-bottom:7px">Room Types & Pricing (${rooms.length})</div>
+      <div class="review-chips">
+        ${rooms.map(r => `<span class="rev-chip rev-chip-c">${r.type}: ₹${parseInt(r.rent||0).toLocaleString('en-IN')}/mo</span>`).join('')}
+      </div>
     </div>
-    <div style="padding-top:14px;border-top:1px solid var(--border);margin-bottom:14px">
-      <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:7px">AMENITIES (${amenities.length})</div>
-      <div style="display:flex;flex-wrap:wrap;gap:5px">${amenities.map(a=>`<span style="background:var(--cyan-glow);border:1px solid var(--cyan-border);padding:2px 7px;border-radius:4px;font-size:10px;color:var(--cyan)">${a}</span>`).join('')}</div>
+
+    <div style="margin-top:14px">
+      <div class="review-label" style="margin-bottom:7px">Amenities Selected (${amenities.length})</div>
+      <div class="review-chips">
+        ${amenities.slice(0, 16).map(a => `<span class="rev-chip rev-chip-e">${a}</span>`).join('')}
+        ${amenities.length > 16 ? `<span class="rev-chip" style="background:var(--bg3);color:var(--t2);border:1px solid var(--line)">+${amenities.length - 16} more</span>` : ''}
+      </div>
     </div>
-    <div style="padding-top:14px;border-top:1px solid var(--border)">
-      <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text-muted);letter-spacing:.15em;margin-bottom:5px">PHOTOS</div>
-      <div style="font-size:13px;color:${photos>0?'var(--emerald)':'var(--amber)'}">${photos>0?'✅ '+photos+' photos ready':'⚠️ No photos — strongly recommended'}</div>
+
+    <div style="margin-top:14px">
+      <div class="review-label" style="margin-bottom:7px">Description Preview</div>
+      <div style="font-size:12px;color:var(--t1);background:var(--bg1);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;line-height:1.65;max-height:80px;overflow:hidden">
+        ${(document.getElementById('propDesc').value || '—').substring(0, 200)}${(document.getElementById('propDesc').value?.length||0) > 200 ? '...' : ''}
+      </div>
     </div>`;
 }
 
-// ── SUBMIT ──────────────────────────────────────────────────────
+// ── SUBMIT ─────────────────────────────────────────────────────────
 function submitListing() {
-  if (!document.getElementById('termsCheck').checked) { toast('⚠️','Please agree to Terms of Service','warn'); return; }
-  const btn = document.getElementById('btnSubmit');
-  btn.textContent = '⏳ Submitting...'; btn.disabled = true;
-  if (window.submitToFirebase) {
-    window.submitToFirebase();
+  if (!_termsChecked) { toast('⚠️', 'Please agree to the Terms of Service first', 'warn'); return; }
+  if (window.firebaseSubmit) {
+    window.firebaseSubmit();
   } else {
-    setTimeout(() => showSuccess('DEMO' + Math.random().toString(36).slice(2,8).toUpperCase()), 1600);
+    // Demo fallback
+    document.getElementById('btnSubmit').textContent = '⏳ Submitting...';
+    document.getElementById('btnSubmit').disabled = true;
+    setTimeout(() => showSuccess('DEMO-' + Math.random().toString(36).slice(2,10).toUpperCase()), 2000);
   }
 }
 
 function showSuccess(id) {
   document.getElementById('mainWrap').style.display = 'none';
-  document.getElementById('bottomNav').style.display = 'none';
+  document.getElementById('bottomBar').style.display = 'none';
   document.getElementById('successScreen').style.display = 'flex';
-  document.getElementById('successId').textContent = 'Listing ID: #SRA-' + String(id).slice(-8).toUpperCase();
-  toast('🎉','Listing submitted successfully!','ok');
+  document.getElementById('successIdBox').textContent = 'Listing ID: #SRA-' + String(id).slice(-12).toUpperCase();
+  toast('🎉', 'Listing submitted successfully!', 'ok');
 }
 
-// ── DRAFT ───────────────────────────────────────────────────────
+// ── DRAFT ──────────────────────────────────────────────────────────
 function saveDraft() {
   try {
-    localStorage.setItem('sra_pg_draft', JSON.stringify({ step: _step, name: document.getElementById('propName').value, area: document.getElementById('area').value, city: document.getElementById('city').value, ownerName: document.getElementById('ownerName').value, savedAt: new Date().toISOString() }));
-    toast('💾','Draft saved locally','ok');
-  } catch(e) { toast('⚠️','Could not save draft','warn'); }
+    const d = {
+      step: _step, propType: window._propType, gender: window._gender,
+      ownerName: document.getElementById('ownerName').value,
+      ownerPhone: document.getElementById('ownerPhone').value,
+      ownerEmail: document.getElementById('ownerEmail').value,
+      propName: document.getElementById('propName').value,
+      area: document.getElementById('area').value,
+      city: document.getElementById('city').value,
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem('sra_draft_v3', JSON.stringify(d));
+    toast('💾', 'Draft saved to browser storage', 'info');
+  } catch(e) { toast('⚠️', 'Could not save draft', 'warn'); }
 }
 
-function confirmExit() { if (confirm('Exit? Save your draft first to avoid losing progress.')) location.href = 'index.html'; }
+function exitForm() {
+  if (confirm('Exit? Any unsaved changes will be lost.\n\nTip: Use "Save Draft" first to preserve your progress.')) {
+    location.href = 'pg-hostel-listings.html';
+  }
+}
 
-// ── TOAST ───────────────────────────────────────────────────────
+// ── TOAST SYSTEM ───────────────────────────────────────────────────
 function toast(icon, msg, type) {
-  const wrap = document.getElementById('toastWrap');
+  const stack = document.getElementById('toastStack');
   const el = document.createElement('div');
-  el.className = 'toast ' + (type||'');
-  el.innerHTML = `<span style="font-size:15px">${icon}</span><span>${msg}</span>`;
-  wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(120%)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }, 3200);
+  el.className = 'toast-item t-' + (type || 'info');
+  el.innerHTML = `<span style="font-size:16px;flex-shrink:0">${icon}</span><span>${msg}</span>`;
+  stack.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0'; el.style.transform = 'translateX(110%)';
+    el.style.transition = '0.3s ease';
+    setTimeout(() => el.remove(), 320);
+  }, 3500);
 }
 
-document.addEventListener('keydown', e => { if (e.key==='Escape') {} });
+// Expose globals
+window.choosePropType = choosePropType;
+window.chooseGender = chooseGender;
+window.chooseOcc = chooseOcc;
+window.toggleSw = toggleSw;
+window.toggleTerms = toggleTerms;
+window.toggleAmenity = toggleAmenity;
+window.addCustomAmenity = addCustomAmenity;
+window.addRoomRow = addRoomRow;
+window.removeRoomRow = removeRoomRow;
+window.handleDrop = handleDrop;
+window.handleFiles = handleFiles;
+window.addPhoto = addPhoto;
+window.removePhoto = removePhoto;
+window.addRule = addRule;
+window.removeRule = removeRule;
+window.nextStep = nextStep;
+window.prevStep = prevStep;
+window.jumpStep = jumpStep;
+window.submitListing = submitListing;
+window.showSuccess = showSuccess;
+window.saveDraft = saveDraft;
+window.exitForm = exitForm;
+window.toast = toast;
+window.upPreview = upPreview;
+window.updateComp = updateComp;
+window.countChars = countChars;
 </script>
 </body>
 </html>

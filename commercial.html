@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent AI — Rent Commercial Properties | Office, Retail & Warehouse</title>
+<meta name="description" content="Rent verified office spaces, retail shops, warehouses, co-working hubs and industrial units across India's prime business districts. Zero brokerage, transparent pricing.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   COMMERCIAL DARK STEEL — EDITORIAL REAL ESTATE
+═══════════════════════════════════════════════════════ */
+:root {
+  --void:   #040608;
+  --deep:   #07090f;
+  --surf:   #0b0f1a;
+  --card:   #0f1624;
+  --card2:  #131d2e;
+  --card3:  #172235;
+
+  --gold:     #c8a44a;
+  --gold-lt:  #e6c572;
+  --gold-dk:  #896d27;
+  --gold-d:   rgba(200,164,74,0.1);
+  --gold-b:   rgba(200,164,74,0.26);
+  --gold-glow:rgba(200,164,74,0.4);
+
+  --steel:    #5ba3d4;
+  --steel-d:  rgba(91,163,212,0.1);
+  --steel-b:  rgba(91,163,212,0.22);
+
+  --emerald:  #0ea472;
+  --em-d:     rgba(14,164,114,0.1);
+  --em-b:     rgba(14,164,114,0.22);
+
+  --amber:    #e8960a;
+  --amber-d:  rgba(232,150,10,0.1);
+  --amber-b:  rgba(232,150,10,0.22);
+
+  --rose:     #e63b5c;
+  --rose-d:   rgba(230,59,92,0.1);
+  --rose-b:   rgba(230,59,92,0.22);
+
+  --t0: #ecf0ff;
+  --t1: rgba(218,226,255,0.82);
+  --t2: rgba(176,192,238,0.55);
+  --t3: rgba(136,158,212,0.32);
+
+  --div:  rgba(200,164,74,0.07);
+  --div2: rgba(255,255,255,0.07);
+  --div3: rgba(255,255,255,0.14);
+
+  --r1: 6px;  --r2: 12px;  --r3: 18px;  --r4: 24px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── AMBIENT ─────────────────────────────────── */
+.bg-wrap{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(110px);animation:bgfloat 22s ease-in-out infinite alternate}
+.bg-orb.g1{width:720px;height:720px;top:-250px;left:-200px;background:radial-gradient(circle,rgba(200,164,74,.06) 0%,transparent 68%)}
+.bg-orb.g2{width:580px;height:580px;bottom:-220px;right:-180px;background:radial-gradient(circle,rgba(91,163,212,.055) 0%,transparent 68%);animation-delay:-9s}
+.bg-orb.g3{width:400px;height:400px;top:52%;left:45%;background:radial-gradient(circle,rgba(200,164,74,.03) 0%,transparent 68%);animation-delay:-16s}
+@keyframes bgfloat{0%{transform:translate(0,0) scale(1)}40%{transform:translate(32px,-24px) scale(1.07)}70%{transform:translate(-20px,18px) scale(.96)}100%{transform:translate(14px,-10px) scale(1.04)}}
+
+.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.36}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,164,74,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,74,.035) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 90% 75% at 50% 25%,black 0%,transparent 100%)}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(4,6,8,.75);backdrop-filter:blur(28px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
+.navbar.solid{background:rgba(4,6,8,.97);box-shadow:0 1px 0 var(--gold-b),0 8px 40px rgba(0,0,0,.6)}
+
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.brand-gem{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(200,164,74,.32),inset 0 1px 0 rgba(255,255,255,.18);flex-shrink:0}
+.brand-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--t0);letter-spacing:.01em}
+.brand-ai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--steel);background:var(--steel-d);border:1px solid var(--steel-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 20px}
+.nl{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s;position:relative;letter-spacing:.01em}
+.nl:hover{color:var(--t0)}.nl.on{color:var(--gold)}
+.nl.on::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:1px;background:var(--gold);border-radius:1px}
+.nl .hot{font-size:8px;font-family:'JetBrains Mono',monospace;background:var(--rose-d);color:var(--rose);border:1px solid var(--rose-b);padding:1px 5px;border-radius:3px;margin-left:3px;letter-spacing:.08em;vertical-align:middle}
+
+.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{padding:7px 15px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;letter-spacing:.01em}
+.btn-ghost{background:transparent;border:1px solid var(--div2);color:var(--t1)}.btn-ghost:hover{border-color:var(--gold-b);color:var(--gold)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#05070b;font-weight:700;box-shadow:0 0 16px rgba(200,164,74,.18)}.btn-gold:hover{box-shadow:0 0 26px var(--gold-glow);transform:translateY(-1px)}
+
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-drawer{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(4,6,8,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0;backdrop-filter:blur(22px);animation:drawerDrop .25s ease}
+@keyframes drawerDrop{from{opacity:0;transform:translateY(-7px)}to{opacity:1;transform:translateY(0)}}
+.mob-drawer.open{display:flex}
+.mob-l{padding:12px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(200,164,74,.08);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-l:hover{color:var(--gold)}.mob-l:last-of-type{border-bottom:none}
+
+/* ══════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════ */
+.hero{position:relative;z-index:1;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 64px;text-align:center;overflow:hidden}
+
+/* Cityscape line art in background */
+.hero-art{position:absolute;bottom:0;left:0;right:0;height:280px;pointer-events:none;z-index:0;opacity:.05}
+
+.hero-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(200,164,74,.06);pointer-events:none}
+.hr-a{width:900px;height:900px;margin:-450px 0 0 -450px;animation:ringpulse 10s ease-in-out infinite}
+.hr-b{width:620px;height:620px;margin:-310px 0 0 -310px;border-style:dashed;animation:ringpulse 10s ease-in-out infinite;animation-delay:-3.5s;opacity:.5}
+.hr-c{width:380px;height:380px;margin:-190px 0 0 -190px;animation:ringpulse 10s ease-in-out infinite;animation-delay:-7s}
+@keyframes ringpulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:1}}
+
+.h-eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:28px;animation:slideUp .7s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.live-pill{width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 0 0 rgba(14,164,114,.6);animation:lpulse 2s infinite}
+@keyframes lpulse{0%{box-shadow:0 0 0 0 rgba(14,164,114,.6)}70%{box-shadow:0 0 0 8px rgba(14,164,114,0)}100%{box-shadow:0 0 0 0 rgba(14,164,114,0)}}
+
+/* Playfair Display — THE choice for commercial real estate */
+.h1{font-family:'Playfair Display',serif;font-size:clamp(52px,9vw,108px);font-weight:800;line-height:.92;letter-spacing:-.02em;color:var(--t0);margin-bottom:10px;animation:slideUp .8s .08s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.h1 .gold-em{font-style:italic;background:linear-gradient(135deg,var(--gold-lt) 0%,var(--gold) 45%,var(--steel) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h1-sub{font-family:'Playfair Display',serif;font-size:clamp(20px,3vw,36px);font-weight:400;font-style:italic;color:var(--t2);margin-bottom:24px;letter-spacing:.01em;animation:slideUp .8s .16s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.h-desc{font-size:clamp(13px,1.5vw,16px);color:var(--t2);line-height:1.84;max-width:560px;margin:0 auto 44px;animation:slideUp .8s .24s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+@keyframes slideUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO SEARCH ─────────────────────────────── */
+.search-shell{width:100%;max-width:880px;position:relative;z-index:1;animation:slideUp .8s .32s cubic-bezier(.4,0,.2,1) both}
+.search-box{background:rgba(7,9,15,.97);border:1px solid var(--gold-b);border-radius:var(--r3);padding:8px;display:flex;gap:5px;align-items:stretch;backdrop-filter:blur(24px);box-shadow:0 24px 80px rgba(0,0,0,.58),inset 0 1px 0 rgba(255,255,255,.04);transition:all .3s}
+.search-box:focus-within{border-color:rgba(200,164,74,.46);box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 0 3px rgba(200,164,74,.07),0 0 42px rgba(200,164,74,.06)}
+.sf{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:11px 14px;min-width:0;transition:all .2s}
+.sf:focus-within{border-color:var(--gold-b);background:rgba(200,164,74,.025)}
+.sf-icon{font-size:15px;flex-shrink:0;opacity:.42}
+.sf input,.sf select{background:transparent;border:none;outline:none;color:var(--t0);font-family:'Outfit',sans-serif;font-size:13.5px;width:100%}
+.sf input::placeholder{color:var(--t3);font-style:italic}
+.sf select{color:var(--t1);cursor:pointer}.sf select option{background:var(--surf)}
+.sep{width:1px;background:rgba(200,164,74,.12);margin:7px 0;align-self:stretch;flex-shrink:0}
+.search-go{padding:11px 28px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 16px rgba(200,164,74,.22);letter-spacing:.02em}
+.search-go:hover{box-shadow:0 0 28px var(--gold-glow);transform:scale(1.02)}
+
+/* Type pills */
+.type-pills{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:14px;position:relative;z-index:1;animation:slideUp .8s .4s cubic-bezier(.4,0,.2,1) both}
+.tpill{padding:5px 15px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--div2);background:rgba(255,255,255,.03);color:var(--t2);transition:all .2s;letter-spacing:.01em}
+.tpill:hover,.tpill.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
+
+/* Stats row */
+.hero-stats{display:flex;gap:0;justify-content:center;align-items:stretch;margin-top:56px;flex-wrap:wrap;background:rgba(7,9,15,.78);border:1px solid var(--gold-b);border-radius:var(--r2);backdrop-filter:blur(18px);overflow:hidden;position:relative;z-index:1;animation:slideUp .8s .48s cubic-bezier(.4,0,.2,1) both;box-shadow:0 8px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
+.hstat{padding:17px 36px;text-align:center;border-right:1px solid rgba(200,164,74,.1);transition:background .2s;cursor:default}.hstat:last-child{border-right:none}.hstat:hover{background:rgba(200,164,74,.04)}
+.hstat-v{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--gold-lt);line-height:1;margin-bottom:4px}
+.hstat-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.h-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--void));pointer-events:none;z-index:2}
+
+/* ══════════════════════════════════════════════
+   STICKY CATEGORY BAR
+══════════════════════════════════════════════ */
+.cat-bar{position:sticky;top:64px;z-index:200;background:rgba(4,6,8,.95);border-bottom:1px solid var(--gold-b);backdrop-filter:blur(22px)}
+.cat-inner{max-width:1260px;margin:0 auto;padding:0 28px;display:flex;align-items:center;overflow-x:auto;scrollbar-width:none}
+.cat-inner::-webkit-scrollbar{display:none}
+.ctab{display:flex;align-items:center;gap:8px;padding:15px 20px;font-size:13px;font-weight:600;color:var(--t2);cursor:pointer;border-bottom:2px solid transparent;transition:all .22s;white-space:nowrap;letter-spacing:.01em;border:none;background:none;font-family:'Outfit',sans-serif;position:relative}
+.ctab:hover{color:var(--t0);background:rgba(200,164,74,.04)}
+.ctab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.ctab-count{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:.06em;margin-left:1px}
+.cat-bar-end{margin-left:auto;padding-left:20px;display:flex;gap:8px;align-items:center;flex-shrink:0;border-left:1px solid var(--div)}
+
+/* ══════════════════════════════════════════════
+   MARQUEE
+══════════════════════════════════════════════ */
+.mqbar{position:relative;z-index:1;background:rgba(7,9,15,.88);border-bottom:1px solid rgba(255,255,255,.04);overflow:hidden}
+.mqtrack{display:flex;width:max-content;animation:mqscroll 36s linear infinite}.mqtrack:hover{animation-play-state:paused}
+@keyframes mqscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mqitem{display:flex;align-items:center;gap:9px;padding:12px 44px;border-right:1px solid rgba(200,164,74,.07);white-space:nowrap;flex-shrink:0}
+.mqitem-ic{font-size:15px;opacity:.8}.mqitem-tx{font-size:12px;color:var(--t2);font-weight:500}.mqitem-tx strong{color:var(--gold-lt);font-weight:600}
+.mqbar::before,.mqbar::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2}
+.mqbar::before{left:0;background:linear-gradient(to right,rgba(7,9,15,.9),transparent)}
+.mqbar::after{right:0;background:linear-gradient(to left,rgba(7,9,15,.9),transparent)}
+
+/* ══════════════════════════════════════════════
+   SHARED LAYOUT
+══════════════════════════════════════════════ */
+section{position:relative;z-index:1}
+.W{max-width:1260px;margin:0 auto;padding:0 28px}
+
+.ey{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.ey::before{content:'';width:20px;height:1px;background:var(--gold)}
+
+.H2{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);font-weight:700;color:var(--t0);line-height:1.08;letter-spacing:-.02em;margin-bottom:12px}
+.H2 em{font-style:italic;color:var(--gold)}
+
+.rv{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* ══════════════════════════════════════════════
+   FILTER + SORT PANEL
+══════════════════════════════════════════════ */
+.filter-panel{padding:28px 0 0}
+.filter-strip{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:16px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+.flabel{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;flex-shrink:0}
+.fchips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.fchip{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--div2);background:rgba(255,255,255,.03);color:var(--t2);transition:all .2s;letter-spacing:.01em}
+.fchip:hover,.fchip.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
+.fcontrols{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fsel{background:var(--surf);border:1px solid rgba(255,255,255,.08);border-radius:var(--r1);padding:8px 12px;color:var(--t1);font-family:'Outfit',sans-serif;font-size:12.5px;outline:none;cursor:pointer;transition:all .2s}
+.fsel:focus{border-color:var(--gold-b)}.fsel option{background:var(--card)}
+
+.result-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.rcount{font-family:'Playfair Display',serif;font-size:17px;font-weight:500;color:var(--t1)}.rcount em{font-style:italic;color:var(--gold)}
+.view-sw{display:flex;background:var(--card);border:1px solid var(--div2);border-radius:var(--r1);overflow:hidden}
+.vsw{padding:7px 11px;background:none;border:none;cursor:pointer;color:var(--t3);transition:all .15s;font-size:16px;display:flex;align-items:center}
+.vsw.on{background:var(--card2);color:var(--gold)}.vsw:hover:not(.on){color:var(--t1)}
+
+/* ══════════════════════════════════════════════
+   PROPERTY CARDS
+══════════════════════════════════════════════ */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px;padding-bottom:90px}
+.grid.lv{grid-template-columns:1fr}
+
+.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);overflow:hidden;display:flex;flex-direction:column;transition:all .38s cubic-bezier(.34,1.1,.64,1);cursor:pointer;position:relative}
+.card:hover{border-color:var(--gold-b);transform:translateY(-8px);box-shadow:0 32px 72px rgba(0,0,0,.55),0 0 0 1px rgba(200,164,74,.05),inset 0 1px 0 rgba(200,164,74,.05)}
+.grid.lv .card{flex-direction:row;max-height:216px}
+
+/* Card image */
+.card-img{height:220px;position:relative;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.grid.lv .card-img{width:270px;height:100%}
+.card-emoji{font-size:64px;transition:transform .5s ease;position:relative;z-index:1}.card:hover .card-emoji{transform:scale(1.1)}
+.card-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(4,6,8,.9))}
+.grid.lv .card-overlay{background:linear-gradient(to right,transparent 55%,rgba(4,6,8,.75))}
+
+/* Status ring on image */
+.status-ring{position:absolute;top:12px;left:12px;display:flex;gap:5px;z-index:3;flex-wrap:wrap}
+.sring{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(8px)}
+.sr-v{background:rgba(14,164,114,.2);color:var(--emerald);border:1px solid var(--em-b)}
+.sr-g{background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)}
+.sr-h{background:rgba(230,59,92,.2);color:#faa;border:1px solid var(--rose-b)}
+.sr-n{background:var(--steel-d);color:var(--steel);border:1px solid var(--steel-b)}
+.sr-p{background:rgba(139,109,40,.25);color:var(--gold-lt);border:1px solid var(--gold-b)}
+.sr-t{background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)}
+
+.save-btn{position:absolute;top:12px;right:12px;z-index:3;width:34px;height:34px;border-radius:50%;background:rgba(4,6,8,.65);backdrop-filter:blur(6px);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .2s}.save-btn:hover{background:rgba(230,59,92,.18);border-color:rgba(230,59,92,.4)}.save-btn.saved{background:rgba(230,59,92,.2);border-color:rgba(230,59,92,.45)}
+
+.img-foot{position:absolute;bottom:10px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;z-index:3}
+.irat{background:rgba(4,6,8,.65);backdrop-filter:blur(6px);border-radius:4px;padding:3px 8px;font-size:12px;color:var(--gold-lt);font-weight:600;display:flex;align-items:center;gap:4px}
+.iarea{background:rgba(4,6,8,.6);backdrop-filter:blur(6px);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--steel);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+/* Card body */
+.card-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.grid.lv .card-body{padding:18px 20px}
+
+.type-avail{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.type-chip{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;padding:3px 9px;border-radius:4px;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b)}
+.avail{font-size:11px;color:var(--t3)}.avail.yes{color:var(--emerald)}.avail.no{color:var(--rose)}
+
+.card-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:var(--t0);margin-bottom:5px;line-height:1.18;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grid.lv .card-name{white-space:normal}
+
+.card-loc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);margin-bottom:13px}
+
+/* Spec grid */
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:13px}
+.spec{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--r1);padding:8px 10px;text-align:center}
+.spec-v{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--t0);line-height:1;margin-bottom:2px}
+.spec-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+
+.tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px}
+.tag{font-size:10px;color:var(--t2);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:3px 8px;border-radius:4px}
+
+.card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:13px;border-top:1px solid rgba(200,164,74,.07);margin-top:auto;gap:10px}
+.price-blk{}
+.pval{font-family:'Playfair Display',serif;font-size:23px;font-weight:700;color:var(--t0);line-height:1;letter-spacing:-.01em}
+.pval .cur{font-size:14px;font-weight:500}
+.pper{font-size:10px;color:var(--t3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.card-btns{display:flex;gap:6px}
+.cbtn-call{padding:8px 13px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--t2);font-size:12px;cursor:pointer;transition:all .2s}.cbtn-call:hover{border-color:var(--gold-b);color:var(--gold)}
+.cbtn-view{padding:8px 17px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px;transition:all .2s;letter-spacing:.02em}.cbtn-view:hover{box-shadow:0 0 18px var(--gold-b);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════
+   MARKET ANALYTICS SECTION
+══════════════════════════════════════════════ */
+.analytics-sec{padding:82px 0;background:var(--deep);border-top:1px solid rgba(200,164,74,.07);border-bottom:1px solid rgba(200,164,74,.07)}
+
+.analytics-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:18px;margin-top:44px}
+
+.chart-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:26px;position:relative;overflow:hidden;transition:all .3s}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cc,var(--gold)),transparent)}
+.chart-card:hover{border-color:var(--ccb,var(--gold-b));transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+
+.cc-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px}
+.cc-val{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:var(--cc,var(--gold));line-height:1;margin-bottom:6px}
+.cc-sub{font-size:13px;color:var(--t2);line-height:1.7}
+
+/* Bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:80px;margin-top:18px;position:relative}
+.bar-chart::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(200,164,74,.12)}
+.bc-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--cc,var(--gold)),rgba(200,164,74,.3));min-height:4px;opacity:.7;transition:all .3s}
+.bc-bar:hover{opacity:1}
+
+/* Trend badge */
+.trend{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:'JetBrains Mono',monospace;margin-top:12px;padding:3px 9px;border-radius:4px}
+.t-up{background:rgba(14,164,114,.12);color:var(--emerald);border:1px solid var(--em-b)}
+.t-dn{background:rgba(230,59,92,.1);color:var(--rose);border:1px solid var(--rose-b)}
+
+/* Donut chart */
+.donut-wrap{display:flex;align-items:center;justify-content:center;margin:16px 0}
+.donut-svg{width:110px;height:110px}
+.donut-legend{display:flex;flex-direction:column;gap:8px;margin-left:14px}
+.dl-item{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--t2)}
+.dl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* Score dial */
+.score-dial{text-align:center;padding:14px 0}
+.dial-val{font-family:'Playfair Display',serif;font-size:48px;font-weight:800;line-height:1;margin-bottom:4px}
+.dial-lbl{font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.dial-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;margin-top:14px;overflow:hidden}
+.dial-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--emerald));transition:width .8s cubic-bezier(.4,0,.2,1)}
+
+/* ══════════════════════════════════════════════
+   FEATURED DEVELOPMENTS
+══════════════════════════════════════════════ */
+.dev-sec{padding:82px 0}
+.dev-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;margin-top:44px}
+
+.dev-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);overflow:hidden;transition:all .3s;cursor:pointer;position:relative}
+.dev-card:hover{border-color:var(--gold-b);transform:translateY(-5px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.dev-card.hero-dev{grid-row:span 2}
+
+.dev-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden}
+.dev-card.hero-dev .dev-img{height:300px}
+.dev-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(4,6,8,.88))}
+.dev-tag{position:absolute;top:12px;left:12px;z-index:3;font-size:10px;font-family:'JetBrains Mono',monospace;background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b);padding:2px 8px;border-radius:3px;letter-spacing:.1em}
+.dev-body{padding:20px 22px}
+.dev-sub{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.dev-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--t0);margin-bottom:5px;letter-spacing:-.005em}
+.dev-card.hero-dev .dev-name{font-size:24px}
+.dev-loc{font-size:12px;color:var(--t2);margin-bottom:12px;display:flex;align-items:center;gap:4px}
+.dev-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.dev-chip{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--t2)}
+.dev-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.dev-price{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold-lt)}
+.dev-price span{font-size:12px;font-weight:400;color:var(--t3);font-family:'Outfit',sans-serif}
+.dev-cta{padding:7px 15px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s}.dev-cta:hover{box-shadow:0 0 14px var(--gold-b)}
+
+/* ══════════════════════════════════════════════
+   WHY SMARTRENT COMMERCIAL
+══════════════════════════════════════════════ */
+.why-sec{padding:82px 0;background:var(--deep);border-top:1px solid rgba(200,164,74,.07)}
+
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:44px}
+.wcard{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:28px 22px;transition:all .3s;position:relative;overflow:hidden}
+.wcard::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(200,164,74,.2),transparent);opacity:0;transition:opacity .3s}
+.wcard:hover{border-color:var(--gold-b);background:rgba(200,164,74,.02);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.4)}.wcard:hover::before{opacity:1}
+.wcard-ic{font-size:36px;margin-bottom:16px;display:block}
+.wcard-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:9px;letter-spacing:-.005em}
+.wcard-d{font-size:13px;color:var(--t2);line-height:1.78}
+
+/* ══════════════════════════════════════════════
+   ENQUIRY / OWNER CTA
+══════════════════════════════════════════════ */
+.cta-sec{padding:82px 0;position:relative;overflow:hidden;background:var(--card)}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 80% at 65% 50%,rgba(200,164,74,.05) 0%,transparent 65%)}
+.cta-inner{display:flex;align-items:center;justify-content:space-between;gap:52px;flex-wrap:wrap;position:relative;z-index:1}
+.cta-copy{}
+.cta-t{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,46px);font-weight:800;color:var(--t0);margin-bottom:12px;letter-spacing:-.02em;line-height:1.08}
+.cta-t em{font-style:italic;color:var(--gold)}
+.cta-d{font-size:15px;color:var(--t2);line-height:1.82;max-width:460px}
+.cta-btns{display:flex;flex-direction:column;gap:10px;flex-shrink:0;min-width:250px}
+.cta-main{padding:14px 28px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .22s;letter-spacing:.02em}.cta-main:hover{box-shadow:0 0 30px var(--gold-glow);transform:translateY(-2px)}
+.cta-sec-btn{padding:12px 22px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s}.cta-sec-btn:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* ══════════════════════════════════════════════
+   DETAIL MODAL
+══════════════════════════════════════════════ */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(2,3,6,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .26s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal-box{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r4);width:100%;max-width:700px;max-height:92vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(200,164,74,.1);transform:scale(.95) translateY(12px);transition:transform .26s cubic-bezier(.34,1.2,.64,1)}
+.modal-bg.show .modal-box{transform:scale(1) translateY(0)}
+
+.modal-hdr{padding:0;position:relative}
+.modal-hero{height:240px;display:flex;align-items:center;justify-content:center;font-size:76px;position:relative;overflow:hidden;border-radius:var(--r4) var(--r4) 0 0}
+.modal-hero-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(4,6,8,.85))}
+.modal-close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:rgba(4,6,8,.66);backdrop-filter:blur(6px);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .2s;z-index:10}.modal-close:hover{background:rgba(230,59,92,.3);border-color:rgba(230,59,92,.5)}
+
+.modal-body{padding:28px}
+.modal-head-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.modal-title{font-family:'Playfair Display',serif;font-size:27px;font-weight:700;color:var(--t0);margin-bottom:5px;letter-spacing:-.01em}
+.modal-loc{font-size:13px;color:var(--t2);margin-bottom:24px;display:flex;align-items:center;gap:6px}
+
+.modal-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.mspec{background:var(--card2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r1);padding:12px;text-align:center}
+.mspec-v{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold-lt);line-height:1;margin-bottom:3px}
+.mspec-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+
+.msec-t{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--t3);margin:20px 0 10px}
+.amen-g{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.amen-item{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid rgba(255,255,255,.05);border-radius:var(--r1);padding:10px 13px;font-size:12px;color:var(--t1)}
+.modal-desc{font-size:13px;color:var(--t2);line-height:1.82}
+
+.modal-acts{display:flex;gap:10px;margin-top:24px}
+.mact-enq{flex:1;padding:13px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}.mact-enq:hover{box-shadow:0 0 22px var(--gold-b)}
+.mact-call{flex:1;padding:12px;border-radius:var(--r1);background:var(--em-d);border:1px solid var(--em-b);color:var(--emerald);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}.mact-call:hover{background:rgba(14,164,114,.18)}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{padding:60px 0 28px;background:var(--deep);border-top:1px solid var(--gold-b)}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.fb-d{font-size:13px;color:var(--t2);line-height:1.84;margin-bottom:20px;max-width:265px}
+.socs{display:flex;gap:8px}
+.soc{width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s}.soc:hover{border-color:var(--gold-b);background:var(--gold-d);transform:translateY(-2px)}
+.ft-col-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold-lt);margin-bottom:18px;letter-spacing:.01em}
+.fl{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px;margin-bottom:10px}.fl:last-child{margin-bottom:0}.fl:hover{color:var(--gold-lt)}
+.foot-bot{border-top:1px solid rgba(200,164,74,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-copy{font-size:12px;color:var(--t3);line-height:1.75}.foot-copy a{color:var(--gold);text-decoration:none}.foot-copy a:hover{text-decoration:underline}
+.fbadges{display:flex;gap:6px}
+.fb-bdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:var(--card);border:1px solid rgba(255,255,255,.07);color:var(--t3)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;z-index:1100;background:var(--card2);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:13px 17px;font-size:13px;display:none;box-shadow:0 8px 34px rgba(0,0,0,.5);min-width:250px;animation:tShow .3s ease;z-index:2000}
+@keyframes tShow{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:1100px){.nav-links{display:none}.mob-btn{display:flex}.analytics-grid{grid-template-columns:1fr 1fr}.why-grid{grid-template-columns:repeat(2,1fr)}.dev-grid{grid-template-columns:1fr 1fr}.dev-card.hero-dev{grid-row:span 1}.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:768px){.hero{padding:96px 20px 56px}.search-box{flex-direction:column}.sep{display:none}.hero-stats{border-radius:0;border-left:none;border-right:none}.hstat{padding:14px 16px}.grid{grid-template-columns:1fr}.grid.lv .card{flex-direction:column;max-height:none}.grid.lv .card-img{width:100%;height:210px}.analytics-grid{grid-template-columns:1fr}.why-grid{grid-template-columns:1fr 1fr}.dev-grid{grid-template-columns:1fr}.cta-inner{flex-direction:column}.modal-specs{grid-template-columns:repeat(2,1fr)}.amen-g{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.foot-bot{flex-direction:column;text-align:center}.filter-strip{flex-direction:column;align-items:flex-start}}
+</style>
+</head>
+<body>
+
+<!-- ── BG ── -->
+<div class="bg-wrap"><div class="bg-orb g1"></div><div class="bg-orb g2"></div><div class="bg-orb g3"></div></div>
+<div class="bg-noise"></div>
+<div class="bg-grid"></div>
+
+<!-- ── UI ── -->
+<div class="toast" id="toast"></div>
+
+<!-- ── DETAIL MODAL ── -->
+<div class="modal-bg" id="modalBg" onclick="handleOvClick(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-hdr">
+      <div class="modal-hero" id="mHeroImg">
+        <span id="mEmoji" style="position:relative;z-index:2">🏢</span>
+        <div class="modal-hero-ov"></div>
+        <div class="modal-close" onclick="closeModal()">✕</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-head-row" id="mBadges"></div>
+      <div class="modal-title" id="mTitle">Property</div>
+      <div class="modal-loc" id="mLoc">📍 Location</div>
+      <div class="modal-specs" id="mSpecs"></div>
+      <div class="msec-t">Amenities &amp; Features</div>
+      <div class="amen-g" id="mAmens"></div>
+      <div class="msec-t">About This Property</div>
+      <div class="modal-desc" id="mDesc"></div>
+      <div class="modal-acts">
+        <div class="mact-enq" onclick="showToast('⚡ Enquiry sent! You\'ll hear back within 24 hours.')">⚡ Send Enquiry Now</div>
+        <div class="mact-call" onclick="showToast('📞 Connecting you with the property manager…')">📞 Schedule Site Visit</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MOBILE MENU ── -->
+<div class="mob-drawer" id="mobDrawer">
+  <a class="mob-l" href="index.html">🏠 Home</a>
+  <a class="mob-l" href="pg-hostel-listings.html">🛏️ PG &amp; Hostels</a>
+  <a class="mob-l" href="#">🏡 Flats</a>
+  <a class="mob-l" href="#">🤝 Co-living</a>
+  <a class="mob-l" href="commercial.html" style="color:var(--gold)">🏢 Commercial</a>
+  <a class="mob-l" href="booking-dashboard.html">📋 Dashboard</a>
+  <a class="mob-l" href="admin.html">⚙️ Admin</a>
+  <hr style="border:none;border-top:1px solid rgba(200,164,74,.12);margin:8px 0">
+  <a class="btn btn-ghost" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="btn btn-gold" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:7px">+ List Commercial Property</a>
+</div>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="brand-gem">💎</div>
+    <span class="brand-name">SmartRent<span class="brand-ai">AI</span></span>
+  </a>
+
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+    <a class="nl" href="#">Flats</a>
+    <a class="nl" href="#">Co-living</a>
+    <a class="nl on" href="commercial.html">Commercial <span class="hot">HOT</span></a>
+    <a class="nl" href="admin.html">Admin</a>
+  </div>
+
+  <div class="nav-r">
+    <a class="btn btn-ghost" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="btn btn-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" onclick="toggleDrawer()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-ring hr-a"></div>
+  <div class="hero-ring hr-b"></div>
+  <div class="hero-ring hr-c"></div>
+
+  <!-- Cityscape SVG art -->
+  <svg class="hero-art" viewBox="0 0 1400 280" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="60" y="180" width="40" height="100" fill="rgba(200,164,74,1)"/>
+    <rect x="70" y="150" width="20" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="120" y="120" width="60" height="160" fill="rgba(200,164,74,1)"/>
+    <rect x="135" y="90" width="30" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="200" y="160" width="30" height="120" fill="rgba(200,164,74,1)"/>
+    <rect x="250" y="100" width="50" height="180" fill="rgba(200,164,74,1)"/>
+    <rect x="260" y="70" width="30" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="320" y="140" width="40" height="140" fill="rgba(200,164,74,1)"/>
+    <rect x="380" y="80" width="70" height="200" fill="rgba(200,164,74,1)"/>
+    <rect x="390" y="50" width="50" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="400" y="30" width="10" height="20" fill="rgba(200,164,74,1)"/>
+    <rect x="470" y="150" width="35" height="130" fill="rgba(200,164,74,1)"/>
+    <rect x="520" y="110" width="55" height="170" fill="rgba(200,164,74,1)"/>
+    <rect x="530" y="80" width="35" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="595" y="130" width="40" height="150" fill="rgba(200,164,74,1)"/>
+    <rect x="650" y="90" width="65" height="190" fill="rgba(200,164,74,1)"/>
+    <rect x="660" y="60" width="45" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="730" y="160" width="35" height="120" fill="rgba(200,164,74,1)"/>
+    <rect x="780" y="120" width="50" height="160" fill="rgba(200,164,74,1)"/>
+    <rect x="790" y="90" width="30" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="845" y="150" width="40" height="130" fill="rgba(200,164,74,1)"/>
+    <rect x="900" y="100" width="60" height="180" fill="rgba(200,164,74,1)"/>
+    <rect x="910" y="70" width="40" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="920" y="40" width="8" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="975" y="140" width="45" height="140" fill="rgba(200,164,74,1)"/>
+    <rect x="1035" y="115" width="55" height="165" fill="rgba(200,164,74,1)"/>
+    <rect x="1045" y="85" width="35" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="1105" y="155" width="38" height="125" fill="rgba(200,164,74,1)"/>
+    <rect x="1160" y="95" width="62" height="185" fill="rgba(200,164,74,1)"/>
+    <rect x="1170" y="65" width="42" height="30" fill="rgba(200,164,74,1)"/>
+    <rect x="1238" y="165" width="35" height="115" fill="rgba(200,164,74,1)"/>
+    <rect x="1285" y="130" width="50" height="150" fill="rgba(200,164,74,1)"/>
+    <rect x="1350" y="170" width="40" height="110" fill="rgba(200,164,74,1)"/>
+  </svg>
+
+  <div class="h-eyebrow">
+    <span class="live-pill"></span>
+    Commercial Real Estate · Rent Verified Spaces
+  </div>
+
+  <h1 class="h1">Rent Premium<br><span class="gold-em">Commercial</span> Space</h1>
+  <div class="h1-sub">Where your business belongs.</div>
+
+  <p class="h-desc">Discover verified office spaces, retail shops, warehouses, co-working hubs &amp; industrial units across India's prime business districts. Zero brokerage. Transparent leases. Instant connect.</p>
+
+  <div class="search-shell">
+    <div class="search-box">
+      <div class="sf">
+        <span class="sf-icon">🔍</span>
+        <input type="text" id="sQ" placeholder="Business park, IT corridor, CBD area, city…" onkeydown="if(event.key==='Enter')doSearch()">
+      </div>
+      <div class="sep"></div>
+      <div class="sf" style="max-width:178px">
+        <span class="sf-icon">🏙️</span>
+        <select id="sCity"><option value="">Any City</option><option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option><option>Delhi NCR</option><option>Chennai</option><option>Pune</option><option>Kolkata</option><option>Ahmedabad</option></select>
+      </div>
+      <div class="sep"></div>
+      <div class="sf" style="max-width:162px">
+        <span class="sf-icon">🏢</span>
+        <select id="sType"><option value="">Any Type</option><option value="Office">Office Space</option><option value="Retail">Retail / Shop</option><option value="Coworking">Co-working</option><option value="Warehouse">Warehouse</option><option value="Industrial">Industrial</option><option value="Showroom">Showroom</option></select>
+      </div>
+      <button class="search-go" onclick="doSearch()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Find Space
+      </button>
+    </div>
+    <div class="type-pills">
+      <span class="tpill on" onclick="setPill(this,'all')">🏢 All</span>
+      <span class="tpill" onclick="setPill(this,'Office')">🖥️ Office</span>
+      <span class="tpill" onclick="setPill(this,'Retail')">🏪 Retail</span>
+      <span class="tpill" onclick="setPill(this,'Coworking')">💻 Co-working</span>
+      <span class="tpill" onclick="setPill(this,'Warehouse')">🏭 Warehouse</span>
+      <span class="tpill" onclick="setPill(this,'Industrial')">⚙️ Industrial</span>
+      <span class="tpill" onclick="setPill(this,'Showroom')">🚗 Showroom</span>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-v">680+</div><div class="hstat-l">Commercial Spaces</div></div>
+    <div class="hstat"><div class="hstat-v">45+</div><div class="hstat-l">Business Parks</div></div>
+    <div class="hstat"><div class="hstat-v">12+</div><div class="hstat-l">Cities</div></div>
+    <div class="hstat"><div class="hstat-v">₹0</div><div class="hstat-l">Brokerage</div></div>
+    <div class="hstat"><div class="hstat-v">24hr</div><div class="hstat-l">Response</div></div>
+  </div>
+
+  <div class="h-fade"></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mqbar"><div class="mqtrack" id="mqtrack"></div></div>
+
+<!-- ══════════════ CATEGORY TABS ══════════════ -->
+<div class="cat-bar">
+  <div class="cat-inner">
+    <button class="ctab active" onclick="setCat(this,'all')">🏢 All Commercial <span class="ctab-count">680</span></button>
+    <button class="ctab" onclick="setCat(this,'Office')">🖥️ Office <span class="ctab-count">245</span></button>
+    <button class="ctab" onclick="setCat(this,'Retail')">🏪 Retail <span class="ctab-count">180</span></button>
+    <button class="ctab" onclick="setCat(this,'Coworking')">💻 Co-working <span class="ctab-count">72</span></button>
+    <button class="ctab" onclick="setCat(this,'Warehouse')">🏭 Warehouse <span class="ctab-count">98</span></button>
+    <button class="ctab" onclick="setCat(this,'Industrial')">⚙️ Industrial <span class="ctab-count">54</span></button>
+    <button class="ctab" onclick="setCat(this,'Showroom')">🚗 Showroom <span class="ctab-count">31</span></button>
+    <div class="cat-bar-end">
+      <a class="btn btn-gold" href="post-property.html" style="text-decoration:none;font-size:12px;padding:6px 14px">+ List Commercial</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ LISTINGS ══════════════ -->
+<section class="filter-panel">
+  <div class="W">
+    <div class="filter-strip rv">
+      <span class="flabel">🎛 Filters</span>
+      <div class="fchips">
+        <span class="fchip on" onclick="setChip('all',this)">All</span>
+        <span class="fchip" onclick="setChip('available',this)">✅ Available Now</span>
+        <span class="fchip" onclick="setChip('furnished',this)">🪑 Furnished</span>
+        <span class="fchip" onclick="setChip('verified',this)">✓ Verified</span>
+        <span class="fchip" onclick="setChip('new',this)">✨ New Listing</span>
+        <span class="fchip" onclick="setChip('premium',this)">★ Premium</span>
+      </div>
+      <div class="fcontrols">
+        <select class="fsel" id="fCity" onchange="applyFilters()">
+          <option value="">All Cities</option>
+          <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option><option>Delhi NCR</option><option>Chennai</option><option>Pune</option>
+        </select>
+        <select class="fsel" id="fBudget" onchange="applyFilters()">
+          <option value="">Any Budget</option>
+          <option value="50000">Under ₹50K/mo</option>
+          <option value="150000">Under ₹1.5L/mo</option>
+          <option value="300000">Under ₹3L/mo</option>
+          <option value="600000">Under ₹6L/mo</option>
+        </select>
+        <select class="fsel" id="fSort" onchange="applyFilters()">
+          <option value="">Sort: Recommended</option>
+          <option value="price_asc">Price: Low → High</option>
+          <option value="price_desc">Price: High → Low</option>
+          <option value="area">Area: Large First</option>
+          <option value="rating">Highest Rated</option>
+          <option value="new">Newest First</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="result-row rv">
+      <div class="rcount"><em id="rCount">12</em> commercial properties found</div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="view-sw">
+          <button class="vsw on" id="gBtn" onclick="setView('grid')" title="Grid">⊞</button>
+          <button class="vsw" id="lBtn" onclick="setView('list')" title="List">☰</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid rv d1" id="propGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════════ ANALYTICS ══════════════ -->
+<section class="analytics-sec">
+  <div class="W">
+    <div class="rv">
+      <div class="ey">Market Intelligence</div>
+      <h2 class="H2">Commercial Rental<br><em>Insights &amp; Benchmarks</em></h2>
+    </div>
+    <div class="analytics-grid rv d1">
+
+      <!-- Big chart -->
+      <div class="chart-card" style="--cc:var(--gold);--ccb:var(--gold-b)">
+        <div class="cc-label">Avg Office Rent Trend — Top 4 Cities</div>
+        <div class="cc-val">₹68/sqft</div>
+        <div class="cc-sub">Weighted average across Hyderabad, Bangalore, Mumbai &amp; Delhi NCR prime office corridors</div>
+        <div class="trend t-up">↑ 14.2% YoY · Q1 2026</div>
+        <div class="bar-chart" id="bigChart" style="--cc:var(--gold)"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px">
+          <span style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace">Q2 '24</span>
+          <span style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace">Q4 '24</span>
+          <span style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace">Q2 '25</span>
+          <span style="font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace">Q1 '26</span>
+        </div>
+      </div>
+
+      <!-- Donut -->
+      <div class="chart-card" style="--cc:var(--steel);--ccb:var(--steel-b)">
+        <div class="cc-label">Space Type Demand Split</div>
+        <div class="cc-val" style="font-size:28px">2026</div>
+        <div class="cc-sub">Enquiry distribution across commercial property categories</div>
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="40" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="18"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--gold)" stroke-width="18" stroke-dasharray="100 151" stroke-dashoffset="0" stroke-linecap="round"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--steel)" stroke-width="18" stroke-dasharray="60 191" stroke-dashoffset="-100" stroke-linecap="round"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--emerald)" stroke-width="18" stroke-dasharray="36 215" stroke-dashoffset="-160" stroke-linecap="round"/>
+            <circle cx="55" cy="55" r="40" fill="none" stroke="var(--amber)" stroke-width="18" stroke-dasharray="55 196" stroke-dashoffset="-196" stroke-linecap="round"/>
+          </svg>
+          <div class="donut-legend">
+            <div class="dl-item"><div class="dl-dot" style="background:var(--gold)"></div>Office 40%</div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--steel)"></div>Retail 24%</div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--emerald)"></div>Co-work 14%</div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--amber)"></div>Warehouse 22%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Score dial -->
+      <div class="chart-card" style="--cc:var(--emerald);--ccb:var(--em-b)">
+        <div class="cc-label">Market Health Index</div>
+        <div class="score-dial">
+          <div class="dial-val" style="color:var(--emerald)">82</div>
+          <div class="dial-lbl">Out of 100 · STRONG</div>
+          <div class="dial-bar"><div class="dial-fill" id="dialFill" style="width:0%"></div></div>
+        </div>
+        <div class="cc-sub" style="margin-top:12px">Vacancy rates at 5-year low across Tier-1 cities. Demand outpacing new supply in Grade-A segments.</div>
+        <div class="trend t-up" style="margin-top:12px">↑ +8 pts vs Q4 2025</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FEATURED PROJECTS ══════════════ -->
+<section class="dev-sec">
+  <div class="W">
+    <div class="rv">
+      <div class="ey">Premium Developments</div>
+      <h2 class="H2">Grade-A <em>Commercial Projects</em></h2>
+    </div>
+    <div class="dev-grid rv d1" id="devGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════════ WHY SMARTRENT ══════════════ -->
+<section class="why-sec">
+  <div class="W">
+    <div class="rv" style="text-align:center">
+      <div class="ey" style="justify-content:center">The Advantage</div>
+      <h2 class="H2" style="text-align:center">Why Rent Commercial Space<br><em>Through SmartRent AI</em></h2>
+    </div>
+    <div class="why-grid rv d1">
+      <div class="wcard">
+        <span class="wcard-ic">⚡</span>
+        <div class="wcard-t">Zero Brokerage</div>
+        <div class="wcard-d">Connect directly with landlords and property managers — no broker commissions, no hidden charges. Transparent lease terms from day one.</div>
+      </div>
+      <div class="wcard">
+        <span class="wcard-ic">✅</span>
+        <div class="wcard-t">100% Verified</div>
+        <div class="wcard-d">Every listing physically inspected by our commercial team. Legal clearances, occupancy certificates, and RERA compliance all verified before listing.</div>
+      </div>
+      <div class="wcard">
+        <span class="wcard-ic">🤖</span>
+        <div class="wcard-t">AI Space Matching</div>
+        <div class="wcard-d">Enter your headcount, growth plan, and budget. Our AI instantly surfaces properties that genuinely match your business requirements — not just keyword hits.</div>
+      </div>
+      <div class="wcard">
+        <span class="wcard-ic">📊</span>
+        <div class="wcard-t">Market Intelligence</div>
+        <div class="wcard-d">Real-time rent benchmarks, vacancy analytics, and micro-market trends to help you negotiate the best commercial lease with confidence.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="cta-sec">
+  <div class="W">
+    <div class="cta-inner rv">
+      <div class="cta-copy">
+        <div class="ey">For Commercial Landlords</div>
+        <h2 class="cta-t">Own Commercial Space?<br><em>List It Free Today</em></h2>
+        <p class="cta-d">Connect with verified businesses, corporates and entrepreneurs actively searching for commercial space. Receive genuine enquiries, manage lease negotiations, and maximise returns from your commercial asset — all on one platform.</p>
+      </div>
+      <div class="cta-btns">
+        <a class="cta-main" href="post-property.html">🏢 List Commercial Property Free</a>
+        <a class="cta-sec-btn" href="booking-dashboard.html">📋 Owner Dashboard</a>
+        <a class="cta-sec-btn" href="admin.html" style="opacity:.75;font-size:12px;padding:9px 16px">⚙️ Admin Panel</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="W">
+    <div class="foot-grid">
+      <div>
+        <a href="index.html" class="brand" style="margin-bottom:16px;display:flex">
+          <div class="brand-gem" style="width:30px;height:30px;font-size:14px">💎</div>
+          <span class="brand-name" style="font-size:17px">SmartRent<span class="brand-ai">AI</span></span>
+        </a>
+        <p class="fb-d">India's most intelligent rental platform. AI-powered matching for PGs, hostels, flats, co-living &amp; commercial — zero brokerage, fully verified.</p>
+        <div class="socs"><a class="soc" href="#">𝕏</a><a class="soc" href="#">📸</a><a class="soc" href="#">in</a><a class="soc" href="#">▶</a></div>
+      </div>
+      <div>
+        <div class="ft-col-t">For Tenants</div>
+        <a class="fl" href="pg-hostel-listings.html">→ Browse PG &amp; Hostels</a>
+        <a class="fl" href="#">→ Flat Search</a>
+        <a class="fl" href="#">→ Co-living</a>
+        <a class="fl" href="commercial.html">→ Commercial Spaces</a>
+        <a class="fl" href="#">→ Tenant Guide</a>
+      </div>
+      <div>
+        <div class="ft-col-t">For Owners</div>
+        <a class="fl" href="post-property.html">→ List Property Free</a>
+        <a class="fl" href="booking-dashboard.html">→ Owner Dashboard</a>
+        <a class="fl" href="admin.html">→ Admin Panel</a>
+        <a class="fl" href="#">→ Pricing Plans</a>
+        <a class="fl" href="#">→ Verification Process</a>
+      </div>
+      <div>
+        <div class="ft-col-t">Company</div>
+        <a class="fl" href="#">→ About Us</a>
+        <a class="fl" href="#">→ Careers</a>
+        <a class="fl" href="privacy-policy.html">→ Privacy Policy</a>
+        <a class="fl" href="privacy-policy.html">→ Terms of Service</a>
+        <a class="fl" href="#">→ Contact Us</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">© 2025–2026 SmartRent AI. All rights reserved. Built with ❤️ in India.<br><a href="privacy-policy.html">Privacy Policy</a> · <a href="privacy-policy.html">Terms of Service</a></div>
+      <div class="fbadges"><span class="fb-bdg">GDPR READY</span><span class="fb-bdg">IT ACT 2000</span><span class="fb-bdg">DPDP 2023</span><span class="fb-bdg">SSL SECURED</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ FIREBASE ══════════════ -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,collection,getDocs,query,where,limit}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal"};
+const app=initializeApp(cfg);const auth=getAuth(app);const db=getFirestore(app);
+onAuthStateChanged(auth,u=>{if(u)console.log('Logged in:',u.email);});
+try{
+  const q=query(collection(db,'commercial'),where('approved','==',true),limit(12));
+  const snap=await getDocs(q);
+  if(!snap.empty){
+    const rows=[];snap.forEach(d=>{const p=d.data();rows.push({id:d.id,...p});});
+    if(rows.length){window._D=rows;renderGrid(rows);}
+  }
+}catch(e){console.log('Using static data');}
+</script>
+
+<!-- ══════════════ APP ══════════════ -->
+<script>
+/* ── DATA ──────────────────────────────────────────────────────── */
+const BG={
+  Office:'linear-gradient(135deg,#08142a,#122438)',
+  Retail:'linear-gradient(135deg,#1a0f08,#2a1a0e)',
+  Coworking:'linear-gradient(135deg,#071525,#0c2232)',
+  Warehouse:'linear-gradient(135deg,#0e0e0e,#181620)',
+  Industrial:'linear-gradient(135deg,#0a100a,#141c10)',
+  Showroom:'linear-gradient(135deg,#110720,#1c0e2e)',
+};
+const EM={Office:'🏢',Retail:'🏪',Coworking:'💻',Warehouse:'🏭',Industrial:'⚙️',Showroom:'🚗'};
+
+window._D=[
+  {id:1,type:'Office',name:'Skyline Corporate Tower A',area:'Gachibowli',city:'Hyderabad',sqft:'4,800',unit:'sqft',price:290000,per:'month',rating:4.8,rev:42,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-p',l:'★ PREMIUM'}],avail:true,furnished:true,floor:'12th Floor',tags:['Grade-A','IT Park','Plug & Play'],amen:['🅿️ Basement Parking ×40','⚡ 100% Power Backup','🌐 Fiber Internet','🔒 24/7 Security','🛗 High-Speed Lifts','🍽️ Cafeteria','📹 CCTV','🧹 Housekeeping'],desc:'Premium Grade A office in the heart of Gachibowli Financial District. Floor-to-ceiling windows with panoramic city views. Fully fitted — 5 meeting rooms, reception, server room, dedicated pantry.',verified:true,new:false,premium:true},
+  {id:2,type:'Retail',name:'Nexus Commercial Hub — GF',area:'Jubilee Hills',city:'Hyderabad',sqft:'2,200',unit:'sqft',price:145000,per:'month',rating:4.5,rev:28,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-h',l:'🔥 HOT'}],avail:true,furnished:false,floor:'Ground + Mez.',tags:['High Footfall','Prime Location','Road 36'],amen:['🚶 Corner Plot 2 Entries','🅿️ Customer Parking','🔌 3-Phase Power','📺 LED Signage Rights','🛡️ Security Shutter','🚿 Washrooms'],desc:"Exceptional retail opportunity on Road 36, Jubilee Hills — Hyderabad's premier retail corridor. Ideal for flagship stores, luxury boutiques, restaurants and lifestyle brands.",verified:true,new:false,premium:false},
+  {id:3,type:'Coworking',name:'The Collective — Flex Desks',area:'Madhapur',city:'Hyderabad',sqft:'200',unit:'seats',price:12000,per:'seat/month',rating:4.7,rev:156,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-n',l:'✨ NEW'}],avail:true,furnished:true,floor:'4th & 5th Fl.',tags:['Startup Hub','IT Corridor','Flexible'],amen:['📶 10Gbps WiFi','☕ Unlimited Coffee','🖨️ Printing','📅 Meeting Rooms','🎮 Recreation Zone','🔒 Biometric Access','🍕 Pantry'],desc:"Hyderabad's most sought-after co-working campus in the heart of HITEC City. Private cabins, open desks and hot-desking. Home to 200+ startups and MNC satellite teams.",verified:true,new:true,premium:false},
+  {id:4,type:'Warehouse',name:'Logistics Park — Unit B14',area:'Patancheru',city:'Hyderabad',sqft:'18,500',unit:'sqft',price:185000,per:'month',rating:4.4,rev:19,badges:[{c:'sr-v',l:'✓ VERIFIED'}],avail:true,furnished:false,floor:'Ground Level',tags:['Grade-A','NH-65 Access','Fire NOC'],amen:['🚚 4 Dock Loading Bays','📦 Pallet Racking Ready','⚡ 3-Phase 400A','🚒 Sprinkler System','🔒 24/7 Guard','📹 CCTV','🚿 Worker Facilities'],desc:'Grade A warehousing with 14m clear height, 4 dock doors and 2 ground-level entries. NH-65 proximity for excellent pan-India logistics connectivity. Fire NOC available.',verified:true,new:false,premium:false},
+  {id:5,type:'Office',name:'Prestige Tech Park — Wing 3',area:'Whitefield',city:'Bangalore',sqft:'12,000',unit:'sqft',price:780000,per:'month',rating:4.9,rev:67,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-p',l:'★ PREMIUM'},{c:'sr-g',l:'LEED Gold'}],avail:true,furnished:true,floor:'8th Floor',tags:['LEED Gold','MNC Grade','Whitefield IT'],amen:['🅿️ 40 Car Parking','⚡ 100% Uptime','🌐 Redundant Fibre','🍽️ Food Court','🏋️ Gym & Wellness','🎯 Recreation Hub','🔒 Biometric'],desc:'Landmark LEED Gold certified campus in Whitefield IT corridor. Pre-fitted for 350 employees. 8 conference rooms, executive boardroom, terrace garden included.',verified:true,new:false,premium:true},
+  {id:6,type:'Showroom',name:'Auto Mile Showroom Complex',area:'Baner',city:'Pune',sqft:'6,400',unit:'sqft',price:220000,per:'month',rating:4.3,rev:31,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-t',l:'SHOWROOM'}],avail:false,furnished:false,floor:'Ground + First',tags:['Double Height','EV-Ready','Auto Mile'],amen:['🚗 Ramp Vehicle Entry','🎨 White-box Finish','💡 Track Lighting','🔌 EV Charging Points','🅿️ 30 Visitor Parking','📺 Digital Display Wall'],desc:'Purpose-built double-height showroom on Baner-Balewadi High Street. 5m ceiling height — ideal for automobile, furniture or luxury lifestyle brands.',verified:true,new:false,premium:false},
+  {id:7,type:'Industrial',name:'MIDC Industrial Shed — Plot 22',area:'Taloja MIDC',city:'Mumbai',sqft:'9,200',unit:'sqft',price:95000,per:'month',rating:4.2,rev:14,badges:[{c:'sr-v',l:'✓ VERIFIED'}],avail:true,furnished:false,floor:'Ground + Mez.',tags:['MIDC Approved','OC Available','Road Frontage'],amen:['🏗️ 12m Clear Height','🔌 500KVA Transformer','🚛 2 Loading Bays','💧 Water 3-inch','🧯 Fire NOC','🔒 Compound Wall'],desc:"MIDC-approved industrial shed in Taloja Phase II with 25m road frontage. OC and CC available. Suitable for light manufacturing, assembly, and logistics operations.",verified:true,new:false,premium:false},
+  {id:8,type:'Retail',name:'IndiVille High Street — Corner Unit',area:'Koramangala',city:'Bangalore',sqft:'850',unit:'sqft',price:68000,per:'month',rating:4.6,rev:53,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-h',l:'🔥 HOT'}],avail:true,furnished:false,floor:'Ground Floor',tags:['Corner Plot','Koramangala 5B','F&B Ready'],amen:['🚶 2 Street Entrances','🅿️ Street Parking','📶 Fibre Ready','🔌 3-Phase Power','📺 Illuminated Signage','🛡️ Security Shutter'],desc:"Premium corner retail on Koramangala 5th Block High Street — Bangalore's most vibrant F&B and lifestyle retail destination with excellent dual-road visibility.",verified:true,new:false,premium:false},
+  {id:9,type:'Coworking',name:'DLF CyberHub — Private Suite',area:'Sector 24',city:'Delhi NCR',sqft:'1,600',unit:'sqft',price:95000,per:'month',rating:4.8,rev:89,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-p',l:'★ PREMIUM'}],avail:true,furnished:true,floor:'14th Floor',tags:['CyberHub Address','Plug & Play','Prestige'],amen:['🌐 Dedicated 1Gbps','📅 6 Meeting Rooms','🔒 Private Access Card','🍽️ Executive Dining','🏋️ On-site Gym','☕ Premium Pantry'],desc:"Exclusive private office suite inside DLF CyberHub — Gurgaon's most prestigious business address. Plug-and-play for 40-50 persons. All utilities included.",verified:true,new:false,premium:true},
+  {id:10,type:'Warehouse',name:'Chennai Logistics Park — Bay 7',area:'Sriperumbudur',city:'Chennai',sqft:'24,000',unit:'sqft',price:215000,per:'month',rating:4.5,rev:22,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-n',l:'✨ NEW'}],avail:true,furnished:false,floor:'Ground Level',tags:['Brand New','Solar Power','Port Proximity'],amen:['🚚 6 Dock Doors','🔌 750KVA Power','⚡ Solar Panels','📦 Racking Permitted','🚒 FM200 Suppression','🌡️ Temperature Control'],desc:"Brand new Grade A warehousing in Chennai's fastest-growing logistics corridor. 35km from Chennai Port. Fully compliant with modern supply chain requirements.",verified:true,new:true,premium:false},
+  {id:11,type:'Office',name:'One Horizon — Floor 3',area:'Golf Course Road',city:'Delhi NCR',sqft:'7,200',unit:'sqft',price:520000,per:'month',rating:4.7,rev:48,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-p',l:'★ PREMIUM'}],avail:true,furnished:true,floor:'3rd Floor',tags:['Golf Course Road','Prestige','Sea View'],amen:['🅿️ 20 Dedicated Slots','⚡ 100% Power Backup','🌐 Dual ISP Fibre','🎯 Board Rooms ×3','📺 Video Conf. Ready','🔒 Smart Access'],desc:"Prestigious address on Golf Course Road — Gurgaon's most sought-after district. Fully fitted premium office with executive cabins, open zones and panoramic golf course views.",verified:true,new:false,premium:true},
+  {id:12,type:'Showroom',name:'Brigade Road — Flagship Unit',area:'MG Road',city:'Bangalore',sqft:'3,800',unit:'sqft',price:380000,per:'month',rating:4.6,rev:37,badges:[{c:'sr-v',l:'✓ VERIFIED'},{c:'sr-h',l:'🔥 HOT'},{c:'sr-t',l:'SHOWROOM'}],avail:true,furnished:false,floor:'Ground + Basement',tags:['MG Road Frontage','Glass Facade','Luxury Retail'],amen:['🌆 40m MG Road Frontage','🎨 Vanilla Shell','💡 4m Ceiling Height','🅿️ Basement Parking','🔌 200A Power','📺 Outdoor LED'],desc:"Rare luxury retail on Bangalore's premier commercial street. Full glass facade with 40m uninterrupted MG Road frontage — ideal for luxury brands and flagship retail.",verified:true,new:false,premium:false},
+];
+
+/* ── STATE ──────────────────────────────────────────────────────── */
+let _catType='all', _chipType='all', _view='grid';
+const _saved=new Set();
+
+/* ── RENDER GRID ────────────────────────────────────────────────── */
+function renderGrid(data){
+  document.getElementById('rCount').textContent=data.length;
+  const g=document.getElementById('propGrid');
+  if(!data.length){
+    g.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:80px 24px;color:var(--t3)"><div style="font-size:52px;margin-bottom:16px;opacity:.4">🏢</div><div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:600;font-style:italic;color:var(--t2);margin-bottom:8px">No properties found</div><div style="font-size:14px">Try adjusting your filters or search criteria</div></div>`;
+    return;
+  }
+  g.innerHTML=data.map((p,i)=>{
+    const bg=BG[p.type]||BG.Office;
+    const em=EM[p.type]||'🏢';
+    const sv=_saved.has(p.id);
+    const avail=p.avail?'<span class="avail yes">● Available</span>':'<span class="avail no">● Leased</span>';
+    return `<div class="card" style="animation-delay:${i*.07}s" onclick="openModal(${p.id})">
+      <div class="card-img" style="background:${bg}">
+        <div class="card-emoji">${em}</div>
+        <div class="card-overlay"></div>
+        <div class="status-ring">${p.badges.map(b=>`<span class="sring ${b.c}">${b.l}</span>`).join('')}</div>
+        <div class="save-btn ${sv?'saved':''}" onclick="event.stopPropagation();toggleSave(this,${p.id})">${sv?'❤️':'🤍'}</div>
+        <div class="img-foot">
+          <div class="irat">★ ${p.rating} <span style="opacity:.6;font-size:10px">(${p.rev})</span></div>
+          <div class="iarea">${p.sqft} ${p.unit}</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="type-avail"><span class="type-chip">${p.type}</span>${avail}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-loc"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${p.area}, ${p.city}</div>
+        <div class="specs">
+          <div class="spec"><div class="spec-v">${p.sqft}</div><div class="spec-l">${p.unit}</div></div>
+          <div class="spec"><div class="spec-v">${p.floor.split(' ')[0]}</div><div class="spec-l">Floor</div></div>
+          <div class="spec"><div class="spec-v">${p.furnished?'Yes':'Shell'}</div><div class="spec-l">Furnished</div></div>
+        </div>
+        <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="card-foot">
+          <div class="price-blk">
+            <div class="pval"><span class="cur">₹</span>${p.price.toLocaleString('en-IN')}</div>
+            <div class="pper">/${p.per}</div>
+          </div>
+          <div class="card-btns">
+            <button class="cbtn-call" onclick="event.stopPropagation();showToast('📞 Connecting…')">Call</button>
+            <a class="cbtn-view" href="#" onclick="event.stopPropagation();openModal(${p.id});return false">Details →</a>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── FILTERS ────────────────────────────────────────────────────── */
+function setCat(el,type){
+  document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active'); _catType=type; applyFilters();
+}
+
+function setChip(type,el){
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on'); _chipType=type; applyFilters();
+}
+
+function applyFilters(){
+  let d=[...window._D];
+  if(_catType!=='all') d=d.filter(p=>p.type===_catType);
+  if(_chipType==='available') d=d.filter(p=>p.avail);
+  else if(_chipType==='furnished') d=d.filter(p=>p.furnished);
+  else if(_chipType==='verified') d=d.filter(p=>p.verified);
+  else if(_chipType==='new') d=d.filter(p=>p.new);
+  else if(_chipType==='premium') d=d.filter(p=>p.premium);
+  const city=document.getElementById('fCity').value;
+  if(city) d=d.filter(p=>p.city===city);
+  const bud=parseInt(document.getElementById('fBudget').value);
+  if(bud) d=d.filter(p=>p.price<=bud);
+  const sort=document.getElementById('fSort').value;
+  if(sort==='price_asc') d.sort((a,b)=>a.price-b.price);
+  else if(sort==='price_desc') d.sort((a,b)=>b.price-a.price);
+  else if(sort==='area') d.sort((a,b)=>parseInt(b.sqft.replace(/,/g,''))-parseInt(a.sqft.replace(/,/g,'')));
+  else if(sort==='rating') d.sort((a,b)=>b.rating-a.rating);
+  else if(sort==='new') d.sort((a,b)=>(b.new?1:0)-(a.new?1:0));
+  renderGrid(d);
+}
+
+/* ── VIEW ───────────────────────────────────────────────────────── */
+function setView(v){
+  _view=v;
+  document.getElementById('propGrid').classList.toggle('lv',v==='list');
+  document.getElementById('gBtn').classList.toggle('on',v==='grid');
+  document.getElementById('lBtn').classList.toggle('on',v==='list');
+}
+
+/* ── SAVE ───────────────────────────────────────────────────────── */
+function toggleSave(btn,id){
+  if(_saved.has(id)){_saved.delete(id);btn.textContent='🤍';btn.classList.remove('saved');showToast('💔 Removed from watchlist');}
+  else{_saved.add(id);btn.textContent='❤️';btn.classList.add('saved');showToast('❤️ Added to watchlist!');}
+}
+
+/* ── SEARCH ─────────────────────────────────────────────────────── */
+function doSearch(){
+  const q=document.getElementById('sQ').value.trim().toLowerCase();
+  const city=document.getElementById('sCity').value;
+  const type=document.getElementById('sType').value;
+  let d=[...window._D];
+  if(q) d=d.filter(p=>p.name.toLowerCase().includes(q)||p.area.toLowerCase().includes(q)||p.city.toLowerCase().includes(q));
+  if(city) d=d.filter(p=>p.city===city);
+  if(type) d=d.filter(p=>p.type===type);
+  renderGrid(d);
+  document.querySelector('.filter-panel').scrollIntoView({behavior:'smooth'});
+}
+
+function setPill(el,type){
+  document.querySelectorAll('.tpill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  if(type!=='all'){
+    const s=document.getElementById('sType');
+    if(s){for(let o of s.options){if(o.value===type){s.value=type;break;}}}
+    _catType=type;
+    document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.ctab').forEach(t=>{if(t.getAttribute('data-type')===type||t.textContent.includes(type))t.classList.add('active');});
+  }
+  applyFilters();
+}
+
+/* ── MODAL ──────────────────────────────────────────────────────── */
+function openModal(id){
+  const p=window._D.find(x=>x.id===id);if(!p)return;
+  const bg=BG[p.type]||BG.Office;
+  document.getElementById('mHeroImg').style.background=bg;
+  document.getElementById('mEmoji').textContent=EM[p.type]||'🏢';
+  document.getElementById('mBadges').innerHTML=p.badges.map(b=>`<span class="sring ${b.c}">${b.l}</span>`).join('');
+  document.getElementById('mTitle').textContent=p.name;
+  document.getElementById('mLoc').innerHTML=`📍 ${p.area}, ${p.city} &nbsp;·&nbsp; ${p.type} &nbsp;·&nbsp; ${p.floor}`;
+  document.getElementById('mSpecs').innerHTML=[
+    {v:p.sqft,l:p.unit},{v:`₹${(p.price/1000).toFixed(0)}K`,l:'Per '+p.per},{v:p.rating,l:'Rating'},{v:p.furnished?'Yes':'Shell',l:'Furnished'},
+  ].map(s=>`<div class="mspec"><div class="mspec-v">${s.v}</div><div class="mspec-l">${s.l}</div></div>`).join('');
+  document.getElementById('mAmens').innerHTML=p.amen.map(a=>`<div class="amen-item">${a}</div>`).join('');
+  document.getElementById('mDesc').textContent=p.desc;
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){document.getElementById('modalBg').classList.remove('show');document.body.style.overflow='';}
+function handleOvClick(e){if(e.target===document.getElementById('modalBg'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* ── FEATURED PROJECTS ──────────────────────────────────────────── */
+const PROJECTS=[
+  {emoji:'🏙️',bg:'linear-gradient(135deg,#060e1e,#0e2038)',dev:'Prestige Group',name:'Prestige Tech Cloud',loc:'Sarjapur Road, Bangalore',chips:['Grade-A IT Park','LEED Platinum','10M+ sqft'],price:'₹72–96',punit:'sqft/month',featured:true},
+  {emoji:'🏛️',bg:'linear-gradient(135deg,#180e08,#2a1808)',dev:'Phoenix Palladium',name:'Phoenix One Hyderabad',loc:'Gachibowli, Hyderabad',chips:['Commercial Hub','Premium Retail','Mixed-Use'],price:'₹58–82',punit:'sqft/month',featured:false},
+  {emoji:'🌆',bg:'linear-gradient(135deg,#040c1a,#0a1c2e)',dev:'DLF Commercial',name:'DLF Downtown Noida',loc:'Sector 62, Noida',chips:['LEED Gold','IT/ITES','3M+ sqft'],price:'₹65–90',punit:'sqft/month',featured:false},
+];
+
+function buildDevGrid(){
+  document.getElementById('devGrid').innerHTML=PROJECTS.map(p=>`
+    <div class="dev-card ${p.featured?'hero-dev':''}" onclick="showToast('📋 Brochure will be sent to your email')">
+      <div class="dev-img" style="background:${p.bg}"><span style="position:relative;z-index:2;font-size:${p.featured?'60px':'48px'}">${p.emoji}</span><div class="dev-img-ov"></div><div class="dev-tag">PREMIUM</div></div>
+      <div class="dev-body">
+        <div class="dev-sub">${p.dev}</div>
+        <div class="dev-name">${p.name}</div>
+        <div class="dev-loc">📍 ${p.loc}</div>
+        <div class="dev-chips">${p.chips.map(c=>`<span class="dev-chip">${c}</span>`).join('')}</div>
+        <div class="dev-foot"><div class="dev-price">${p.price} <span>${p.punit}</span></div><button class="dev-cta">Get Brochure →</button></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── ANALYTICS CHARTS ───────────────────────────────────────────── */
+function buildCharts(){
+  const rentData=[48,52,56,58,62,64,60,68,66,70,65,68];
+  const max=Math.max(...rentData);
+  document.getElementById('bigChart').innerHTML=rentData.map(v=>`<div class="bc-bar" style="height:${(v/max*100).toFixed(0)}%"></div>`).join('');
+  setTimeout(()=>{document.getElementById('dialFill').style.width='82%';},600);
+}
+
+/* ── MARQUEE ────────────────────────────────────────────────────── */
+const MQ_ITEMS=[
+  {i:'🏢',t:'<strong>680+</strong> Commercial Spaces'},
+  {i:'🏙️',t:'<strong>45+</strong> Business Parks'},
+  {i:'⚡',t:'<strong>Zero Brokerage</strong> Always'},
+  {i:'✅',t:'<strong>100%</strong> Verified Listings'},
+  {i:'🤖',t:'<strong>AI-Matched</strong> For Your Business'},
+  {i:'🔒',t:'<strong>KYC-Verified</strong> Landlords'},
+  {i:'📊',t:'<strong>Real-Time</strong> Market Data'},
+  {i:'💼',t:'<strong>500+</strong> Corporate Clients'},
+  {i:'🌐',t:'<strong>12+</strong> Cities Covered'},
+  {i:'⭐',t:'<strong>4.7/5</strong> Client Rating'},
+];
+
+function buildMarquee(){
+  const t=document.getElementById('mqtrack');
+  const h=MQ_ITEMS.map(m=>`<div class="mqitem"><span class="mqitem-ic">${m.i}</span><span class="mqitem-tx">${m.t}</span></div>`).join('');
+  t.innerHTML=h+h;
+}
+
+/* ── NAVBAR ─────────────────────────────────────────────────────── */
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('solid',scrollY>40);});
+
+/* ── MOBILE MENU ────────────────────────────────────────────────── */
+function toggleDrawer(){
+  const d=document.getElementById('mobDrawer');const b=document.getElementById('mobBtn');
+  const open=d.classList.toggle('open');b.textContent=open?'✕':'☰';
+}
+
+/* ── TOAST ──────────────────────────────────────────────────────── */
+let _tT;
+function showToast(msg){const el=document.getElementById('toast');el.innerHTML=msg;el.style.display='block';clearTimeout(_tT);_tT=setTimeout(()=>{el.style.display='none';},3600);}
+
+/* ── SCROLL REVEAL ──────────────────────────────────────────────── */
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');observer.unobserve(e.target);}});},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>observer.observe(el));
+
+/* ── INIT ───────────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderGrid(window._D);
+  buildDevGrid();
+  buildCharts();
+  buildMarquee();
+});
+
+/* GLOBALS */
+window.setCat=setCat;window.setChip=setChip;window.applyFilters=applyFilters;window.setView=setView;
+window.toggleSave=toggleSave;window.doSearch=doSearch;window.setPill=setPill;
+window.openModal=openModal;window.closeModal=closeModal;window.handleOvClick=handleOvClick;
+window.showToast=showToast;window.toggleDrawer=toggleDrawer;
+</script>
+</body>
+</html>

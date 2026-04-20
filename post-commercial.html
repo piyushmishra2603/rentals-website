@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent AI — List Your Commercial Property</title>
+<meta name="description" content="List your commercial property on SmartRent AI. Office, retail, warehouse, co-working, industrial and showroom spaces. Free listing, zero brokerage, instant visibility.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   DESIGN SYSTEM — EDITORIAL DARK GOLD
+═══════════════════════════════════════════════════ */
+:root {
+  --void:    #040608;
+  --deep:    #070a12;
+  --surf:    #0b1020;
+  --card:    #0f162a;
+  --card2:   #131e34;
+  --card3:   #17243d;
+
+  --gold:      #c8a44a;
+  --gold-lt:   #e6c870;
+  --gold-dk:   #876a25;
+  --gold-d:    rgba(200,164,74,.1);
+  --gold-b:    rgba(200,164,74,.26);
+  --gold-bb:   rgba(200,164,74,.42);
+  --gold-glow: rgba(200,164,74,.38);
+
+  --steel:   #5ba3d4;
+  --steel-d: rgba(91,163,212,.1);
+  --steel-b: rgba(91,163,212,.22);
+
+  --teal:    #12c48e;
+  --teal-d:  rgba(18,196,142,.1);
+  --teal-b:  rgba(18,196,142,.22);
+
+  --rose:    #e03d5e;
+  --rose-d:  rgba(224,61,94,.1);
+  --rose-b:  rgba(224,61,94,.22);
+
+  --amber:   #e8940c;
+  --amber-d: rgba(232,148,12,.1);
+  --amber-b: rgba(232,148,12,.22);
+
+  --t0: #ecf0ff;  --t1: rgba(218,226,255,.82);
+  --t2: rgba(175,192,238,.54);  --t3: rgba(135,158,212,.3);
+
+  --div:  rgba(200,164,74,.07);  --div2: rgba(255,255,255,.07);
+  --div3: rgba(255,255,255,.14);
+
+  --r1:6px; --r2:13px; --r3:19px; --r4:28px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── AMBIENT ─────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(105px);animation:ofl 20s ease-in-out infinite alternate}
+.o1{width:680px;height:680px;top:-220px;left:-180px;background:radial-gradient(circle,rgba(200,164,74,.058) 0%,transparent 68%)}
+.o2{width:540px;height:540px;bottom:-200px;right:-150px;background:radial-gradient(circle,rgba(91,163,212,.05) 0%,transparent 68%);animation-delay:-9s}
+.o3{width:380px;height:380px;top:50%;left:45%;background:radial-gradient(circle,rgba(200,164,74,.028) 0%,transparent 68%);animation-delay:-15s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}40%{transform:translate(28px,-22px) scale(1.06)}70%{transform:translate(-18px,17px) scale(.97)}100%{transform:translate(13px,-9px) scale(1.03)}}
+
+.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.36}
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,164,74,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,74,.032) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 90% 75% at 50% 25%,black 0%,transparent 100%)}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(4,6,8,.75);backdrop-filter:blur(28px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(4,6,8,.97);box-shadow:0 1px 0 var(--gold-b),0 8px 40px rgba(0,0,0,.6)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.brand-gem{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(200,164,74,.32),inset 0 1px 0 rgba(255,255,255,.18);flex-shrink:0}
+.brand-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--t0);letter-spacing:.01em}
+.brand-ai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--steel);background:var(--steel-d);border:1px solid var(--steel-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 20px}
+.nl{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s}.nl:hover{color:var(--t0)}
+.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nbtn{padding:7px 15px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.nbtn-ghost{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nbtn-ghost:hover{border-color:var(--gold-b);color:var(--gold)}
+.nbtn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-weight:700;box-shadow:0 0 16px rgba(200,164,74,.18)}.nbtn-gold:hover{box-shadow:0 0 26px var(--gold-glow);transform:translateY(-1px)}
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-drawer{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(4,6,8,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0;backdrop-filter:blur(22px)}
+.mob-drawer.open{display:flex}
+.mob-l{padding:12px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(200,164,74,.08);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-l:hover{color:var(--gold)}.mob-l:last-of-type{border-bottom:none}
+
+/* ══════════════════════════════════════════════
+   PAGE HEADER
+══════════════════════════════════════════════ */
+.page-header{position:relative;z-index:1;padding:100px 24px 0;text-align:center;overflow:hidden}
+.ph-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(200,164,74,.06);pointer-events:none}
+.pr-a{width:800px;height:800px;margin:-400px 0 0 -400px;animation:rpulse 10s ease-in-out infinite}
+.pr-b{width:560px;height:560px;margin:-280px 0 0 -280px;border-style:dashed;animation:rpulse 10s ease-in-out infinite;animation-delay:-3s;opacity:.5}
+@keyframes rpulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:1}}
+
+.ph-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;animation:su .7s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.ph-title{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:.96;letter-spacing:-.025em;color:var(--t0);margin-bottom:10px;animation:su .8s .08s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.ph-title em{font-style:italic;background:linear-gradient(135deg,var(--gold-lt) 0%,var(--gold) 45%,var(--steel) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ph-sub{font-family:'Playfair Display',serif;font-size:clamp(16px,2.5vw,24px);font-weight:400;font-style:italic;color:var(--t2);margin-bottom:20px;animation:su .8s .16s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.ph-desc{font-size:15px;color:var(--t2);line-height:1.82;max-width:560px;margin:0 auto 44px;animation:su .8s .24s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TRUST ROW ─────────────────────────────── */
+.trust-row{display:flex;gap:0;justify-content:center;align-items:stretch;flex-wrap:wrap;background:rgba(7,10,18,.78);border:1px solid var(--gold-b);border-radius:var(--r2);backdrop-filter:blur(18px);overflow:hidden;max-width:760px;margin:0 auto 64px;animation:su .8s .32s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
+.trust-item{padding:16px 28px;text-align:center;border-right:1px solid rgba(200,164,74,.1);flex:1}.trust-item:last-child{border-right:none}
+.ti-v{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;margin-bottom:3px}
+.ti-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+
+/* ══════════════════════════════════════════════
+   STEP INDICATOR
+══════════════════════════════════════════════ */
+.step-bar{position:sticky;top:64px;z-index:200;background:rgba(4,6,8,.96);border-bottom:1px solid var(--gold-b);backdrop-filter:blur(22px);padding:0 32px}
+.step-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;padding:16px 0;gap:0}
+
+.step-node{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
+.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;transition:all .3s;border:2px solid rgba(255,255,255,.1);background:var(--card);color:var(--t3)}
+.step-node.done .step-circle{background:var(--teal-d);border-color:var(--teal-b);color:var(--teal)}
+.step-node.active .step-circle{background:var(--gold-d);border-color:var(--gold-bb);color:var(--gold);box-shadow:0 0 14px rgba(200,164,74,.25)}
+.step-label{font-size:12px;font-weight:600;color:var(--t3);letter-spacing:.01em;transition:color .3s;white-space:nowrap}
+.step-node.active .step-label{color:var(--gold)}
+.step-node.done .step-label{color:var(--teal)}
+
+.step-connector{flex:1;height:1px;background:rgba(255,255,255,.07);margin:0 10px;position:relative}
+.step-connector::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:1px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.step-connector.filled::after{width:100%}
+.step-connector.half::after{width:50%}
+
+/* Step labels on mobile */
+@media(max-width:700px){.step-label{display:none}.step-connector{margin:0 6px}}
+
+/* ══════════════════════════════════════════════
+   MAIN LAYOUT
+══════════════════════════════════════════════ */
+.form-layout{display:grid;grid-template-columns:1fr 340px;gap:26px;max-width:1260px;margin:0 auto;padding:40px 28px 100px;position:relative;z-index:1}
+@media(max-width:1100px){.form-layout{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════════════
+   STEP PANELS
+══════════════════════════════════════════════ */
+.step-panel{display:none;animation:panelIn .4s cubic-bezier(.4,0,.2,1) both}
+.step-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r4);overflow:hidden;margin-bottom:20px}
+.panel-card-head{padding:24px 28px 20px;border-bottom:1px solid rgba(200,164,74,.07);background:linear-gradient(90deg,rgba(200,164,74,.04),transparent)}
+.pch-step{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.pch-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--t0);margin-bottom:4px;letter-spacing:-.01em}
+.pch-sub{font-size:13px;color:var(--t2)}
+.panel-card-body{padding:28px}
+
+/* ══════════════════════════════════════════════
+   FORM ELEMENTS
+══════════════════════════════════════════════ */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+.form-grid.cols-1{grid-template-columns:1fr}
+.form-full{grid-column:span 2}
+.form-full3{grid-column:span 3}
+
+.fgroup{display:flex;flex-direction:column;gap:7px}
+.flabel{font-size:12px;font-weight:600;color:var(--t1);letter-spacing:.02em;display:flex;align-items:center;gap:6px}
+.flabel .req{color:var(--rose);font-size:10px}
+.flabel .hint{font-size:10px;color:var(--t3);font-weight:400;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+/* Input base */
+.finput,.fselect,.ftextarea{width:100%;background:var(--deep);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);padding:12px 15px;color:var(--t0);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .22s;line-height:1.5}
+.finput::placeholder,.ftextarea::placeholder{color:var(--t3);font-style:italic}
+.fselect{cursor:pointer;color:var(--t1)}.fselect option{background:var(--card)}
+.ftextarea{resize:vertical;min-height:110px;line-height:1.7}
+.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--gold-bb);background:rgba(200,164,74,.025);box-shadow:0 0 0 3px rgba(200,164,74,.07)}
+.finput.err,.fselect.err,.ftextarea.err{border-color:var(--rose-b);background:rgba(224,61,94,.025)}
+
+/* Input with prefix/suffix */
+.input-wrap{position:relative;display:flex;align-items:stretch}
+.input-prefix,.input-suffix{padding:12px 14px;background:var(--card2);border:1px solid rgba(255,255,255,.08);color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:13px;white-space:nowrap;display:flex;align-items:center;flex-shrink:0}
+.input-prefix{border-right:none;border-radius:var(--r2) 0 0 var(--r2)}
+.input-suffix{border-left:none;border-radius:0 var(--r2) var(--r2) 0}
+.input-wrap .finput{border-radius:0;flex:1}
+.input-wrap.has-prefix .finput{border-radius:0}
+.input-wrap.has-suffix .finput{border-radius:var(--r2) 0 0 var(--r2)}
+
+.ferr{font-size:11px;color:var(--rose);display:none;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+.ferr.show{display:block}
+
+/* ── TYPE SELECTOR CARDS ───────────────────── */
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.type-card{background:var(--deep);border:2px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.type-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--tc-glow,rgba(200,164,74,.07)),transparent 60%);opacity:0;transition:opacity .25s}
+.type-card:hover{border-color:var(--gold-b);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4)}.type-card:hover::before{opacity:1}
+.type-card.selected{border-color:var(--gold);background:var(--gold-d);box-shadow:0 0 0 1px rgba(200,164,74,.15),0 10px 30px rgba(0,0,0,.4)}.type-card.selected::before{opacity:1}
+.type-card-ic{font-size:28px;display:block;margin-bottom:10px;transition:transform .25s}.type-card:hover .type-card-ic{transform:scale(1.15)}.type-card.selected .type-card-ic{filter:drop-shadow(0 0 8px rgba(200,164,74,.4))}
+.type-card-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--t0);margin-bottom:3px}
+.type-card-desc{font-size:11px;color:var(--t3);line-height:1.5}
+.type-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:10px;color:#04060a;font-weight:700}
+.type-card.selected .type-check{display:flex}
+
+/* ── AMENITY TOGGLE GRID ───────────────────── */
+.amen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-top:4px}
+.amen-toggle{display:flex;align-items:center;gap:10px;background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:11px 14px;cursor:pointer;transition:all .22s;user-select:none}
+.amen-toggle:hover{border-color:var(--div2);background:rgba(255,255,255,.03)}
+.amen-toggle.on{background:var(--gold-d);border-color:var(--gold-b)}
+.amen-ic{font-size:18px;flex-shrink:0}
+.amen-lbl{font-size:12px;font-weight:500;color:var(--t2);transition:color .2s}.amen-toggle.on .amen-lbl{color:var(--gold)}
+.amen-box{width:18px;height:18px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto;transition:all .2s;font-size:11px}
+.amen-toggle.on .amen-box{background:var(--gold);border-color:var(--gold);color:#04060a}
+
+/* ── FLOOR PLAN SELECTOR ───────────────────── */
+.floor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.floor-card{background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:14px 12px;text-align:center;cursor:pointer;transition:all .22s}
+.floor-card:hover{border-color:var(--div2)}.floor-card.on{border-color:var(--gold-b);background:var(--gold-d)}
+.floor-card-n{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--t0);margin-bottom:2px}
+.floor-card-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+
+/* ── PHOTO UPLOAD ZONE ─────────────────────── */
+.photo-zone{border:2px dashed rgba(200,164,74,.22);border-radius:var(--r3);padding:40px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:rgba(200,164,74,.025)}
+.photo-zone:hover,.photo-zone.dragover{border-color:var(--gold-bb);background:rgba(200,164,74,.05)}
+.pz-ic{font-size:44px;margin-bottom:14px;display:block;opacity:.7}
+.pz-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:6px}
+.pz-desc{font-size:13px;color:var(--t2);margin-bottom:14px}
+.pz-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 22px;border-radius:var(--r1);background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.pz-btn:hover{background:rgba(200,164,74,.18)}
+.pz-input{display:none}
+.pz-badge{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);margin-top:10px;letter-spacing:.08em}
+
+.photo-previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:16px}
+.photo-thumb{position:relative;border-radius:var(--r2);overflow:hidden;aspect-ratio:1;background:var(--card2);border:1px solid var(--div2)}
+.photo-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(224,61,94,.9);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;color:#fff;font-weight:700;transition:all .15s}
+.photo-del:hover{background:var(--rose)}
+
+/* ── PLAN SELECTOR ─────────────────────────── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
+.plan-card{background:var(--deep);border:2px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:22px 18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--pc,var(--gold)),transparent);opacity:.4}
+.plan-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+.plan-card.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(200,164,74,.15),0 12px 36px rgba(0,0,0,.4)}
+.plan-tag{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;padding:2px 8px;border-radius:3px;margin-bottom:12px;display:inline-block}
+.plan-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:4px}
+.plan-price{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;margin-bottom:12px;line-height:1}
+.plan-price .pp-free{color:var(--teal)}
+.plan-price .pp-mo{font-size:14px;font-weight:400;color:var(--t3);font-family:'Outfit',sans-serif}
+.plan-features{display:flex;flex-direction:column;gap:7px}
+.pf{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2)}
+.pf::before{content:'✓';color:var(--teal);font-weight:700;font-size:11px;flex-shrink:0}
+.plan-pop{position:absolute;top:14px;right:14px;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);padding:2px 7px;border-radius:3px}
+
+/* ── TOGGLE SWITCH ─────────────────────────── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);transition:all .2s}
+.toggle-row.on{border-color:var(--gold-b);background:var(--gold-d)}
+.toggle-lbl{font-size:13px;font-weight:600;color:var(--t1)}
+.toggle-desc{font-size:11px;color:var(--t3);margin-top:2px}
+.toggle-sw{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.1);position:relative;cursor:pointer;transition:all .25s;flex-shrink:0}
+.toggle-sw::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all .25s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.toggle-row.on .toggle-sw{background:var(--gold)}
+.toggle-row.on .toggle-sw::after{left:22px}
+
+/* ── RANGE SLIDER ─────────────────────────── */
+.range-wrap{padding:8px 0 4px}
+.frange{width:100%;appearance:none;height:4px;border-radius:2px;background:linear-gradient(to right,var(--gold) var(--range-pct,50%),rgba(255,255,255,.1) var(--range-pct,50%));outline:none;cursor:pointer}
+.frange::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(200,164,74,.4);cursor:pointer;transition:transform .15s}
+.frange::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:6px}
+
+/* ── CHAR COUNTER ──────────────────────────── */
+.char-counter{font-size:10px;color:var(--t3);text-align:right;font-family:'JetBrains Mono',monospace;margin-top:4px}
+
+/* ── SECTION DIVIDER ───────────────────────── */
+.sdiv{display:flex;align-items:center;gap:14px;margin:26px 0 20px;color:var(--t3)}
+.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:rgba(200,164,74,.08)}
+.sdiv-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+
+/* ══════════════════════════════════════════════
+   NAV BUTTONS
+══════════════════════════════════════════════ */
+.form-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
+.btn-back{padding:13px 24px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px}.btn-back:hover{border-color:var(--gold-b);color:var(--gold)}
+.btn-next{padding:13px 32px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:8px;letter-spacing:.02em}.btn-next:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
+.btn-submit{padding:15px 40px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;letter-spacing:.02em}.btn-submit:hover{box-shadow:0 0 36px var(--gold-glow);transform:translateY(-2px)}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR PREVIEW
+══════════════════════════════════════════════ */
+.sidebar{position:sticky;top:120px;display:flex;flex-direction:column;gap:16px}
+
+.preview-card{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r3);overflow:hidden}
+.preview-banner{height:130px;background:linear-gradient(135deg,#0a1428,#172035);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative}
+.preview-banner-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(4,6,8,.8))}
+.preview-type-tag{position:absolute;top:12px;left:12px;font-size:9px;font-family:'JetBrains Mono',monospace;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);padding:2px 8px;border-radius:3px;letter-spacing:.1em;z-index:2}
+.preview-body{padding:16px}
+.preview-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:4px;min-height:24px}
+.preview-loc{font-size:12px;color:var(--t2);margin-bottom:12px;min-height:18px}
+.preview-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold-lt);margin-bottom:12px;min-height:28px}
+.preview-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;min-height:22px}
+.ptag{font-size:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:2px 7px;border-radius:3px;color:var(--t2)}
+.preview-footer{padding-top:12px;border-top:1px solid rgba(200,164,74,.08)}
+.prev-btn{width:100%;padding:10px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;opacity:.55;letter-spacing:.02em}
+
+.completeness-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:20px}
+.cc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cc-title{font-size:13px;font-weight:700;color:var(--t0)}
+.cc-pct{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold)}
+.cc-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
+.cc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.cc-items{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.cci{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.cci-ic{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;border:1px solid rgba(255,255,255,.1);color:var(--t3)}
+.cci.done .cci-ic{background:var(--teal-d);border-color:var(--teal-b);color:var(--teal)}
+
+.perks-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:20px}
+.perks-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--t0);margin-bottom:14px}
+.perk{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}.perk:last-child{margin-bottom:0}
+.perk-ic{width:32px;height:32px;border-radius:8px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.perk-t{font-size:13px;font-weight:600;color:var(--t0);margin-bottom:2px}
+.perk-d{font-size:11px;color:var(--t2);line-height:1.6}
+
+/* ══════════════════════════════════════════════
+   SUCCESS SCREEN
+══════════════════════════════════════════════ */
+.success-screen{display:none;position:fixed;inset:0;z-index:1100;background:rgba(2,4,8,.94);backdrop-filter:blur(18px);align-items:center;justify-content:center;padding:20px}
+.success-screen.show{display:flex;animation:ssIn .5s cubic-bezier(.34,1.2,.64,1)}
+@keyframes ssIn{from{opacity:0}to{opacity:1}}
+.success-box{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r4);padding:52px 44px;max-width:500px;width:100%;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(200,164,74,.1)}
+.success-ic{font-size:72px;margin-bottom:22px;display:block;filter:drop-shadow(0 0 24px rgba(200,164,74,.35));animation:successBounce .6s .2s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes successBounce{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+.success-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:var(--t0);margin-bottom:10px;letter-spacing:-.02em}
+.success-sub{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--gold);margin-bottom:16px}
+.success-desc{font-size:14px;color:var(--t2);line-height:1.82;margin-bottom:28px}
+.success-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.sb-main{padding:12px 24px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.sb-main:hover{box-shadow:0 0 24px var(--gold-glow)}
+.sb-sec{padding:11px 20px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.sb-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--card2);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 17px;font-size:13px;display:none;box-shadow:0 8px 34px rgba(0,0,0,.5);min-width:250px;animation:ti .3s ease}
+@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media(max-width:768px){
+  .nav-links{display:none}.mob-btn{display:flex}
+  .form-grid{grid-template-columns:1fr !important}
+  .form-full,.form-full3{grid-column:span 1}
+  .type-grid{grid-template-columns:repeat(2,1fr)}
+  .floor-grid{grid-template-columns:repeat(2,1fr)}
+  .plan-grid{grid-template-columns:1fr}
+  .trust-row{border-radius:0;border-left:none;border-right:none}
+  .trust-item{padding:14px 18px}
+  .success-box{padding:36px 24px}
+  .success-btns{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="bg-noise"></div>
+<div class="bg-grid"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="success-box">
+    <span class="success-ic">🏢</span>
+    <div class="success-title">Property Listed!</div>
+    <div class="success-sub">Your commercial space is now live.</div>
+    <div class="success-desc">Congratulations! Your property has been submitted for verification. Our team will review it within 24 hours and it will go live on SmartRent AI. You'll receive confirmation at your registered email.</div>
+    <div class="success-btns">
+      <a class="sb-main" href="commercial.html">🏢 View Commercial Listings</a>
+      <a class="sb-sec" href="booking-dashboard.html">📋 Owner Dashboard</a>
+      <a class="sb-sec" href="index.html">🏠 Home</a>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mob-drawer" id="mobDrawer">
+  <a class="mob-l" href="index.html">🏠 Home</a>
+  <a class="mob-l" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
+  <a class="mob-l" href="commercial.html">🏢 Commercial Rentals</a>
+  <a class="mob-l" href="post-property.html">📋 List PG / Hostel</a>
+  <a class="mob-l" href="booking-dashboard.html">📊 Dashboard</a>
+  <a class="mob-l" href="admin.html">⚙️ Admin</a>
+  <hr style="border:none;border-top:1px solid rgba(200,164,74,.1);margin:8px 0">
+  <a class="nbtn nbtn-ghost" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="brand-gem">💎</div>
+    <span class="brand-name">SmartRent<span class="brand-ai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+    <a class="nl" href="commercial.html">Commercial</a>
+    <a class="nl" href="post-property.html">List PG / Hostel</a>
+    <a class="nl" href="admin.html">Admin</a>
+  </div>
+  <div class="nav-r">
+    <a class="nbtn nbtn-ghost" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nbtn nbtn-gold" href="commercial.html" style="text-decoration:none">← Back to Listings</a>
+    <button class="mob-btn" onclick="toggleDrawer()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ══════════ PAGE HEADER ══════════ -->
+<div class="page-header">
+  <div class="ph-ring pr-a"></div>
+  <div class="ph-ring pr-b"></div>
+
+  <div class="ph-badge">🏢 Commercial Listing Portal</div>
+  <h1 class="ph-title">List Your<br><em>Commercial Property</em></h1>
+  <div class="ph-sub">Free listing. Verified. Instant reach.</div>
+  <p class="ph-desc">Reach <strong style="color:var(--gold-lt)">50,000+ verified business tenants</strong> actively searching for commercial space. Zero brokerage, transparent process, live within 24 hours.</p>
+
+  <div class="trust-row">
+    <div class="trust-item"><div class="ti-v">Free</div><div class="ti-l">Listing Cost</div></div>
+    <div class="trust-item"><div class="ti-v">24hr</div><div class="ti-l">Go Live</div></div>
+    <div class="trust-item"><div class="ti-v">50K+</div><div class="ti-l">Active Tenants</div></div>
+    <div class="trust-item"><div class="ti-v">₹0</div><div class="ti-l">Brokerage</div></div>
+  </div>
+</div>
+
+<!-- ══════════ STEP BAR ══════════ -->
+<div class="step-bar">
+  <div class="step-inner">
+    <div class="step-node active" id="sn1" onclick="goStep(1)">
+      <div class="step-circle">01</div>
+      <div class="step-label">Property Type</div>
+    </div>
+    <div class="step-connector" id="sc1"></div>
+    <div class="step-node" id="sn2" onclick="goStep(2)">
+      <div class="step-circle">02</div>
+      <div class="step-label">Basic Details</div>
+    </div>
+    <div class="step-connector" id="sc2"></div>
+    <div class="step-node" id="sn3" onclick="goStep(3)">
+      <div class="step-circle">03</div>
+      <div class="step-label">Location</div>
+    </div>
+    <div class="step-connector" id="sc3"></div>
+    <div class="step-node" id="sn4" onclick="goStep(4)">
+      <div class="step-circle">04</div>
+      <div class="step-label">Pricing</div>
+    </div>
+    <div class="step-connector" id="sc4"></div>
+    <div class="step-node" id="sn5" onclick="goStep(5)">
+      <div class="step-circle">05</div>
+      <div class="step-label">Amenities</div>
+    </div>
+    <div class="step-connector" id="sc5"></div>
+    <div class="step-node" id="sn6" onclick="goStep(6)">
+      <div class="step-circle">06</div>
+      <div class="step-label">Media</div>
+    </div>
+    <div class="step-connector" id="sc6"></div>
+    <div class="step-node" id="sn7" onclick="goStep(7)">
+      <div class="step-circle">07</div>
+      <div class="step-label">Plan &amp; Publish</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MAIN FORM ══════════ -->
+<div class="form-layout">
+
+  <!-- ───── FORM COLUMN ───── -->
+  <div class="form-col">
+
+    <!-- ═══ STEP 1: Property Type ═══ -->
+    <div class="step-panel active" id="step1">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 01 of 07</div>
+          <div class="pch-title">What type of commercial space are you listing?</div>
+          <div class="pch-sub">Select the category that best describes your property</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="type-grid" id="typeGrid">
+            <div class="type-card" onclick="selectType(this,'Office')" style="--tc-glow:rgba(91,163,212,.08)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">🏢</span>
+              <div class="type-card-name">Office Space</div>
+              <div class="type-card-desc">Corporate offices, managed workspaces, business centres</div>
+            </div>
+            <div class="type-card" onclick="selectType(this,'Retail')" style="--tc-glow:rgba(200,164,74,.08)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">🏪</span>
+              <div class="type-card-name">Retail / Shop</div>
+              <div class="type-card-desc">High street shops, malls, standalone retail units</div>
+            </div>
+            <div class="type-card" onclick="selectType(this,'Coworking')" style="--tc-glow:rgba(18,196,142,.07)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">💻</span>
+              <div class="type-card-name">Co-working Space</div>
+              <div class="type-card-desc">Shared desks, private cabins, flex offices, startup hubs</div>
+            </div>
+            <div class="type-card" onclick="selectType(this,'Warehouse')" style="--tc-glow:rgba(232,148,12,.07)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">🏭</span>
+              <div class="type-card-name">Warehouse</div>
+              <div class="type-card-desc">Storage, distribution centres, logistics parks</div>
+            </div>
+            <div class="type-card" onclick="selectType(this,'Industrial')" style="--tc-glow:rgba(91,163,212,.07)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">⚙️</span>
+              <div class="type-card-name">Industrial Unit</div>
+              <div class="type-card-desc">Manufacturing sheds, MIDC plots, factory units</div>
+            </div>
+            <div class="type-card" onclick="selectType(this,'Showroom')" style="--tc-glow:rgba(200,164,74,.08)">
+              <div class="type-check">✓</div>
+              <span class="type-card-ic">🚗</span>
+              <div class="type-card-name">Showroom</div>
+              <div class="type-card-desc">Automotive, luxury, display showrooms with ramp access</div>
+            </div>
+          </div>
+          <div class="ferr" id="typeErr" style="margin-top:12px">Please select a property type to continue</div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Owner Details</span></div>
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Owner / Company Name <span class="req">*</span></label>
+              <input class="finput" id="ownerName" placeholder="Your name or company name">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Owner Type <span class="req">*</span></label>
+              <select class="fselect" id="ownerType">
+                <option value="">Select owner type</option>
+                <option>Individual Owner</option>
+                <option>Company / Corporate</option>
+                <option>Developer / Builder</option>
+                <option>Property Manager</option>
+                <option>REIT / Fund</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Mobile Number <span class="req">*</span></label>
+              <div class="input-wrap has-prefix">
+                <div class="input-prefix">+91</div>
+                <input class="finput" id="ownerPhone" type="tel" placeholder="10-digit number" maxlength="10">
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Email Address <span class="req">*</span></label>
+              <input class="finput" id="ownerEmail" type="email" placeholder="you@company.com">
+            </div>
+            <div class="fgroup form-full">
+              <label class="flabel">WhatsApp Number <span class="hint">(Optional — for tenant direct contact)</span></label>
+              <div class="input-wrap has-prefix">
+                <div class="input-prefix">+91</div>
+                <input class="finput" id="ownerWa" type="tel" placeholder="Same as mobile" maxlength="10">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <span></span>
+        <button class="btn-next" onclick="nextStep(1)">Continue to Details ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 2: Basic Details ═══ -->
+    <div class="step-panel" id="step2">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 02 of 07</div>
+          <div class="pch-title">Property Details</div>
+          <div class="pch-sub">Describe your commercial space to attract the right tenants</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="form-grid cols-1">
+            <div class="fgroup">
+              <label class="flabel">Property Title <span class="req">*</span> <span class="hint">(How it appears in search)</span></label>
+              <input class="finput" id="propTitle" placeholder="e.g. Prime Office Space in Gachibowli Financial District" oninput="updatePreview()">
+              <div class="char-counter"><span id="titleLen">0</span>/100 characters</div>
+            </div>
+          </div>
+
+          <div class="form-grid" style="margin-top:18px">
+            <div class="fgroup">
+              <label class="flabel">Total Area <span class="req">*</span></label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="propArea" type="number" placeholder="e.g. 2500" oninput="updatePreview()">
+                <div class="input-suffix">Sq.ft</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Carpet Area <span class="hint">(Optional)</span></label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="propCarpet" type="number" placeholder="Usable area">
+                <div class="input-suffix">Sq.ft</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Floor Number <span class="req">*</span></label>
+              <select class="fselect" id="propFloor">
+                <option value="">Select floor</option>
+                <option>Basement</option><option>Ground Floor</option><option>Mezzanine</option>
+                <option>1st Floor</option><option>2nd Floor</option><option>3rd Floor</option>
+                <option>4th Floor</option><option>5th Floor</option><option>6th–10th Floor</option>
+                <option>11th–15th Floor</option><option>16th–20th Floor</option><option>Above 20th Floor</option>
+                <option>Multiple Floors</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Total Floors in Building</label>
+              <input class="finput" id="propTotalFloors" type="number" placeholder="e.g. 18">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Ceiling Height</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="propCeiling" type="number" placeholder="e.g. 12">
+                <div class="input-suffix">Feet</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Year Built</label>
+              <input class="finput" id="propYear" type="number" placeholder="e.g. 2020" min="1980" max="2025">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Furnishing Status <span class="req">*</span></label>
+              <select class="fselect" id="propFurnish">
+                <option value="">Select status</option>
+                <option>Bare Shell</option><option>Warm Shell</option>
+                <option>Semi-Furnished</option><option>Fully Furnished</option>
+                <option>Plug &amp; Play</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Seating Capacity <span class="hint">(For Office / Co-working)</span></label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="propSeats" type="number" placeholder="e.g. 50">
+                <div class="input-suffix">Seats</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Parking Slots</label>
+              <input class="finput" id="propParking" type="number" placeholder="e.g. 10">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Grade / Category</label>
+              <select class="fselect" id="propGrade">
+                <option value="">Select grade</option>
+                <option>Grade A+</option><option>Grade A</option><option>Grade B+</option>
+                <option>Grade B</option><option>Standalone Building</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Property Description</span></div>
+          <div class="fgroup">
+            <label class="flabel">Detailed Description <span class="req">*</span></label>
+            <textarea class="ftextarea" id="propDesc" rows="5" placeholder="Describe your property in detail — highlight key features, nearby landmarks, connectivity, unique selling points, infrastructure and any special benefits for tenants…" oninput="descCounter(this)"></textarea>
+            <div class="char-counter"><span id="descLen">0</span>/1000 — Minimum 80 characters recommended</div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Lease Preferences</span></div>
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Minimum Lease Period <span class="req">*</span></label>
+              <select class="fselect" id="leasePeriod">
+                <option value="">Select period</option>
+                <option>1 Month</option><option>3 Months</option><option>6 Months</option>
+                <option>11 Months</option><option>1 Year</option><option>2 Years</option>
+                <option>3 Years</option><option>5 Years</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Lock-in Period</label>
+              <select class="fselect" id="lockIn">
+                <option value="">None / Flexible</option>
+                <option>3 Months</option><option>6 Months</option><option>1 Year</option>
+                <option>2 Years</option><option>3 Years</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Preferred Tenant Type</label>
+              <select class="fselect" id="tenantType">
+                <option value="">Any Business</option>
+                <option>IT / Tech Company</option><option>BPO / KPO</option>
+                <option>Retail / F&B Brand</option><option>E-commerce / Logistics</option>
+                <option>Manufacturing</option><option>Healthcare / Pharma</option>
+                <option>Finance / BFSI</option><option>Startup / SME</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Available From <span class="req">*</span></label>
+              <input class="finput" id="availFrom" type="date">
+            </div>
+          </div>
+
+          <!-- Toggles -->
+          <div class="sdiv"><span class="sdiv-lbl">Property Policies</span></div>
+          <div style="display:flex;flex-direction:column;gap:10px" id="togglesContainer">
+            <div class="toggle-row" id="t-pets" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">Pets Allowed</div><div class="toggle-desc">Tenants may have pets on premises</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-24hr" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">24/7 Access</div><div class="toggle-desc">Tenants have round-the-clock building access</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-food" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">Food Court / Cafeteria</div><div class="toggle-desc">On-premises dining facility available</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-power" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">100% Power Backup</div><div class="toggle-desc">Uninterrupted power supply with DG/UPS</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-green" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">Green / LEED Certified</div><div class="toggle-desc">Certified sustainable / eco-friendly building</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(2)">‹ Back</button>
+        <button class="btn-next" onclick="nextStep(2)">Continue to Location ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 3: Location ═══ -->
+    <div class="step-panel" id="step3">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 03 of 07</div>
+          <div class="pch-title">Location &amp; Address</div>
+          <div class="pch-sub">Help tenants find your property easily</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">City <span class="req">*</span></label>
+              <select class="fselect" id="city" onchange="updatePreview()">
+                <option value="">Select city</option>
+                <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
+                <option>Delhi</option><option>Gurgaon</option><option>Noida</option>
+                <option>Chennai</option><option>Pune</option><option>Kolkata</option>
+                <option>Ahmedabad</option><option>Surat</option><option>Jaipur</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Locality / Area <span class="req">*</span></label>
+              <input class="finput" id="locality" placeholder="e.g. Gachibowli, Whitefield" oninput="updatePreview()">
+            </div>
+            <div class="fgroup form-full">
+              <label class="flabel">Street Address / Building Name <span class="req">*</span></label>
+              <input class="finput" id="address" placeholder="e.g. Survey No. 12, DLF Cyber City, Gachibowli">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Landmark <span class="hint">(Optional)</span></label>
+              <input class="finput" id="landmark" placeholder="e.g. Near Raheja Mindspace">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">PIN Code <span class="req">*</span></label>
+              <input class="finput" id="pincode" type="text" placeholder="6-digit PIN" maxlength="6">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Business District / Park</label>
+              <select class="fselect" id="bizPark">
+                <option value="">None / Standalone</option>
+                <option>DLF Cyber City</option><option>Raheja Mindspace</option><option>Manyata Tech Park</option>
+                <option>RMZ Infinity</option><option>Prestige Tech Park</option><option>Bagmane Tech Park</option>
+                <option>HITEC City</option><option>BKC (Bandra Kurla Complex)</option><option>Nariman Point</option>
+                <option>Sector 62 Noida</option><option>Golf Course Road</option><option>ORR Bangalore</option>
+                <option>Other Business Park</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Nearby Connectivity</span></div>
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Metro / Rail Distance</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="metroKm" type="number" step="0.1" placeholder="0.5">
+                <div class="input-suffix">km</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Nearest Metro Station</label>
+              <input class="finput" id="metroName" placeholder="e.g. Raidurg Metro">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Airport Distance</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="airportKm" type="number" placeholder="25">
+                <div class="input-suffix">km</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Highway / Expressway Access</label>
+              <input class="finput" id="highway" placeholder="e.g. NH-65, ORR">
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Google Maps (Optional)</span></div>
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Latitude</label>
+              <input class="finput" id="lat" type="number" step="0.000001" placeholder="17.428400">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Longitude</label>
+              <input class="finput" id="lng" type="number" step="0.000001" placeholder="78.351234">
+            </div>
+            <div class="fgroup form-full">
+              <label class="flabel">Google Maps Link <span class="hint">(Paste the share link)</span></label>
+              <input class="finput" id="mapsUrl" type="url" placeholder="https://maps.google.com/...">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(3)">‹ Back</button>
+        <button class="btn-next" onclick="nextStep(3)">Continue to Pricing ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 4: Pricing ═══ -->
+    <div class="step-panel" id="step4">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 04 of 07</div>
+          <div class="pch-title">Pricing &amp; Financials</div>
+          <div class="pch-sub">Set competitive rates — our market data helps you benchmark</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Monthly Rent <span class="req">*</span></label>
+              <div class="input-wrap has-prefix">
+                <div class="input-prefix">₹</div>
+                <input class="finput" id="rentAmt" type="number" placeholder="e.g. 150000" oninput="updatePreview()">
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Rent Type <span class="req">*</span></label>
+              <select class="fselect" id="rentType">
+                <option>Fixed Monthly Rent</option>
+                <option>Per Sq.ft / Month</option>
+                <option>Per Seat / Month</option>
+                <option>Revenue Share</option>
+                <option>Negotiable</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Security Deposit <span class="req">*</span></label>
+              <div class="input-wrap has-prefix">
+                <div class="input-prefix">₹</div>
+                <input class="finput" id="deposit" type="number" placeholder="e.g. 600000">
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Deposit Equivalent (Months)</label>
+              <select class="fselect" id="depositMonths">
+                <option>1 Month</option><option>2 Months</option><option>3 Months</option>
+                <option>6 Months</option><option>12 Months</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Annual Escalation</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="escalation" type="number" placeholder="e.g. 5" step="0.5">
+                <div class="input-suffix">% p.a.</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">GST Applicable</label>
+              <select class="fselect" id="gst">
+                <option>GST Inclusive</option>
+                <option>GST Extra (18%)</option>
+                <option>Not Applicable</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Market Benchmark</span></div>
+          <div style="background:var(--deep);border:1px solid rgba(200,164,74,.12);border-radius:var(--r2);padding:18px;margin-bottom:18px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+              <div style="font-size:13px;color:var(--t1);font-weight:600">📊 Benchmark: Office Space · Hyderabad · Gachibowli</div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold)">Updated Q1 2026</div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+              <div style="text-align:center;padding:12px;background:var(--card);border-radius:var(--r1);border:1px solid rgba(255,255,255,.05)">
+                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold-lt)">₹55</div>
+                <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px">MIN SQFT</div>
+              </div>
+              <div style="text-align:center;padding:12px;background:rgba(200,164,74,.08);border-radius:var(--r1);border:1px solid var(--gold-b)">
+                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold)">₹72</div>
+                <div style="font-size:10px;color:var(--gold);font-family:'JetBrains Mono',monospace;margin-top:2px">AVG SQFT</div>
+              </div>
+              <div style="text-align:center;padding:12px;background:var(--card);border-radius:var(--r1);border:1px solid rgba(255,255,255,.05)">
+                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold-lt)">₹98</div>
+                <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px">MAX SQFT</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Additional Charges</span></div>
+          <div class="form-grid">
+            <div class="fgroup">
+              <label class="flabel">Maintenance Charges</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="maintenance" type="number" placeholder="Per sqft / month">
+                <div class="input-suffix">₹/sqft</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Power Charges</label>
+              <select class="fselect" id="powerCharge">
+                <option>Metered (actual consumption)</option>
+                <option>Fixed monthly charge</option>
+                <option>Included in rent</option>
+                <option>N/A</option>
+              </select>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Car Parking Rate</label>
+              <div class="input-wrap has-suffix">
+                <input class="finput" id="parkingRate" type="number" placeholder="Per slot / month">
+                <div class="input-suffix">₹/mo</div>
+              </div>
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Other Charges Notes</label>
+              <input class="finput" id="otherCharges" placeholder="Any other fees or notes">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(4)">‹ Back</button>
+        <button class="btn-next" onclick="nextStep(4)">Continue to Amenities ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 5: Amenities ═══ -->
+    <div class="step-panel" id="step5">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 05 of 07</div>
+          <div class="pch-title">Amenities &amp; Infrastructure</div>
+          <div class="pch-sub">Select everything available at your property — more amenities = more enquiries</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="sdiv"><span class="sdiv-lbl">Connectivity &amp; Power</span></div>
+          <div class="amen-grid" id="amenConnect">
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📶</span><span class="amen-lbl">High-Speed Internet</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌐</span><span class="amen-lbl">Fiber / Leased Line</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔌</span><span class="amen-lbl">3-Phase Power Supply</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">⚡</span><span class="amen-lbl">100% Power Backup</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔋</span><span class="amen-lbl">DG / UPS Set</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">☀️</span><span class="amen-lbl">Solar Power</span><div class="amen-box"></div></div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Security &amp; Safety</span></div>
+          <div class="amen-grid">
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔒</span><span class="amen-lbl">24/7 Security Guards</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📹</span><span class="amen-lbl">CCTV Surveillance</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🆔</span><span class="amen-lbl">Biometric Access</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚒</span><span class="amen-lbl">Fire Suppression System</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🧯</span><span class="amen-lbl">Fire NOC Available</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔐</span><span class="amen-lbl">Smart Access Control</span><div class="amen-box"></div></div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Facilities &amp; Services</span></div>
+          <div class="amen-grid">
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🅿️</span><span class="amen-lbl">Covered Parking</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚗</span><span class="amen-lbl">Open Parking</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🛗</span><span class="amen-lbl">High-Speed Lifts</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚿</span><span class="amen-lbl">Washrooms (Each Floor)</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🍽️</span><span class="amen-lbl">Cafeteria / Food Court</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">☕</span><span class="amen-lbl">Pantry / Break Area</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏋️</span><span class="amen-lbl">Gym / Wellness</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🧹</span><span class="amen-lbl">Daily Housekeeping</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚚</span><span class="amen-lbl">Loading / Dock Bay</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌱</span><span class="amen-lbl">Green Terrace / Garden</span><div class="amen-box"></div></div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Office-Specific</span></div>
+          <div class="amen-grid">
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📅</span><span class="amen-lbl">Meeting Rooms</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🎯</span><span class="amen-lbl">Conference / Board Room</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📺</span><span class="amen-lbl">Video Conf. System</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🖨️</span><span class="amen-lbl">Printing / Copier Room</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📮</span><span class="amen-lbl">Mail Room / Reception</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏆</span><span class="amen-lbl">LEED / Green Certified</span><div class="amen-box"></div></div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Warehouse / Industrial Specific</span></div>
+          <div class="amen-grid">
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📦</span><span class="amen-lbl">Pallet Racking Ready</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏗️</span><span class="amen-lbl">High Clear Height (10m+)</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚛</span><span class="amen-lbl">Multiple Dock Doors</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌡️</span><span class="amen-lbl">Temperature Controlled</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏭</span><span class="amen-lbl">Mezzanine Storage</span><div class="amen-box"></div></div>
+            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚤</span><span class="amen-lbl">Water Body / Canal Access</span><div class="amen-box"></div></div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Additional Tags (max 5)</span></div>
+          <div class="fgroup">
+            <input class="finput" id="customTags" placeholder="e.g. SEZ Zone, RERA Approved, Highway Frontage — separate with comma" oninput="updatePreview()">
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(5)">‹ Back</button>
+        <button class="btn-next" onclick="nextStep(5)">Continue to Media ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 6: Media ═══ -->
+    <div class="step-panel" id="step6">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 06 of 07</div>
+          <div class="pch-title">Photos, Videos &amp; Documents</div>
+          <div class="pch-sub">Properties with 8+ quality photos get 3× more enquiries</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+            <span class="pz-ic">📸</span>
+            <div class="pz-title">Drag &amp; drop photos here</div>
+            <div class="pz-desc">JPG, PNG, WEBP — Up to 20 photos, max 5MB each</div>
+            <div class="pz-btn">📁 Browse Photos</div>
+            <input type="file" id="photoInput" class="pz-input" accept="image/*" multiple onchange="handlePhotoSelect(event)">
+            <div class="pz-badge">MINIMUM 3 PHOTOS REQUIRED · MAX 20</div>
+          </div>
+          <div class="photo-previews" id="photoPreviews"></div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Video Tour</span></div>
+          <div class="form-grid cols-1">
+            <div class="fgroup">
+              <label class="flabel">Video Tour URL <span class="hint">(YouTube, Vimeo or Drive link)</span></label>
+              <input class="finput" id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=...">
+            </div>
+            <div class="fgroup">
+              <label class="flabel">Virtual Tour / 3D Walk URL <span class="hint">(Matterport, 360° tour etc.)</span></label>
+              <input class="finput" id="virtualUrl" type="url" placeholder="https://my.matterport.com/show/...">
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Legal Documents</span></div>
+          <div style="background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:18px">
+            <div style="font-size:13px;color:var(--t2);line-height:1.78;margin-bottom:14px">
+              Upload property documents for <strong style="color:var(--teal)">Verified Badge</strong> — verified properties receive 4× more enquiries. All documents are encrypted and private.
+            </div>
+            <div class="form-grid">
+              <div class="fgroup">
+                <label class="flabel">Ownership / Title Deed</label>
+                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
+              </div>
+              <div class="fgroup">
+                <label class="flabel">Occupancy Certificate (OC)</label>
+                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
+              </div>
+              <div class="fgroup">
+                <label class="flabel">Building Completion Certificate</label>
+                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
+              </div>
+              <div class="fgroup">
+                <label class="flabel">Floor Plan / Blueprint</label>
+                <input class="finput" type="file" accept=".pdf,.jpg,.png,.dwg" style="cursor:pointer;color:var(--t2)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(6)">‹ Back</button>
+        <button class="btn-next" onclick="nextStep(6)">Choose Your Plan ›</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 7: Plan & Publish ═══ -->
+    <div class="step-panel" id="step7">
+      <div class="panel-card">
+        <div class="panel-card-head">
+          <div class="pch-step">Step 07 of 07 — Final Step</div>
+          <div class="pch-title">Choose Your Listing Plan</div>
+          <div class="pch-sub">Start free — upgrade anytime for premium visibility</div>
+        </div>
+        <div class="panel-card-body">
+          <div class="plan-grid" id="planGrid">
+            <div class="plan-card" style="--pc:var(--teal)" onclick="selectPlan(this,'free')">
+              <div class="plan-tag" style="background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-b)">STARTER</div>
+              <div class="plan-name">Free Listing</div>
+              <div class="plan-price"><span class="pp-free">₹0</span> <span class="pp-mo">forever</span></div>
+              <div class="plan-features">
+                <div class="pf">Basic listing visibility</div>
+                <div class="pf">Up to 8 photos</div>
+                <div class="pf">Standard search placement</div>
+                <div class="pf">Direct enquiry emails</div>
+                <div class="pf">30-day listing</div>
+              </div>
+            </div>
+            <div class="plan-card selected" style="--pc:var(--gold)" onclick="selectPlan(this,'pro')">
+              <div class="plan-pop">POPULAR</div>
+              <div class="plan-tag" style="background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)">PRO</div>
+              <div class="plan-name">Premium Listing</div>
+              <div class="plan-price" style="color:var(--gold)">₹2,999 <span class="pp-mo">/3 months</span></div>
+              <div class="plan-features">
+                <div class="pf">Featured in top search results</div>
+                <div class="pf">Up to 20 photos + video tour</div>
+                <div class="pf">✓ Verified badge</div>
+                <div class="pf">90-day listing</div>
+                <div class="pf">WhatsApp enquiry alerts</div>
+                <div class="pf">Analytics dashboard</div>
+              </div>
+            </div>
+            <div class="plan-card" style="--pc:var(--steel)" onclick="selectPlan(this,'enterprise')">
+              <div class="plan-tag" style="background:var(--steel-d);color:var(--steel);border:1px solid var(--steel-b)">ENTERPRISE</div>
+              <div class="plan-name">Enterprise</div>
+              <div class="plan-price" style="color:var(--steel)">₹7,999 <span class="pp-mo">/year</span></div>
+              <div class="plan-features">
+                <div class="pf">Homepage banner placement</div>
+                <div class="pf">Unlimited photos &amp; videos</div>
+                <div class="pf">Priority verified badge</div>
+                <div class="pf">1-year listing</div>
+                <div class="pf">Dedicated relationship manager</div>
+                <div class="pf">Lead analytics &amp; export</div>
+                <div class="pf">Featured in SmartRent emails</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sdiv"><span class="sdiv-lbl">Review &amp; Confirm</span></div>
+
+          <!-- Review Summary -->
+          <div id="reviewSummary" style="background:var(--deep);border:1px solid rgba(200,164,74,.12);border-radius:var(--r2);padding:20px;margin-bottom:24px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="reviewGrid">
+              <div style="font-size:13px;color:var(--t2)">Complete the form to see review summary</div>
+            </div>
+          </div>
+
+          <!-- Terms toggles -->
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
+            <div class="toggle-row" id="t-terms" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">I agree to the Terms of Service &amp; Privacy Policy <span style="color:var(--rose)">*</span></div><div class="toggle-desc"><a href="privacy-policy.html" style="color:var(--gold);text-decoration:none">Read our Privacy Policy</a></div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-accurate" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">I certify all information is accurate &amp; truthful <span style="color:var(--rose)">*</span></div><div class="toggle-desc">False listings will be removed and account suspended</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+            <div class="toggle-row" id="t-owner" onclick="toggleRow(this)">
+              <div><div class="toggle-lbl">I am the owner or authorised representative</div><div class="toggle-desc">You have the right to list this property</div></div>
+              <div class="toggle-sw"></div>
+            </div>
+          </div>
+
+          <button class="btn-submit" onclick="submitListing()">
+            🚀 Publish Listing Now
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="btn-back" onclick="prevStep(7)">‹ Back</button>
+        <span></span>
+      </div>
+    </div>
+
+  </div><!-- /form-col -->
+
+  <!-- ───── SIDEBAR ───── -->
+  <aside class="sidebar">
+
+    <!-- Live Preview Card -->
+    <div class="preview-card">
+      <div class="preview-banner" id="previewBanner">
+        <div class="preview-banner-ov"></div>
+        <div class="preview-type-tag" id="previewTypeTag">COMMERCIAL</div>
+        <span style="position:relative;z-index:2;font-size:46px" id="previewEmoji">🏢</span>
+      </div>
+      <div class="preview-body">
+        <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">LIVE PREVIEW</div>
+        <div class="preview-name" id="previewName">Your Property Title</div>
+        <div class="preview-loc" id="previewLoc">📍 City, Area</div>
+        <div class="preview-price" id="previewPrice">₹ — / month</div>
+        <div class="preview-tags" id="previewTags">
+          <span class="ptag">Awaiting Details</span>
+        </div>
+        <div class="preview-footer">
+          <button class="prev-btn">View Property (Preview)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Completeness -->
+    <div class="completeness-card">
+      <div class="cc-head">
+        <div class="cc-title">Listing Score</div>
+        <div class="cc-pct" id="ccPct">0%</div>
+      </div>
+      <div class="cc-bar"><div class="cc-fill" id="ccFill" style="width:0%"></div></div>
+      <div class="cc-items">
+        <div class="cci" id="cci-type"><div class="cci-ic">○</div>Property type selected</div>
+        <div class="cci" id="cci-details"><div class="cci-ic">○</div>Basic details complete</div>
+        <div class="cci" id="cci-location"><div class="cci-ic">○</div>Location added</div>
+        <div class="cci" id="cci-pricing"><div class="cci-ic">○</div>Pricing set</div>
+        <div class="cci" id="cci-amenities"><div class="cci-ic">○</div>Amenities selected</div>
+        <div class="cci" id="cci-photos"><div class="cci-ic">○</div>Photos uploaded</div>
+        <div class="cci" id="cci-plan"><div class="cci-ic">○</div>Plan selected</div>
+      </div>
+    </div>
+
+    <!-- Perks -->
+    <div class="perks-card">
+      <div class="perks-title">Why List on SmartRent?</div>
+      <div class="perk"><div class="perk-ic">👁️</div><div><div class="perk-t">50,000+ Monthly Views</div><div class="perk-d">Verified commercial tenants actively searching</div></div></div>
+      <div class="perk"><div class="perk-ic">⚡</div><div><div class="perk-t">Go Live in 24 Hours</div><div class="perk-d">Our team reviews and approves within one business day</div></div></div>
+      <div class="perk"><div class="perk-ic">🔒</div><div><div class="perk-t">KYC-Verified Tenants</div><div class="perk-d">Only verified businesses can contact you</div></div></div>
+      <div class="perk"><div class="perk-ic">📊</div><div><div class="perk-t">Analytics Dashboard</div><div class="perk-d">Track views, enquiries and conversions in real time</div></div></div>
+    </div>
+
+  </aside>
+
+</div><!-- /form-layout -->
+
+<!-- ══════════ FIREBASE ══════════ -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,collection,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal",storageBucket:"smart-property-portal.appspot.com"};
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
+window._auth=auth;window._db=db;window._storage=storage;
+window._addDoc=addDoc;window._collection=collection;
+window._ref=ref;window._uploadBytes=uploadBytes;window._getDownloadURL=getDownloadURL;
+window._serverTimestamp=serverTimestamp;
+onAuthStateChanged(auth,u=>{if(u){const a=document.querySelector('.nav-r');if(a){const av=document.createElement('div');av.style.cssText='width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--steel));display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1.5px solid var(--gold-b);font-family:Playfair Display,serif;font-weight:700;color:#04060a;';av.textContent=(u.displayName||u.email||'U')[0].toUpperCase();a.insertBefore(av,a.firstChild);}}});
+</script>
+
+<!-- ══════════ APP SCRIPT ══════════ -->
+<script>
+/* ── STATE ────────────────────────────────────────────── */
+let currentStep = 1;
+let selectedType = '';
+let selectedPlan = 'pro';
+let uploadedPhotos = [];
+const completeness = {type:false,details:false,location:false,pricing:false,amenities:false,photos:false,plan:true};
+
+const TYPE_CONFIG = {
+  Office:{emoji:'🏢',bg:'linear-gradient(135deg,#08142a,#122438)',color:'var(--steel)'},
+  Retail:{emoji:'🏪',bg:'linear-gradient(135deg,#1a0f08,#2a1a0e)',color:'var(--amber)'},
+  Coworking:{emoji:'💻',bg:'linear-gradient(135deg,#071525,#0c2232)',color:'var(--teal)'},
+  Warehouse:{emoji:'🏭',bg:'linear-gradient(135deg,#0e0e0e,#181620)',color:'var(--gold)'},
+  Industrial:{emoji:'⚙️',bg:'linear-gradient(135deg,#0a100a,#141c10)',color:'var(--steel)'},
+  Showroom:{emoji:'🚗',bg:'linear-gradient(135deg,#110720,#1c0e2e)',color:'var(--gold)'},
+};
+
+/* ── STEP NAVIGATION ─────────────────────────────────── */
+function goStep(n) {
+  if(n > currentStep) return; // can only go back manually
+  currentStep = n;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  updateStepBar();
+  window.scrollTo({top:140, behavior:'smooth'});
+}
+
+function nextStep(from) {
+  if(!validateStep(from)) return;
+  currentStep = from + 1;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + currentStep).classList.add('active');
+  updateStepBar();
+  updateCompleteness(from);
+  if(currentStep === 7) buildReviewSummary();
+  window.scrollTo({top:140, behavior:'smooth'});
+}
+
+function prevStep(from) {
+  currentStep = from - 1;
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + currentStep).classList.add('active');
+  updateStepBar();
+  window.scrollTo({top:140, behavior:'smooth'});
+}
+
+function updateStepBar() {
+  for(let i=1; i<=7; i++) {
+    const n = document.getElementById('sn'+i);
+    n.classList.remove('active','done');
+    if(i < currentStep) n.classList.add('done');
+    else if(i === currentStep) n.classList.add('active');
+  }
+  for(let i=1; i<=6; i++) {
+    const c = document.getElementById('sc'+i);
+    c.classList.remove('filled','half');
+    if(i < currentStep) c.classList.add('filled');
+    else if(i === currentStep - 1) c.classList.add('half');
+  }
+}
+
+/* ── VALIDATION ──────────────────────────────────────── */
+function validateStep(step) {
+  if(step === 1) {
+    if(!selectedType) { showErr('typeErr'); showToast('⚠️ Please select a property type'); return false; }
+    if(!v('ownerName')) { showToast('⚠️ Please enter your name'); return false; }
+    if(!v('ownerType')) { showToast('⚠️ Please select owner type'); return false; }
+    if(!v('ownerPhone') || document.getElementById('ownerPhone').value.length !== 10) { showToast('⚠️ Please enter a valid 10-digit phone number'); return false; }
+    if(!v('ownerEmail') || !document.getElementById('ownerEmail').value.includes('@')) { showToast('⚠️ Please enter a valid email address'); return false; }
+    completeness.type = true;
+  }
+  if(step === 2) {
+    if(!v('propTitle')) { showToast('⚠️ Property title is required'); return false; }
+    if(!v('propArea')) { showToast('⚠️ Property area is required'); return false; }
+    if(!v('propFloor')) { showToast('⚠️ Please select the floor'); return false; }
+    if(!v('propFurnish')) { showToast('⚠️ Please select furnishing status'); return false; }
+    if(!v('propDesc') || document.getElementById('propDesc').value.length < 40) { showToast('⚠️ Please write at least 80 characters for the description'); return false; }
+    if(!v('leasePeriod')) { showToast('⚠️ Please select minimum lease period'); return false; }
+    if(!v('availFrom')) { showToast('⚠️ Please select availability date'); return false; }
+    completeness.details = true;
+  }
+  if(step === 3) {
+    if(!v('city')) { showToast('⚠️ Please select a city'); return false; }
+    if(!v('locality')) { showToast('⚠️ Please enter the locality'); return false; }
+    if(!v('address')) { showToast('⚠️ Please enter the street address'); return false; }
+    if(!v('pincode') || document.getElementById('pincode').value.length !== 6) { showToast('⚠️ Please enter a valid 6-digit PIN code'); return false; }
+    completeness.location = true;
+  }
+  if(step === 4) {
+    if(!v('rentAmt') || parseInt(document.getElementById('rentAmt').value) < 1000) { showToast('⚠️ Please enter a valid monthly rent'); return false; }
+    if(!v('deposit')) { showToast('⚠️ Please enter the security deposit amount'); return false; }
+    completeness.pricing = true;
+  }
+  if(step === 5) {
+    const checked = document.querySelectorAll('.amen-toggle.on').length;
+    if(checked < 2) { showToast('⚠️ Please select at least 2 amenities'); return false; }
+    completeness.amenities = true;
+  }
+  if(step === 6) {
+    completeness.photos = uploadedPhotos.length > 0;
+    if(!completeness.photos) { showToast('ℹ️ Consider adding photos for 3× more enquiries — you can skip this step'); }
+    completeness.photos = true; // allow skip
+  }
+  return true;
+}
+
+function v(id) { return document.getElementById(id).value.trim() !== ''; }
+function showErr(id) { const el=document.getElementById(id);el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500); }
+
+/* ── TYPE SELECTION ──────────────────────────────────── */
+function selectType(card, type) {
+  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedType = type;
+  document.getElementById('typeErr').classList.remove('show');
+  const cfg = TYPE_CONFIG[type] || TYPE_CONFIG.Office;
+  document.getElementById('previewEmoji').textContent = cfg.emoji;
+  document.getElementById('previewBanner').style.background = cfg.bg;
+  document.getElementById('previewTypeTag').textContent = type.toUpperCase();
+}
+
+/* ── PLAN SELECTION ──────────────────────────────────── */
+function selectPlan(card, plan) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  selectedPlan = plan;
+}
+
+/* ── TOGGLE AMENITY ──────────────────────────────────── */
+function toggleAmen(el) {
+  el.classList.toggle('on');
+  el.querySelector('.amen-box').textContent = el.classList.contains('on') ? '✓' : '';
+}
+
+/* ── TOGGLE ROW ──────────────────────────────────────── */
+function toggleRow(el) {
+  el.classList.toggle('on');
+}
+
+/* ── LIVE PREVIEW ────────────────────────────────────── */
+function updatePreview() {
+  const title = document.getElementById('propTitle').value.trim();
+  const city = document.getElementById('city') ? document.getElementById('city').value : '';
+  const area = document.getElementById('locality') ? document.getElementById('locality').value.trim() : '';
+  const rent = document.getElementById('rentAmt') ? document.getElementById('rentAmt').value : '';
+  const tags = document.getElementById('customTags') ? document.getElementById('customTags').value : '';
+  const titleLen = document.getElementById('propTitle').value.length;
+  if(document.getElementById('titleLen')) document.getElementById('titleLen').textContent = titleLen;
+
+  document.getElementById('previewName').textContent = title || 'Your Property Title';
+  document.getElementById('previewLoc').textContent = (city || area) ? ('📍 ' + [area,city].filter(Boolean).join(', ')) : '📍 City, Area';
+  document.getElementById('previewPrice').textContent = rent ? '₹' + parseInt(rent).toLocaleString('en-IN') + ' / month' : '₹ — / month';
+
+  const tagArr = tags.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4);
+  if(selectedType) tagArr.unshift(selectedType);
+  document.getElementById('previewTags').innerHTML = tagArr.slice(0,4).map(t=>`<span class="ptag">${t}</span>`).join('') || '<span class="ptag">Awaiting Details</span>';
+}
+
+function descCounter(el) {
+  document.getElementById('descLen').textContent = el.value.length;
+}
+
+/* ── PHOTO HANDLING ──────────────────────────────────── */
+function handlePhotoSelect(e) { addPhotos(Array.from(e.target.files)); }
+function handleDragOver(e) { e.preventDefault(); document.getElementById('photoZone').classList.add('dragover'); }
+function handleDragLeave() { document.getElementById('photoZone').classList.remove('dragover'); }
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('photoZone').classList.remove('dragover');
+  addPhotos(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
+}
+
+function addPhotos(files) {
+  files.forEach(file => {
+    if(uploadedPhotos.length >= 20) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      uploadedPhotos.push({file, url:e.target.result});
+      renderPreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  showToast(`📸 ${files.length} photo(s) added (${uploadedPhotos.length} total)`);
+}
+
+function renderPreviews() {
+  document.getElementById('photoPreviews').innerHTML = uploadedPhotos.map((p,i) => `
+    <div class="photo-thumb">
+      <img src="${p.url}" alt="Photo ${i+1}">
+      <div class="photo-del" onclick="removePhoto(${i})">✕</div>
+    </div>`).join('');
+}
+
+function removePhoto(i) {
+  uploadedPhotos.splice(i,1);
+  renderPreviews();
+}
+
+/* ── COMPLETENESS ────────────────────────────────────── */
+function updateCompleteness(step) {
+  const keys = ['type','details','location','pricing','amenities','photos','plan'];
+  const map = {1:'type',2:'details',3:'location',4:'pricing',5:'amenities',6:'photos',7:'plan'};
+  if(map[step]) completeness[map[step]] = true;
+
+  const done = Object.values(completeness).filter(Boolean).length;
+  const pct = Math.round((done/7)*100);
+  document.getElementById('ccPct').textContent = pct + '%';
+  document.getElementById('ccFill').style.width = pct + '%';
+
+  keys.forEach(k => {
+    const el = document.getElementById('cci-'+k);
+    if(el) {
+      el.classList.toggle('done', completeness[k]);
+      el.querySelector('.cci-ic').textContent = completeness[k] ? '✓' : '○';
+    }
+  });
+}
+
+/* ── REVIEW SUMMARY ──────────────────────────────────── */
+function buildReviewSummary() {
+  const data = [
+    {l:'Property Type', v:selectedType||'—'},
+    {l:'Title', v:g('propTitle')||'—'},
+    {l:'City', v:g('city')||'—'},
+    {l:'Area / Locality', v:g('locality')||'—'},
+    {l:'Floor', v:g('propFloor')||'—'},
+    {l:'Size', v:g('propArea')?(g('propArea')+' sq.ft'):'—'},
+    {l:'Furnishing', v:g('propFurnish')||'—'},
+    {l:'Monthly Rent', v:g('rentAmt')?('₹'+parseInt(g('rentAmt')).toLocaleString('en-IN')):'—'},
+    {l:'Security Deposit', v:g('deposit')?('₹'+parseInt(g('deposit')).toLocaleString('en-IN')):'—'},
+    {l:'Available From', v:g('availFrom')||'—'},
+    {l:'Photos Added', v:uploadedPhotos.length},
+    {l:'Selected Plan', v:selectedPlan.charAt(0).toUpperCase()+selectedPlan.slice(1)},
+  ];
+  document.getElementById('reviewGrid').innerHTML = data.map(d => `
+    <div style="padding:8px 0;border-bottom:1px solid rgba(200,164,74,.06)">
+      <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">${d.l}</div>
+      <div style="font-size:13px;color:var(--t0);font-weight:500">${d.v}</div>
+    </div>`).join('');
+}
+
+function g(id) { const el=document.getElementById(id); return el?el.value:''; }
+
+/* ── SUBMIT ──────────────────────────────────────────── */
+async function submitListing() {
+  if(!document.getElementById('t-terms').classList.contains('on')) { showToast('⚠️ Please accept the Terms of Service'); return; }
+  if(!document.getElementById('t-accurate').classList.contains('on')) { showToast('⚠️ Please certify that your information is accurate'); return; }
+
+  const btn = document.querySelector('.btn-submit');
+  btn.textContent = '⏳ Submitting…';
+  btn.disabled = true;
+
+  const payload = {
+    type: selectedType,
+    title: g('propTitle'),
+    ownerName: g('ownerName'),
+    ownerType: g('ownerType'),
+    ownerPhone: g('ownerPhone'),
+    ownerEmail: g('ownerEmail'),
+    area: g('propArea'),
+    floor: g('propFloor'),
+    furnish: g('propFurnish'),
+    city: g('city'),
+    locality: g('locality'),
+    address: g('address'),
+    pincode: g('pincode'),
+    rent: g('rentAmt'),
+    deposit: g('deposit'),
+    desc: g('propDesc'),
+    availFrom: g('availFrom'),
+    leasePeriod: g('leasePeriod'),
+    plan: selectedPlan,
+    amenities: Array.from(document.querySelectorAll('.amen-toggle.on .amen-lbl')).map(e=>e.textContent),
+    approved: false,
+    status: 'pending_review',
+  };
+
+  if(window._db && window._addDoc) {
+    try {
+      payload.createdAt = window._serverTimestamp();
+      await window._addDoc(window._collection(window._db,'commercial'), payload);
+    } catch(e) { console.log('Firebase write error:', e); }
+  }
+
+  setTimeout(() => {
+    document.getElementById('successScreen').classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }, 600);
+}
+
+/* ── MARQUEE ─────────────────────────────────────────── */
+// No marquee on this page — already minimal
+
+/* ── NAVBAR ──────────────────────────────────────────── */
+window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('solid', scrollY > 40); });
+
+/* ── MOBILE MENU ─────────────────────────────────────── */
+function toggleDrawer() {
+  const d=document.getElementById('mobDrawer'); const b=document.getElementById('mobBtn');
+  const open=d.classList.toggle('open'); b.textContent=open?'✕':'☰';
+}
+
+/* ── TOAST ───────────────────────────────────────────── */
+let _tT;
+function showToast(msg) { const el=document.getElementById('toast');el.innerHTML=msg;el.style.display='block';clearTimeout(_tT);_tT=setTimeout(()=>{el.style.display='none';},3600); }
+
+/* ── CAT BAR LINKS ───────────────────────────────────── */
+document.querySelectorAll('.ctab').forEach(t=>t.setAttribute('data-type',t.textContent.trim().split(' ')[1]||''));
+
+/* ── EXPOSE GLOBALS ──────────────────────────────────── */
+window.goStep=goStep; window.nextStep=nextStep; window.prevStep=prevStep;
+window.selectType=selectType; window.selectPlan=selectPlan;
+window.toggleAmen=toggleAmen; window.toggleRow=toggleRow;
+window.updatePreview=updatePreview; window.descCounter=descCounter;
+window.handlePhotoSelect=handlePhotoSelect; window.handleDragOver=handleDragOver;
+window.handleDragLeave=handleDragLeave; window.handleDrop=handleDrop;
+window.removePhoto=removePhoto; window.submitListing=submitListing;
+window.showToast=showToast; window.toggleDrawer=toggleDrawer;
+</script>
+</body>
+</html>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Guide — SmartRent AI | List, Rent & Manage Your Property</title>
+<meta name="description" content="The complete guide for property owners on SmartRent AI. Learn how to list, price, screen tenants, draft agreements, handle maintenance and grow your rental income.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040609;--bg1:#070b14;--bg2:#0c1220;--bg3:#10182c;--bg4:#152035;
+  --gold:#c8a44a;--gold-lt:#e6c870;--gold-dk:#876a25;
+  --gold-d:rgba(200,164,74,.1);--gold-b:rgba(200,164,74,.24);--gold-g:rgba(200,164,74,.05);
+  --teal:#0fb880;--teal-d:rgba(15,184,128,.1);--teal-b:rgba(15,184,128,.22);
+  --rose:#e03d5e;--rose-d:rgba(224,61,94,.1);--rose-b:rgba(224,61,94,.22);
+  --amber:#e89010;--amber-d:rgba(232,144,16,.1);--amber-b:rgba(232,144,16,.22);
+  --steel:#5ba3d4;--steel-d:rgba(91,163,212,.1);--steel-b:rgba(91,163,212,.22);
+  --t0:#ecf0ff;--t1:rgba(218,226,255,.82);--t2:rgba(175,192,238,.54);--t3:rgba(135,158,212,.3);
+  --div:rgba(200,164,74,.07);--div2:rgba(255,255,255,.07);
+  --r1:7px;--r2:13px;--r3:19px;--r4:26px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t0);overflow-x:hidden;line-height:1.7}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}
+
+/* AMBIENT */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:ofl 20s ease-in-out infinite alternate}
+.o1{width:680px;height:680px;top:-200px;left:-160px;background:radial-gradient(circle,rgba(200,164,74,.058) 0%,transparent 68%)}
+.o2{width:520px;height:520px;bottom:-180px;right:-140px;background:radial-gradient(circle,rgba(15,184,128,.048) 0%,transparent 68%);animation-delay:-9s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}50%{transform:translate(28px,-20px) scale(1.05)}100%{transform:translate(-14px,16px) scale(.97)}}
+.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.38}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:62px;display:flex;align-items:center;padding:0 32px;background:rgba(4,6,9,.78);backdrop-filter:blur(28px);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(4,6,9,.97);box-shadow:0 1px 0 var(--gold-b),0 6px 36px rgba(0,0,0,.5)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.bgem{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 14px rgba(200,164,74,.3);flex-shrink:0}
+.bname{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0)}
+.bai{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:600;letter-spacing:.16em;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);padding:1px 4px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:1px}
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 20px}
+.nl{padding:6px 13px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .18s}.nl:hover{color:var(--t0)}.nl.on{color:var(--gold)}
+.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nb{padding:7px 15px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.nb-gh{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nb-gh:hover{border-color:var(--gold-b);color:var(--gold)}
+.nb-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-weight:700}.nb-gold:hover{box-shadow:0 0 24px rgba(200,164,74,.4);transform:translateY(-1px)}
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-menu{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(4,6,9,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0}
+.mob-menu.open{display:flex}
+.ml{padding:11px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(200,164,74,.07);display:flex;align-items:center;gap:8px}.ml:last-of-type{border-bottom:none}.ml:hover{color:var(--gold)}
+
+/* PAGE HERO */
+.hero{position:relative;z-index:1;padding:96px 24px 64px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;animation:su .7s both}
+.hero-t{font-family:'Playfair Display',serif;font-size:clamp(42px,7vw,88px);font-weight:800;line-height:.92;letter-spacing:-.025em;color:var(--t0);margin-bottom:10px;animation:su .8s .08s both}
+.hero-t em{font-style:italic;background:linear-gradient(135deg,var(--gold-lt),var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-family:'Playfair Display',serif;font-size:clamp(16px,2.2vw,26px);font-style:italic;font-weight:400;color:var(--t2);margin-bottom:20px;animation:su .8s .16s both}
+.hero-desc{font-size:15px;color:var(--t2);max-width:580px;margin:0 auto 44px;animation:su .8s .24s both}
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;background:rgba(7,11,20,.8);border:1px solid var(--gold-b);border-radius:var(--r2);overflow:hidden;max-width:700px;margin:0 auto;animation:su .8s .32s both}
+.hs{padding:16px 30px;text-align:center;border-right:1px solid rgba(200,164,74,.1)}.hs:last-child{border-right:none}
+.hs-v{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:var(--gold-lt);margin-bottom:3px}
+.hs-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+
+/* LAYOUT */
+.page-wrap{display:grid;grid-template-columns:270px 1fr;gap:28px;max-width:1260px;margin:0 auto;padding:48px 28px 100px;position:relative;z-index:1;align-items:start}
+
+/* SIDEBAR TOC */
+.toc{position:sticky;top:82px}
+.toc-card{background:var(--bg2);border:1px solid var(--div);border-radius:var(--r3);padding:22px;margin-bottom:14px}
+.toc-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold-lt);margin-bottom:16px;letter-spacing:.01em}
+.toc-list{display:flex;flex-direction:column;gap:0}
+.toc-item{padding:8px 12px;border-radius:var(--r1);font-size:13px;color:var(--t2);text-decoration:none;cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:9px;border:1px solid transparent}
+.toc-item:hover{color:var(--t0);background:rgba(255,255,255,.04)}
+.toc-item.active{color:var(--gold);background:var(--gold-d);border-color:var(--gold-b)}
+.toc-num{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:.06em;flex-shrink:0}
+.toc-item.active .toc-num{color:var(--gold)}
+
+.cta-card{background:linear-gradient(135deg,var(--bg3),var(--bg4));border:1px solid var(--gold-b);border-radius:var(--r3);padding:22px;position:relative;overflow:hidden}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.cta-card-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:8px}
+.cta-card-d{font-size:12px;color:var(--t2);margin-bottom:16px;line-height:1.7}
+.cta-card-btn{display:block;width:100%;padding:11px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:all .2s}.cta-card-btn:hover{box-shadow:0 0 20px rgba(200,164,74,.4);transform:translateY(-1px)}
+.cta-card-btn-sec{display:block;width:100%;padding:10px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--t1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;transition:all .2s;margin-top:8px}.cta-card-btn-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* CONTENT */
+.content{}
+
+/* SECTION */
+.guide-sec{background:var(--bg2);border:1px solid var(--div2);border-radius:var(--r4);margin-bottom:24px;overflow:hidden;scroll-margin-top:82px}
+.gs-head{padding:28px 32px 22px;background:linear-gradient(90deg,rgba(200,164,74,.04),transparent);border-bottom:1px solid rgba(200,164,74,.07)}
+.gs-eyebrow{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.gs-eyebrow::before{content:'';width:16px;height:1px;background:var(--gold)}
+.gs-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:700;color:var(--t0);margin-bottom:6px;letter-spacing:-.01em}
+.gs-title em{font-style:italic;color:var(--gold)}
+.gs-sub{font-size:14px;color:var(--t2)}
+.gs-body{padding:28px 32px}
+
+/* CONTENT ELEMENTS */
+.para{font-size:14px;color:var(--t1);line-height:1.88;margin-bottom:18px}
+.para:last-child{margin-bottom:0}
+.para strong{color:var(--t0);font-weight:600}
+.para a{color:var(--gold);text-decoration:none}.para a:hover{text-decoration:underline}
+
+/* Step list */
+.step-list{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.step-item{display:flex;gap:16px;align-items:flex-start;background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:16px}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--gold);flex-shrink:0}
+.step-content{}
+.step-t{font-size:14px;font-weight:700;color:var(--t0);margin-bottom:4px}
+.step-d{font-size:13px;color:var(--t2);line-height:1.72}
+
+/* Info grid */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.info-card{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:18px}
+.info-card.ic-gold{border-color:var(--gold-b);background:var(--gold-d)}
+.info-card.ic-teal{border-color:var(--teal-b);background:var(--teal-d)}
+.info-card.ic-rose{border-color:var(--rose-b);background:var(--rose-d)}
+.info-card.ic-amber{border-color:var(--amber-b);background:var(--amber-d)}
+.ic-icon{font-size:24px;margin-bottom:10px;display:block}
+.ic-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--t0);margin-bottom:5px}
+.ic-body{font-size:12.5px;color:var(--t2);line-height:1.72}
+.ic-body strong{color:var(--t0)}
+
+/* Check list */
+.check-list{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+.check-item{display:flex;align-items:flex-start;gap:10px;font-size:13.5px;color:var(--t1);line-height:1.65}
+.check-ic{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:2px}
+.ci-yes{background:var(--teal-d);border:1px solid var(--teal-b);color:var(--teal)}
+.ci-no{background:var(--rose-d);border:1px solid var(--rose-b);color:var(--rose)}
+.ci-warn{background:var(--amber-d);border:1px solid var(--amber-b);color:var(--amber)}
+.ci-info{background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold)}
+
+/* Table */
+.guide-table{width:100%;border-collapse:collapse;margin-bottom:18px;font-size:13px}
+.guide-table th{padding:11px 14px;background:var(--bg4);border:1px solid rgba(255,255,255,.06);color:var(--gold-lt);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-align:left;font-weight:600}
+.guide-table td{padding:11px 14px;border:1px solid rgba(255,255,255,.05);color:var(--t1);vertical-align:top;line-height:1.65}
+.guide-table tr:hover td{background:rgba(255,255,255,.02)}
+
+/* Callout */
+.callout{border-radius:var(--r2);padding:16px 18px;margin-bottom:18px;display:flex;gap:13px;align-items:flex-start}
+.callout-ic{font-size:20px;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:13.5px;line-height:1.72}
+.callout-t{font-weight:700;margin-bottom:4px}
+.co-gold{background:var(--gold-d);border:1px solid var(--gold-b)}.co-gold .callout-t{color:var(--gold)}
+.co-teal{background:var(--teal-d);border:1px solid var(--teal-b)}.co-teal .callout-t{color:var(--teal)}
+.co-rose{background:var(--rose-d);border:1px solid var(--rose-b)}.co-rose .callout-t{color:var(--rose)}
+.co-amber{background:var(--amber-d);border:1px solid var(--amber-b)}.co-amber .callout-t{color:var(--amber)}
+
+/* Section sub-heading */
+.shead{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--t0);margin:24px 0 12px;letter-spacing:-.005em}
+.shead em{font-style:italic;color:var(--gold)}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:10px}
+.faq-item{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden}
+.faq-q{padding:15px 18px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600;color:var(--t0);transition:background .2s}
+.faq-q:hover{background:rgba(255,255,255,.03)}
+.faq-q.open{color:var(--gold);background:var(--gold-d)}
+.faq-arr{transition:transform .25s;flex-shrink:0;color:var(--t3);font-size:12px}
+.faq-q.open .faq-arr{transform:rotate(180deg);color:var(--gold)}
+.faq-a{display:none;padding:0 18px 16px;font-size:13.5px;color:var(--t2);line-height:1.78}
+.faq-a.open{display:block}
+
+/* Alert stripe */
+.alert-stripe{border-radius:var(--r2);padding:12px 16px;font-size:13px;display:flex;align-items:center;gap:10px;margin-bottom:14px;font-weight:500}
+.as-gold{background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold-lt)}
+.as-teal{background:var(--teal-d);border:1px solid var(--teal-b);color:var(--teal)}
+
+/* Rent calc widget */
+.rent-calc{background:var(--bg3);border:1px solid rgba(200,164,74,.15);border-radius:var(--r2);padding:22px;margin-bottom:18px}
+.rc-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:16px}
+.rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.rc-field label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:6px}
+.rc-field input,.rc-field select{width:100%;background:var(--bg2);border:1px solid rgba(255,255,255,.08);border-radius:var(--r1);padding:10px 12px;color:var(--t0);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .2s}
+.rc-field input:focus,.rc-field select:focus{border-color:var(--gold-b)}
+.rc-field select option{background:var(--bg2)}
+.rc-result{background:var(--bg2);border:1px solid var(--gold-b);border-radius:var(--r1);padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rr-item{text-align:center}
+.rr-v{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold-lt);margin-bottom:3px}
+.rr-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}
+
+/* Progress bar top */
+.progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:1000;transition:width .2s}
+
+@media(max-width:1000px){.page-wrap{grid-template-columns:1fr}.toc{position:static}.nav-links{display:none}.mob-btn{display:flex}}
+@media(max-width:640px){.info-grid{grid-template-columns:1fr}.rc-grid{grid-template-columns:1fr}.hero-stats{border-radius:0}}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="bg-noise"></div>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a class="ml" href="index.html">🏠 Home</a>
+  <a class="ml" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
+  <a class="ml" href="commercial.html">🏢 Commercial</a>
+  <a class="ml" href="post-property.html">➕ List Property</a>
+  <a class="ml" href="post-commercial.html">🏢 List Commercial</a>
+  <a class="ml" href="tenant-guide.html" style="color:var(--steel)">👤 Tenant Guide</a>
+  <hr style="border:none;border-top:1px solid rgba(200,164,74,.1);margin:8px 0">
+  <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+    <a class="nl" href="commercial.html">Commercial</a>
+    <a class="nl on" href="owner-guide.html">Owner Guide</a>
+    <a class="nl" href="tenant-guide.html">Tenant Guide</a>
+    <a class="nl" href="admin.html">Admin</a>
+  </div>
+  <div class="nav-r">
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">📋 Complete Owner Guide · 2025–2026</div>
+  <h1 class="hero-t">The Owner's<br><em>Definitive Guide</em></h1>
+  <div class="hero-sub">List, Price, Screen &amp; Earn — the Smart Way</div>
+  <p class="hero-desc">Everything a property owner needs to know about renting successfully on SmartRent AI — from listing your first property to managing multiple units and maximising rental income.</p>
+  <div class="hero-stats">
+    <div class="hs"><div class="hs-v">12 Min</div><div class="hs-l">Read Time</div></div>
+    <div class="hs"><div class="hs-v">9</div><div class="hs-l">Chapters</div></div>
+    <div class="hs"><div class="hs-v">50+</div><div class="hs-l">Pro Tips</div></div>
+    <div class="hs"><div class="hs-v">Free</div><div class="hs-l">For Owners</div></div>
+  </div>
+</section>
+
+<!-- PAGE BODY -->
+<div class="page-wrap">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc">
+    <div class="toc-card">
+      <div class="toc-title">📖 Table of Contents</div>
+      <div class="toc-list">
+        <a class="toc-item active" href="#s1" onclick="setToc(this)"><span class="toc-num">01</span>Getting Started</a>
+        <a class="toc-item" href="#s2" onclick="setToc(this)"><span class="toc-num">02</span>How to List</a>
+        <a class="toc-item" href="#s3" onclick="setToc(this)"><span class="toc-num">03</span>Pricing Strategy</a>
+        <a class="toc-item" href="#s4" onclick="setToc(this)"><span class="toc-num">04</span>Tenant Screening</a>
+        <a class="toc-item" href="#s5" onclick="setToc(this)"><span class="toc-num">05</span>Rental Agreements</a>
+        <a class="toc-item" href="#s6" onclick="setToc(this)"><span class="toc-num">06</span>Maintenance &amp; Repairs</a>
+        <a class="toc-item" href="#s7" onclick="setToc(this)"><span class="toc-num">07</span>Legal &amp; Compliance</a>
+        <a class="toc-item" href="#s8" onclick="setToc(this)"><span class="toc-num">08</span>Tax on Rental Income</a>
+        <a class="toc-item" href="#s9" onclick="setToc(this)"><span class="toc-num">09</span>FAQs</a>
+      </div>
+    </div>
+    <div class="cta-card">
+      <div class="cta-card-t">Ready to List?</div>
+      <div class="cta-card-d">List your PG, hostel, flat or commercial property free — go live in 24 hours.</div>
+      <a class="cta-card-btn" href="post-property.html">🏠 List Residential</a>
+      <a class="cta-card-btn-sec" href="post-commercial.html">🏢 List Commercial</a>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══ S1: GETTING STARTED ═══ -->
+    <section class="guide-sec rv" id="s1">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 01</div>
+        <div class="gs-title">Getting Started as an <em>Owner on SmartRent AI</em></div>
+        <div class="gs-sub">Everything you need to know before listing your first property</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">SmartRent AI is India's most intelligent rental platform, connecting verified property owners directly with genuine, KYC-verified tenants — with <strong>zero brokerage</strong> on either side. Whether you own a single PG room or a portfolio of commercial spaces, this guide walks you through the entire process.</p>
+
+        <div class="callout co-teal"><span class="callout-ic">✅</span><div class="callout-body"><div class="callout-t">Why SmartRent AI?</div>50,000+ verified tenants search our platform monthly. Our AI matching engine surfaces your listing to tenants who genuinely fit your property — reducing time-to-rent by an average of <strong>68%</strong> compared to traditional portals.</div></div>
+
+        <div class="shead">What types of properties can you list?</div>
+        <div class="info-grid">
+          <div class="info-card ic-gold"><span class="ic-icon">🏠</span><div class="ic-title">PG / Paying Guest</div><div class="ic-body">Single/double/triple rooms with shared or attached bathrooms. Meals optional. Popular with students and working professionals.</div></div>
+          <div class="info-card ic-teal"><span class="ic-icon">🏢</span><div class="ic-title">Hostel</div><div class="ic-body">Dormitory-style or semi-private accommodation. Typically 4–12 beds per room. High occupancy, steady income.</div></div>
+          <div class="info-card"><span class="ic-icon">🏡</span><div class="ic-title">Flat / Apartment</div><div class="ic-body">1BHK to 4BHK independent units. Long-term tenants (11-month agreements). Best returns in prime localities.</div></div>
+          <div class="info-card"><span class="ic-icon">🤝</span><div class="ic-title">Co-living Space</div><div class="ic-body">Fully furnished, community-style living with shared amenities. Premium segment — attracts urban professionals.</div></div>
+          <div class="info-card ic-amber"><span class="ic-icon">🏪</span><div class="ic-title">Commercial</div><div class="ic-body">Office spaces, retail shops, warehouses, showrooms, co-working hubs. Longer lock-in periods and higher rent per sqft.</div></div>
+          <div class="info-card"><span class="ic-icon">🏗️</span><div class="ic-title">Builder Floors / Villas</div><div class="ic-body">Independent floors or bungalows. Suitable for families. Can command premium rent in well-developed localities.</div></div>
+        </div>
+
+        <div class="shead">Before You List — <em>Preparation Checklist</em></div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Ensure your property has a valid Occupancy Certificate (OC) or Completion Certificate (CC)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Property tax should be paid and up to date before listing</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Ensure water, electricity and drainage connections are functional and metered</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Get a professional or high-quality smartphone photo shoot done (8–20 photos minimum)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Prepare your KYC documents — Aadhaar, PAN, and property ownership proof</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>If the property has a home loan, check with your bank if you need NOC for renting</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>Society rules: check your housing society bye-laws on subletting or PG permissions</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Do not list properties under active legal dispute or pending mutation</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S2: HOW TO LIST ═══ -->
+    <section class="guide-sec rv" id="s2">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 02</div>
+        <div class="gs-title">How to List Your <em>Property</em></div>
+        <div class="gs-sub">A step-by-step walkthrough of the listing process</div>
+      </div>
+      <div class="gs-body">
+        <div class="alert-stripe as-teal">🏆 Properties with 10+ photos, full descriptions and video tours get <strong>4× more enquiries</strong> than minimal listings.</div>
+
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">01</div><div class="step-content"><div class="step-t">Create Your Owner Account</div><div class="step-d">Sign up with your mobile number or email. Complete KYC verification (Aadhaar + PAN). Verified accounts get a blue tick and rank higher in search results.</div></div></div>
+          <div class="step-item"><div class="step-num">02</div><div class="step-content"><div class="step-t">Select Property Type</div><div class="step-d">Choose from PG, Hostel, Flat, Co-living, Commercial, or Builder Floor. Each type has a customised form — don't worry about filling everything in one go. You can save drafts.</div></div></div>
+          <div class="step-item"><div class="step-num">03</div><div class="step-content"><div class="step-t">Fill Property Details</div><div class="step-d">Add title, description, size (sqft), floor, furnishing status, seating capacity (for PGs), parking, construction year, and all amenities. Write a compelling description — minimum 150 words recommended.</div></div></div>
+          <div class="step-item"><div class="step-num">04</div><div class="step-content"><div class="step-t">Add Location with Map Pin</div><div class="step-d">Enter complete address, PIN code, locality, and nearby landmarks. Drop a map pin on Google Maps and paste the coordinate or share link. Accurate location = more genuine leads from nearby tenants.</div></div></div>
+          <div class="step-item"><div class="step-num">05</div><div class="step-content"><div class="step-t">Set Pricing</div><div class="step-d">Enter monthly rent, security deposit, escalation clause, and maintenance charges separately. Use our benchmark tool (in the form) to compare against market rates in your micro-locality.</div></div></div>
+          <div class="step-item"><div class="step-num">06</div><div class="step-content"><div class="step-t">Upload Media</div><div class="step-d">Upload 8–20 high-quality photos. Add a video walkthrough (YouTube/Drive link). The cover photo should be bright, well-lit, and show the best feature of your property. Avoid dark or cluttered shots.</div></div></div>
+          <div class="step-item"><div class="step-num">07</div><div class="step-content"><div class="step-t">Choose Your Plan &amp; Publish</div><div class="step-d">Free listings go live within 48 hours. Premium plans get featured placement, verified badge, and WhatsApp enquiry alerts. Our team will physically verify your property before awarding the Verified badge.</div></div></div>
+        </div>
+
+        <div class="callout co-gold"><span class="callout-ic">💡</span><div class="callout-body"><div class="callout-t">Pro Tip: Winning Property Titles</div>A good title includes the type, key features, and locality. ❌ "2BHK Flat" → ✅ "Spacious 2BHK Flat with Gym &amp; Pool | Gachibowli, Hyderabad". Listings with locality in the title rank 3× higher in search.</div></div>
+      </div>
+    </section>
+
+    <!-- ═══ S3: PRICING ═══ -->
+    <section class="guide-sec rv" id="s3">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 03</div>
+        <div class="gs-title">Pricing Strategy &amp; <em>Rent Calculator</em></div>
+        <div class="gs-sub">How to price your property for maximum occupancy and income</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">Pricing too high leads to long vacancy periods. Pricing too low means leaving money on the table. Use our calculator below alongside market data to find your ideal rent.</p>
+
+        <!-- RENT CALCULATOR -->
+        <div class="rent-calc">
+          <div class="rc-title">🧮 Instant Rent Estimator</div>
+          <div class="rc-grid">
+            <div class="rc-field"><label>City</label><select id="rcCity" onchange="calcRent()"><option value="hyd">Hyderabad</option><option value="blr">Bangalore</option><option value="mum">Mumbai</option><option value="del">Delhi NCR</option><option value="che">Chennai</option><option value="pun">Pune</option></select></div>
+            <div class="rc-field"><label>Property Type</label><select id="rcType" onchange="calcRent()"><option value="pg">PG / Room</option><option value="1bhk">1 BHK Flat</option><option value="2bhk">2 BHK Flat</option><option value="3bhk">3 BHK Flat</option><option value="offlo">Office (per sqft)</option></select></div>
+            <div class="rc-field"><label>Area (Sq.ft)</label><input type="number" id="rcArea" value="600" oninput="calcRent()"></div>
+            <div class="rc-field"><label>Furnishing</label><select id="rcFurn" onchange="calcRent()"><option value="bare">Bare Shell</option><option value="semi" selected>Semi-Furnished</option><option value="full">Fully Furnished</option></select></div>
+          </div>
+          <div class="rc-result" id="rcResult">
+            <div class="rr-item"><div class="rr-v" id="rcMin">₹—</div><div class="rr-l">Min Rent</div></div>
+            <div class="rr-item"><div class="rr-v" id="rcAvg">₹—</div><div class="rr-l">Market Avg</div></div>
+            <div class="rr-item"><div class="rr-v" id="rcMax">₹—</div><div class="rr-l">Max (Premium)</div></div>
+          </div>
+        </div>
+
+        <div class="shead">Security Deposit Guidelines</div>
+        <table class="guide-table">
+          <tr><th>City Tier</th><th>Residential</th><th>PG / Hostel</th><th>Commercial</th></tr>
+          <tr><td>Metro (Hyd, Blr, Mum, Del)</td><td>2–6 months' rent</td><td>1–2 months' rent</td><td>6–12 months' rent</td></tr>
+          <tr><td>Tier-2 (Pune, Chennai, Kol)</td><td>2–4 months' rent</td><td>1 month's rent</td><td>3–6 months' rent</td></tr>
+          <tr><td>Tier-3 (Other cities)</td><td>1–3 months' rent</td><td>1 month's rent</td><td>2–4 months' rent</td></tr>
+        </table>
+
+        <div class="callout co-amber"><span class="callout-ic">⚠️</span><div class="callout-body"><div class="callout-t">Deposit Limit — Maharashtra &amp; Karnataka</div>In Maharashtra, security deposit is legally capped at <strong>3 months' rent</strong> for residential properties. In Karnataka it is <strong>10 months' rent</strong>. Always check state-specific rent control laws before collecting deposit.</div></div>
+
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Add annual rent escalation of 5–10% to your agreement to keep pace with inflation</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Charge maintenance separately from rent — this keeps base rent competitive in search rankings</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Furnished properties typically command 15–30% premium over unfurnished equivalents</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>Avoid charging more than 2 months' deposit from PG tenants — it deters quality applicants</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S4: TENANT SCREENING ═══ -->
+    <section class="guide-sec rv" id="s4">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 04</div>
+        <div class="gs-title">Tenant Screening &amp; <em>Verification</em></div>
+        <div class="gs-sub">How to find reliable, long-term tenants and avoid bad actors</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">SmartRent AI's KYC system pre-verifies all tenants before they can contact owners. However, you should conduct your own due diligence before signing an agreement. A 15-minute screening saves months of headaches.</p>
+
+        <div class="shead">Documents to Collect from Tenants</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Aadhaar Card</strong> — Government photo ID. Verify it is original and matches the applicant's face</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>PAN Card</strong> — Required for agreements above ₹50,000/year for TDS compliance</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Employment / Offer Letter</strong> — Confirms stable income and employment status</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Last 3 Months' Bank Statements</strong> — Verify income regularity and financial stability</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Previous Landlord Reference</strong> — Strongest indicator of future behaviour as tenant</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Police Verification Form</strong> — Mandatory in most states. File within 24 hours of tenant moving in</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div><strong>Salary Slip (last 3 months)</strong> — For salaried tenants. Rent should ideally not exceed 30% of monthly income</div>
+        </div>
+
+        <div class="shead">Red Flags — When to Decline</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Applicant is unwilling to provide Aadhaar or PAN Card</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Wants possession immediately without prior notice to previous landlord</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Offers to pay rent in cash and requests no written agreement</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Previous landlord reference is unavailable or gives vague responses</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Requests to sub-let or run a business from a residential property</div>
+          <div class="check-item"><div class="check-ic ci-no">✗</div>Inconsistent story about reason for moving or employment status</div>
+        </div>
+
+        <div class="callout co-rose"><span class="callout-ic">🚫</span><div class="callout-body"><div class="callout-t">Discrimination Warning</div>You may not legally refuse a tenant based on religion, caste, gender, diet, state of origin, or marital status. Doing so violates Article 15 of the Indian Constitution and can result in legal action. Your screening must be based solely on financial and character criteria.</div></div>
+      </div>
+    </section>
+
+    <!-- ═══ S5: AGREEMENTS ═══ -->
+    <section class="guide-sec rv" id="s5">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 05</div>
+        <div class="gs-title">Rental Agreements — <em>The Complete Guide</em></div>
+        <div class="gs-sub">Protect yourself legally with a watertight rental agreement</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">A rental agreement is your most important legal protection. <strong>Never allow a tenant to move in without a signed, registered, or notarised agreement.</strong> In India, agreements of 11 months are commonly used to avoid mandatory registration, but a 12-month+ agreement requires registration under the Registration Act, 1908.</p>
+
+        <div class="shead">Types of Rental Agreements</div>
+        <div class="info-grid">
+          <div class="info-card ic-gold"><span class="ic-icon">📋</span><div class="ic-title">Leave &amp; Licence (L&L)</div><div class="ic-body">Most common in Maharashtra. Licensor retains ownership at all times. Licensee has no tenancy rights. Easy to terminate. <strong>Highly recommended.</strong></div></div>
+          <div class="info-card"><span class="ic-icon">📄</span><div class="ic-title">Rental Agreement</div><div class="ic-body">Used across most states. Governed by state Rent Control Acts. If registered for 12+ months, tenant may claim stronger protection. Use 11-month agreements.</div></div>
+          <div class="info-card"><span class="ic-icon">🤝</span><div class="ic-title">PG Agreement</div><div class="ic-body">Simpler format for PGs. Month-to-month, with 30-day notice clause. Specifies house rules, meals, curfew, visitor policy explicitly.</div></div>
+          <div class="info-card ic-teal"><span class="ic-icon">🏢</span><div class="ic-title">Commercial Lease</div><div class="ic-body">For office/retail/warehouse. Typically 3–5 years with lock-in. Include escalation, CAM charges, and fit-out approval clauses.</div></div>
+        </div>
+
+        <div class="shead">Mandatory Clauses in Every Agreement</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Full names, addresses, and Aadhaar/PAN numbers of both parties</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Complete property address and description (floor, area, parking)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Monthly rent amount, due date, grace period (usually 5 days), and late fee</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Security deposit amount and conditions for deduction</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Lock-in period, notice period (typically 30–60 days), and termination conditions</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Annual rent escalation clause (e.g., 5% or 10% after 11 months)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Permitted use of property (residential only / business prohibited)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Utility meter numbers and responsibility for payments</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Maintenance responsibility matrix (who pays for what)</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>House rules for PG: meal timings, curfew, guests, smoking, alcohol</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Sub-letting prohibition clause</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div>Property condition inventory (with photos attached as annexure)</div>
+        </div>
+
+        <div class="callout co-gold"><span class="callout-ic">⚖️</span><div class="callout-body"><div class="callout-t">Model Tenancy Act, 2021</div>India's Model Tenancy Act was notified in 2021 to modernise tenancy laws. It mandates written agreements, caps deposits, and creates a dedicated Rent Authority for dispute resolution. Several states including Andhra Pradesh, Tamil Nadu, and Uttarakhand have adopted it. Check if your state has implemented it — it significantly strengthens owner rights.</div></div>
+      </div>
+    </section>
+
+    <!-- ═══ S6: MAINTENANCE ═══ -->
+    <section class="guide-sec rv" id="s6">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 06</div>
+        <div class="gs-title">Maintenance, Repairs <em>&amp; Property Management</em></div>
+        <div class="gs-sub">Keep your property in top condition and tenants happy</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">Good maintenance retains tenants longer, prevents costly repairs, and commands premium rent. Smart owners budget 1–2% of property value annually for maintenance.</p>
+
+        <div class="shead">Maintenance Responsibility Split</div>
+        <table class="guide-table">
+          <tr><th>Item</th><th>Owner's Responsibility</th><th>Tenant's Responsibility</th></tr>
+          <tr><td>Structural repairs (walls, roof, foundation)</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td>Plumbing (pipes, drains, water supply)</td><td>✅ Major repairs</td><td>✅ Minor blockages</td></tr>
+          <tr><td>Electrical wiring &amp; switchboards</td><td>✅ Yes</td><td>✅ Bulbs/fuses</td></tr>
+          <tr><td>Painting (routine 3-year cycle)</td><td>✅ Yes</td><td>❌ No</td></tr>
+          <tr><td>AC / Appliance servicing</td><td>✅ If provided by owner</td><td>✅ Damage due to misuse</td></tr>
+          <tr><td>Pest control</td><td>✅ Before move-in</td><td>✅ During tenancy</td></tr>
+          <tr><td>Society maintenance charges</td><td>✅ Typically owner</td><td>Negotiate in agreement</td></tr>
+          <tr><td>Property tax</td><td>✅ Always owner</td><td>❌ Never tenant</td></tr>
+        </table>
+
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Conduct a <strong>move-in inspection</strong> with the tenant present, document all existing damage with photos</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Schedule an <strong>annual inspection</strong> (2-week notice) to catch issues before they become expensive</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Respond to maintenance requests within <strong>48 hours</strong> — it's the #1 reason tenants renew or leave</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>Keep receipts for all maintenance work — it's deductible against rental income in IT returns</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S7: LEGAL ═══ -->
+    <section class="guide-sec rv" id="s7">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 07</div>
+        <div class="gs-title">Legal Obligations <em>&amp; Owner Rights</em></div>
+        <div class="gs-sub">Know your rights, duties and the laws that govern renting in India</div>
+      </div>
+      <div class="gs-body">
+        <div class="shead">Owner's Legal Obligations</div>
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Police Verification:</strong> File police verification for every tenant within 24 hours of move-in. This is mandatory across most Indian states and protects you legally</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Provide Habitable Property:</strong> Property must have functional water supply, electricity, and sanitation. You cannot rent a property that fails basic habitability standards</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Receipt for Rent &amp; Deposit:</strong> Always provide written receipts. This is legally required and helps both parties in dispute resolution</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Return Deposit:</strong> Security deposit must be returned within 30 days of vacating, after deducting documented, itemised damages. Unjustified deductions are legally actionable</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Notice for Entry:</strong> You must give 24–48 hours' advance notice before entering the tenant's premises. Unannounced entry violates the tenant's right to quiet enjoyment</div>
+          <div class="check-item"><div class="check-ic ci-yes">✓</div><strong>Proper Notice to Vacate:</strong> Follow the notice period stipulated in the agreement (usually 30–60 days). You cannot evict without due process</div>
+        </div>
+
+        <div class="shead">Eviction — The Right Way</div>
+        <p class="para">Eviction in India follows a specific legal process. <strong>Self-help eviction (changing locks, cutting utilities, removing belongings) is illegal</strong> and can result in criminal charges against you. The correct process involves:</p>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">1</div><div class="step-content"><div class="step-t">Issue Legal Notice</div><div class="step-d">Send a written legal notice via registered post citing the specific breach (non-payment, agreement violation, etc.) with a 15–30 day cure period.</div></div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-content"><div class="step-t">File Before Rent Authority / Civil Court</div><div class="step-d">If the tenant fails to comply, file an eviction petition before the local Rent Authority (under Model Tenancy Act states) or Civil Court. Attach agreement, notice, and evidence.</div></div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-content"><div class="step-t">Court Order &amp; Execution</div><div class="step-d">A court order for possession will be issued if your case is valid. Execution by a court bailiff follows. This process takes 6–24 months — hence the importance of thorough tenant screening.</div></div></div>
+        </div>
+
+        <div class="callout co-teal"><span class="callout-ic">⚖️</span><div class="callout-body"><div class="callout-t">Key Laws Every Owner Must Know</div>
+        <strong>Transfer of Property Act, 1882</strong> — Governs lease agreements and tenant rights<br>
+        <strong>Registration Act, 1908</strong> — Mandatory registration for leases exceeding 12 months<br>
+        <strong>Model Tenancy Act, 2021</strong> — Most progressive national framework<br>
+        <strong>Rent Control Acts</strong> — State-specific (Maharashtra Rent Control Act, Karnataka Rent Act, etc.)<br>
+        <strong>Income Tax Act, 1961</strong> — Sections 22–27 cover house property income</div></div>
+      </div>
+    </section>
+
+    <!-- ═══ S8: TAX ═══ -->
+    <section class="guide-sec rv" id="s8">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 08</div>
+        <div class="gs-title">Tax on Rental Income — <em>Owner's Guide</em></div>
+        <div class="gs-sub">Understand your tax obligations and maximise legitimate deductions</div>
+      </div>
+      <div class="gs-body">
+        <p class="para">Rental income is taxable in India under the head <strong>"Income from House Property"</strong> (Section 22 of IT Act). However, the tax framework allows significant deductions that can substantially reduce your tax liability.</p>
+
+        <div class="shead">How Rental Income is Taxed</div>
+        <table class="guide-table">
+          <tr><th>Component</th><th>Treatment</th></tr>
+          <tr><td>Annual Rental Value (ARV)</td><td>Base amount — all rent received/receivable in a year</td></tr>
+          <tr><td>Municipal Tax Paid</td><td>Deductible: Actual amount paid to municipal authority</td></tr>
+          <tr><td>Net Annual Value (NAV)</td><td>ARV minus Municipal Tax = NAV</td></tr>
+          <tr><td>Standard Deduction (Section 24a)</td><td>30% of NAV — allowed without proof</td></tr>
+          <tr><td>Home Loan Interest (Section 24b)</td><td>Up to ₹2 lakh per year for self-occupied + unlimited for let-out</td></tr>
+          <tr><td>Home Loan Principal (Section 80C)</td><td>Up to ₹1.5 lakh per year</td></tr>
+          <tr><td>TDS by Tenant</td><td>If annual rent &gt; ₹2.4 lakh, tenant must deduct 10% TDS and deposit via Form 26QC</td></tr>
+        </table>
+
+        <div class="callout co-gold"><span class="callout-ic">💰</span><div class="callout-body"><div class="callout-t">Example Tax Calculation (FY 2025–26)</div>
+        Annual Rent: ₹12,00,000 | Municipal Tax: ₹24,000<br>
+        NAV = ₹12,00,000 − ₹24,000 = ₹11,76,000<br>
+        Standard Deduction (30%) = ₹3,52,800<br>
+        Home Loan Interest = ₹2,00,000<br>
+        <strong>Taxable Income = ₹11,76,000 − ₹3,52,800 − ₹2,00,000 = ₹6,23,200</strong><br>
+        At 30% slab = ₹1,86,960 tax (without other exemptions)</div></div>
+
+        <div class="check-list">
+          <div class="check-item"><div class="check-ic ci-info">💡</div>If you own 2+ let-out properties, you can set off their losses against each other</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>GST of 18% applies to commercial property rent exceeding ₹20 lakh/year turnover — register for GST</div>
+          <div class="check-item"><div class="check-ic ci-info">💡</div>Maintain a dedicated bank account for rental income — makes ITR filing and audit much simpler</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>Cash rent above ₹2 lakh in a single transaction is prohibited under Section 269ST — always use bank transfer</div>
+          <div class="check-item"><div class="check-ic ci-warn">⚠</div>Failure to report rental income is treated as tax evasion — penalties of 200% of tax owed can apply</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ S9: FAQ ═══ -->
+    <section class="guide-sec rv" id="s9">
+      <div class="gs-head">
+        <div class="gs-eyebrow">Chapter 09</div>
+        <div class="gs-title">Frequently Asked <em>Owner Questions</em></div>
+        <div class="gs-sub">Answers to the most common questions from property owners</div>
+      </div>
+      <div class="gs-body">
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Can I evict a tenant for not paying rent? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">Yes, but only through the legal process. Issue a written notice (15–30 days), then file an eviction petition before the Rent Authority or Civil Court. Do NOT lock them out, cut utilities, or remove their belongings — this is illegal and can result in criminal charges against you, regardless of non-payment.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">How do I handle a tenant who refuses to vacate after notice? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">File an eviction suit before the District Court or Rent Authority. Attach the agreement, termination notice (sent via registered post), and any evidence of breach. In Model Tenancy Act states, the Rent Authority can expedite matters. Avoid self-help eviction at all costs.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Do I need to register my rental agreement? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">Agreements for less than 12 months do not require mandatory registration (though they can be notarised for ₹200–500). Agreements for 12 months or more must be registered with the Sub-Registrar's Office under Section 17 of the Registration Act. Unregistered 12-month+ agreements are inadmissible as evidence in court.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">My society is refusing to allow PG tenants — what can I do? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">Housing societies can impose restrictions on PGs through their registered bye-laws. First, review the society's registered bye-laws. If they permit PGs with conditions (police verification, approval), comply with those. If the restriction is arbitrary and not part of registered bye-laws, you can challenge it before the Registrar of Co-operative Societies or approach a consumer forum.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">What deductions can I make from the security deposit? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">You may deduct for: unpaid rent, documented property damage beyond normal wear and tear (scratches, broken fixtures, stained walls), unpaid utility bills, and professional cleaning costs if the property was left in an unusable state. You cannot deduct for: normal wear and tear, pre-existing damage (documented at move-in), or vague "miscellaneous" charges. Provide itemised receipts for every deduction.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Is TDS applicable to my rental income? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">If your annual rent exceeds ₹2,40,000 from a single tenant who is an individual/HUF, the tenant must deduct TDS at 10% under Section 194IB and deposit it with Form 26QC. If the tenant doesn't deduct TDS, you must still declare the full rent in your ITR. For commercial properties, TDS at 10% applies under Section 194I when annual rent exceeds ₹2,40,000.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">Can I run a PG from a property that has a home loan? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">Most home loan agreements include a clause requiring the lender's consent for subletting or commercial use. Check your loan agreement carefully. In practice, most banks do not object to residential renting, but running a formal PG business may require their NOC. Violating the terms can result in the loan being called in (full repayment demanded). Always seek written permission when in doubt.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q" onclick="toggleFaq(this)">How do I screen tenants from other states or cities? <span class="faq-arr">▼</span></div>
+            <div class="faq-a">Use SmartRent AI's verified profile system — all tenants on our platform have submitted Aadhaar verification. Additionally, you can conduct video calls to verify identity, request employment letters from HR on company letterhead, and ask for 3 months' bank statements via secure upload. Our platform also shows a trust score for each tenant based on their verification level and platform history.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;text-align:center;padding:28px;background:var(--bg3);border:1px solid rgba(200,164,74,.12);border-radius:var(--r3)">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--t0);margin-bottom:8px">Ready to List Your Property?</div>
+          <div style="font-size:14px;color:var(--t2);margin-bottom:20px">Join 10,000+ verified owners earning consistently through SmartRent AI</div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <a href="post-property.html" style="padding:12px 28px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:#04060a;font-weight:700;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:7px">🏠 List Residential Property</a>
+            <a href="post-commercial.html" style="padding:12px 22px;border-radius:var(--r1);background:transparent;border:1px solid var(--gold-b);color:var(--gold);font-weight:600;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:7px">🏢 List Commercial Property</a>
+            <a href="tenant-guide.html" style="padding:12px 22px;border-radius:var(--r1);background:transparent;border:1px solid var(--div2);color:var(--t1);font-weight:600;text-decoration:none;font-size:14px;display:inline-flex;align-items:center;gap:7px">👤 View Tenant Guide</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /content -->
+</div><!-- /page-wrap -->
+
+<footer style="border-top:1px solid var(--gold-b);padding:44px 28px 28px;background:var(--bg1);position:relative;z-index:1">
+  <div style="max-width:1260px;margin:0 auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px">
+      <div style="font-family:'Playfair Display',serif;font-size:14px;color:var(--t2)">© 2025–2026 SmartRent AI · All rights reserved · Built with ❤️ in India</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap">
+        <a href="index.html" style="font-size:13px;color:var(--t2);text-decoration:none">Home</a>
+        <a href="tenant-guide.html" style="font-size:13px;color:var(--gold);text-decoration:none">Tenant Guide</a>
+        <a href="privacy-policy.html" style="font-size:13px;color:var(--t2);text-decoration:none">Privacy Policy</a>
+        <a href="commercial.html" style="font-size:13px;color:var(--t2);text-decoration:none">Commercial</a>
+        <a href="admin.html" style="font-size:13px;color:var(--t2);text-decoration:none">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* NAVBAR */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('solid',scrollY>40);
+  const t=document.documentElement;
+  const pct=(scrollY/(t.scrollHeight-window.innerHeight))*100;
+  document.getElementById('progressBar').style.width=Math.min(pct,100)+'%';
+});
+
+/* MOBILE MENU */
+function toggleMob(){const m=document.getElementById('mobMenu');const b=document.getElementById('mobBtn');const o=m.classList.toggle('open');b.textContent=o?'✕':'☰';}
+
+/* TOC */
+function setToc(el){document.querySelectorAll('.toc-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+
+/* FAQ */
+function toggleFaq(el){
+  const a=el.nextElementSibling;
+  const isOpen=a.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.faq-q.open').forEach(x=>x.classList.remove('open'));
+  if(!isOpen){a.classList.add('open');el.classList.add('open');}
+}
+
+/* RENT CALCULATOR */
+const RATES={
+  hyd:{pg:[5000,8000,12000],_1bhk:[8000,12000,18000],_2bhk:[12000,18000,28000],_3bhk:[18000,28000,45000],offlo:[45,62,85]},
+  blr:{pg:[6000,10000,16000],_1bhk:[10000,16000,25000],_2bhk:[16000,26000,40000],_3bhk:[22000,36000,60000],offlo:[55,75,100]},
+  mum:{pg:[8000,14000,22000],_1bhk:[15000,25000,40000],_2bhk:[25000,40000,65000],_3bhk:[40000,65000,100000],offlo:[80,120,180]},
+  del:{pg:[6000,10000,16000],_1bhk:[12000,20000,32000],_2bhk:[18000,30000,50000],_3bhk:[25000,40000,70000],offlo:[60,85,120]},
+  che:{pg:[4500,7000,11000],_1bhk:[7000,11000,17000],_2bhk:[11000,17000,26000],_3bhk:[15000,24000,38000],offlo:[40,55,75]},
+  pun:{pg:[5000,8000,13000],_1bhk:[8000,13000,20000],_2bhk:[13000,21000,32000],_3bhk:[18000,28000,44000],offlo:[45,60,82]},
+};
+const FURN_MULT={bare:.82,semi:1,full:1.25};
+const TYPE_KEY={pg:'pg','1bhk':'_1bhk','2bhk':'_2bhk','3bhk':'_3bhk','offlo':'offlo'};
+
+function calcRent(){
+  const city=document.getElementById('rcCity').value;
+  const type=document.getElementById('rcType').value;
+  const area=parseInt(document.getElementById('rcArea').value)||600;
+  const furn=document.getElementById('rcFurn').value;
+  const key=TYPE_KEY[type]||'pg';
+  const base=RATES[city]?.[key]||[5000,8000,12000];
+  const fm=FURN_MULT[furn]||1;
+  const areaFactor=type==='offlo'?area/1000:area/500;
+  const af=type==='offlo'?1:Math.min(Math.max(areaFactor*.9,0.7),1.6);
+  const mn=Math.round(base[0]*fm*af/100)*100;
+  const av=Math.round(base[1]*fm*af/100)*100;
+  const mx=Math.round(base[2]*fm*af/100)*100;
+  const fmt=n=>n>=100000?'₹'+(n/100000).toFixed(1)+'L':'₹'+n.toLocaleString('en-IN');
+  document.getElementById('rcMin').textContent=fmt(mn);
+  document.getElementById('rcAvg').textContent=fmt(av);
+  document.getElementById('rcMax').textContent=fmt(mx);
+}
+calcRent();
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* TOC ACTIVE SCROLL */
+const sections=['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+window.addEventListener('scroll',()=>{
+  let cur='s1';
+  sections.forEach(id=>{const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<120)cur=id;});
+  document.querySelectorAll('.toc-item').forEach(i=>{i.classList.toggle('active',i.getAttribute('href')==='#'+cur);});
+});
+</script>
+</body>
+</html>

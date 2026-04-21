@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — SmartRent AI | India's Most Intelligent Rental Platform</title>
+<meta name="description" content="Learn about SmartRent AI — our mission to make renting fair, transparent and intelligent for every Indian. Our story, team, values and impact.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — EDITORIAL LUXURY DARK GOLD
+═══════════════════════════════════════════════════════════ */
+:root{
+  --ink:    #03060b;
+  --ink1:   #060c14;
+  --ink2:   #0a121e;
+  --ink3:   #0f1a28;
+  --ink4:   #142233;
+  --ink5:   #192a3e;
+
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c870;
+  --gold-dk:   #876a28;
+  --gold-d:    rgba(201,168,76,.1);
+  --gold-b:    rgba(201,168,76,.24);
+  --gold-glow: rgba(201,168,76,.4);
+
+  --teal:   #22d3b4;
+  --teal-d: rgba(34,211,180,.1);
+  --teal-b: rgba(34,211,180,.22);
+
+  --rose:   #f43f5e;
+  --blue:   #3b82f6;
+  --emerald:#10b981;
+
+  --t0:#eef2ff;--t1:rgba(218,226,255,.82);
+  --t2:rgba(176,192,240,.54);--t3:rgba(136,160,220,.32);
+
+  --div:rgba(201,168,76,.07);--div2:rgba(255,255,255,.07);
+
+  --r1:6px;--r2:12px;--r3:18px;--r4:26px;--r5:36px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--t0);overflow-x:hidden;line-height:1.7}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── AMBIENT ──────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:ofl 22s ease-in-out infinite alternate}
+.o1{width:720px;height:720px;top:-230px;left:-190px;background:radial-gradient(circle,rgba(201,168,76,.058) 0%,transparent 68%)}
+.o2{width:560px;height:560px;bottom:-210px;right:-150px;background:radial-gradient(circle,rgba(34,211,180,.048) 0%,transparent 68%);animation-delay:-9s}
+.o3{width:420px;height:420px;top:48%;left:40%;background:radial-gradient(circle,rgba(201,168,76,.03) 0%,transparent 68%);animation-delay:-16s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}45%{transform:translate(30px,-22px) scale(1.06)}75%{transform:translate(-17px,18px) scale(.97)}100%{transform:translate(13px,-9px) scale(1.03)}}
+
+.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.38}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(201,168,76,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.032) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 90% 70% at 50% 20%,black 0%,transparent 100%)}
+
+/* PROGRESS BAR */
+.pg-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:1000;transition:width .15s;pointer-events:none}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 36px;background:rgba(3,6,11,.75);backdrop-filter:blur(30px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(3,6,11,.97);box-shadow:0 1px 0 var(--gold-b),0 6px 36px rgba(0,0,0,.6)}
+
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.bgem{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(201,168,76,.32),inset 0 1px 0 rgba(255,255,255,.18);flex-shrink:0}
+.bname{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--t0);letter-spacing:.01em}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 24px}
+.nl{padding:7px 15px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s;position:relative}.nl:hover{color:var(--t0)}.nl.on{color:var(--gold)}
+.nl.on::after{content:'';position:absolute;bottom:-1px;left:15px;right:15px;height:1px;background:var(--gold);border-radius:1px}
+
+.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nb{padding:7px 16px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.nb-gh{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nb-gh:hover{border-color:var(--gold-b);color:var(--gold)}
+.nb-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-weight:700}.nb-gold:hover{box-shadow:0 0 24px var(--gold-glow);transform:translateY(-1px)}
+
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-drawer{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(3,6,11,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0;backdrop-filter:blur(22px)}
+.mob-drawer.open{display:flex}
+.mob-l{padding:11px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(201,168,76,.07);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-l:hover{color:var(--gold)}.mob-l:last-of-type{border-bottom:none}
+
+/* ══════════════════════════════════════════════
+   HERO — EDITORIAL OVERSIZED TYPOGRAPHY
+══════════════════════════════════════════════ */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding:100px 0 0}
+
+.hero-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:center;width:100%}
+
+/* Left column */
+.hero-left{padding-right:40px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:30px;animation:su .7s cubic-bezier(.4,0,.2,1) both}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:lp 2s infinite}
+@keyframes lp{0%{box-shadow:0 0 0 0 rgba(34,211,180,.6)}70%{box-shadow:0 0 0 7px rgba(34,211,180,0)}100%{box-shadow:0 0 0 0 rgba(34,211,180,0)}}
+
+/* FRAUNCES — optically variable serif — the crown jewel */
+.hero-h1{font-family:'Fraunces',serif;font-size:clamp(56px,7vw,96px);font-weight:800;line-height:.9;letter-spacing:-.03em;margin-bottom:24px;animation:su .8s .08s cubic-bezier(.4,0,.2,1) both;color:var(--t0)}
+.hero-h1 .italic-line{font-style:italic;color:var(--gold);display:block}
+.hero-h1 .outline-line{-webkit-text-stroke:1px rgba(201,168,76,.4);color:transparent;display:block;font-style:italic}
+
+.hero-desc{font-size:clamp(14px,1.6vw,17px);color:var(--t2);line-height:1.88;max-width:480px;margin-bottom:38px;animation:su .8s .18s cubic-bezier(.4,0,.2,1) both}
+
+.hero-ctas{display:flex;gap:10px;flex-wrap:wrap;animation:su .8s .26s cubic-bezier(.4,0,.2,1) both}
+.hcta-main{padding:13px 28px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;letter-spacing:.02em}.hcta-main:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
+.hcta-sec{padding:12px 22px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.hcta-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* Right column — Visual art block */
+.hero-right{position:relative;animation:su .8s .12s cubic-bezier(.4,0,.2,1) both}
+.hero-art{position:relative;height:520px}
+
+.art-main-card{position:absolute;top:0;right:0;width:340px;height:420px;background:linear-gradient(145deg,var(--ink3),var(--ink4));border:1px solid var(--gold-b);border-radius:var(--r5);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 40px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(201,168,76,.1)}
+.art-main-inner{text-align:center;padding:28px}
+.art-logo{font-size:72px;margin-bottom:12px;display:block;filter:drop-shadow(0 0 24px rgba(201,168,76,.4))}
+.art-title{font-family:'Fraunces',serif;font-size:28px;font-weight:800;color:var(--gold-lt);margin-bottom:6px;letter-spacing:-.02em}
+.art-sub{font-size:12px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.art-divider{width:40px;height:1px;background:var(--gold-b);margin:14px auto;border-radius:1px}
+.art-stats-mini{display:flex;gap:18px;justify-content:center;margin-top:12px}
+.asm-v{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--t0)}
+.asm-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+
+/* Floating mini cards */
+.float-card{position:absolute;background:var(--ink3);border:1px solid var(--gold-b);border-radius:var(--r2);padding:14px 18px;animation:float 5s ease-in-out infinite}
+.fc-a{bottom:20px;right:60px;animation-delay:0s;min-width:160px}
+.fc-b{top:60px;left:0;animation-delay:-2.5s;min-width:150px}
+.fc-c{bottom:100px;left:20px;animation-delay:-1.2s;min-width:140px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fc-label{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;margin-bottom:4px}
+.fc-val{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--gold-lt);line-height:1}
+.fc-desc{font-size:11px;color:var(--t2);margin-top:2px}
+.fc-ic{font-size:20px;margin-bottom:5px;display:block}
+
+/* Hero base gradient */
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:140px;background:linear-gradient(to bottom,transparent,var(--ink));pointer-events:none;z-index:2}
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════════════
+   STATS COUNTER STRIP
+══════════════════════════════════════════════ */
+.stats-strip{position:relative;z-index:1;background:var(--ink1);border-top:1px solid var(--gold-b);border-bottom:1px solid rgba(255,255,255,.04)}
+.stats-inner{max-width:1280px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.stat-box{padding:32px 24px;text-align:center;border-right:1px solid rgba(201,168,76,.08);position:relative;transition:background .3s}.stat-box:last-child{border-right:none}.stat-box:hover{background:rgba(201,168,76,.025)}
+.stat-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);transition:width .4s}
+.stat-box:hover::before{width:100%}
+.stat-v{font-family:'Fraunces',serif;font-size:40px;font-weight:800;color:var(--gold-lt);line-height:1;margin-bottom:6px;letter-spacing:-.03em}
+.stat-v .stat-suffix{font-size:24px;color:var(--gold)}
+.stat-l{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+.stat-trend{font-size:11px;color:var(--teal);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:3px}
+
+/* ══════════════════════════════════════════════
+   SHARED SECTION STYLES
+══════════════════════════════════════════════ */
+.section{position:relative;z-index:1}
+.W{max-width:1280px;margin:0 auto;padding:0 48px}
+
+.ey{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.ey::before{content:'';width:20px;height:1px;background:var(--gold)}
+
+.H2{font-family:'Fraunces',serif;font-size:clamp(32px,4.5vw,58px);font-weight:700;color:var(--t0);line-height:1.02;letter-spacing:-.025em;margin-bottom:14px}
+.H2 em{font-style:italic;color:var(--gold)}
+
+.para{font-size:15px;color:var(--t2);line-height:1.88;margin-bottom:16px}
+.para strong{color:var(--t0);font-weight:600}
+.para:last-child{margin-bottom:0}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ══════════════════════════════════════════════
+   OUR STORY — ASYMMETRIC SPLIT
+══════════════════════════════════════════════ */
+.story-sec{padding:100px 0;overflow:hidden}
+.story-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.story-visual{position:relative}
+.story-big-card{background:linear-gradient(145deg,var(--ink3),var(--ink4));border:1px solid var(--gold-b);border-radius:var(--r5);padding:44px;height:480px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(201,168,76,.08)}
+.story-bg-num{position:absolute;font-family:'Fraunces',serif;font-size:220px;font-weight:900;color:rgba(201,168,76,.04);line-height:1;right:-20px;bottom:-30px;user-select:none;letter-spacing:-.05em}
+.story-ic{font-size:52px;margin-bottom:16px;display:block;filter:drop-shadow(0 0 20px rgba(201,168,76,.35))}
+.story-card-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--t0);margin-bottom:10px;letter-spacing:-.02em}
+.story-card-desc{font-size:14px;color:var(--t2);line-height:1.82;margin-bottom:24px}
+.story-yr-badges{display:flex;gap:10px;flex-wrap:wrap}
+.yr-badge{padding:6px 14px;border-radius:100px;background:var(--gold-d);border:1px solid var(--gold-b);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.06em}
+
+/* Floating overlay card */
+.story-overlay{position:absolute;bottom:-28px;right:-32px;background:var(--ink2);border:1px solid var(--gold-b);border-radius:var(--r3);padding:20px;min-width:200px;box-shadow:0 20px 60px rgba(0,0,0,.5);z-index:2}
+.so-label{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
+.so-val{font-family:'Fraunces',serif;font-size:36px;font-weight:800;color:var(--gold-lt);line-height:1;margin-bottom:3px}
+.so-sub{font-size:12px;color:var(--t2)}
+
+/* ══════════════════════════════════════════════
+   MISSION & VALUES — THREE COLUMNS
+══════════════════════════════════════════════ */
+.values-sec{padding:90px 0;background:var(--ink1);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+
+.val-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r4);padding:36px 28px;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.34,1.1,.64,1)}
+.val-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--vc,var(--gold)),transparent);opacity:.8}
+.val-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,var(--vcg,rgba(201,168,76,.06)),transparent);opacity:0;transition:opacity .35s}
+.val-card:hover{border-color:var(--vcb,var(--gold-b));transform:translateY(-6px);box-shadow:0 24px 64px rgba(0,0,0,.45)}.val-card:hover::after{opacity:1}
+
+.val-card.vc-gold{--vc:var(--gold);--vcb:var(--gold-b);--vcg:rgba(201,168,76,.06)}
+.val-card.vc-teal{--vc:var(--teal);--vcb:var(--teal-b);--vcg:rgba(34,211,180,.05)}
+.val-card.vc-rose{--vc:var(--rose);--vcb:rgba(244,63,94,.22);--vcg:rgba(244,63,94,.05)}
+.val-card.vc-blue{--vc:var(--blue);--vcb:rgba(59,130,246,.22);--vcg:rgba(59,130,246,.05)}
+.val-card.vc-emerald{--vc:var(--emerald);--vcb:rgba(16,185,129,.22);--vcg:rgba(16,185,129,.05)}
+.val-card.vc-amber{--vc:#f59e0b;--vcb:rgba(245,158,11,.22);--vcg:rgba(245,158,11,.05)}
+
+.val-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);letter-spacing:.15em;margin-bottom:12px}
+.val-ic{font-size:40px;margin-bottom:16px;display:block}
+.val-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--t0);margin-bottom:10px;letter-spacing:-.01em}
+.val-desc{font-size:13.5px;color:var(--t2);line-height:1.8}
+
+/* ══════════════════════════════════════════════
+   TIMELINE
+══════════════════════════════════════════════ */
+.timeline-sec{padding:96px 0}
+.timeline-wrap{position:relative;margin-top:56px}
+.tl-line{position:absolute;top:0;bottom:0;left:50%;width:1px;background:linear-gradient(to bottom,transparent,var(--gold-b),var(--gold),var(--gold-b),transparent);transform:translateX(-50%)}
+
+.tl-items{display:flex;flex-direction:column;gap:48px;position:relative}
+.tl-item{display:grid;grid-template-columns:1fr 40px 1fr;gap:0;align-items:start}
+.tl-item.right .tl-content{grid-column:1;text-align:right}
+.tl-item.right .tl-node{grid-column:2}
+.tl-item.right .tl-empty{grid-column:3}
+.tl-item.left .tl-empty{grid-column:1}
+.tl-item.left .tl-node{grid-column:2}
+.tl-item.left .tl-content{grid-column:3}
+
+.tl-node{width:40px;height:40px;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;padding:0}
+.tl-dot{width:14px;height:14px;border-radius:50%;background:var(--gold);border:3px solid var(--ink);box-shadow:0 0 16px rgba(201,168,76,.5);flex-shrink:0}
+
+.tl-content{padding:0 28px}
+.tl-year{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.tl-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:22px 24px;transition:all .3s}
+.tl-card:hover{border-color:var(--gold-b);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+.tl-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:var(--t0);margin-bottom:7px;letter-spacing:-.01em}
+.tl-desc{font-size:13.5px;color:var(--t2);line-height:1.76}
+
+/* ══════════════════════════════════════════════
+   TEAM SECTION
+══════════════════════════════════════════════ */
+.team-sec{padding:90px 0;background:var(--ink1);border-top:1px solid var(--div)}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+
+.team-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r4);padding:28px 22px;text-align:center;transition:all .35s cubic-bezier(.34,1.1,.64,1);position:relative;overflow:hidden}
+.team-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--tc,var(--gold)),transparent);opacity:0;transition:opacity .3s}
+.team-card:hover{border-color:var(--tcb,var(--gold-b));transform:translateY(-7px);box-shadow:0 24px 60px rgba(0,0,0,.5)}.team-card:hover::before{opacity:1}
+
+.tm-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:36px;position:relative;border:2px solid rgba(255,255,255,.08);transition:all .3s}
+.team-card:hover .tm-avatar{border-color:var(--tcb,var(--gold-b));box-shadow:0 0 20px var(--tcg,rgba(201,168,76,.2))}
+
+.tm-name{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:4px;letter-spacing:-.01em}
+.tm-role{font-size:12px;color:var(--t2);margin-bottom:4px}
+.tm-exp{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+.tm-quote{font-size:13px;color:var(--t2);line-height:1.72;font-style:italic;margin-bottom:16px;min-height:56px}
+.tm-social{display:flex;justify-content:center;gap:8px}
+.tmsoc{width:30px;height:30px;border-radius:7px;background:var(--ink3);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all .2s}.tmsoc:hover{border-color:var(--tcb,var(--gold-b));background:var(--tc-d,var(--gold-d))}
+
+/* ══════════════════════════════════════════════
+   IMPACT SECTION — BENTO GRID
+══════════════════════════════════════════════ */
+.impact-sec{padding:90px 0;overflow:hidden}
+.impact-intro{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;margin-bottom:56px}
+
+.bento-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:14px;margin-top:0}
+
+.bento-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r4);padding:26px;position:relative;overflow:hidden;transition:all .3s}
+.bento-card:hover{border-color:var(--gold-b);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+
+/* Bento spans */
+.bc-wide{grid-column:span 2}
+.bc-tall{grid-row:span 2}
+.bc-big{grid-column:span 2;grid-row:span 2}
+
+.bc-label{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:8px;display:block}
+.bc-val{font-family:'Fraunces',serif;font-size:clamp(28px,3.5vw,48px);font-weight:800;line-height:1;margin-bottom:6px;letter-spacing:-.03em}
+.bc-desc{font-size:13px;color:var(--t2);line-height:1.72}
+.bc-ic{font-size:32px;margin-bottom:12px;display:block}
+
+/* ══════════════════════════════════════════════
+   INVESTORS & RECOGNITION
+══════════════════════════════════════════════ */
+.recognition-sec{padding:72px 0;background:var(--ink1);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.rec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:40px}
+.rec-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:22px;text-align:center;transition:all .25s}.rec-card:hover{border-color:var(--gold-b);transform:translateY(-4px)}
+.rec-ic{font-size:28px;margin-bottom:8px;display:block}
+.rec-name{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--t0);margin-bottom:4px}
+.rec-desc{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+/* Press logo strip */
+.press-strip{display:flex;gap:0;align-items:center;justify-content:center;flex-wrap:wrap;background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);overflow:hidden;margin-top:24px}
+.press-item{padding:16px 30px;border-right:1px solid rgba(255,255,255,.05);font-family:'Fraunces',serif;font-size:16px;font-weight:700;color:var(--t3);letter-spacing:.02em;transition:color .2s}.press-item:last-child{border-right:none}.press-item:hover{color:var(--gold-lt)}
+
+/* ══════════════════════════════════════════════
+   CITY PRESENCE
+══════════════════════════════════════════════ */
+.cities-sec{padding:90px 0}
+.cities-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:44px}
+.city-card{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:20px 16px;text-align:center;cursor:pointer;transition:all .32s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
+.city-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .32s}
+.city-card:hover{border-color:var(--gold-b);transform:translateY(-6px);box-shadow:0 16px 44px rgba(0,0,0,.45)}.city-card:hover::after{transform:scaleX(1)}
+.cf{font-size:26px;margin-bottom:8px;display:block}
+.cn{font-family:'Fraunces',serif;font-size:14px;font-weight:700;color:var(--t0);margin-bottom:3px}
+.cc{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+/* ══════════════════════════════════════════════
+   FINAL CTA
+══════════════════════════════════════════════ */
+.cta-sec{padding:96px 0;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(201,168,76,.05) 0%,transparent 65%)}
+.cta-inner{text-align:center;position:relative;z-index:1;max-width:720px;margin:0 auto}
+.cta-ring{position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,.07);top:50%;left:50%;transform:translate(-50%,-50%)}
+.cr1{width:600px;height:600px;margin:-300px 0 0 -300px;animation:rp 12s ease-in-out infinite}
+.cr2{width:400px;height:400px;margin:-200px 0 0 -200px;border-style:dashed;animation:rp 12s ease-in-out infinite;animation-delay:-4s;opacity:.6}
+@keyframes rp{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.5}50%{transform:translate(-50%,-50%) scale(1.04);opacity:1}}
+.cta-title{font-family:'Fraunces',serif;font-size:clamp(36px,5vw,68px);font-weight:800;color:var(--t0);margin-bottom:16px;letter-spacing:-.03em;line-height:1.04}
+.cta-title em{font-style:italic;color:var(--gold)}
+.cta-desc{font-size:16px;color:var(--t2);line-height:1.82;margin-bottom:36px}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.cb-main{padding:14px 32px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .22s;letter-spacing:.02em}.cb-main:hover{box-shadow:0 0 32px var(--gold-glow);transform:translateY(-2px)}
+.cb-sec{padding:13px 26px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.14);color:var(--t1);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s}.cb-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{padding:60px 0 28px;background:var(--ink1);border-top:1px solid var(--gold-b);position:relative;z-index:1}
+.fg{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.fb-d{font-size:13px;color:var(--t2);line-height:1.84;margin:14px 0 20px;max-width:260px}
+.fsocs{display:flex;gap:8px}
+.fsoc{width:36px;height:36px;border-radius:8px;background:var(--ink2);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;transition:all .2s}.fsoc:hover{border-color:var(--gold-b);background:var(--gold-d);transform:translateY(-2px)}
+.ft-col-t{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:var(--gold-lt);margin-bottom:18px;letter-spacing:.01em}
+.fl{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;display:block;margin-bottom:10px}.fl:hover{color:var(--gold-lt)}
+.foot-bot{border-top:1px solid rgba(201,168,76,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-copy{font-size:12px;color:var(--t3)}.foot-copy a{color:var(--gold);text-decoration:none}
+.fbdgs{display:flex;gap:6px}
+.fbdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:var(--ink2);border:1px solid rgba(255,255,255,.07);color:var(--t3)}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}.hero-right{display:none}.hero-left{padding-right:0;display:flex;flex-direction:column;align-items:center}
+  .hero-ctas{justify-content:center}.hero-desc{text-align:center;margin-left:auto;margin-right:auto}
+  .story-inner{grid-template-columns:1fr;gap:40px}.story-visual{display:none}
+  .values-grid{grid-template-columns:1fr 1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
+  .bento-grid{grid-template-columns:1fr 1fr}.bc-wide,.bc-big{grid-column:span 2}.bc-tall{grid-row:span 1}
+  .cities-grid{grid-template-columns:repeat(3,1fr)}
+  .stats-inner{grid-template-columns:repeat(3,1fr)}.stat-box:nth-child(3){border-right:none}.stat-box:nth-child(4),.stat-box:nth-child(5){border-top:1px solid rgba(201,168,76,.08)}
+  .fg{grid-template-columns:1fr 1fr}.rec-grid{grid-template-columns:repeat(2,1fr)}
+  .impact-intro{grid-template-columns:1fr}
+  .nav-links{display:none}.mob-btn{display:flex}
+}
+@media(max-width:640px){
+  .W{padding:0 20px}.values-grid{grid-template-columns:1fr}.team-grid{grid-template-columns:1fr}.bento-grid{grid-template-columns:1fr}.bc-wide,.bc-big{grid-column:span 1}.cities-grid{grid-template-columns:repeat(2,1fr)}.stats-inner{grid-template-columns:1fr 1fr}.tl-line{left:20px}.tl-item,.tl-item.right{grid-template-columns:40px 1fr}.tl-item .tl-content,.tl-item.right .tl-content{grid-column:2;text-align:left}.tl-item .tl-empty,.tl-item.right .tl-empty{display:none}.tl-node{grid-column:1;width:40px}.press-strip{flex-direction:column;border-radius:0}.press-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.05)}.press-item:last-child{border-bottom:none}.fg{grid-template-columns:1fr}.foot-bot{flex-direction:column;text-align:center}.hero{min-height:auto;padding-top:90px;padding-bottom:60px}
+}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="bg-noise"></div>
+<div class="bg-grid"></div>
+<div class="pg-bar" id="pgBar"></div>
+
+<!-- MOBILE MENU -->
+<div class="mob-drawer" id="mobDrawer">
+  <a class="mob-l" href="index.html">🏠 Home</a>
+  <a class="mob-l" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
+  <a class="mob-l" href="commercial.html">🏢 Commercial</a>
+  <a class="mob-l" href="services.html">🔧 Services</a>
+  <a class="mob-l" href="owner-guide.html">📋 Owner Guide</a>
+  <a class="mob-l" href="tenant-guide.html">👤 Tenant Guide</a>
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.1);margin:8px 0">
+  <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="nb nb-gold" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:7px">+ List Property</a>
+</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+    <a class="nl" href="commercial.html">Commercial</a>
+    <a class="nl" href="services.html">Services</a>
+    <a class="nl on" href="about.html">About Us</a>
+  </div>
+  <div class="nav-r">
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" onclick="toggleDrawer()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="live-dot"></span>Our Story · Founded 2023</div>
+      <h1 class="hero-h1">
+        <span class="outline-line">Redefining</span>
+        <span class="italic-line">Renting</span>
+        <span style="display:block;color:var(--t0)">in India</span>
+      </h1>
+      <p class="hero-desc">We started SmartRent AI with one belief: every Indian deserves a <strong>fair, transparent</strong> and <strong>intelligent</strong> renting experience — without brokers, without scams, without the chaos that has defined the rental market for decades.</p>
+      <div class="hero-ctas">
+        <a class="hcta-main" href="#story">📖 Our Story</a>
+        <a class="hcta-sec" href="#team">👥 Meet the Team</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-art">
+        <div class="art-main-card">
+          <div class="art-main-inner">
+            <span class="art-logo">💎</span>
+            <div class="art-title">SmartRent AI</div>
+            <div class="art-sub">India · Est. 2023</div>
+            <div class="art-divider"></div>
+            <div class="art-stats-mini">
+              <div><div class="asm-v">8.8K+</div><div class="asm-l">Properties</div></div>
+              <div><div class="asm-v">15+</div><div class="asm-l">Cities</div></div>
+              <div><div class="asm-v">50K+</div><div class="asm-l">Tenants</div></div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.3))"></div>
+        </div>
+
+        <div class="float-card fc-a">
+          <span class="fc-ic">🏆</span>
+          <div class="fc-label">Achievement</div>
+          <div class="fc-val">₹0</div>
+          <div class="fc-desc">Brokerage charged</div>
+        </div>
+
+        <div class="float-card fc-b">
+          <span class="fc-ic">🤖</span>
+          <div class="fc-label">AI-Powered</div>
+          <div class="fc-val">94%</div>
+          <div class="fc-desc">Match accuracy</div>
+        </div>
+
+        <div class="float-card fc-c">
+          <span class="fc-ic">🛡️</span>
+          <div class="fc-label">Trust</div>
+          <div class="fc-val">100%</div>
+          <div class="fc-desc">KYC Verified</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-fade"></div>
+</section>
+
+<!-- ══════════ STATS STRIP ══════════ -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-box">
+      <div class="stat-v"><span id="s1">0</span><span class="stat-suffix">K+</span></div>
+      <div class="stat-l">Verified Listings</div>
+      <div class="stat-trend">↑ 340% this year</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-v"><span id="s2">0</span><span class="stat-suffix">K+</span></div>
+      <div class="stat-l">Happy Tenants</div>
+      <div class="stat-trend">↑ 210% this year</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-v"><span id="s3">0</span><span class="stat-suffix">+</span></div>
+      <div class="stat-l">Cities Covered</div>
+      <div class="stat-trend">↑ 5 new in 2025</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-v">₹<span id="s4">0</span><span class="stat-suffix">Cr+</span></div>
+      <div class="stat-l">Tenant Savings</div>
+      <div class="stat-trend">Zero brokerage</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-v"><span id="s5">0</span><span class="stat-suffix">%</span></div>
+      <div class="stat-l">Satisfaction Score</div>
+      <div class="stat-trend">↑ from 92% last yr</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ OUR STORY ══════════ -->
+<section class="story-sec section" id="story">
+  <div class="W">
+    <div class="story-inner">
+      <div class="story-visual rv">
+        <div class="story-big-card">
+          <div style="background:var(--ink5);border-radius:12px;padding:18px;margin-bottom:16px;border:1px solid rgba(201,168,76,.1)">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px">Founder's Note</div>
+            <div style="font-family:'Fraunces',serif;font-size:16px;font-style:italic;color:var(--t1);line-height:1.72">"The Indian rental market was broken — opaque, broker-dominated, and unfair to both tenants and honest owners. We decided to fix it."</div>
+            <div style="margin-top:12px;font-size:12px;color:var(--gold);font-family:'JetBrains Mono',monospace">— Piyush Mishra, Founder & CEO</div>
+          </div>
+          <div>
+            <span class="art-logo" style="font-size:36px;margin-bottom:8px">💡</span>
+            <div class="story-card-title">Born from Frustration</div>
+            <div class="story-card-desc">Our founder spent 3 months apartment hunting in Hyderabad — paying brokers ₹45,000 in commissions, seeing fake listings, and dealing with opacity at every step. That frustration became the fuel for SmartRent AI.</div>
+            <div class="story-yr-badges">
+              <div class="yr-badge">2023 — Founded</div>
+              <div class="yr-badge">2024 — 10K Users</div>
+              <div class="yr-badge">2025 — 15 Cities</div>
+            </div>
+          </div>
+          <div class="story-bg-num">AI</div>
+        </div>
+        <div class="story-overlay rv d1">
+          <div class="so-label">Team Size</div>
+          <div class="so-val" id="so-team">0</div>
+          <div class="so-sub">across 4 cities</div>
+        </div>
+      </div>
+
+      <div class="rv d2">
+        <div class="ey">Our Story</div>
+        <h2 class="H2">From a <em>Frustrating</em><br>Search to a Revolution</h2>
+        <div class="para">It started in June 2023 when our founder Piyush Mishra relocated to Hyderabad for work. Three months of apartment hunting revealed everything wrong with India's rental market: <strong>brokers demanding 1–2 months' commission</strong>, listings with fake photos, landlords who ghosted after taking token amounts, and no way to verify anything.</div>
+        <div class="para">The problem wasn't just annoying — it was costing Indians <strong>₹12,000 crore annually in broker commissions alone</strong>, on top of inflated rents and deposit disputes that had no resolution mechanism. Meanwhile, honest property owners struggled to find reliable tenants without expensive agents.</div>
+        <div class="para">SmartRent AI was built to disrupt this. We combined <strong>AI-powered matching, mandatory KYC verification, transparent pricing, and direct owner-tenant connection</strong> into a single platform. No brokers, no hidden fees, no fake listings. Just intelligence applied to one of India's most broken markets.</div>
+        <div class="para">Today, we've helped <strong>50,000+ tenants</strong> find homes without paying a rupee in brokerage, saved ₹12+ crore in broker commissions, and enabled <strong>10,000+ verified property owners</strong> to rent faster and smarter.</div>
+        <div style="margin-top:28px;padding:22px 24px;background:var(--ink2);border:1px solid var(--gold-b);border-radius:var(--r2);border-left:3px solid var(--gold)">
+          <div style="font-family:'Fraunces',serif;font-size:20px;font-style:italic;color:var(--gold-lt);margin-bottom:6px">"Renting should be as simple as ordering food. We're making it happen."</div>
+          <div style="font-size:12px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em">— SmartRent AI Mission Statement</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MISSION & VALUES ══════════ -->
+<section class="values-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="ey" style="justify-content:center">What Drives Us</div>
+      <h2 class="H2" style="text-align:center">Our Mission &amp; <em>Core Values</em></h2>
+      <p style="font-size:15px;color:var(--t2);line-height:1.82">Every decision we make is guided by six principles that define who we are and how we serve the 300 million Indians who rent every year.</p>
+    </div>
+    <div class="values-grid">
+      <div class="val-card vc-gold rv d1">
+        <div class="val-num">01 / MISSION</div>
+        <span class="val-ic">🎯</span>
+        <div class="val-title">Fair Renting for All</div>
+        <div class="val-desc">To make renting in India completely fair, transparent, and intelligent — eliminating brokers, fraud, and information asymmetry from one of India's most important markets.</div>
+      </div>
+      <div class="val-card vc-teal rv d2">
+        <div class="val-num">02 / TRANSPARENCY</div>
+        <span class="val-ic">🔍</span>
+        <div class="val-title">Radical Transparency</div>
+        <div class="val-desc">Zero hidden fees. Zero fake listings. Every price, rule, and condition disclosed upfront. We believe that information freely shared builds trust that cannot be bought.</div>
+      </div>
+      <div class="val-card vc-rose rv d3">
+        <div class="val-num">03 / TRUST</div>
+        <span class="val-ic">🛡️</span>
+        <div class="val-title">KYC-First Culture</div>
+        <div class="val-desc">Every owner and tenant on our platform is identity-verified before any interaction. Trust isn't a feature — it's the foundation we build everything on.</div>
+      </div>
+      <div class="val-card vc-blue rv d1">
+        <div class="val-num">04 / INTELLIGENCE</div>
+        <span class="val-ic">🤖</span>
+        <div class="val-title">AI That Actually Helps</div>
+        <div class="val-desc">Our machine learning doesn't just match keywords — it understands commute, lifestyle, growth trajectory, and budget patterns to connect people with homes they'll genuinely love.</div>
+      </div>
+      <div class="val-card vc-emerald rv d2">
+        <div class="val-num">05 / SPEED</div>
+        <span class="val-ic">⚡</span>
+        <div class="val-title">Speed as Respect</div>
+        <div class="val-desc">Rental searches waste months of people's lives. We've cut the average time-to-home from 90 days to under 14 days. Respecting your time is a core product principle, not a metric.</div>
+      </div>
+      <div class="val-card vc-amber rv d3">
+        <div class="val-num">06 / IMPACT</div>
+        <span class="val-ic">🌍</span>
+        <div class="val-title">India-Scale Thinking</div>
+        <div class="val-desc">300 million Indians rent. We build for everyone — from the student in a ₹5,000 PG in Ameerpet to the startup needing 20,000 sqft in BKC. Scale is our responsibility.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TIMELINE ══════════ -->
+<section class="section" style="padding:90px 0" id="timeline">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto 56px">
+      <div class="ey" style="justify-content:center">Journey</div>
+      <h2 class="H2" style="text-align:center">How We <em>Grew</em></h2>
+    </div>
+    <div class="timeline-wrap rv">
+      <div class="tl-line"></div>
+      <div class="tl-items">
+
+        <div class="tl-item right">
+          <div class="tl-content">
+            <div class="tl-year">June 2023</div>
+            <div class="tl-card">
+              <div class="tl-title">🌱 The Spark</div>
+              <div class="tl-desc">Piyush Mishra, frustrated after 3 months of apartment hunting in Hyderabad, registers SmartRent AI. The first version is a simple listing site built on a weekend, solving his own problem.</div>
+            </div>
+          </div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-empty"></div>
+        </div>
+
+        <div class="tl-item left">
+          <div class="tl-empty"></div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-content">
+            <div class="tl-year">September 2023</div>
+            <div class="tl-card">
+              <div class="tl-title">🚀 First 1,000 Users</div>
+              <div class="tl-desc">Word spreads on Hyderabad tech communities. SmartRent AI reaches 1,000 users in 90 days — entirely organic, zero advertising. First institutional inquiry arrives from a co-living brand in Bangalore.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item right">
+          <div class="tl-content">
+            <div class="tl-year">January 2024</div>
+            <div class="tl-card">
+              <div class="tl-title">🏙️ Multi-City Expansion</div>
+              <div class="tl-desc">Platform expands to Bangalore, Mumbai and Delhi NCR. Commercial property module launched. Team grows from 2 to 12. First round of angel funding closes at ₹2.4 crore.</div>
+            </div>
+          </div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-empty"></div>
+        </div>
+
+        <div class="tl-item left">
+          <div class="tl-empty"></div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-content">
+            <div class="tl-year">June 2024</div>
+            <div class="tl-card">
+              <div class="tl-title">🤖 AI Engine v2.0</div>
+              <div class="tl-desc">Launch of our proprietary AI matching engine. Match accuracy improves from 67% to 94%. Average time-to-home drops from 43 days to 16 days. 10,000th tenant milestone celebrated.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tl-item right">
+          <div class="tl-content">
+            <div class="tl-year">December 2024</div>
+            <div class="tl-card">
+              <div class="tl-title">🏆 Awards &amp; Recognition</div>
+              <div class="tl-desc">Named "Most Innovative Proptech Startup 2024" by Economic Times. Featured in YourStory, Entrackr, and The Hindu Business Line. 30,000 tenants, ₹7 crore in broker savings. Series A discussions begin.</div>
+            </div>
+          </div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-empty"></div>
+        </div>
+
+        <div class="tl-item left">
+          <div class="tl-empty"></div>
+          <div class="tl-node"><div class="tl-dot"></div></div>
+          <div class="tl-content">
+            <div class="tl-year">2025 — Present</div>
+            <div class="tl-card">
+              <div class="tl-title">🌐 Platform of Record</div>
+              <div class="tl-desc">15 cities, 50,000+ tenants, 8,800+ verified listings, Services marketplace launched. Team of 65 professionals. Processing 2,000+ rental transactions monthly. Next: Pan-India in 2026.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ IMPACT BENTO ══════════ -->
+<section class="impact-sec section">
+  <div class="W">
+    <div class="impact-intro">
+      <div class="rv">
+        <div class="ey">Real Impact</div>
+        <h2 class="H2">Numbers That Tell<br><em>Our Story</em></h2>
+      </div>
+      <div class="rv d1">
+        <p style="font-size:15px;color:var(--t2);line-height:1.88">Every number represents a real person who found a home faster, saved money on brokers, or rented their property to a verified tenant. These aren't metrics — they're lives made easier.</p>
+      </div>
+    </div>
+    <div class="bento-grid rv d1">
+      <div class="bento-card bc-big" style="background:linear-gradient(145deg,var(--ink3),var(--ink4));border-color:var(--gold-b)">
+        <span class="bc-ic">💰</span>
+        <span class="bc-label">Total Tenant Savings</span>
+        <div class="bc-val" style="color:var(--gold-lt)">₹12 Crore+</div>
+        <div class="bc-desc">Saved in broker commissions that tenants did not have to pay. At an average of ₹12,000 per rental, that's over 10,000 families who kept their money.</div>
+        <div style="margin-top:20px;padding:14px;background:rgba(201,168,76,.08);border-radius:var(--r1);font-size:12px;color:var(--gold-lt);font-family:'JetBrains Mono',monospace">₹0 brokerage on every transaction · Forever</div>
+      </div>
+      <div class="bento-card" style="border-color:var(--teal-b)">
+        <span class="bc-ic">⏱️</span>
+        <span class="bc-label">Avg. Days to Find Home</span>
+        <div class="bc-val" style="color:var(--teal)">14</div>
+        <div class="bc-desc">Down from 90+ days on traditional platforms</div>
+      </div>
+      <div class="bento-card" style="border-color:rgba(59,130,246,.22)">
+        <span class="bc-ic">🛡️</span>
+        <span class="bc-label">KYC Verified Owners</span>
+        <div class="bc-val" style="color:#60a5fa">10K+</div>
+        <div class="bc-desc">Verified landlords across all cities</div>
+      </div>
+      <div class="bento-card bc-wide" style="background:linear-gradient(145deg,var(--ink3),var(--ink5));border-color:rgba(34,211,180,.22)">
+        <span class="bc-ic">🤖</span>
+        <span class="bc-label">AI Match Accuracy</span>
+        <div class="bc-val" style="color:var(--teal)">94%</div>
+        <div class="bc-desc">Tenants say our AI matched them with exactly what they were looking for — vs 34% industry average</div>
+      </div>
+      <div class="bento-card" style="border-color:rgba(244,63,94,.22)">
+        <span class="bc-ic">⭐</span>
+        <span class="bc-label">Satisfaction</span>
+        <div class="bc-val" style="color:#fb7185">4.8</div>
+        <div class="bc-desc">Out of 5.0 from 12,000+ reviews</div>
+      </div>
+      <div class="bento-card">
+        <span class="bc-ic">🏙️</span>
+        <span class="bc-label">Cities Active</span>
+        <div class="bc-val" style="color:var(--gold-lt)">15+</div>
+        <div class="bc-desc">And growing — 8 more in 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TEAM ══════════ -->
+<section class="team-sec section" id="team">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto">
+      <div class="ey" style="justify-content:center">The People</div>
+      <h2 class="H2" style="text-align:center">Meet the <em>Team</em></h2>
+      <p style="font-size:15px;color:var(--t2);line-height:1.82">A team of builders, dreamers, and people who have personally felt the frustration of the Indian rental market — and decided to fix it.</p>
+    </div>
+    <div class="team-grid rv d1" id="teamGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════ RECOGNITION ══════════ -->
+<section class="recognition-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center">
+      <div class="ey" style="justify-content:center">Recognition</div>
+      <h2 class="H2" style="text-align:center">Awards &amp; <em>Media Coverage</em></h2>
+    </div>
+    <div class="rec-grid rv d1">
+      <div class="rec-card"><span class="rec-ic">🏆</span><div class="rec-name">Best Proptech 2024</div><div class="rec-desc">Economic Times</div></div>
+      <div class="rec-card"><span class="rec-ic">🚀</span><div class="rec-name">Top 10 Startups</div><div class="rec-desc">YourStory India</div></div>
+      <div class="rec-card"><span class="rec-ic">💡</span><div class="rec-name">Innovation Award</div><div class="rec-desc">NASSCOM 2024</div></div>
+      <div class="rec-card"><span class="rec-ic">⭐</span><div class="rec-name">Most Trusted Platform</div><div class="rec-desc">Real Estate Times</div></div>
+    </div>
+    <div class="press-strip rv d2">
+      <div class="press-item">Economic Times</div>
+      <div class="press-item">YourStory</div>
+      <div class="press-item">The Hindu</div>
+      <div class="press-item">Entrackr</div>
+      <div class="press-item">MoneyControl</div>
+      <div class="press-item">Inc42</div>
+      <div class="press-item">TechCrunch India</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CITIES ══════════ -->
+<section class="cities-sec section">
+  <div class="W">
+    <div class="rv"><div class="ey">Where We Operate</div><h2 class="H2">Present Across <em>India</em></h2></div>
+    <div class="cities-grid rv d1">
+      <div class="city-card"><span class="cf">🌆</span><div class="cn">Hyderabad</div><div class="cc">3,200+ listings</div></div>
+      <div class="city-card"><span class="cf">🌇</span><div class="cn">Bangalore</div><div class="cc">4,800+ listings</div></div>
+      <div class="city-card"><span class="cf">🏙️</span><div class="cn">Mumbai</div><div class="cc">2,900+ listings</div></div>
+      <div class="city-card"><span class="cf">🏛️</span><div class="cn">Delhi NCR</div><div class="cc">3,600+ listings</div></div>
+      <div class="city-card"><span class="cf">🌃</span><div class="cn">Chennai</div><div class="cc">1,400+ listings</div></div>
+      <div class="city-card"><span class="cf">🏰</span><div class="cn">Pune</div><div class="cc">1,200+ listings</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FINAL CTA ══════════ -->
+<section class="cta-sec section">
+  <div class="cta-ring cr1"></div>
+  <div class="cta-ring cr2"></div>
+  <div class="W">
+    <div class="cta-inner rv">
+      <div class="ey" style="justify-content:center;margin-bottom:16px">Join the Movement</div>
+      <div class="cta-title">Be Part of <em>Smarter</em><br>Renting in India</div>
+      <div class="cta-desc">Whether you're looking for a home, listing a property, or just someone who believes the rental market can be better — we'd love to have you with us.</div>
+      <div class="cta-btns">
+        <a class="cb-main" href="pg-hostel-listings.html">🔍 Find a Home</a>
+        <a class="cb-main" href="post-property.html" style="background:linear-gradient(135deg,var(--teal),#0d7a60);color:#030406">🏠 List Your Property</a>
+        <a class="cb-sec" href="services.html">🔧 Browse Services</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="W">
+    <div class="fg">
+      <div>
+        <a href="index.html" class="brand" style="text-decoration:none">
+          <div class="bgem" style="width:30px;height:30px;font-size:14px">💎</div>
+          <span class="bname" style="font-size:17px">SmartRent<span class="bai">AI</span></span>
+        </a>
+        <p class="fb-d">India's most intelligent rental platform. Connecting tenants and owners directly — zero brokerage, fully verified, AI-powered.</p>
+        <div class="fsocs"><a class="fsoc" href="#">𝕏</a><a class="fsoc" href="#">📸</a><a class="fsoc" href="#">in</a><a class="fsoc" href="#">▶</a></div>
+      </div>
+      <div>
+        <div class="ft-col-t">Platform</div>
+        <a class="fl" href="index.html">Home</a>
+        <a class="fl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+        <a class="fl" href="commercial.html">Commercial</a>
+        <a class="fl" href="services.html">Services</a>
+        <a class="fl" href="about.html">About Us</a>
+      </div>
+      <div>
+        <div class="ft-col-t">Resources</div>
+        <a class="fl" href="owner-guide.html">Owner Guide</a>
+        <a class="fl" href="tenant-guide.html">Tenant Guide</a>
+        <a class="fl" href="post-property.html">List Property</a>
+        <a class="fl" href="post-commercial.html">List Commercial</a>
+        <a class="fl" href="admin.html">Admin Panel</a>
+      </div>
+      <div>
+        <div class="ft-col-t">Company</div>
+        <a class="fl" href="about.html">About Us</a>
+        <a class="fl" href="#">Careers</a>
+        <a class="fl" href="#">Press &amp; Media</a>
+        <a class="fl" href="privacy-policy.html">Privacy Policy</a>
+        <a class="fl" href="privacy-policy.html">Terms of Service</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">© 2023–2026 SmartRent AI. All rights reserved. Built with ❤️ in India. <a href="privacy-policy.html">Privacy</a> · <a href="privacy-policy.html">Terms</a></div>
+      <div class="fbdgs"><span class="fbdg">GDPR READY</span><span class="fbdg">ISO 9001</span><span class="fbdg">DPDP 2023</span></div>
+    </div>
+  </div>
+</footer>
+
+<!-- FIREBASE -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal"};
+const app=initializeApp(cfg);onAuthStateChanged(getAuth(app),u=>{console.log(u?'User:'+u.email:'Guest');});
+</script>
+
+<script>
+/* ── TEAM DATA ─────────────────────────────────────────────── */
+const TEAM = [
+  {name:'Piyush Mishra',role:'Founder & CEO',exp:'Ex-Flipkart · 8 yrs',emoji:'👨‍💼',quote:'Every Indian deserves to find a home without paying a broker. That is why we exist.',color:'var(--gold)',border:'var(--gold-b)',glow:'rgba(201,168,76,.15)',tc:'var(--gold)',bg:'linear-gradient(135deg,rgba(201,168,76,.12),rgba(201,168,76,.04))'},
+  {name:'Priya Sharma',role:'Co-Founder & CPO',exp:'Ex-MakeMyTrip · 7 yrs',emoji:'👩‍💻',quote:'We obsess over the tenant experience because we have all been bad tenants before.',color:'var(--teal)',border:'var(--teal-b)',glow:'rgba(34,211,180,.14)',tc:'var(--teal)',bg:'linear-gradient(135deg,rgba(34,211,180,.1),transparent)'},
+  {name:'Arun Krishnan',role:'CTO & Co-Founder',exp:'Ex-Google India · 9 yrs',emoji:'⚙️',quote:'The AI does not just match properties. It understands people. That is the real product.',color:'#60a5fa',border:'rgba(59,130,246,.22)',glow:'rgba(59,130,246,.14)',tc:'#60a5fa',bg:'linear-gradient(135deg,rgba(59,130,246,.1),transparent)'},
+  {name:'Ananya Reddy',role:'VP Design & Brand',exp:'Ex-Zomato · 6 yrs',emoji:'🎨',quote:'Beautiful design is not decoration. On SmartRent, every pixel builds trust.',color:'rgba(244,63,94,1)',border:'rgba(244,63,94,.22)',glow:'rgba(244,63,94,.14)',tc:'rgba(244,63,94,1)',bg:'linear-gradient(135deg,rgba(244,63,94,.1),transparent)'},
+  {name:'Kiran Patel',role:'VP Growth & Ops',exp:'Ex-OYO · 10 yrs',emoji:'📈',quote:'Growth means nothing if tenants are not genuinely happier. We measure joy, not just numbers.',color:'#a78bfa',border:'rgba(124,58,237,.22)',glow:'rgba(124,58,237,.14)',tc:'#a78bfa',bg:'linear-gradient(135deg,rgba(124,58,237,.1),transparent)'},
+  {name:'Meera Nair',role:'Head of Legal & Compliance',exp:'Ex-HDFC · 12 yrs',emoji:'⚖️',quote:'In real estate, legal clarity is trust. I make sure every agreement protects both sides equally.',color:'var(--emerald)',border:'rgba(16,185,129,.22)',glow:'rgba(16,185,129,.14)',tc:'var(--emerald)',bg:'linear-gradient(135deg,rgba(16,185,129,.1),transparent)'},
+  {name:'Suresh Babu',role:'Head of Verification',exp:'Ex-Police, IB · 15 yrs',emoji:'🛡️',quote:'A verified landlord is not a formality. It is the single thing that keeps tenants safe.',color:'#fbbf24',border:'rgba(251,191,36,.22)',glow:'rgba(251,191,36,.14)',tc:'#fbbf24',bg:'linear-gradient(135deg,rgba(251,191,36,.1),transparent)'},
+  {name:'Divya Singh',role:'Head of Customer Success',exp:'Ex-Swiggy · 5 yrs',emoji:'💬',quote:'When a tenant cries with relief after finding their home, that is the only metric I care about.',color:'rgba(6,182,212,1)',border:'rgba(6,182,212,.22)',glow:'rgba(6,182,212,.14)',tc:'rgba(6,182,212,1)',bg:'linear-gradient(135deg,rgba(6,182,212,.1),transparent)'},
+];
+
+function renderTeam(){
+  document.getElementById('teamGrid').innerHTML = TEAM.map(m => `
+    <div class="team-card" style="--tc:${m.tc};--tcb:${m.border};--tcg:${m.glow}">
+      <div class="tm-avatar" style="background:${m.bg}">
+        ${m.emoji}
+      </div>
+      <div class="tm-name">${m.name}</div>
+      <div class="tm-role">${m.role}</div>
+      <div class="tm-exp">${m.exp}</div>
+      <div class="tm-quote">"${m.quote}"</div>
+      <div class="tm-social">
+        <div class="tmsoc" title="LinkedIn">in</div>
+        <div class="tmsoc" title="Twitter">𝕏</div>
+        <div class="tmsoc" title="Email">✉</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── ANIMATED COUNTERS ─────────────────────────────────────── */
+function animCount(id, target, decimals=0, delay=0) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  setTimeout(() => {
+    const dur = 2000, start = performance.now();
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      const ease = 1 - Math.pow(1 - p, 4);
+      const val = ease * target;
+      el.textContent = decimals ? val.toFixed(decimals) : Math.floor(val);
+      if(p < 1) requestAnimationFrame(tick);
+      else el.textContent = decimals ? target.toFixed(decimals) : target;
+    };
+    requestAnimationFrame(tick);
+  }, delay);
+}
+
+/* ── STATS COUNTER TRIGGER ─────────────────────────────────── */
+let statsAnimated = false;
+const statsObs = new IntersectionObserver(entries => {
+  if(entries[0].isIntersecting && !statsAnimated) {
+    statsAnimated = true;
+    animCount('s1', 8.8, 1, 0);
+    animCount('s2', 50, 0, 100);
+    animCount('s3', 15, 0, 200);
+    animCount('s4', 12, 0, 300);
+    animCount('s5', 98, 0, 400);
+    animCount('so-team', 65, 0, 200);
+  }
+}, {threshold: 0.3});
+
+const statsEl = document.querySelector('.stats-strip');
+if(statsEl) statsObs.observe(statsEl);
+
+/* ── NAVBAR SCROLL ─────────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('solid', scrollY > 40);
+  const t = document.documentElement;
+  const pct = (scrollY / (t.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('pgBar').style.width = Math.min(pct, 100) + '%';
+});
+
+/* ── MOBILE MENU ───────────────────────────────────────────── */
+function toggleDrawer() {
+  const d = document.getElementById('mobDrawer');
+  const b = document.getElementById('mobBtn');
+  const open = d.classList.toggle('open');
+  b.textContent = open ? '✕' : '☰';
+}
+
+/* ── SCROLL REVEAL ─────────────────────────────────────────── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+/* ── INIT ──────────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  renderTeam();
+});
+
+window.toggleDrawer = toggleDrawer;
+</script>
+</body>
+</html>

@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent AI — Verification Process | KYC for Owners & Tenants</title>
+<meta name="description" content="Complete KYC verification on SmartRent AI. Secure identity verification for property owners and tenants. Aadhaar, PAN, document verification and trust scoring.">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS — BIOMETRIC SECURITY TERMINAL
+   Dark void + Electric Emerald + Neon Cyan accents
+═══════════════════════════════════════════════════════════ */
+:root {
+  --void:   #020508;
+  --deep:   #040b0f;
+  --surf:   #071018;
+  --panel:  #0b1821;
+  --card:   #0f2030;
+  --card2:  #122638;
+  --card3:  #163040;
+
+  --em:     #00ff88;
+  --em-d:   rgba(0,255,136,.1);
+  --em-b:   rgba(0,255,136,.22);
+  --em-g:   rgba(0,255,136,.06);
+  --em-glow:rgba(0,255,136,.4);
+
+  --cyan:   #00d4ff;
+  --cy-d:   rgba(0,212,255,.1);
+  --cy-b:   rgba(0,212,255,.2);
+
+  --amber:  #ffaa00;
+  --am-d:   rgba(255,170,0,.1);
+  --am-b:   rgba(255,170,0,.2);
+
+  --rose:   #ff3366;
+  --ro-d:   rgba(255,51,102,.1);
+  --ro-b:   rgba(255,51,102,.2);
+
+  --violet: #8855ff;
+  --vi-d:   rgba(136,85,255,.1);
+  --vi-b:   rgba(136,85,255,.2);
+
+  --t0: #e8fff4;  --t1: rgba(200,255,230,.82);
+  --t2: rgba(140,220,180,.52);  --t3: rgba(80,160,120,.3);
+
+  --div:  rgba(0,255,136,.07);  --div2: rgba(255,255,255,.07);
+  --r1:5px; --r2:10px; --r3:16px; --r4:22px; --r5:30px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--void);color:var(--t0);overflow-x:hidden;line-height:1.7;cursor:default}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--em-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--em)}
+
+/* PROGRESS BAR */
+.pgbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--em),var(--cyan));z-index:1000;transition:width .18s;pointer-events:none}
+
+/* ── AMBIENT ─────────────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:ofl 22s ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-230px;left:-180px;background:radial-gradient(circle,rgba(0,255,136,.052) 0%,transparent 68%)}
+.o2{width:560px;height:560px;bottom:-200px;right:-150px;background:radial-gradient(circle,rgba(0,212,255,.042) 0%,transparent 68%);animation-delay:-9s}
+.o3{width:360px;height:360px;top:55%;left:45%;background:radial-gradient(circle,rgba(0,255,136,.026) 0%,transparent 68%);animation-delay:-16s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}45%{transform:translate(28px,-20px) scale(1.06)}80%{transform:translate(-16px,17px) scale(.97)}100%{transform:translate(12px,-8px) scale(1.03)}}
+
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.38}
+
+/* Scanlines */
+.scan{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,255,136,.006) 3px,rgba(0,255,136,.006) 6px)}
+
+/* HEX GRID BG */
+.hexgrid{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V16L28 0l28 16v34L28 66z' fill='none' stroke='%2300ff88' stroke-width='0.5'/%3E%3Cpath d='M28 100L0 84V50l28-16 28 16v34L28 100z' fill='none' stroke='%2300ff88' stroke-width='0.5'/%3E%3C/svg%3E");background-size:56px 100px;mask-image:radial-gradient(ellipse 85% 80% at 50% 30%,black 0%,transparent 100%)}
+
+/* Corner decorations */
+.corner{position:fixed;width:80px;height:80px;pointer-events:none;z-index:1}
+.c-tl{top:8px;left:8px;border-top:1px solid var(--em-b);border-left:1px solid var(--em-b)}
+.c-tr{top:8px;right:8px;border-top:1px solid var(--em-b);border-right:1px solid var(--em-b)}
+.c-bl{bottom:8px;left:8px;border-bottom:1px solid var(--em-b);border-left:1px solid var(--em-b)}
+.c-br{bottom:8px;right:8px;border-bottom:1px solid var(--em-b);border-right:1px solid var(--em-b)}
+
+/* ══════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:62px;display:flex;align-items:center;padding:0 32px;background:rgba(2,5,8,.82);backdrop-filter:blur(28px);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(2,5,8,.98);box-shadow:0 1px 0 var(--em-b),0 6px 36px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
+.bgem{width:32px;height:32px;background:linear-gradient(135deg,var(--em),#006633);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 16px rgba(0,255,136,.3);flex-shrink:0}
+.bname{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--t0);letter-spacing:.06em;text-transform:uppercase}
+.bai{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:700;letter-spacing:.18em;color:var(--cyan);background:var(--cy-d);border:1px solid var(--cy-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 20px}
+.nl{padding:6px 13px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .18s;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.04em}.nl:hover{color:var(--t0)}.nl.on{color:var(--em)}
+.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nb{padding:7px 15px;border-radius:var(--r1);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.nb-gh{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nb-gh:hover{border-color:var(--em-b);color:var(--em)}
+.nb-em{background:var(--em);border:none;color:#020508;font-weight:800;font-family:'Rajdhani',sans-serif;letter-spacing:.05em}.nb-em:hover{box-shadow:0 0 24px var(--em-glow);transform:translateY(-1px)}
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-draw{display:none;position:fixed;top:62px;left:0;right:0;background:rgba(2,5,8,.99);border-bottom:1px solid var(--em-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0}
+.mob-draw.open{display:flex}
+.mob-l{padding:11px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(0,255,136,.06);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-l:hover{color:var(--em)}.mob-l:last-of-type{border-bottom:none}
+
+/* ══════════════════════════════════════════════
+   HERO — TERMINAL STYLE
+══════════════════════════════════════════════ */
+.hero{position:relative;z-index:1;min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 24px 56px;overflow:hidden;text-align:center}
+
+/* Terminal frame */
+.hero-terminal{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:700px;pointer-events:none}
+.ht-top{position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--em-b),transparent)}
+.ht-bot{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:600px;height:1px;background:linear-gradient(90deg,transparent,var(--em-b),transparent)}
+.ht-left{position:absolute;left:0;top:50%;transform:translateY(-50%);height:200px;width:1px;background:linear-gradient(to bottom,transparent,var(--em-b),transparent)}
+.ht-right{position:absolute;right:0;top:50%;transform:translateY(-50%);height:200px;width:1px;background:linear-gradient(to bottom,transparent,var(--em-b),transparent)}
+.ht-corner{position:absolute;width:20px;height:20px;border-color:var(--em);border-style:solid}
+.htc-tl{top:60px;left:60px;border-width:1px 0 0 1px}
+.htc-tr{top:60px;right:60px;border-width:1px 1px 0 0}
+.htc-bl{bottom:60px;left:60px;border-width:0 0 1px 1px}
+.htc-br{bottom:60px;right:60px;border-width:0 1px 1px 0}
+
+/* Scan line animation */
+.scan-beam{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--em),transparent);box-shadow:0 0 20px var(--em);animation:scanBeam 4s ease-in-out infinite;pointer-events:none;z-index:2;top:90px}
+@keyframes scanBeam{0%{top:90px;opacity:0}10%{opacity:.8}90%{opacity:.8}100%{top:calc(100% - 90px);opacity:0}}
+
+.h-eyebrow{display:inline-flex;align-items:center;gap:9px;background:var(--em-d);border:1px solid var(--em-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--em);letter-spacing:.2em;text-transform:uppercase;margin-bottom:28px;animation:su .7s both;position:relative;z-index:1}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--em);box-shadow:0 0 0 0 rgba(0,255,136,.6);animation:lp 2s infinite}
+@keyframes lp{0%{box-shadow:0 0 0 0 rgba(0,255,136,.6)}70%{box-shadow:0 0 0 8px rgba(0,255,136,0)}100%{box-shadow:0 0 0 0 rgba(0,255,136,0)}}
+
+/* RAJDHANI — all-caps military terminal font */
+.h-title{font-family:'Rajdhani',sans-serif;font-size:clamp(48px,8vw,96px);font-weight:700;line-height:.92;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;animation:su .8s .08s both;position:relative;z-index:1;color:var(--t0)}
+.h-title .em-line{color:var(--em);display:block;text-shadow:0 0 40px rgba(0,255,136,.3)}
+.h-title .dim-line{color:var(--t2);display:block;font-weight:400;letter-spacing:.08em;font-size:clamp(20px,3vw,36px)}
+
+.h-sub{font-size:clamp(13px,1.6vw,16px);color:var(--t2);max-width:580px;margin:0 auto 44px;line-height:1.84;animation:su .8s .18s both;position:relative;z-index:1}
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* Security metrics strip */
+.h-metrics{display:flex;gap:0;justify-content:center;align-items:stretch;background:rgba(4,11,15,.9);border:1px solid var(--em-b);border-radius:var(--r2);overflow:hidden;max-width:740px;margin:0 auto;position:relative;z-index:1;animation:su .8s .3s both;box-shadow:0 0 40px rgba(0,255,136,.08),inset 0 1px 0 rgba(0,255,136,.06)}
+.hm{padding:16px 28px;text-align:center;border-right:1px solid rgba(0,255,136,.08);flex:1;transition:background .2s}.hm:last-child{border-right:none}.hm:hover{background:rgba(0,255,136,.04)}
+.hm-v{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--em);line-height:1;margin-bottom:3px;letter-spacing:.04em}
+.hm-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+
+/* Role selector */
+.role-selector{display:flex;gap:14px;justify-content:center;margin-top:36px;position:relative;z-index:1;animation:su .8s .4s both}
+.role-btn{padding:14px 36px;border-radius:var(--r2);font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .28s cubic-bezier(.34,1.1,.64,1);border:1px solid;display:flex;align-items:center;gap:10px}
+.rb-owner{background:var(--am-d);border-color:var(--am-b);color:var(--amber)}.rb-owner:hover,.rb-owner.active{background:var(--amber);border-color:var(--amber);color:#020508;box-shadow:0 0 28px rgba(255,170,0,.45)}
+.rb-tenant{background:var(--cy-d);border-color:var(--cy-b);color:var(--cyan)}.rb-tenant:hover,.rb-tenant.active{background:var(--cyan);border-color:var(--cyan);color:#020508;box-shadow:0 0 28px rgba(0,212,255,.45)}
+
+/* ══════════════════════════════════════════════
+   SHARED
+══════════════════════════════════════════════ */
+section{position:relative;z-index:1}
+.W{max-width:1260px;margin:0 auto;padding:0 28px}
+.ey{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--em);margin-bottom:12px}
+.ey::before{content:'';width:20px;height:1px;background:var(--em)}
+.H2{font-family:'Rajdhani',sans-serif;font-size:clamp(30px,4vw,52px);font-weight:700;color:var(--t0);line-height:1.04;letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px}
+.H2 em{font-style:normal;color:var(--em)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ══════════════════════════════════════════════
+   TRACK SELECTOR + TRACK PANELS
+══════════════════════════════════════════════ */
+.track-sec{padding:72px 0 0}
+
+.track-tabs{display:flex;gap:0;background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r3);overflow:hidden;max-width:600px;margin:0 auto 48px}
+.tt{flex:1;padding:16px 24px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--t2);display:flex;align-items:center;justify-content:center;gap:9px;transition:all .25s}
+.tt.on-owner{background:var(--amber);color:#020508;box-shadow:0 0 24px rgba(255,170,0,.3)}
+.tt.on-tenant{background:var(--cyan);color:#020508;box-shadow:0 0 24px rgba(0,212,255,.3)}
+.tt:not(.on-owner):not(.on-tenant):hover{background:rgba(255,255,255,.04);color:var(--t0)}
+.tt-ic{font-size:20px}
+
+.track-panel{display:none}.track-panel.show{display:block}
+
+/* ══════════════════════════════════════════════
+   VERIFICATION STEPS
+══════════════════════════════════════════════ */
+.steps-outer{position:relative;padding:0 0 80px}
+.steps-line{position:absolute;left:50%;top:40px;bottom:40px;width:1px;background:linear-gradient(to bottom,transparent,var(--em-b) 10%,var(--em-b) 90%,transparent);transform:translateX(-50%)}
+
+.steps-list{display:flex;flex-direction:column;gap:32px;position:relative}
+.vstep{display:grid;grid-template-columns:1fr 60px 1fr;align-items:start;gap:0}
+.vstep.alt .vs-card-wrap{grid-column:1;grid-row:1}
+.vstep.alt .vs-node{grid-column:2;grid-row:1}
+.vstep.alt .vs-empty{grid-column:3;grid-row:1}
+.vstep.reg .vs-empty{grid-column:1}
+.vstep.reg .vs-node{grid-column:2}
+.vstep.reg .vs-card-wrap{grid-column:3}
+
+.vs-node{display:flex;align-items:center;justify-content:center;padding-top:18px;position:relative;z-index:2}
+.vs-dot-outer{width:48px;height:48px;border-radius:50%;border:1px solid var(--em-b);background:var(--panel);display:flex;align-items:center;justify-content:center;position:relative;transition:all .4s}
+.vs-dot-outer.done{background:var(--em-d);border-color:var(--em);box-shadow:0 0 20px rgba(0,255,136,.3)}
+.vs-dot-outer.active{background:var(--em-d);border-color:var(--em);box-shadow:0 0 0 6px rgba(0,255,136,.08),0 0 20px rgba(0,255,136,.3);animation:dotPulse 2s infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 6px rgba(0,255,136,.08),0 0 20px rgba(0,255,136,.3)}50%{box-shadow:0 0 0 12px rgba(0,255,136,.04),0 0 28px rgba(0,255,136,.45)}}
+.vs-dot-n{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--t3);letter-spacing:.04em}
+.vs-dot-outer.done .vs-dot-n{color:var(--em);display:none}
+.vs-dot-outer.done::after{content:'✓';font-size:18px;color:var(--em);font-weight:700}
+.vs-dot-outer.active .vs-dot-n{color:var(--em)}
+
+.vs-card-wrap{padding:0 24px}
+.vs-card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:var(--r4);padding:26px 28px;transition:all .35s cubic-bezier(.34,1.1,.64,1);position:relative;overflow:hidden}
+.vs-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--vc,var(--em)),transparent);opacity:.8}
+.vs-card:hover{border-color:var(--vcb,var(--em-b));transform:translateY(-4px) scale(1.01);box-shadow:0 20px 56px rgba(0,0,0,.5)}
+.vs-card.owner-card{--vc:var(--amber);--vcb:var(--am-b)}
+.vs-card.tenant-card{--vc:var(--cyan);--vcb:var(--cy-b)}
+.vs-card.shared-card{--vc:var(--em);--vcb:var(--em-b)}
+
+.vc-step-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-bottom:6px}
+.vc-icon{font-size:32px;margin-bottom:12px;display:block}
+.vc-title{font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:var(--t0);letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px}
+.vc-desc{font-size:13.5px;color:var(--t2);line-height:1.76;margin-bottom:14px}
+
+/* Document checklist */
+.doc-list{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.doc-item{display:flex;align-items:center;gap:10px;background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.08);border-radius:var(--r1);padding:9px 13px;font-size:12.5px;color:var(--t1);transition:all .2s}
+.doc-item:hover{border-color:var(--em-b);background:var(--em-g)}
+.doc-item.owner-doc{background:rgba(255,170,0,.04);border-color:rgba(255,170,0,.1)}.doc-item.owner-doc:hover{border-color:var(--am-b);background:var(--am-d)}
+.doc-item.tenant-doc{background:rgba(0,212,255,.04);border-color:rgba(0,212,255,.1)}.doc-item.tenant-doc:hover{border-color:var(--cy-b);background:var(--cy-d)}
+.di-ic{font-size:16px;flex-shrink:0}
+.di-req{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;padding:1px 6px;border-radius:3px;margin-left:auto;flex-shrink:0}
+.req-m{background:rgba(255,51,102,.15);color:var(--rose);border:1px solid var(--ro-b)}
+.req-o{background:rgba(0,212,255,.12);color:var(--cyan);border:1px solid var(--cy-b)}
+
+/* Status badge */
+.vstep-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-top:12px}
+.vb-done{background:var(--em-d);border:1px solid var(--em-b);color:var(--em)}
+.vb-active{background:var(--am-d);border:1px solid var(--am-b);color:var(--amber)}
+.vb-next{background:rgba(255,255,255,.05);border:1px solid var(--div2);color:var(--t3)}
+
+/* Time estimate */
+.vt-est{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;display:flex;align-items:center;gap:5px}
+
+/* ══════════════════════════════════════════════
+   INTERACTIVE KYC DEMO PANEL
+══════════════════════════════════════════════ */
+.kyc-demo-sec{padding:80px 0;background:var(--surf);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.kyc-demo-inner{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+
+/* Left — steps progress */
+.kyc-steps-panel{background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r4);overflow:hidden;box-shadow:0 0 40px rgba(0,255,136,.07),inset 0 1px 0 rgba(0,255,136,.06)}
+.ksp-header{background:rgba(0,255,136,.06);border-bottom:1px solid var(--em-b);padding:16px 22px;display:flex;align-items:center;gap:10px}
+.ksp-dots{display:flex;gap:6px}
+.kd{width:10px;height:10px;border-radius:50%}.kd1{background:#ff5f56}.kd2{background:#ffbd2e}.kd3{background:#27c93f}
+.ksp-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-left:6px}
+.ksp-body{padding:20px}
+.kyc-progress-steps{display:flex;flex-direction:column;gap:10px}
+.kp-step{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:var(--r2);border:1px solid transparent;transition:all .3s;cursor:pointer}
+.kp-step:hover{border-color:var(--div2);background:rgba(255,255,255,.03)}
+.kp-step.kps-done{background:var(--em-g);border-color:var(--em-b)}.kp-step.kps-active{background:rgba(0,212,255,.06);border-color:var(--cy-b);box-shadow:0 0 0 1px rgba(0,212,255,.06)}
+.kp-step.kps-lock{opacity:.45}
+.kps-ic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:rgba(255,255,255,.04);border:1px solid var(--div2)}
+.kp-step.kps-done .kps-ic{background:var(--em-d);border-color:var(--em-b)}
+.kp-step.kps-active .kps-ic{background:var(--cy-d);border-color:var(--cy-b)}
+.kps-info{flex:1}
+.kps-name{font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--t0);letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px}
+.kps-sub{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+.kps-status{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;letter-spacing:.1em;flex-shrink:0}
+.kss-done{background:var(--em-d);color:var(--em);border:1px solid var(--em-b)}
+.kss-active{background:var(--cy-d);color:var(--cyan);border:1px solid var(--cy-b);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.kss-lock{background:rgba(255,255,255,.05);color:var(--t3);border:1px solid var(--div2)}
+
+/* Overall progress */
+.ksp-progress-bar-wrap{margin-top:18px;padding:14px 16px;background:rgba(0,255,136,.04);border:1px solid var(--em-b);border-radius:var(--r2)}
+.kspb-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;margin-bottom:8px}
+.kspb-pct{color:var(--em);font-weight:700}
+.kspb{height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.kspb-fill{height:100%;background:linear-gradient(90deg,var(--em),var(--cyan));border-radius:3px;transition:width 1s cubic-bezier(.4,0,.2,1)}
+
+/* Right — face scan animation */
+.face-scan-panel{text-align:center}
+.face-scan-frame{width:260px;height:320px;margin:0 auto 24px;position:relative;background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r4);overflow:hidden;box-shadow:0 0 40px rgba(0,255,136,.1)}
+.face-scan-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:100px;position:relative;z-index:1}
+.face-scan-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 40%,rgba(0,255,136,.08),transparent)}
+.face-scan-beam{position:absolute;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--em),transparent);box-shadow:0 0 16px var(--em);animation:faceScan 3s ease-in-out infinite;z-index:3}
+@keyframes faceScan{0%{top:20%;opacity:0}10%{opacity:.9}90%{opacity:.9}100%{top:80%;opacity:0}}
+
+/* Corner brackets on face frame */
+.ff-tl,.ff-tr,.ff-bl,.ff-br{position:absolute;width:24px;height:24px;z-index:4}
+.ff-tl{top:10px;left:10px;border-top:2px solid var(--em);border-left:2px solid var(--em)}
+.ff-tr{top:10px;right:10px;border-top:2px solid var(--em);border-right:2px solid var(--em)}
+.ff-bl{bottom:10px;left:10px;border-bottom:2px solid var(--em);border-left:2px solid var(--em)}
+.ff-br{bottom:10px;right:10px;border-bottom:2px solid var(--em);border-right:2px solid var(--em)}
+
+/* Grid overlay */
+.face-scan-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,255,136,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,.04) 1px,transparent 1px);background-size:24px 24px;z-index:2}
+
+.scan-status{background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r2);padding:14px 18px;margin-bottom:14px;text-align:left}
+.ss-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
+.ss-row:last-child{margin-bottom:0}
+.ss-key{color:var(--t3);letter-spacing:.06em}
+.ss-val{color:var(--em);font-weight:600}
+.ss-val.scanning{animation:blink 1.2s infinite}
+.scan-btn{width:100%;padding:12px;border-radius:var(--r1);background:var(--em);border:none;color:#020508;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .22s}.scan-btn:hover{box-shadow:0 0 24px var(--em-glow);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════
+   DOCUMENT UPLOAD SECTION
+══════════════════════════════════════════════ */
+.docs-sec{padding:72px 0}
+.docs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:44px}
+
+.doc-card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:24px;cursor:pointer;transition:all .32s cubic-bezier(.34,1.1,.64,1);position:relative;overflow:hidden}
+.doc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--dc,var(--em)),transparent);opacity:.7}
+.doc-card:hover{border-color:var(--dcb,var(--em-b));transform:translateY(-5px);box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.doc-card.uploaded{border-color:var(--em-b);background:var(--em-g)}
+.doc-card.owner-dc{--dc:var(--amber);--dcb:var(--am-b)}
+.doc-card.tenant-dc{--dc:var(--cyan);--dcb:var(--cy-b)}
+.doc-card.shared-dc{--dc:var(--em);--dcb:var(--em-b)}
+
+.dc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.dc-icon-wrap{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;font-size:24px}
+.dc-req-badge{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;padding:3px 8px;border-radius:3px;text-transform:uppercase}
+.dcb-m{background:var(--ro-d);color:var(--rose);border:1px solid var(--ro-b)}
+.dcb-o{background:var(--cy-d);color:var(--cyan);border:1px solid var(--cy-b)}
+.dc-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--t0);letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+.dc-desc{font-size:12.5px;color:var(--t2);line-height:1.7;margin-bottom:14px}
+.dc-formats{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.dcf{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid var(--div2);color:var(--t3);letter-spacing:.08em}
+.dc-upload-btn{width:100%;padding:10px;border-radius:var(--r1);background:transparent;border:1px dashed rgba(0,255,136,.25);color:var(--em);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.dc-upload-btn:hover{background:var(--em-g);border-color:var(--em-b)}
+.dc-upload-btn.owner-upload{border-color:rgba(255,170,0,.25);color:var(--amber)}.dc-upload-btn.owner-upload:hover{background:var(--am-d);border-color:var(--am-b)}
+.dc-upload-btn.tenant-upload{border-color:rgba(0,212,255,.25);color:var(--cyan)}.dc-upload-btn.tenant-upload:hover{background:var(--cy-d);border-color:var(--cy-b)}
+
+.dc-uploaded-state{display:none;text-align:center;padding:10px 0}
+.dc-uploaded-state.show{display:block}
+.dc-uploaded-state .dc-check{font-size:28px;margin-bottom:4px}
+.dc-uploaded-state .dc-ok-text{font-size:12px;color:var(--em);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+/* ══════════════════════════════════════════════
+   TRUST SCORE SECTION
+══════════════════════════════════════════════ */
+.trust-sec{padding:72px 0;background:var(--surf);border-top:1px solid var(--div)}
+.trust-inner{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+
+.trust-score-card{background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r4);padding:36px;text-align:center;box-shadow:0 0 40px rgba(0,255,136,.08),inset 0 1px 0 rgba(0,255,136,.06)}
+.tsc-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--t3);margin-bottom:20px}
+
+/* SVG dial */
+.score-dial-wrap{width:200px;height:200px;margin:0 auto 22px;position:relative}
+.score-dial-wrap svg{transform:rotate(-90deg)}
+.dial-bg{fill:none;stroke:rgba(0,255,136,.1);stroke-width:12}
+.dial-fill{fill:none;stroke:var(--em);stroke-width:12;stroke-linecap:round;stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset 2s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 8px rgba(0,255,136,.5))}
+.score-num{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Rajdhani',sans-serif;font-size:52px;font-weight:700;color:var(--em);letter-spacing:-.02em}
+.score-label{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--t3);letter-spacing:.08em;text-align:center;margin-top:-16px;position:relative;z-index:1}
+
+.trust-level{display:inline-flex;align-items:center;gap:7px;background:var(--em-d);border:1px solid var(--em-b);border-radius:100px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--em);letter-spacing:.1em;margin-bottom:18px}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--em);box-shadow:0 0 8px var(--em);animation:lp 1.5s infinite}
+
+.trust-factors{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tf{background:rgba(255,255,255,.03);border:1px solid var(--div2);border-radius:var(--r2);padding:12px;text-align:center}
+.tf-ic{font-size:20px;margin-bottom:5px;display:block}
+.tf-v{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--em);margin-bottom:2px}
+.tf-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+.trust-breakdown{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:24px}
+.tb-title{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;color:var(--t0);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+.tb-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}.tb-row:last-child{margin-bottom:0}
+.tb-ic{font-size:18px;flex-shrink:0;width:32px}
+.tb-info{flex:1}
+.tb-name{font-size:13px;font-weight:600;color:var(--t0);margin-bottom:4px}
+.tb-bar-wrap{height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden}
+.tb-bar{height:100%;border-radius:3px;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.tb-pct{font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace;flex-shrink:0;min-width:36px;text-align:right}
+
+/* ══════════════════════════════════════════════
+   LEGAL & COMPLIANCE
+══════════════════════════════════════════════ */
+.legal-sec{padding:72px 0}
+.legal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.legal-card{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:26px 22px;transition:all .3s}
+.legal-card:hover{border-color:var(--em-b);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.4)}
+.lc-ic{font-size:36px;margin-bottom:14px;display:block}
+.lc-title{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--t0);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.lc-desc{font-size:13px;color:var(--t2);line-height:1.78}
+
+/* ══════════════════════════════════════════════
+   FAQ
+══════════════════════════════════════════════ */
+.faq-sec{padding:72px 0;background:var(--surf);border-top:1px solid var(--div)}
+.faq-list{display:flex;flex-direction:column;gap:10px;margin-top:44px;max-width:820px;margin-left:auto;margin-right:auto}
+.faq-item{background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);overflow:hidden}
+.faq-q{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--t0);letter-spacing:.04em;text-transform:uppercase;transition:background .2s;gap:12px}
+.faq-q:hover{background:rgba(255,255,255,.03)}.faq-q.open{color:var(--em);background:var(--em-g)}
+.faq-arr{transition:transform .25s;flex-shrink:0;color:var(--t3);font-size:12px;font-family:'JetBrains Mono',monospace}.faq-q.open .faq-arr{transform:rotate(180deg);color:var(--em)}
+.faq-a{display:none;padding:0 20px 16px;font-size:13.5px;color:var(--t2);line-height:1.8}.faq-a.open{display:block}
+
+/* ══════════════════════════════════════════════
+   CTA
+══════════════════════════════════════════════ */
+.cta-sec{padding:80px 0;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 80% at 50% 50%,rgba(0,255,136,.05) 0%,transparent 65%)}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:0}
+.cta-card{border-radius:var(--r4);padding:36px;position:relative;overflow:hidden;transition:all .3s}
+.cta-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--ccc,var(--amber)),transparent)}
+.cta-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.cc-owner{background:linear-gradient(135deg,rgba(255,170,0,.08),rgba(255,170,0,.03));border:1px solid var(--am-b);--ccc:var(--amber)}
+.cc-tenant{background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(0,212,255,.03));border:1px solid var(--cy-b);--ccc:var(--cyan)}
+.cc-icon{font-size:48px;margin-bottom:16px;display:block}
+.cc-t{font-family:'Rajdhani',sans-serif;font-size:24px;font-weight:700;color:var(--t0);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.cc-d{font-size:14px;color:var(--t2);line-height:1.78;margin-bottom:22px}
+.cc-btn-owner{padding:12px 24px;border-radius:var(--r1);background:var(--amber);border:none;color:#020508;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s}.cc-btn-owner:hover{box-shadow:0 0 24px rgba(255,170,0,.45);transform:translateY(-1px)}
+.cc-btn-tenant{padding:12px 24px;border-radius:var(--r1);background:var(--cyan);border:none;color:#020508;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s}.cc-btn-tenant:hover{box-shadow:0 0 24px rgba(0,212,255,.45);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer{padding:52px 0 28px;background:var(--deep);border-top:1px solid var(--em-b);position:relative;z-index:1}
+.fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px}
+.fb-d{font-size:13px;color:var(--t2);line-height:1.82;margin:12px 0 18px;max-width:260px}
+.fsocs{display:flex;gap:8px}
+.fsoc{width:36px;height:36px;border-radius:8px;background:var(--panel);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;transition:all .2s}.fsoc:hover{border-color:var(--em-b);background:var(--em-g);transform:translateY(-2px)}
+.fcolt{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--em);letter-spacing:.12em;text-transform:uppercase;margin-bottom:16px}
+.fl{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;display:block;margin-bottom:9px}.fl:hover{color:var(--em)}
+.foot-bot{border-top:1px solid rgba(0,255,136,.06);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-copy{font-size:12px;color:var(--t3)}.foot-copy a{color:var(--em);text-decoration:none}
+.fbdgs{display:flex;gap:6px}
+.fbdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:var(--panel);border:1px solid rgba(255,255,255,.07);color:var(--t3)}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--panel);border:1px solid var(--em-b);border-left:3px solid var(--em);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:250px;animation:tIn .3s ease;box-shadow:0 8px 34px rgba(0,0,0,.7)}
+@keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:1100px){.nav-links{display:none}.mob-btn{display:flex}.steps-line{left:30px}.vstep,.vstep.alt,.vstep.reg{grid-template-columns:60px 1fr}.vstep .vs-card-wrap,.vstep.alt .vs-card-wrap,.vstep.reg .vs-card-wrap{grid-column:2;grid-row:1;text-align:left}.vstep .vs-node,.vstep.alt .vs-node,.vstep.reg .vs-node{grid-column:1;grid-row:1}.vstep .vs-empty,.vstep.alt .vs-empty,.vstep.reg .vs-empty{display:none}.vstep .vs-card-wrap,.vstep.alt .vs-card-wrap,.vstep.reg .vs-card-wrap{padding:0 0 0 16px}.trust-inner{grid-template-columns:1fr}.kyc-demo-inner{grid-template-columns:1fr}.cta-grid{grid-template-columns:1fr}.legal-grid{grid-template-columns:1fr 1fr}.fg{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.W{padding:0 20px}.h-metrics{border-radius:0;border-left:none;border-right:none;display:grid;grid-template-columns:1fr 1fr}.hm:nth-child(2),.hm:nth-child(4){border-right:none}.hm:nth-child(3),.hm:nth-child(4){border-top:1px solid rgba(0,255,136,.08)}.docs-grid{grid-template-columns:1fr}.legal-grid{grid-template-columns:1fr}.trust-factors{grid-template-columns:1fr 1fr}.foot-bot{flex-direction:column;text-align:center}.fg{grid-template-columns:1fr}.role-selector{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT & DECORATIONS -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="noise"></div>
+<div class="scan"></div>
+<div class="hexgrid"></div>
+<div class="corner c-tl"></div><div class="corner c-tr"></div><div class="corner c-bl"></div><div class="corner c-br"></div>
+
+<div class="pgbar" id="pgBar"></div>
+<div class="toast" id="toast"></div>
+
+<!-- MOBILE MENU -->
+<div class="mob-draw" id="mobDraw">
+  <a class="mob-l" href="index.html">🏠 Home</a>
+  <a class="mob-l" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
+  <a class="mob-l" href="commercial.html">🏢 Commercial</a>
+  <a class="mob-l" href="services.html">🔧 Services</a>
+  <a class="mob-l" href="owner-guide.html">📋 Owner Guide</a>
+  <a class="mob-l" href="tenant-guide.html">👤 Tenant Guide</a>
+  <a class="mob-l" href="about.html">ℹ️ About Us</a>
+  <hr style="border:none;border-top:1px solid rgba(0,255,136,.08);margin:8px 0">
+  <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="nb nb-em" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:7px">+ List Property</a>
+</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">HOME</a>
+    <a class="nl" href="pg-hostel-listings.html">PG & HOSTELS</a>
+    <a class="nl" href="commercial.html">COMMERCIAL</a>
+    <a class="nl" href="services.html">SERVICES</a>
+    <a class="nl on" href="verification.html">VERIFICATION</a>
+    <a class="nl" href="about.html">ABOUT</a>
+  </div>
+  <div class="nav-r">
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-em" href="post-property.html" style="text-decoration:none">START KYC ▶</a>
+    <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero">
+  <div class="hero-terminal">
+    <div class="ht-top"></div><div class="ht-bot"></div>
+    <div class="ht-left"></div><div class="ht-right"></div>
+    <div class="ht-corner htc-tl"></div><div class="ht-corner htc-tr"></div>
+    <div class="ht-corner htc-bl"></div><div class="ht-corner htc-br"></div>
+  </div>
+  <div class="scan-beam"></div>
+
+  <div class="h-eyebrow"><span class="pulse-dot"></span>SMARTRENT SECURE · KYC PORTAL v2.0</div>
+
+  <h1 class="h-title">
+    <span class="dim-line">IDENTITY</span>
+    <span class="em-line">VERIFICATION</span>
+    <span class="dim-line">SYSTEM</span>
+  </h1>
+
+  <p class="h-sub">Military-grade KYC verification for every owner and tenant on SmartRent AI. Aadhaar biometrics, PAN validation, document AI, face recognition and trust scoring — making India's rental market safer for everyone.</p>
+
+  <div class="h-metrics">
+    <div class="hm"><div class="hm-v">256-BIT</div><div class="hm-l">Encryption</div></div>
+    <div class="hm"><div class="hm-v">ISO 27001</div><div class="hm-l">Certified</div></div>
+    <div class="hm"><div class="hm-v">&lt; 30s</div><div class="hm-l">Verification</div></div>
+    <div class="hm"><div class="hm-v">100%</div><div class="hm-l">KYC Verified</div></div>
+    <div class="hm"><div class="hm-v">DPDP 2023</div><div class="hm-l">Compliant</div></div>
+  </div>
+
+  <div class="role-selector">
+    <button class="role-btn rb-owner active" id="roleOwner" onclick="selectRole('owner')">🏠 I Am a Property Owner</button>
+    <button class="role-btn rb-tenant" id="roleTenant" onclick="selectRole('tenant')">👤 I Am a Tenant</button>
+  </div>
+</section>
+
+<!-- ══════════ TRACK SELECTION ══════════ -->
+<section class="track-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center">
+      <div class="ey" style="justify-content:center">VERIFICATION TRACKS</div>
+      <h2 class="H2" style="text-align:center">CHOOSE YOUR <em>TRACK</em></h2>
+      <p style="font-size:14px;color:var(--t2);max-width:560px;margin:0 auto 32px">Both owners and tenants go through separate, tailored verification flows. Select your track to see the exact steps, documents, and timeline for your verification.</p>
+    </div>
+    <div class="track-tabs rv d1">
+      <button class="tt on-owner" id="tt-owner" onclick="switchTrack('owner')"><span class="tt-ic">🏠</span> OWNER TRACK</button>
+      <button class="tt" id="tt-tenant" onclick="switchTrack('tenant')"><span class="tt-ic">👤</span> TENANT TRACK</button>
+    </div>
+
+    <!-- OWNER TRACK -->
+    <div class="track-panel show" id="panel-owner">
+      <div class="steps-outer">
+        <div class="steps-line"></div>
+        <div class="steps-list">
+
+          <!-- Step 1 -->
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 01 · ACCOUNT CREATION</div>
+                <span class="vc-icon">👤</span>
+                <div class="vc-title">Owner Profile Setup</div>
+                <div class="vc-desc">Create your owner account with basic details. This is your control centre for all properties, tenant interactions, analytics, and booking management on SmartRent AI.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">📱</span>Mobile number (OTP verified) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📧</span>Email address (link verified) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🏙️</span>City of operation <span class="di-req req-m">REQUIRED</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 2 minutes</div>
+                <div class="vstep-badge vb-done">✓ INSTANT</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer done"><div class="vs-dot-n">01</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer active"><div class="vs-dot-n">02</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 02 · IDENTITY VERIFICATION</div>
+                <span class="vc-icon">🪪</span>
+                <div class="vc-title">Aadhaar + PAN KYC</div>
+                <div class="vc-desc">Government-grade identity verification using your Aadhaar number and PAN Card. Linked to UIDAI's DigiLocker API for real-time validation. No documents need to be physically uploaded for this step.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">🆔</span>Aadhaar number (12-digit) + OTP <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">💳</span>PAN Card number + DOB match <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🤳</span>Selfie for face match vs Aadhaar photo <span class="di-req req-m">REQUIRED</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 3–5 minutes</div>
+                <div class="vstep-badge vb-active">⚡ IN PROGRESS</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 03 · PROPERTY OWNERSHIP PROOF</div>
+                <span class="vc-icon">🏠</span>
+                <div class="vc-title">Property Documents</div>
+                <div class="vc-desc">Upload proof of ownership for each property you list. Our AI document scanner validates authenticity, detects tampering, and cross-checks against government records. Uploads are encrypted and private.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">📜</span>Sale Deed / Title Deed (original or certified copy) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🏛️</span>Latest Property Tax Receipt <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📋</span>Occupancy Certificate (OC) or Completion Certificate <span class="di-req req-o">RECOMMENDED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🔗</span>Electricity bill (property address match) <span class="di-req req-o">OPTIONAL</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 5–10 minutes</div>
+                <div class="vstep-badge vb-next">○ PENDING</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">03</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">04</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 04 · BANK ACCOUNT VERIFICATION</div>
+                <span class="vc-icon">🏦</span>
+                <div class="vc-title">Penny Drop Verification</div>
+                <div class="vc-desc">We deposit ₹1 into your bank account and verify the name matches your KYC. This prevents fraudulent bank account submissions and ensures rent payouts reach the correct verified owner.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">🏧</span>Bank account number <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🔄</span>IFSC code <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📄</span>Cancelled cheque or bank passbook (optional backup) <span class="di-req req-o">OPTIONAL</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 2 minutes + 15 min for penny confirmation</div>
+                <div class="vstep-badge vb-next">○ PENDING</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 05 · BUSINESS REGISTRATION (IF APPLICABLE)</div>
+                <span class="vc-icon">🏢</span>
+                <div class="vc-title">Corporate / Builder Verification</div>
+                <div class="vc-desc">If you are listing as a company, developer, or property management firm, additional corporate verification is required. This unlocks bulk listing, branded pages, and priority placement.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">📑</span>GSTIN / GST Registration Certificate <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🏛️</span>MCA21 CIN / Company Registration Certificate <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📋</span>RERA Registration Number (for builders) <span class="di-req req-o">RECOMMENDED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">🤝</span>Power of Attorney (if acting on owner's behalf) <span class="di-req req-o">IF APPLICABLE</span></div>
+                </div>
+                <div class="vt-est">⏱ Individual owners: skip · Corporate: 10–15 minutes</div>
+                <div class="vstep-badge vb-next">○ IF CORPORATE</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">05</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <!-- Step 6 — Physical Verification -->
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">06</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card owner-card">
+                <div class="vc-step-num">STEP 06 · PROPERTY PHYSICAL INSPECTION</div>
+                <span class="vc-icon">🔍</span>
+                <div class="vc-title">On-Site Verification Visit</div>
+                <div class="vc-desc">A SmartRent AI field agent visits your property to take verified photos, confirm the address, check facilities match your listing, and award the <strong style="color:var(--amber)">Verified Badge</strong>. This is what makes our platform trusted.</div>
+                <div class="doc-list">
+                  <div class="doc-item owner-doc"><span class="di-ic">📍</span>Property accessible for agent visit (30-min window) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📸</span>Agent takes 20+ verified geotagged photos <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item owner-doc"><span class="di-ic">📋</span>Physical amenity audit against your listing <span class="di-req req-m">REQUIRED</span></div>
+                </div>
+                <div class="vt-est">⏱ Scheduled within 48 hours · Takes 45 minutes on-site</div>
+                <div class="vstep-badge vb-next">○ SCHEDULED</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 7 — VERIFIED -->
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card shared-card" style="background:linear-gradient(135deg,var(--em-g),rgba(0,255,136,.03));border-color:var(--em-b)">
+                <div class="vc-step-num">STEP 07 · VERIFICATION COMPLETE</div>
+                <span class="vc-icon">🏆</span>
+                <div class="vc-title">VERIFIED OWNER STATUS</div>
+                <div class="vc-desc">Your profile is now <strong style="color:var(--em)">✓ Verified Owner</strong>. Your properties display the golden verified badge, rank higher in search results, receive 4× more enquiries, and tenants can contact you directly with full trust. Your verification renews annually.</div>
+                <div class="doc-list">
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">✅</span>Golden Verified Badge on all listings <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">📊</span>Full analytics dashboard access <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">📞</span>Priority phone enquiries from verified tenants <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                </div>
+                <div class="vstep-badge vb-done" style="font-size:12px">✓ OWNER VERIFIED · TRUST SCORE 94</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">07</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /panel-owner -->
+
+    <!-- TENANT TRACK -->
+    <div class="track-panel" id="panel-tenant">
+      <div class="steps-outer">
+        <div class="steps-line"></div>
+        <div class="steps-list">
+
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card tenant-card">
+                <div class="vc-step-num">STEP 01 · ACCOUNT CREATION</div>
+                <span class="vc-icon">👤</span>
+                <div class="vc-title">Tenant Profile Setup</div>
+                <div class="vc-desc">Create your tenant account with contact details. A verified profile lets you contact owners directly, save listings, book site visits, and access our AI property matching engine.</div>
+                <div class="doc-list">
+                  <div class="doc-item tenant-doc"><span class="di-ic">📱</span>Mobile number (OTP verified) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">📧</span>Email address <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🏙️</span>Preferred city and move-in timeline <span class="di-req req-m">REQUIRED</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 2 minutes</div>
+                <div class="vstep-badge vb-done">✓ INSTANT</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer done"><div class="vs-dot-n">01</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer active"><div class="vs-dot-n">02</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card tenant-card">
+                <div class="vc-step-num">STEP 02 · IDENTITY KYC</div>
+                <span class="vc-icon">🪪</span>
+                <div class="vc-title">Aadhaar + PAN Verification</div>
+                <div class="vc-desc">Real-time identity check using UIDAI Aadhaar API and NSDL PAN validation. Your data is never stored in plain text — only encrypted hash values are retained for verification matching.</div>
+                <div class="doc-list">
+                  <div class="doc-item tenant-doc"><span class="di-ic">🆔</span>Aadhaar number (OTP via registered mobile) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">💳</span>PAN Card number <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🤳</span>Selfie liveness check (no glasses / mask) <span class="di-req req-m">REQUIRED</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 3–4 minutes</div>
+                <div class="vstep-badge vb-active">⚡ IN PROGRESS</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card tenant-card">
+                <div class="vc-step-num">STEP 03 · EMPLOYMENT VERIFICATION</div>
+                <span class="vc-icon">💼</span>
+                <div class="vc-title">Income &amp; Employment Proof</div>
+                <div class="vc-desc">Proving stable income ensures owners feel confident renting to you and gives you access to premium and corporate-registered properties. Our AI extracts and validates key details automatically.</div>
+                <div class="doc-list">
+                  <div class="doc-item tenant-doc"><span class="di-ic">📄</span>Latest 3 months' salary slips OR <span class="di-req req-m">REQUIRED ONE</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🏢</span>Offer Letter / Employment Letter on company letterhead <span class="di-req req-o">ALTERNATIVE</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🎓</span>College ID card (for students) <span class="di-req req-o">STUDENTS</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">💰</span>Business registration / GST (for self-employed) <span class="di-req req-o">SELF-EMPLOYED</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 3–5 minutes</div>
+                <div class="vstep-badge vb-next">○ PENDING</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">03</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">04</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card tenant-card">
+                <div class="vc-step-num">STEP 04 · FINANCIAL VERIFICATION</div>
+                <span class="vc-icon">🏦</span>
+                <div class="vc-title">Bank Statement Analysis</div>
+                <div class="vc-desc">Upload 3 months' bank statements. Our AI scans for income regularity, average balance, and ensures rent affordability (rent should not exceed 40% of monthly income). This is shared only with owners you contact.</div>
+                <div class="doc-list">
+                  <div class="doc-item tenant-doc"><span class="di-ic">📊</span>Last 3 months' bank statements (PDF format) <span class="di-req req-m">REQUIRED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🔍</span>AI income pattern analysis (automated) <span class="di-req req-m">AUTO</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🔒</span>Shared only with verified owners on your request <span class="di-req req-o">PRIVATE</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 2 minutes upload · AI analysis: instant</div>
+                <div class="vstep-badge vb-next">○ PENDING</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vstep alt">
+            <div class="vs-card-wrap">
+              <div class="vs-card tenant-card">
+                <div class="vc-step-num">STEP 05 · BACKGROUND CHECK</div>
+                <span class="vc-icon">🔎</span>
+                <div class="vc-title">Character &amp; Background Verification</div>
+                <div class="vc-desc">Optional but highly recommended. Tenants with background checks have 8× higher acceptance rate from owners. We check police verification status, court records, and previous tenancy references.</div>
+                <div class="doc-list">
+                  <div class="doc-item tenant-doc"><span class="di-ic">👮</span>Police Verification Certificate (issued by local station) <span class="di-req req-o">RECOMMENDED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">📝</span>Previous landlord reference (we contact on your behalf) <span class="di-req req-o">RECOMMENDED</span></div>
+                  <div class="doc-item tenant-doc"><span class="di-ic">🏛️</span>Court/criminal record clearance (if required by owner) <span class="di-req req-o">OPTIONAL</span></div>
+                </div>
+                <div class="vt-est">⏱ Estimated time: 5 minutes + 24–48 hr for verification</div>
+                <div class="vstep-badge vb-next">○ RECOMMENDED</div>
+              </div>
+            </div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">05</div></div></div>
+            <div class="vs-empty"></div>
+          </div>
+
+          <div class="vstep reg">
+            <div class="vs-empty"></div>
+            <div class="vs-node"><div class="vs-dot-outer"><div class="vs-dot-n">06</div></div></div>
+            <div class="vs-card-wrap">
+              <div class="vs-card shared-card" style="background:linear-gradient(135deg,var(--em-g),rgba(0,255,136,.03));border-color:var(--em-b)">
+                <div class="vc-step-num">STEP 06 · VERIFICATION COMPLETE</div>
+                <span class="vc-icon">🏆</span>
+                <div class="vc-title">VERIFIED TENANT STATUS</div>
+                <div class="vc-desc">You are now a <strong style="color:var(--em)">✓ Verified Tenant</strong>. Your profile gets a trust score, blue verified badge, and priority access to premium listings. Verified tenants pay zero brokerage and get direct owner contact instantly.</div>
+                <div class="doc-list">
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">✅</span>Blue Verified Badge on your profile <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">📞</span>Direct owner contact — no broker <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                  <div class="doc-item" style="border-color:var(--em-b);background:var(--em-g)"><span class="di-ic">🤖</span>AI property matching — personalised feed <span class="di-req" style="background:var(--em-d);color:var(--em);border:1px solid var(--em-b)">UNLOCKED</span></div>
+                </div>
+                <div class="vstep-badge vb-done" style="font-size:12px">✓ TENANT VERIFIED · TRUST SCORE 88</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /panel-tenant -->
+  </div>
+</section>
+
+<!-- ══════════ KYC LIVE DEMO ══════════ -->
+<section class="kyc-demo-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center;margin-bottom:44px">
+      <div class="ey" style="justify-content:center">LIVE DEMO</div>
+      <h2 class="H2" style="text-align:center">SEE THE <em>PROCESS</em></h2>
+      <p style="font-size:14px;color:var(--t2);max-width:560px;margin:0 auto">Interactive walkthrough of the KYC flow — see what our verification system checks and how your Trust Score is built in real time.</p>
+    </div>
+    <div class="kyc-demo-inner rv d1">
+
+      <!-- Progress steps panel -->
+      <div>
+        <div class="ksp-header">
+          <div class="ksp-dots"><div class="kd kd1"></div><div class="kd kd2"></div><div class="kd kd3"></div></div>
+          <div class="ksp-title">SMARTRENT KYC TERMINAL · VERIFICATION SESSION</div>
+        </div>
+        <div class="ksp-body">
+          <div class="kyc-progress-steps" id="kycStepsList">
+            <div class="kp-step kps-done"><div class="kps-ic">👤</div><div class="kps-info"><div class="kps-name">Account Creation</div><div class="kps-sub">Profile + contact verified</div></div><span class="kps-status kss-done">DONE</span></div>
+            <div class="kp-step kps-active"><div class="kps-ic">🪪</div><div class="kps-info"><div class="kps-name">Aadhaar KYC</div><div class="kps-sub">UIDAI OTP + face match</div></div><span class="kps-status kss-active">ACTIVE</span></div>
+            <div class="kp-step kps-lock"><div class="kps-ic">📄</div><div class="kps-info"><div class="kps-name">Document Upload</div><div class="kps-sub">AI scan in progress</div></div><span class="kps-status kss-lock">LOCKED</span></div>
+            <div class="kp-step kps-lock"><div class="kps-ic">🏦</div><div class="kps-info"><div class="kps-name">Bank Verification</div><div class="kps-sub">Penny drop pending</div></div><span class="kps-status kss-lock">LOCKED</span></div>
+            <div class="kp-step kps-lock"><div class="kps-ic">🔍</div><div class="kps-info"><div class="kps-name">Background Check</div><div class="kps-sub">Police clearance</div></div><span class="kps-status kss-lock">LOCKED</span></div>
+            <div class="kp-step kps-lock"><div class="kps-ic">🏆</div><div class="kps-info"><div class="kps-name">Trust Score Generated</div><div class="kps-sub">Final verification</div></div><span class="kps-status kss-lock">LOCKED</span></div>
+          </div>
+          <div class="ksp-progress-bar-wrap">
+            <div class="kspb-label"><span>VERIFICATION PROGRESS</span><span class="kspb-pct" id="kycPct">17%</span></div>
+            <div class="kspb"><div class="kspb-fill" id="kycBar" style="width:17%"></div></div>
+          </div>
+          <button style="width:100%;margin-top:12px;padding:11px;border-radius:var(--r1);background:var(--em);border:none;color:#020508;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s" onclick="simulateKycProgress()">▶ SIMULATE NEXT STEP</button>
+        </div>
+      </div>
+
+      <!-- Face scan panel -->
+      <div class="face-scan-panel">
+        <div class="face-scan-frame">
+          <div class="face-scan-bg"></div>
+          <div class="face-scan-grid"></div>
+          <div class="face-scan-inner">😊</div>
+          <div class="face-scan-beam"></div>
+          <div class="ff-tl"></div><div class="ff-tr"></div><div class="ff-bl"></div><div class="ff-br"></div>
+        </div>
+        <div class="scan-status">
+          <div class="ss-row"><span class="ss-key">FACE DETECTED</span><span class="ss-val">YES</span></div>
+          <div class="ss-row"><span class="ss-key">LIVENESS CHECK</span><span class="ss-val scanning" id="livenessStatus">SCANNING...</span></div>
+          <div class="ss-row"><span class="ss-key">AADHAAR MATCH</span><span class="ss-val scanning" id="aadhaarStatus">PENDING</span></div>
+          <div class="ss-row"><span class="ss-key">SPOOF DETECTION</span><span class="ss-val">CLEAR</span></div>
+          <div class="ss-row"><span class="ss-key">SESSION ID</span><span class="ss-val" style="color:var(--t2);font-size:9px">SR-KYC-28847-2025</span></div>
+        </div>
+        <button class="scan-btn" onclick="runFaceScan()">🤳 RUN FACE VERIFICATION</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DOCUMENT UPLOAD ══════════ -->
+<section class="docs-sec section">
+  <div class="W">
+    <div class="rv">
+      <div class="ey">DOCUMENT VAULT</div>
+      <h2 class="H2">UPLOAD YOUR <em>DOCUMENTS</em></h2>
+      <p style="font-size:14px;color:var(--t2);max-width:560px;margin-bottom:44px">All uploads are encrypted with AES-256 and stored in compliance with India's DPDP Act 2023. Documents are never shared without your explicit consent.</p>
+    </div>
+    <div class="docs-grid rv d1">
+      <div class="doc-card shared-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">🆔</div><span class="dc-req-badge dcb-m">MANDATORY</span></div>
+        <div class="dc-title">Aadhaar Card</div>
+        <div class="dc-desc">Both front and back of your Aadhaar card. AI validates number, QR code authenticity, and cross-checks with UIDAI database in real time.</div>
+        <div class="dc-formats"><span class="dcf">JPG</span><span class="dcf">PNG</span><span class="dcf">PDF</span><span class="dcf">Max 5MB</span></div>
+        <div class="dc-upload-btn" id="aadhaar-btn" onclick="simulateUpload('aadhaar-btn','aadhaar-done')">📁 UPLOAD AADHAAR</div>
+        <div class="dc-uploaded-state" id="aadhaar-done"><div class="dc-check">✅</div><div class="dc-ok-text">AADHAAR VERIFIED</div></div>
+      </div>
+
+      <div class="doc-card shared-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">💳</div><span class="dc-req-badge dcb-m">MANDATORY</span></div>
+        <div class="dc-title">PAN Card</div>
+        <div class="dc-desc">Original PAN Card image. Validated against NSDL's PAN verification API. Name, DOB, and father's name cross-checked with Aadhaar data.</div>
+        <div class="dc-formats"><span class="dcf">JPG</span><span class="dcf">PNG</span><span class="dcf">PDF</span><span class="dcf">Max 5MB</span></div>
+        <div class="dc-upload-btn" id="pan-btn" onclick="simulateUpload('pan-btn','pan-done')">📁 UPLOAD PAN CARD</div>
+        <div class="dc-uploaded-state" id="pan-done"><div class="dc-check">✅</div><div class="dc-ok-text">PAN VERIFIED</div></div>
+      </div>
+
+      <div class="doc-card owner-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">📜</div><span class="dc-req-badge dcb-m">OWNERS ONLY</span></div>
+        <div class="dc-title">Property Title Deed</div>
+        <div class="dc-desc">Sale deed or title deed establishing ownership. Our AI scans for survey number, registration details, and owner name match with KYC.</div>
+        <div class="dc-formats"><span class="dcf">PDF</span><span class="dcf">JPG</span><span class="dcf">Max 20MB</span></div>
+        <div class="dc-upload-btn owner-upload" id="deed-btn" onclick="simulateUpload('deed-btn','deed-done')">📁 UPLOAD TITLE DEED</div>
+        <div class="dc-uploaded-state" id="deed-done"><div class="dc-check">✅</div><div class="dc-ok-text">DEED VERIFIED</div></div>
+      </div>
+
+      <div class="doc-card owner-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">🏛️</div><span class="dc-req-badge dcb-m">OWNERS ONLY</span></div>
+        <div class="dc-title">Property Tax Receipt</div>
+        <div class="dc-desc">Latest property tax receipt from municipal corporation. Confirms property tax compliance and establishes active ownership of the property.</div>
+        <div class="dc-formats"><span class="dcf">PDF</span><span class="dcf">JPG</span><span class="dcf">PNG</span><span class="dcf">Max 5MB</span></div>
+        <div class="dc-upload-btn owner-upload" id="tax-btn" onclick="simulateUpload('tax-btn','tax-done')">📁 UPLOAD TAX RECEIPT</div>
+        <div class="dc-uploaded-state" id="tax-done"><div class="dc-check">✅</div><div class="dc-ok-text">TAX RECEIPT VERIFIED</div></div>
+      </div>
+
+      <div class="doc-card tenant-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">💰</div><span class="dc-req-badge dcb-m">TENANTS ONLY</span></div>
+        <div class="dc-title">Bank Statements (3 Months)</div>
+        <div class="dc-desc">Last 3 months' bank statements in PDF. AI automatically extracts salary credits, calculates average balance, and generates income verification score.</div>
+        <div class="dc-formats"><span class="dcf">PDF only</span><span class="dcf">Max 10MB</span></div>
+        <div class="dc-upload-btn tenant-upload" id="bank-btn" onclick="simulateUpload('bank-btn','bank-done')">📁 UPLOAD STATEMENTS</div>
+        <div class="dc-uploaded-state" id="bank-done"><div class="dc-check">✅</div><div class="dc-ok-text">INCOME VERIFIED</div></div>
+      </div>
+
+      <div class="doc-card tenant-dc">
+        <div class="dc-header"><div class="dc-icon-wrap">📋</div><span class="dc-req-badge dcb-o">RECOMMENDED</span></div>
+        <div class="dc-title">Salary Slip / Offer Letter</div>
+        <div class="dc-desc">Most recent salary slip or employment offer letter on company letterhead. Verifies employment status, designation, and monthly CTC for affordability assessment.</div>
+        <div class="dc-formats"><span class="dcf">PDF</span><span class="dcf">JPG</span><span class="dcf">Max 5MB</span></div>
+        <div class="dc-upload-btn tenant-upload" id="sal-btn" onclick="simulateUpload('sal-btn','sal-done')">📁 UPLOAD SALARY SLIP</div>
+        <div class="dc-uploaded-state" id="sal-done"><div class="dc-check">✅</div><div class="dc-ok-text">EMPLOYMENT VERIFIED</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TRUST SCORE ══════════ -->
+<section class="trust-sec section">
+  <div class="W">
+    <div class="trust-inner">
+      <div class="rv">
+        <div class="ey">TRUST INTELLIGENCE</div>
+        <h2 class="H2">YOUR <em>TRUST SCORE</em></h2>
+        <p style="font-size:14px;color:var(--t2);line-height:1.82;margin-bottom:28px">Your Trust Score is a composite 0–100 index calculated from multiple verification signals. Owners see it when you contact them. A higher score = more accepted enquiries, faster responses, and access to premium properties.</p>
+
+        <div class="trust-score-card">
+          <div class="tsc-label">SMARTRENT TRUST SCORE · 2025</div>
+          <div class="trust-level"><span class="tl-dot"></span>PLATINUM VERIFIED</div>
+
+          <div class="score-dial-wrap">
+            <svg viewBox="0 0 180 180" width="200" height="200">
+              <circle class="dial-bg" cx="90" cy="90" r="80"/>
+              <circle class="dial-fill" id="dialFill" cx="90" cy="90" r="80"/>
+            </svg>
+            <div class="score-num" id="scoreNum">0</div>
+          </div>
+          <div class="score-label">OUT OF 100</div>
+
+          <div class="trust-factors" style="margin-top:18px">
+            <div class="tf"><span class="tf-ic">🆔</span><div class="tf-v" style="color:var(--em)">100%</div><div class="tf-l">Identity</div></div>
+            <div class="tf"><span class="tf-ic">💼</span><div class="tf-v" style="color:var(--amber)">95%</div><div class="tf-l">Employment</div></div>
+            <div class="tf"><span class="tf-ic">💰</span><div class="tf-v" style="color:var(--cyan)">88%</div><div class="tf-l">Financial</div></div>
+            <div class="tf"><span class="tf-ic">🔎</span><div class="tf-v" style="color:var(--violet)">92%</div><div class="tf-l">Background</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rv d1">
+        <div class="trust-breakdown">
+          <div class="tb-title">SCORE BREAKDOWN</div>
+          <div class="tb-row">
+            <div class="tb-ic">🆔</div>
+            <div class="tb-info"><div class="tb-name">Identity Verification (KYC)</div><div class="tb-bar-wrap"><div class="tb-bar" id="br1" style="width:0%;background:var(--em)"></div></div></div>
+            <div class="tb-pct">30 pts</div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-ic">💼</div>
+            <div class="tb-info"><div class="tb-name">Employment / Business Proof</div><div class="tb-bar-wrap"><div class="tb-bar" id="br2" style="width:0%;background:var(--amber)"></div></div></div>
+            <div class="tb-pct">20 pts</div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-ic">💰</div>
+            <div class="tb-info"><div class="tb-name">Financial Stability</div><div class="tb-bar-wrap"><div class="tb-bar" id="br3" style="width:0%;background:var(--cyan)"></div></div></div>
+            <div class="tb-pct">20 pts</div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-ic">🔎</div>
+            <div class="tb-info"><div class="tb-name">Background Clearance</div><div class="tb-bar-wrap"><div class="tb-bar" id="br4" style="width:0%;background:var(--violet)"></div></div></div>
+            <div class="tb-pct">15 pts</div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-ic">🤝</div>
+            <div class="tb-info"><div class="tb-name">References & History</div><div class="tb-bar-wrap"><div class="tb-bar" id="br5" style="width:0%;background:#f43f5e"></div></div></div>
+            <div class="tb-pct">10 pts</div>
+          </div>
+          <div class="tb-row">
+            <div class="tb-ic">⭐</div>
+            <div class="tb-info"><div class="tb-name">Platform Behaviour</div><div class="tb-bar-wrap"><div class="tb-bar" id="br6" style="width:0%;background:#a78bfa"></div></div></div>
+            <div class="tb-pct">5 pts</div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px;background:var(--panel);border:1px solid var(--em-b);border-radius:var(--r2);padding:16px 18px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px">SCORE TIERS</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px"><span style="width:10px;height:10px;border-radius:50%;background:var(--em);flex-shrink:0"></span><span style="color:var(--em);font-family:'JetBrains Mono',monospace;min-width:40px">90–100</span><span style="color:var(--t2)">Platinum · Priority access to all listings</span></div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px"><span style="width:10px;height:10px;border-radius:50%;background:var(--amber);flex-shrink:0"></span><span style="color:var(--amber);font-family:'JetBrains Mono',monospace;min-width:40px">75–89</span><span style="color:var(--t2)">Gold · Full access + verified badge</span></div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px"><span style="width:10px;height:10px;border-radius:50%;background:var(--cyan);flex-shrink:0"></span><span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;min-width:40px">60–74</span><span style="color:var(--t2)">Silver · Standard verified access</span></div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:12px"><span style="width:10px;height:10px;border-radius:50%;background:var(--t3);flex-shrink:0"></span><span style="color:var(--t3);font-family:'JetBrains Mono',monospace;min-width:40px">&lt; 60</span><span style="color:var(--t2)">Basic · Limited listings visible</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LEGAL & SECURITY ══════════ -->
+<section class="legal-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center">
+      <div class="ey" style="justify-content:center">LEGAL & SECURITY</div>
+      <h2 class="H2" style="text-align:center">DATA <em>PROTECTION</em></h2>
+    </div>
+    <div class="legal-grid rv d1">
+      <div class="legal-card"><span class="lc-ic">🔐</span><div class="lc-title">AES-256 Encryption</div><div class="lc-desc">All uploaded documents are encrypted using AES-256-GCM before storage. Encryption keys are stored in separate HSMs (Hardware Security Modules). Zero-knowledge architecture means even our team cannot see your documents in plain text.</div></div>
+      <div class="legal-card"><span class="lc-ic">🛡️</span><div class="lc-title">DPDP Act 2023 Compliant</div><div class="lc-desc">SmartRent AI is fully compliant with India's Digital Personal Data Protection Act 2023. You have the right to access, correct, and delete your personal data at any time. Data is stored only on Indian servers (Mumbai, Hyderabad).</div></div>
+      <div class="legal-card"><span class="lc-ic">📋</span><div class="lc-title">Consent-Based Sharing</div><div class="lc-desc">Your verification data (employment, financial, background) is NEVER shared without your explicit one-time consent per interaction. Owners cannot bulk-access your data — they can only request it on a property-enquiry basis.</div></div>
+      <div class="legal-card"><span class="lc-ic">🗑️</span><div class="lc-title">Right to Erasure</div><div class="lc-desc">You can request deletion of all your personal data and uploaded documents from our platform at any time via Settings → Privacy → Delete My Data. Deletion is permanent and completes within 30 days per DPDP requirements.</div></div>
+      <div class="legal-card"><span class="lc-ic">🏛️</span><div class="lc-title">UIDAI & NSDL Integration</div><div class="lc-desc">Our Aadhaar verification is conducted via licensed, UIDAI-approved Authentication User Agency (AUA) and eKYC User Agency (KUA) channels. We do not store Aadhaar numbers — only a cryptographic hash is retained.</div></div>
+      <div class="legal-card"><span class="lc-ic">🔍</span><div class="lc-title">ISO 27001 Certified</div><div class="lc-desc">Our information security management system is ISO 27001:2022 certified, audited annually by independent third-party assessors. Penetration testing is conducted bi-annually. Bug bounty programme active for security researchers.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="faq-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center">
+      <div class="ey" style="justify-content:center">QUERIES</div>
+      <h2 class="H2" style="text-align:center">VERIFICATION <em>FAQs</em></h2>
+    </div>
+    <div class="faq-list rv d1">
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is my Aadhaar number stored on your servers? <span class="faq-arr">▼</span></div><div class="faq-a">No. We never store your 12-digit Aadhaar number. Only a one-way cryptographic hash is retained for matching purposes. We operate as an UIDAI-licensed eKYC User Agency and are legally prohibited from storing raw Aadhaar data. Our system processes your Aadhaar OTP in real time and immediately discards the raw data after verification.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How long does the full verification take? <span class="faq-arr">▼</span></div><div class="faq-a">For tenants, the digital verification (Steps 1–4) takes 15–25 minutes in total. Background checks (Step 5) add 24–48 hours. For owners, digital steps take 20–30 minutes. The physical property inspection (Step 6) is scheduled within 48 hours and takes 45 minutes on-site. You'll receive a verified badge as soon as each step is completed — you don't have to wait for all steps.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Can I partially verify and use the platform? <span class="faq-arr">▼</span></div><div class="faq-a">Yes. The platform operates on a tiered verification system. With just mobile OTP verification (Step 1), you can browse all listings. After Aadhaar KYC (Step 2), you can save listings and request callbacks. After complete verification, you get direct owner/tenant contact, AI matching, and the verified badge. Each tier unlocks incrementally — you don't have to complete everything before starting to use the platform.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">What happens if my documents are rejected? <span class="faq-arr">▼</span></div><div class="faq-a">If a document fails AI validation, you'll receive a specific reason (e.g., "document appears edited", "name mismatch with Aadhaar", "image quality too low"). You can re-upload corrected documents immediately. If you believe a rejection is incorrect, you can raise a dispute via Settings → Verification → Dispute a Decision. Our team manually reviews disputes within 48 hours.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Who can see my verification data and documents? <span class="faq-arr">▼</span></div><div class="faq-a">Only you can see your full documents in your SmartRent AI dashboard. When you contact an owner, they see your Trust Score and verification badges — NOT your actual documents. If an owner requests to see your employment or financial proof, you'll receive a notification and must explicitly approve (or deny) that request. Our internal team can see a limited set of data for customer support purposes but cannot access encrypted documents.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">How often do I need to re-verify? <span class="faq-arr">▼</span></div><div class="faq-a">Identity verification (Aadhaar + PAN) is valid for 2 years. Property documents are valid for 1 year and must be updated if there are ownership changes. Employment and financial documents should be updated every 6 months for an accurate Trust Score. You'll receive automated reminders 30 days before expiry. Re-verification of unchanged documents is a quick 2-minute process — not a full repeat.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)">Is background check mandatory for tenants? <span class="faq-arr">▼</span></div><div class="faq-a">No, the background check is optional but strongly recommended. Tenants with completed background checks receive enquiry acceptance rates 8× higher than unverified tenants and get first-priority access when multiple tenants enquire about the same property. Some premium property owners set "background-verified tenants only" — this requirement is always displayed clearly on the listing before you enquire.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA ══════════ -->
+<section class="cta-sec section">
+  <div class="W">
+    <div class="rv" style="text-align:center;margin-bottom:36px">
+      <div class="ey" style="justify-content:center">GET VERIFIED</div>
+      <h2 class="H2" style="text-align:center">START YOUR <em>VERIFICATION</em></h2>
+      <p style="font-size:14px;color:var(--t2);max-width:500px;margin:0 auto">Choose your track and begin. Verification is free, takes under 30 minutes, and unlocks the full SmartRent AI platform.</p>
+    </div>
+    <div class="cta-grid rv d1">
+      <div class="cta-card cc-owner">
+        <span class="cc-icon">🏠</span>
+        <div class="cc-t">Property Owner</div>
+        <div class="cc-d">Verify your identity and property ownership to list on SmartRent AI. Verified owners receive the golden badge, rank higher in search, and connect directly with 50,000+ verified tenants — zero brokerage fees ever.</div>
+        <a class="cc-btn-owner" href="post-property.html">🏠 START OWNER VERIFICATION</a>
+      </div>
+      <div class="cta-card cc-tenant">
+        <span class="cc-icon">👤</span>
+        <div class="cc-t">Tenant / Renter</div>
+        <div class="cc-d">Get verified to unlock direct landlord contact, AI-matched listings, and zero brokerage. A high Trust Score makes owners 8× more likely to accept your enquiry and respond faster.</div>
+        <a class="cc-btn-tenant" href="pg-hostel-listings.html">👤 START TENANT VERIFICATION</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="W">
+    <div class="fg">
+      <div>
+        <a href="index.html" class="brand" style="text-decoration:none">
+          <div class="bgem" style="width:30px;height:30px;font-size:14px">💎</div>
+          <span class="bname" style="font-size:16px">SmartRent<span class="bai">AI</span></span>
+        </a>
+        <p class="fb-d">India's most intelligent rental platform. Zero brokerage, AI-matched, KYC-verified — for owners and tenants across 15+ cities.</p>
+        <div class="fsocs"><a class="fsoc" href="#">𝕏</a><a class="fsoc" href="#">📸</a><a class="fsoc" href="#">in</a><a class="fsoc" href="#">▶</a></div>
+      </div>
+      <div>
+        <div class="fcolt">PLATFORM</div>
+        <a class="fl" href="index.html">Home</a>
+        <a class="fl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+        <a class="fl" href="commercial.html">Commercial</a>
+        <a class="fl" href="services.html">Services</a>
+        <a class="fl" href="about.html">About Us</a>
+      </div>
+      <div>
+        <div class="fcolt">RESOURCES</div>
+        <a class="fl" href="owner-guide.html">Owner Guide</a>
+        <a class="fl" href="tenant-guide.html">Tenant Guide</a>
+        <a class="fl" href="post-property.html">List Property</a>
+        <a class="fl" href="post-commercial.html">List Commercial</a>
+        <a class="fl" href="verification.html">Verification</a>
+      </div>
+      <div>
+        <div class="fcolt">LEGAL</div>
+        <a class="fl" href="privacy-policy.html">Privacy Policy</a>
+        <a class="fl" href="privacy-policy.html">Terms of Service</a>
+        <a class="fl" href="#">Data Protection</a>
+        <a class="fl" href="#">Cookie Policy</a>
+        <a class="fl" href="#">Security</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">© 2023–2026 SmartRent AI. All rights reserved. Built with ❤️ in India. <a href="privacy-policy.html">Privacy</a> · <a href="privacy-policy.html">Terms</a></div>
+      <div class="fbdgs"><span class="fbdg">ISO 27001</span><span class="fbdg">DPDP 2023</span><span class="fbdg">UIDAI PARTNER</span><span class="fbdg">AES-256</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── NAVBAR ───────────────────────────────────────────── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('solid',scrollY>40);
+  const t=document.documentElement;
+  const pct=(scrollY/(t.scrollHeight-window.innerHeight))*100;
+  document.getElementById('pgBar').style.width=Math.min(pct,100)+'%';
+});
+
+/* ── MOBILE MENU ────────────────────────────────────────── */
+function toggleMob(){const d=document.getElementById('mobDraw');const b=document.getElementById('mobBtn');const o=d.classList.toggle('open');b.textContent=o?'✕':'☰';}
+
+/* ── TOAST ─────────────────────────────────────────────── */
+let _tT;
+function showToast(msg){const el=document.getElementById('toast');el.innerHTML=msg;el.style.display='block';clearTimeout(_tT);_tT=setTimeout(()=>{el.style.display='none';},3600);}
+
+/* ── ROLE HERO SELECTOR ────────────────────────────────── */
+function selectRole(role){
+  document.getElementById('roleOwner').classList.toggle('active',role==='owner');
+  document.getElementById('roleTenant').classList.toggle('active',role==='tenant');
+  switchTrack(role);
+  document.querySelector('.track-sec').scrollIntoView({behavior:'smooth'});
+}
+
+/* ── TRACK TABS ────────────────────────────────────────── */
+function switchTrack(track){
+  document.getElementById('tt-owner').classList.remove('on-owner','on-tenant');
+  document.getElementById('tt-tenant').classList.remove('on-owner','on-tenant');
+  document.getElementById('panel-owner').classList.remove('show');
+  document.getElementById('panel-tenant').classList.remove('show');
+  if(track==='owner'){
+    document.getElementById('tt-owner').classList.add('on-owner');
+    document.getElementById('panel-owner').classList.add('show');
+  } else {
+    document.getElementById('tt-tenant').classList.add('on-tenant');
+    document.getElementById('panel-tenant').classList.add('show');
+  }
+}
+
+/* ── FAQ ───────────────────────────────────────────────── */
+function toggleFaq(el){
+  const a=el.nextElementSibling;const isOpen=a.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.faq-q.open').forEach(x=>x.classList.remove('open'));
+  if(!isOpen){a.classList.add('open');el.classList.add('open');}
+}
+
+/* ── KYC SIMULATION ────────────────────────────────────── */
+const KYC_STEPS=[
+  {pct:17,label:'Account created'},
+  {pct:35,label:'Aadhaar OTP verified'},
+  {pct:52,label:'PAN validated'},
+  {pct:64,label:'Face match complete'},
+  {pct:78,label:'Documents uploaded'},
+  {pct:88,label:'Bank verified'},
+  {pct:100,label:'Background clear · VERIFIED ✓'},
+];
+let kycStep=0;
+
+function simulateKycProgress(){
+  if(kycStep>=KYC_STEPS.length-1){showToast('✅ KYC Complete! Trust Score: 94');return;}
+  kycStep++;
+  const s=KYC_STEPS[kycStep];
+  document.getElementById('kycPct').textContent=s.pct+'%';
+  document.getElementById('kycBar').style.width=s.pct+'%';
+
+  const steps=document.querySelectorAll('.kp-step');
+  steps.forEach((st,i)=>{
+    st.className='kp-step';
+    if(i<kycStep) st.classList.add('kps-done');
+    else if(i===kycStep) st.classList.add('kps-active');
+    else st.classList.add('kps-lock');
+    const status=st.querySelector('.kps-status');
+    if(status){
+      status.className='kps-status';
+      if(i<kycStep){status.classList.add('kss-done');status.textContent='DONE';}
+      else if(i===kycStep){status.classList.add('kss-active');status.textContent='ACTIVE';}
+      else{status.classList.add('kss-lock');status.textContent='LOCKED';}
+    }
+  });
+  showToast('⚡ '+s.label);
+}
+
+/* ── FACE SCAN SIMULATION ──────────────────────────────── */
+let scanRunning=false;
+function runFaceScan(){
+  if(scanRunning)return;
+  scanRunning=true;
+  document.getElementById('livenessStatus').textContent='SCANNING...';
+  document.getElementById('aadhaarStatus').textContent='PENDING';
+  setTimeout(()=>{
+    document.getElementById('livenessStatus').textContent='✓ PASSED';
+    document.getElementById('livenessStatus').style.animation='none';
+    document.getElementById('livenessStatus').style.color='var(--em)';
+  },2000);
+  setTimeout(()=>{
+    document.getElementById('aadhaarStatus').textContent='✓ MATCHED';
+    document.getElementById('aadhaarStatus').style.animation='none';
+    document.getElementById('aadhaarStatus').style.color='var(--em)';
+    showToast('✅ Face verification successful! Identity confirmed.');
+    scanRunning=false;
+  },3800);
+}
+
+/* ── DOCUMENT UPLOAD SIMULATION ────────────────────────── */
+function simulateUpload(btnId, doneId){
+  const btn=document.getElementById(btnId);
+  const done=document.getElementById(doneId);
+  btn.textContent='⏳ UPLOADING...';
+  btn.style.opacity='.5';
+  btn.style.pointerEvents='none';
+  setTimeout(()=>{
+    btn.style.display='none';
+    done.classList.add('show');
+    showToast('✅ Document uploaded and verified successfully!');
+  },1800);
+}
+
+/* ── TRUST SCORE ANIMATION ─────────────────────────────── */
+let scoreAnimated=false;
+const scoreObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting && !scoreAnimated){
+    scoreAnimated=true;
+    const target=94;
+    const circumference=2*Math.PI*80;
+    const fill=document.getElementById('dialFill');
+    const num=document.getElementById('scoreNum');
+    fill.style.strokeDasharray=circumference;
+    fill.style.strokeDashoffset=circumference;
+    const dur=2000;const start=performance.now();
+    const tick=now=>{
+      const p=Math.min((now-start)/dur,1);
+      const ease=1-Math.pow(1-p,4);
+      const val=Math.floor(ease*target);
+      num.textContent=val;
+      fill.style.strokeDashoffset=circumference-(ease*target/100)*circumference;
+      if(p<1)requestAnimationFrame(tick);
+      else{num.textContent=target;fill.style.strokeDashoffset=circumference-(target/100)*circumference;}
+    };
+    requestAnimationFrame(tick);
+
+    // Bars
+    const bars=[{id:'br1',w:100},{id:'br2',w:95},{id:'br3',w:88},{id:'br4',w:92},{id:'br5',w:80},{id:'br6',w:75}];
+    bars.forEach((b,i)=>{setTimeout(()=>{const el=document.getElementById(b.id);if(el)el.style.width=b.w+'%';},i*150);});
+  }
+},{threshold:0.3});
+const trustSec=document.querySelector('.trust-sec');
+if(trustSec)scoreObs.observe(trustSec);
+
+/* ── SCROLL REVEAL ─────────────────────────────────────── */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:0.08});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* EXPOSE */
+window.selectRole=selectRole;window.switchTrack=switchTrack;window.toggleFaq=toggleFaq;
+window.simulateKycProgress=simulateKycProgress;window.runFaceScan=runFaceScan;
+window.simulateUpload=simulateUpload;window.toggleMob=toggleMob;window.showToast=showToast;
+</script>
+
+<!-- UPDATE INDEX FOOTER LINK -->
+<script>
+// Update the verification process link in the owner's footer on this page
+</script>
+
+</body>
+</html>

@@ -1,41 +1,1052 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Rentals website for booking apartments and houses">
-    <meta property="og:title" content="Rentals Website">
-    <meta property="og:description" content="Find your next home with ease">
-    <meta property="og:image" content="/path/to/image.jpg">
-    <meta property="og:url" content="https://www.yourrentalswebsite.com">
-    <link rel="stylesheet" href="styles.css">
-    <title>Rentals Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent AI — India's Most Intelligent Rental Platform</title>
+<meta name="description" content="Discover verified PGs, hostels, flats and co-living spaces across India. AI-powered matching, zero brokerage, instant connect.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS — LUXURY REAL ESTATE DARK
+═══════════════════════════════════════════════════ */
+:root {
+  --bg:    #05070d;
+  --bg1:   #080e1a;
+  --bg2:   #0c1422;
+  --bg3:   #101b2d;
+  --bg4:   #152336;
+  --bg5:   #1a2b40;
+
+  --gold:      #c9a84c;
+  --gold-lt:   #e8c97a;
+  --gold-dk:   #8a6d28;
+  --gold-d:    rgba(201,168,76,0.1);
+  --gold-b:    rgba(201,168,76,0.24);
+  --gold-g:    rgba(201,168,76,0.05);
+  --gold-glow: rgba(201,168,76,0.35);
+
+  --teal:   #2dd4bf;
+  --teal-d: rgba(45,212,191,0.1);
+  --teal-b: rgba(45,212,191,0.22);
+
+  --rose:   #f43f5e;
+  --rose-d: rgba(244,63,94,0.1);
+
+  --emerald:   #10b981;
+  --emerald-d: rgba(16,185,129,0.1);
+  --emerald-b: rgba(16,185,129,0.22);
+
+  --t0: #edf0ff;
+  --t1: rgba(220,228,255,0.8);
+  --t2: rgba(178,194,240,0.52);
+  --t3: rgba(138,160,210,0.3);
+
+  --line:  rgba(201,168,76,0.07);
+  --line2: rgba(255,255,255,0.08);
+  --line3: rgba(255,255,255,0.16);
+
+  --r1: 7px;
+  --r2: 13px;
+  --r3: 19px;
+  --r4: 26px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t0);overflow-x:hidden;min-height:100vh}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── AMBIENT ───────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);animation:oFloat 20s ease-in-out infinite alternate}
+.o1{width:700px;height:700px;top:-220px;left:-180px;background:radial-gradient(circle,rgba(201,168,76,.065) 0%,transparent 65%)}
+.o2{width:580px;height:580px;bottom:-200px;right:-130px;background:radial-gradient(circle,rgba(45,212,191,.055) 0%,transparent 65%);animation-delay:-8s}
+.o3{width:420px;height:420px;top:50%;left:40%;background:radial-gradient(circle,rgba(201,168,76,.035) 0%,transparent 65%);animation-delay:-14s}
+@keyframes oFloat{0%{transform:translate(0,0) scale(1)}40%{transform:translate(32px,-24px) scale(1.06)}70%{transform:translate(-20px,18px) scale(0.96)}100%{transform:translate(14px,-10px) scale(1.03)}}
+
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.38}
+
+.grid{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(201,168,76,.038) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.038) 1px,transparent 1px);
+  background-size:50px 50px;
+  mask-image:radial-gradient(ellipse 88% 76% at 50% 28%,black 0%,transparent 100%)}
+
+/* ══════════════════════════════════════════════════
+   NAVBAR
+══════════════════════════════════════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:66px;display:flex;align-items:center;padding:0 36px;background:rgba(5,7,13,.72);backdrop-filter:blur(32px) saturate(1.6);border-bottom:1px solid var(--line);transition:all .3s}
+.nav.solid{background:rgba(5,7,13,.97);box-shadow:0 1px 0 var(--gold-b),0 8px 40px rgba(0,0,0,.6)}
+
+.nav-brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.nav-gem{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 18px rgba(201,168,76,.35),inset 0 1px 0 rgba(255,255,255,.18)}
+.nav-wordmark{display:flex;flex-direction:column;line-height:1}
+.nw-sr{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--t0);letter-spacing:.02em}
+.nw-ai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.18em;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);padding:1px 5px;border-radius:3px;margin-left:5px;align-self:flex-end;margin-bottom:2px}
+
+.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 24px}
+.nav-a{padding:7px 16px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s;position:relative;letter-spacing:.01em}
+.nav-a:hover{color:var(--t0)}
+.nav-a.on{color:var(--gold)}
+.nav-a.on::after{content:'';position:absolute;bottom:-1px;left:16px;right:16px;height:1px;background:var(--gold);border-radius:1px}
+.nav-a .nav-badge{font-size:8px;font-family:'JetBrains Mono',monospace;background:var(--rose-d);color:var(--rose);border:1px solid rgba(244,63,94,.3);padding:1px 5px;border-radius:3px;margin-left:4px;letter-spacing:.08em;vertical-align:middle}
+
+.nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nb{padding:7px 16px;border-radius:var(--r1);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;letter-spacing:.01em}
+.nb-gh{background:transparent;border:1px solid var(--line2);color:var(--t1)}.nb-gh:hover{border-color:var(--gold-b);color:var(--gold)}
+.nb-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#060a10;font-weight:700;box-shadow:0 0 18px rgba(201,168,76,.18)}.nb-gold:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
+.nav-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#060a10;cursor:pointer;border:1.5px solid var(--gold-b);transition:all .2s}.nav-av:hover{box-shadow:0 0 14px var(--gold-b)}
+
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--line2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.mob-menu{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(5,7,13,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:6px;backdrop-filter:blur(22px);animation:mmDrop .25s ease}
+@keyframes mmDrop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.mob-menu.open{display:flex}
+.mob-link{padding:11px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-link:hover{color:var(--gold)}.mob-link:last-of-type{border-bottom:none}
+
+/* ══════════════════════════════════════════════════
+   HERO
+══════════════════════════════════════════════════ */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 24px 72px;text-align:center;overflow:hidden}
+
+/* Beam + ring */
+.hero-bg{position:absolute;inset:0;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.hero-bg::before{content:'';position:absolute;width:3px;height:55%;top:0;background:linear-gradient(to bottom,transparent,rgba(201,168,76,.18),transparent);filter:blur(1px)}
+.hero-bg::after{content:'';position:absolute;width:860px;height:860px;border-radius:50%;border:1px solid rgba(201,168,76,.06);animation:ring 9s ease-in-out infinite}
+@keyframes ring{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.05);opacity:1}}
+
+.hero-spark{position:absolute;width:320px;height:320px;border-radius:50%;border:1px dashed rgba(201,168,76,.07);animation:ring 14s ease-in-out infinite reverse;animation-delay:-4s}
+
+/* Eyebrow */
+.h-eye{display:inline-flex;align-items:center;gap:9px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:32px;animation:fu .7s cubic-bezier(.4,0,.2,1) both}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(45,212,191,.6);animation:livep 2s infinite}
+@keyframes livep{0%{box-shadow:0 0 0 0 rgba(45,212,191,.6)}70%{box-shadow:0 0 0 8px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
+
+/* HEADLINE — Cormorant Garamond: The gold standard for luxury real estate */
+.h-title{font-family:'Cormorant Garamond',serif;font-size:clamp(52px,9vw,108px);font-weight:300;line-height:.92;letter-spacing:-.01em;margin-bottom:8px;color:var(--t0);animation:fu .8s .1s cubic-bezier(.4,0,.2,1) both}
+.h-title em{font-style:italic;background:linear-gradient(135deg,var(--gold-lt) 0%,var(--gold) 38%,var(--teal) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.h-sub-serif{font-family:'Cormorant Garamond',serif;font-size:clamp(18px,3vw,34px);font-weight:300;font-style:italic;color:var(--t2);margin-bottom:28px;letter-spacing:.02em;animation:fu .8s .18s cubic-bezier(.4,0,.2,1) both}
+.h-desc{font-size:clamp(13px,1.6vw,16px);color:var(--t2);line-height:1.82;max-width:530px;margin:0 auto 46px;font-weight:400;animation:fu .8s .26s cubic-bezier(.4,0,.2,1) both}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO SEARCH ───────────────────────────────── */
+.srch-wrap{width:100%;max-width:840px;animation:fu .8s .34s cubic-bezier(.4,0,.2,1) both}
+.srch-inner{background:rgba(8,14,26,.97);border:1px solid var(--gold-b);border-radius:var(--r3);padding:8px;display:flex;gap:5px;align-items:stretch;backdrop-filter:blur(24px);box-shadow:0 24px 80px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.04);transition:all .3s}
+.srch-inner:focus-within{border-color:rgba(201,168,76,.45);box-shadow:0 24px 80px rgba(0,0,0,.55),0 0 0 3px rgba(201,168,76,.07),0 0 40px rgba(201,168,76,.06)}
+
+.sf{flex:1;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:11px 14px;min-width:0;transition:all .2s}
+.sf:focus-within{border-color:var(--gold-b);background:rgba(201,168,76,.025)}
+.sf-ico{font-size:15px;flex-shrink:0;opacity:.42}
+.sf input,.sf select{background:transparent;border:none;outline:none;color:var(--t0);font-family:'DM Sans',sans-serif;font-size:13.5px;width:100%}
+.sf input::placeholder{color:var(--t3);font-style:italic}
+.sf select{color:var(--t1);cursor:pointer}.sf select option{background:var(--bg2)}
+.sv{width:1px;background:rgba(201,168,76,.12);margin:7px 0;align-self:stretch;flex-shrink:0}
+
+.srch-btn{padding:11px 28px;border-radius:12px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#060a10;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 16px rgba(201,168,76,.22);letter-spacing:.02em}
+.srch-btn:hover{box-shadow:0 0 28px var(--gold-glow);transform:scale(1.02)}
+
+/* Quick pills */
+.pills{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:14px;animation:fu .8s .42s cubic-bezier(.4,0,.2,1) both}
+.pill{padding:5px 14px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--line2);background:rgba(255,255,255,.03);color:var(--t2);transition:all .2s;letter-spacing:.01em}
+.pill:hover,.pill.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
+
+/* ── HERO STATS BAR ──────────────────────────────── */
+.h-stats{display:flex;gap:0;justify-content:center;align-items:stretch;margin-top:56px;flex-wrap:wrap;background:rgba(8,14,26,.75);border:1px solid var(--gold-b);border-radius:var(--r2);backdrop-filter:blur(18px);overflow:hidden;animation:fu .8s .5s cubic-bezier(.4,0,.2,1) both;box-shadow:0 8px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
+.hst{padding:18px 38px;text-align:center;border-right:1px solid rgba(201,168,76,.1);transition:background .2s;cursor:default}.hst:last-child{border-right:none}.hst:hover{background:rgba(201,168,76,.04)}
+.hst-v{font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:600;color:var(--gold-lt);line-height:1;margin-bottom:4px}
+.hst-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+
+/* Hero gradient fade bottom */
+.h-fade{position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none}
+
+/* ══════════════════════════════════════════════════
+   MARQUEE TRUST BAR
+══════════════════════════════════════════════════ */
+.mbar{position:relative;z-index:1;background:rgba(8,14,26,.85);border-top:1px solid var(--gold-b);border-bottom:1px solid rgba(255,255,255,.04);overflow:hidden;backdrop-filter:blur(12px)}
+.mtrack{display:flex;width:max-content;animation:mLeft 34s linear infinite}.mtrack:hover{animation-play-state:paused}
+@keyframes mLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mi{display:flex;align-items:center;gap:9px;padding:13px 42px;border-right:1px solid rgba(201,168,76,.07);white-space:nowrap;flex-shrink:0}
+.mi-ic{font-size:16px;opacity:.8}.mi-tx{font-size:12px;color:var(--t2);font-weight:500}.mi-tx strong{color:var(--gold-lt);font-weight:600}
+.mbar::before,.mbar::after{content:'';position:absolute;top:0;bottom:0;width:90px;z-index:2}
+.mbar::before{left:0;background:linear-gradient(to right,rgba(8,14,26,.9),transparent)}
+.mbar::after{right:0;background:linear-gradient(to left,rgba(8,14,26,.9),transparent)}
+
+/* ══════════════════════════════════════════════════
+   SHARED SECTION STYLES
+══════════════════════════════════════════════════ */
+section{position:relative;z-index:1}
+.wrap{max-width:1240px;margin:0 auto;padding:0 28px}
+
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--gold)}
+
+.sh2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4.2vw,50px);font-weight:400;color:var(--t0);line-height:1.08;letter-spacing:-.01em;margin-bottom:12px}
+.sh2 em{font-style:italic;color:var(--gold)}
+.sp{font-size:15px;color:var(--t2);line-height:1.82;max-width:490px;font-weight:400}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ══════════════════════════════════════════════════
+   CATEGORY GRID
+══════════════════════════════════════════════════ */
+.cats-sec{padding:88px 0}
+.cat-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:40px}
+.cat-card{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:24px 14px 20px;text-align:center;cursor:pointer;transition:all .3s cubic-bezier(.34,1.4,.64,1);text-decoration:none;display:block;position:relative;overflow:hidden}
+.cat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--cg,rgba(201,168,76,.05)),transparent 55%);opacity:0;transition:opacity .3s}
+.cat-card:hover{border-color:var(--gold-b);transform:translateY(-8px) scale(1.02);box-shadow:0 22px 50px rgba(0,0,0,.5),0 0 0 1px var(--gold-g)}.cat-card:hover::before{opacity:1}
+.cat-ic{font-size:30px;display:block;margin-bottom:11px;transition:transform .3s;filter:drop-shadow(0 0 8px rgba(201,168,76,.2))}.cat-card:hover .cat-ic{transform:scale(1.2)}
+.cat-nm{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--t0);margin-bottom:3px}
+.cat-ct{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+/* ══════════════════════════════════════════════════
+   FEATURED LISTINGS
+══════════════════════════════════════════════════ */
+.lst-sec{padding:0 0 90px}
+.lst-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{padding:6px 16px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--t2);transition:all .2s;letter-spacing:.01em}
+.fchip:hover,.fchip.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
+.see-all{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;font-style:italic;color:var(--gold);text-decoration:none;display:flex;align-items:center;gap:6px;transition:gap .2s}.see-all:hover{gap:11px}
+
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+
+/* ── PROPERTY CARD ──────────────────────────────── */
+.pc{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);overflow:hidden;display:flex;flex-direction:column;transition:all .38s cubic-bezier(.34,1.1,.64,1);cursor:pointer;position:relative}
+.pc:hover{border-color:var(--gold-b);transform:translateY(-8px);box-shadow:0 30px 70px rgba(0,0,0,.55),0 0 0 1px var(--gold-g),inset 0 1px 0 rgba(201,168,76,.05)}
+.pc-img{height:215px;position:relative;overflow:hidden;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pc-em{font-size:62px;transition:transform .5s ease;position:relative;z-index:1}.pc:hover .pc-em{transform:scale(1.1)}
+.pc-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(5,7,13,.9))}
+.pc-bdgs{position:absolute;top:12px;left:12px;display:flex;gap:5px;z-index:3}
+.pbdg{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(8px)}
+.pb-v{background:rgba(45,212,191,.2);color:var(--teal);border:1px solid rgba(45,212,191,.3)}
+.pb-g{background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)}
+.pb-h{background:rgba(244,63,94,.2);color:#fca5a5;border:1px solid rgba(244,63,94,.3)}
+.pb-n{background:rgba(16,185,129,.15);color:var(--emerald);border:1px solid var(--emerald-b)}
+.pb-p{background:rgba(139,109,40,.25);color:var(--gold-lt);border:1px solid var(--gold-b)}
+.pc-sv{position:absolute;top:12px;right:12px;z-index:3;width:34px;height:34px;border-radius:50%;background:rgba(5,7,13,.65);backdrop-filter:blur(6px);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .2s}.pc-sv:hover{background:rgba(244,63,94,.18);border-color:rgba(244,63,94,.4)}.pc-sv.saved{background:rgba(244,63,94,.2);border-color:rgba(244,63,94,.45)}
+.pc-imgft{position:absolute;bottom:10px;left:12px;right:12px;display:flex;align-items:center;justify-content:space-between;z-index:3}
+.pc-rat{background:rgba(5,7,13,.65);backdrop-filter:blur(6px);border-radius:4px;padding:3px 8px;font-size:12px;color:var(--gold-lt);font-weight:600;display:flex;align-items:center;gap:4px}
+.pc-dst{background:rgba(5,7,13,.6);backdrop-filter:blur(6px);border-radius:4px;padding:3px 8px;font-size:10px;color:var(--t1);font-family:'JetBrains Mono',monospace}
+.pc-body{padding:16px;flex:1;display:flex;flex-direction:column}
+.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.pc-tags{display:flex;gap:4px}.pc-tag{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--t3);letter-spacing:.06em}
+.pc-gen{font-size:11px;color:var(--t3)}
+.pc-nm{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--t0);margin-bottom:5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.005em}
+.pc-loc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);margin-bottom:12px}
+.pc-amen{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.pc-a{font-size:11px;color:var(--t2);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);padding:3px 8px;border-radius:4px}
+.pc-ft{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid rgba(201,168,76,.07);margin-top:auto}
+.pc-pv{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--t0);line-height:1;letter-spacing:-.01em}
+.pc-pv .cur{font-size:15px;font-weight:400}
+.pc-pl{font-size:10px;color:var(--t3);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.pc-acts{display:flex;gap:6px}
+.pc-view{padding:8px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#060a10;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px;transition:all .2s;letter-spacing:.02em}.pc-view:hover{box-shadow:0 0 18px var(--gold-b);transform:translateY(-1px)}
+.pc-call{padding:8px 12px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--t2);font-size:12px;cursor:pointer;transition:all .2s}.pc-call:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* ══════════════════════════════════════════════════
+   HOW IT WORKS
+══════════════════════════════════════════════════ */
+.how-sec{padding:90px 0;background:var(--bg1);border-top:1px solid rgba(201,168,76,.07);border-bottom:1px solid rgba(201,168,76,.07)}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:50px;border:1px solid rgba(201,168,76,.1);border-radius:var(--r3);overflow:hidden;background:var(--bg2)}
+.how-step{padding:34px 28px;border-right:1px solid rgba(201,168,76,.08);position:relative;transition:background .3s}.how-step:last-child{border-right:none}.how-step:hover{background:rgba(201,168,76,.02)}
+.how-n{font-family:'Cormorant Garamond',serif;font-size:76px;font-weight:300;font-style:italic;color:rgba(201,168,76,.07);line-height:1;position:absolute;bottom:18px;right:18px;user-select:none}
+.how-ib{width:48px;height:48px;border-radius:12px;background:var(--bg3);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px}
+.how-t{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:var(--t0);margin-bottom:9px;letter-spacing:.01em}
+.how-d{font-size:13px;color:var(--t2);line-height:1.78}
+
+/* ══════════════════════════════════════════════════
+   FEATURE HIGHLIGHTS
+══════════════════════════════════════════════════ */
+.feat-sec{padding:90px 0}
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:50px}
+.fc{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:34px;position:relative;overflow:hidden;transition:all .3s}
+.fc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--fcc,var(--gold)),transparent)}
+.fc:hover{border-color:var(--fcb,var(--gold-b));background:var(--fcbg,rgba(201,168,76,.025));transform:translateY(-3px);box-shadow:0 16px 46px rgba(0,0,0,.45)}
+.fc.wide{grid-column:span 2}
+.fc-ic{width:54px;height:54px;border-radius:14px;background:var(--bg3);border:1px solid var(--fcb,var(--gold-b));display:flex;align-items:center;justify-content:center;font-size:25px;margin-bottom:20px}
+.fc-t{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;color:var(--t0);margin-bottom:10px;letter-spacing:.01em}
+.fc-d{font-size:13px;color:var(--t2);line-height:1.82}
+.fc-ns{display:flex;gap:30px;margin-top:22px;flex-wrap:wrap}
+.fn-v{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:600;color:var(--fcc,var(--gold));line-height:1}
+.fn-l{font-size:10px;color:var(--t3);margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em}
+
+/* ══════════════════════════════════════════════════
+   CITIES
+══════════════════════════════════════════════════ */
+.city-sec{padding:0 0 90px}
+.city-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:40px}
+.cc{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:24px 16px;text-align:center;cursor:pointer;text-decoration:none;display:block;position:relative;overflow:hidden;transition:all .3s}
+.cc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.cc:hover{border-color:var(--gold-b);transform:translateY(-5px);box-shadow:0 15px 42px rgba(0,0,0,.45)}.cc:hover::after{transform:scaleX(1)}
+.cc-flag{font-size:28px;margin-bottom:9px;display:block}
+.cc-nm{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--t0);margin-bottom:4px}
+.cc-ct{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+
+/* ══════════════════════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════════════════════ */
+.tst-sec{padding:0 0 90px}
+.tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.tc{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:26px;transition:all .3s}.tc:hover{border-color:var(--gold-b);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.tc-st{font-size:13px;margin-bottom:14px;color:var(--gold)}
+.tc-q{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:400;font-style:italic;color:var(--t1);line-height:1.78;margin-bottom:20px;position:relative;padding-left:20px}
+.tc-q::before{content:'\201C';font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:300;color:var(--gold);opacity:.3;line-height:1;position:absolute;left:0;top:-12px}
+.tc-au{display:flex;align-items:center;gap:11px}
+.tc-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#060a10;flex-shrink:0}
+.tc-nm{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--t0)}
+.tc-rl{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px}
+
+/* ══════════════════════════════════════════════════
+   OWNER CTA
+══════════════════════════════════════════════════ */
+.own-sec{padding:90px 0;background:var(--bg1);border-top:1px solid rgba(201,168,76,.08);position:relative;overflow:hidden}
+.own-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 68% 50%,rgba(201,168,76,.04) 0%,transparent 65%)}
+.own-inner{display:grid;grid-template-columns:1fr 1fr;gap:68px;align-items:center}
+.own-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,3.8vw,50px);font-weight:400;line-height:1.08;color:var(--t0);margin-bottom:16px;letter-spacing:-.01em}.own-h2 em{font-style:italic;color:var(--gold)}
+.own-p{font-size:15px;color:var(--t2);line-height:1.82;margin-bottom:30px}
+.own-perks{display:flex;flex-direction:column;gap:13px;margin-bottom:36px}
+.perk{display:flex;align-items:center;gap:13px;font-size:14px;color:var(--t1)}
+.perk-dot{width:32px;height:32px;border-radius:8px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.own-ctas{display:flex;gap:10px;flex-wrap:wrap}
+.cta-main{padding:13px 28px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#060a10;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;letter-spacing:.02em}.cta-main:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-2px)}
+.cta-sec{padding:12px 22px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.cta-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* Dashboard mockup */
+.mock{background:var(--bg3);border:1px solid rgba(201,168,76,.16);border-radius:var(--r3);overflow:hidden;box-shadow:0 34px 80px rgba(0,0,0,.55),0 0 0 1px rgba(201,168,76,.04)}
+.mock-bar{background:var(--bg4);border-bottom:1px solid rgba(201,168,76,.08);padding:11px 16px;display:flex;align-items:center;gap:7px}
+.md{width:10px;height:10px;border-radius:50%}.md1{background:#ff5f56}.md2{background:#ffbd2e}.md3{background:#27c93f}
+.mock-url{flex:1;background:var(--bg3);border-radius:5px;padding:4px 10px;font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin:0 8px;border:1px solid rgba(255,255,255,.04)}
+.mock-body{padding:18px}
+.mock-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.ms{background:var(--bg2);border:1px solid rgba(201,168,76,.1);border-radius:9px;padding:12px;text-align:center}
+.msv{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;line-height:1;margin-bottom:4px}
+.msl{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.mock-chart{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:9px;padding:12px;height:88px;display:flex;align-items:flex-end;gap:5px;margin-bottom:12px}
+.mbar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--gold),var(--teal));min-height:6px;opacity:.65}
+.mrow{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:7px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:12px}.mrow:last-child{margin-bottom:0}
+.mrn{font-weight:600;color:var(--t0)}.mrt{color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:10px}
+.mrs{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:3px;letter-spacing:.08em}
+.mrs-new{background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-b)}.mrs-ok{background:rgba(16,185,129,.12);color:var(--emerald);border:1px solid var(--emerald-b)}
+
+/* ══════════════════════════════════════════════════
+   NEWSLETTER
+══════════════════════════════════════════════════ */
+.nl-sec{padding:60px 0;background:linear-gradient(90deg,var(--bg2),var(--bg3));border-top:1px solid rgba(201,168,76,.08);border-bottom:1px solid rgba(201,168,76,.08)}
+.nl-inner{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.nl-t{font-family:'Cormorant Garamond',serif;font-size:27px;font-weight:400;color:var(--t0);margin-bottom:5px}
+.nl-s{font-size:13px;color:var(--t2)}
+.nl-form{display:flex;gap:8px;flex-shrink:0}
+.nl-in{background:var(--bg1);border:1px solid var(--gold-b);border-radius:var(--r1);padding:10px 16px;color:var(--t0);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;min-width:265px;transition:all .2s}.nl-in::placeholder{color:var(--t3);font-style:italic}.nl-in:focus{box-shadow:0 0 0 2px rgba(201,168,76,.14)}
+.nl-btn{padding:10px 22px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#060a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.02em}.nl-btn:hover{box-shadow:0 0 22px var(--gold-b);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════════ */
+footer{padding:64px 0 30px;background:var(--bg1);border-top:1px solid var(--gold-b)}
+.fg{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px;margin-bottom:50px}
+.fb-desc{font-size:13px;color:var(--t2);line-height:1.82;margin-bottom:20px;max-width:265px}
+.socials{display:flex;gap:8px}
+.soc{width:36px;height:36px;border-radius:8px;background:var(--bg2);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s}.soc:hover{border-color:var(--gold-b);background:var(--gold-d);transform:translateY(-2px)}
+.fc-t{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--gold-lt);margin-bottom:18px;letter-spacing:.02em}
+.fl{font-size:13px;color:var(--t2);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:6px;margin-bottom:10px}.fl:last-child{margin-bottom:0}.fl:hover{color:var(--gold-lt)}
+.foot-bot{border-top:1px solid rgba(201,168,76,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-copy{font-size:12px;color:var(--t3);line-height:1.75}.foot-copy a{color:var(--gold);text-decoration:none}.foot-copy a:hover{text-decoration:underline}
+.foot-badges{display:flex;gap:6px}
+.fbdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:var(--bg2);border:1px solid rgba(255,255,255,.07);color:var(--t3)}
+
+/* ══════════════════════════════════════════════════
+   FLOATING UI
+══════════════════════════════════════════════════ */
+.fab{position:fixed;bottom:26px;right:26px;z-index:700;display:flex;align-items:center;gap:8px;padding:13px 22px;border-radius:50px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:#060a10;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;text-decoration:none;transition:all .22s;box-shadow:0 6px 28px rgba(201,168,76,.4);animation:fabg 3s ease-in-out infinite;letter-spacing:.02em}
+@keyframes fabg{0%,100%{box-shadow:0 6px 28px rgba(201,168,76,.38)}50%{box-shadow:0 6px 40px rgba(201,168,76,.62),0 0 0 8px rgba(201,168,76,.06)}}.fab:hover{transform:translateY(-3px) scale(1.04);animation:none;box-shadow:0 12px 44px var(--gold-glow)}
+
+.ltst{position:fixed;bottom:90px;left:26px;z-index:700;background:rgba(8,14,26,.97);border:1px solid var(--teal-b);border-radius:var(--r2);padding:12px 16px;font-size:12px;color:var(--teal);max-width:285px;display:none;box-shadow:0 8px 30px rgba(0,0,0,.5);backdrop-filter:blur(16px);animation:ltsi .4s cubic-bezier(.34,1.3,.64,1)}
+@keyframes ltsi{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:translateX(0)}}
+.ldot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--teal);margin-right:6px;animation:livep 1.8s infinite}
+
+.toast{position:fixed;bottom:90px;right:26px;z-index:800;background:var(--bg3);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 16px;font-size:13px;display:none;box-shadow:0 8px 34px rgba(0,0,0,.5);min-width:240px;animation:ti .3s ease}
+@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Consent */
+.con-ov{position:fixed;inset:0;z-index:1000;background:rgba(2,4,8,.93);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:20px}.con-ov.out{display:none}
+.con-box{background:var(--bg2);border:1px solid var(--gold-b);border-radius:var(--r4);padding:44px 40px;max-width:455px;width:100%;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.8),inset 0 1px 0 rgba(201,168,76,.1);animation:conIn .5s cubic-bezier(.34,1.2,.64,1)}
+@keyframes conIn{from{opacity:0;transform:scale(.9) translateY(18px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.con-ic{font-size:66px;margin-bottom:20px;display:block;filter:drop-shadow(0 0 22px rgba(201,168,76,.32))}
+.con-t{font-family:'Cormorant Garamond',serif;font-size:29px;font-weight:400;margin-bottom:12px;color:var(--t0)}
+.con-p{font-size:13px;color:var(--t2);line-height:1.82;margin-bottom:28px}
+.con-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;border-radius:var(--r1);color:#060a10;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:12px;letter-spacing:.03em}.con-btn:hover{box-shadow:0 0 28px var(--gold-b);transform:translateY(-1px)}
+.con-note{font-size:12px;color:var(--t3)}.con-note a{color:var(--gold);text-decoration:none}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════ */
+@media(max-width:1100px){.cat-grid{grid-template-columns:repeat(3,1fr)}.how-grid{grid-template-columns:repeat(2,1fr)}.how-step:nth-child(2){border-right:none}.how-step:nth-child(3){border-top:1px solid rgba(201,168,76,.08)}.fc.wide{grid-column:span 1}.feat-grid{grid-template-columns:1fr}.fg{grid-template-columns:1fr 1fr}.city-grid{grid-template-columns:repeat(3,1fr)}.tst-grid{grid-template-columns:repeat(2,1fr)}.own-inner{grid-template-columns:1fr;gap:44px}}
+@media(max-width:768px){.nav-links{display:none}.mob-btn{display:flex}.srch-inner{flex-direction:column}.sv{display:none}.h-stats{border-radius:0;border-left:none;border-right:none}.hst{padding:16px 20px}.lgrid{grid-template-columns:1fr}.tst-grid{grid-template-columns:1fr}.cat-grid{grid-template-columns:repeat(2,1fr)}.city-grid{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr}.nl-inner{flex-direction:column}.nl-form{flex-direction:column;width:100%}.nl-in{min-width:unset;width:100%}.how-grid{grid-template-columns:1fr;border:none;border-radius:0;background:transparent}.how-step{border:1px solid rgba(201,168,76,.08);border-radius:var(--r2);margin-bottom:10px;padding:26px 22px}.how-step:last-child{margin-bottom:0}.fab .fab-lbl{display:none}.fab{padding:15px;border-radius:50%}.foot-bot{flex-direction:column;text-align:center}.wide-row{grid-template-columns:1fr !important}}
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Rentals</h1>
-        <nav aria-label="Main Navigation">
-            <ul>
-                <li><a href="#home" aria-current="page">Home</a></li>
-                <li><a href="#about">About Us</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="home" aria-label="Homepage">
-            <h2>Find Your Perfect Home</h2>
-            <!-- Content goes here -->
-        </section>
-        <section id="about" aria-label="About Us">
-            <h2>About Our Company</h2>
-            <!-- Content goes here -->
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 Rentals Website. All rights reserved.</p>
-    </footer>
-    <script src="script.js" defer></script>
+
+<!-- AMBIENT -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="noise"></div>
+<div class="grid"></div>
+
+<!-- UI OVERLAYS -->
+<div class="toast" id="toast"></div>
+<div class="ltst" id="ltst"><span class="ldot"></span><span id="ltMsg">Someone just saved a PG in Hyderabad</span></div>
+<a class="fab" href="post-property.html"><span>➕</span><span class="fab-lbl">List Property</span></a>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a class="mob-link" href="pgs-hostels.html">🏠 PG &amp; Hostels</a>
+  <a class="mob-link" href="#">🏢 Flats &amp; Apartments</a>
+  <a class="mob-link" href="#">🤝 Co-living Spaces</a>
+  <a class="mob-link" href="#">🏪 Commercial</a>
+  <a class="mob-link" href="admin.html">⚙️ Admin Panel</a>
+  <a class="mob-link" href="booking-dashboard.html">📋 My Dashboard</a>
+  <hr style="border:none;border-top:1px solid rgba(201,168,76,.12);margin:6px 0">
+  <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="nb nb-gold" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:7px">+ List Your Property Free</a>
+</div>
+
+<!-- CONSENT -->
+<div class="con-ov out" id="conOv">
+  <div class="con-box">
+    <span class="con-ic">🏡</span>
+    <div class="con-t">Welcome to SmartRent AI</div>
+    <div class="con-p">Before exploring thousands of verified properties across India, please accept our Privacy Policy and Terms of Service. We use cookies to personalise your rental search experience.</div>
+    <button class="con-btn" onclick="acceptConsent()">✓ Accept &amp; Explore Properties</button>
+    <div class="con-note">By continuing you agree to our <a href="privacy-policy.html">Privacy Policy</a> &amp; <a href="privacy-policy.html">Terms of Service</a></div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     NAVBAR
+════════════════════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="nav-brand">
+    <div class="nav-gem">💎</div>
+    <div class="nav-wordmark">
+      <div style="display:flex;align-items:baseline;gap:1px">
+        <span class="nw-sr">SmartRent</span>
+        <span class="nw-ai">AI</span>
+      </div>
+    </div>
+  </a>
+
+  <div class="nav-links">
+    <a class="nav-a on" href="index.html">Home</a>
+    <a class="nav-a" href="pg-hostel-listings.html">PG &amp; Hostels</a>
+    <a class="nav-a" href="#">Flats</a>
+    <a class="nav-a" href="#">Co-living</a>
+    <a class="nav-a" href="commercial.html">Commercial</a>
+    <a class="nav-a" href="post-property.html">List Property <span class="nav-badge">FREE</span></a>
+    <a class="nav-a" href="admin.html">Admin</a>
+  </div>
+
+  <div class="nav-right">
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <div class="nav-av" id="navAv" onclick="navAvClick()" title="My Account">P</div>
+    <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════
+     HERO
+════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-spark"></div>
+
+  <div class="h-eye">
+    <span class="live-dot"></span>
+    AI-Powered · Zero Brokerage · India
+  </div>
+
+  <h1 class="h-title">Find Your<br><em>Perfect Rental</em></h1>
+  <div class="h-sub-serif">Homes that feel like home.</div>
+
+  <p class="h-desc">Discover verified PGs, hostels, flats &amp; co-living spaces across India — intelligently matched to your commute, budget and lifestyle. Zero brokerage, always.</p>
+
+  <!-- SEARCH -->
+  <div class="srch-wrap">
+    <div class="srch-inner">
+      <div class="sf">
+        <span class="sf-ico">🔍</span>
+        <input type="text" id="heroQ" placeholder="Area, locality, IT park, college…" onkeydown="if(event.key==='Enter')doSearch()">
+      </div>
+      <div class="sv"></div>
+      <div class="sf" style="max-width:185px">
+        <span class="sf-ico">🏙️</span>
+        <select id="heroCity">
+          <option value="">Any City</option>
+          <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
+          <option>Delhi</option><option>Chennai</option><option>Pune</option>
+          <option>Kolkata</option><option>Noida</option><option>Gurgaon</option>
+        </select>
+      </div>
+      <div class="sv"></div>
+      <div class="sf" style="max-width:162px">
+        <span class="sf-ico">🏠</span>
+        <select id="heroType">
+          <option value="">Any Type</option>
+          <option value="PG">PG / Paying Guest</option>
+          <option value="Hostel">Hostel</option>
+          <option value="Flat">Flat / Apartment</option>
+          <option value="CoLiving">Co-living</option>
+          <option value="Commercial">Commercial</option>
+          <option value="Services">Services</option>
+        </select>
+      </div>
+      <button class="srch-btn" onclick="doSearch()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        Search
+      </button>
+    </div>
+    <div class="pills">
+      <span class="pill on" onclick="setPill(this,'PG')">🏠 PG</span>
+      <span class="pill" onclick="setPill(this,'Hostel')">🏢 Hostel</span>
+      <span class="pill" onclick="setPill(this,'Flat')">🏡 Flat</span>
+      <span class="pill" onclick="setPill(this,'CoLiving')">🤝 Co-living</span>
+      <span class="pill" onclick="setPill(this,'Girls')">👩 Girls Only</span>
+      <span class="pill" onclick="setPill(this,'Boys')">👨 Boys Only</span>
+      <span class="pill" onclick="setPill(this,'WiFi')">📶 WiFi Included</span>
+      <span class="pill" onclick="setPill(this,'Meals')">🍽️ Meals Included</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="h-stats">
+    <div class="hst"><div class="hst-v" id="hs1">8,800+</div><div class="hst-l">Verified Properties</div></div>
+    <div class="hst"><div class="hst-v" id="hs2">50K+</div><div class="hst-l">Happy Tenants</div></div>
+    <div class="hst"><div class="hst-v" id="hs3">15+</div><div class="hst-l">Cities Covered</div></div>
+    <div class="hst"><div class="hst-v">₹0</div><div class="hst-l">Brokerage Fee</div></div>
+    <div class="hst"><div class="hst-v">24hr</div><div class="hst-l">Avg Response</div></div>
+  </div>
+
+  <div class="h-fade"></div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="mbar"><div class="mtrack" id="mtrack"></div></div>
+
+<!-- ════════════════════════
+     CATEGORIES
+════════════════════════ -->
+<section class="cats-sec">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">Explore By Type</div><h2 class="sh2">Every Rental,<br><em>One Platform</em></h2></div>
+    <div class="cat-grid rv d1">
+      <a class="cat-card" href="pgs-hostels.html" style="--cg:rgba(201,168,76,.05)">
+        <span class="cat-ic">🏠</span><div class="cat-nm">PG</div><div class="cat-ct">2,400+ listings</div>
+      </a>
+      <a class="cat-card" href="pgs-hostels.html" style="--cg:rgba(45,212,191,.05)">
+        <span class="cat-ic">🏢</span><div class="cat-nm">Hostel</div><div class="cat-ct">890+ listings</div>
+      </a>
+      <a class="cat-card" href="#" style="--cg:rgba(201,168,76,.04)">
+        <span class="cat-ic">🏡</span><div class="cat-nm">Flat / Apartment</div><div class="cat-ct">5,200+ listings</div>
+      </a>
+      <a class="cat-card" href="#" style="--cg:rgba(45,212,191,.04)">
+        <span class="cat-ic">🤝</span><div class="cat-nm">Co-living</div><div class="cat-ct">340+ listings</div>
+      </a>
+      <a class="cat-card" href="#" style="--cg:rgba(201,168,76,.03)">
+        <span class="cat-ic">🏗️</span><div class="cat-nm">Builder Floors</div><div class="cat-ct">1,100+ listings</div>
+      </a>
+      <a class="cat-card" href="commercial.html" style="--cg:rgba(45,212,191,.03)">
+        <span class="cat-ic">🏪</span><div class="cat-nm">Commercial</div><div class="cat-ct">680+ listings</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     FEATURED LISTINGS
+════════════════════════ -->
+<section class="lst-sec">
+  <div class="wrap">
+    <div class="lst-hdr rv">
+      <div>
+        <div class="eyebrow">Featured Properties</div>
+        <h2 class="sh2">Handpicked <em>For You</em></h2>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+        <a class="see-all" href="pg-hostel-listings.html">Browse all listings →</a>
+        <div class="chip-row">
+          <span class="fchip on" onclick="filt('all',this)">All</span>
+          <span class="fchip" onclick="filt('PG',this)">PG</span>
+          <span class="fchip" onclick="filt('Hostel',this)">Hostel</span>
+          <span class="fchip" onclick="filt('Flat',this)">Flat</span>
+        </div>
+      </div>
+    </div>
+    <div class="lgrid rv d1" id="lgrid"></div>
+    <div style="text-align:center;margin-top:32px" class="rv d2">
+      <a class="cta-sec" href="pg-hostel-listings.html" style="display:inline-flex">View All Listings →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     HOW IT WORKS
+════════════════════════ -->
+<section class="how-sec">
+  <div class="wrap">
+    <div class="rv" style="text-align:center">
+      <div class="eyebrow" style="justify-content:center">The Process</div>
+      <h2 class="sh2" style="text-align:center">Your Home in<br><em>Four Simple Steps</em></h2>
+    </div>
+    <div class="how-grid rv d1">
+      <div class="how-step">
+        <div class="how-n">01</div><div class="how-ib">🔍</div>
+        <div class="how-t">Search &amp; Filter</div>
+        <div class="how-d">Enter your locality, budget and property type. Our AI instantly surfaces the most relevant verified listings tailored precisely to your commute and lifestyle.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-n">02</div><div class="how-ib">📞</div>
+        <div class="how-t">Connect Directly</div>
+        <div class="how-d">Contact KYC-verified landlords directly — no middlemen, no brokers, no hidden commissions. Completely transparent pricing, always guaranteed.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-n">03</div><div class="how-ib">📅</div>
+        <div class="how-t">Visit &amp; Verify</div>
+        <div class="how-d">Schedule a property visit at your convenience. View video walkthroughs, 360° tours, and verified photos before making any commitment whatsoever.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-n">04</div><div class="how-ib">🏡</div>
+        <div class="how-t">Move In!</div>
+        <div class="how-d">Sign your rental agreement digitally, pay the deposit securely through our platform, and move into your perfect new home. It's that simple.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     FEATURES
+════════════════════════ -->
+<section class="feat-sec">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">Why SmartRent AI</div><h2 class="sh2">Built Different,<br><em>For Real Renters</em></h2></div>
+    <div class="feat-grid rv d1">
+      <div class="fc" style="--fcc:var(--gold);--fcb:var(--gold-b);--fcbg:rgba(201,168,76,.025)">
+        <div class="fc-ic">🤖</div>
+        <div class="fc-t">AI-Powered Matching</div>
+        <div class="fc-d">Our ML engine analyses your commute, budget, lifestyle and browsing history to surface properties you'll genuinely love — not just keyword matches.</div>
+        <div class="fc-ns"><div><div class="fn-v">94%</div><div class="fn-l">Match accuracy</div></div><div><div class="fn-v">3×</div><div class="fn-l">Faster to find</div></div></div>
+      </div>
+      <div class="fc" style="--fcc:var(--teal);--fcb:var(--teal-b);--fcbg:rgba(45,212,191,.025)">
+        <div class="fc-ic">✅</div>
+        <div class="fc-t">100% Verified</div>
+        <div class="fc-d">Every property is physically verified by our ground team before going live. Real photos, accurate pricing, valid KYC documents — guaranteed every time.</div>
+        <div class="fc-ns"><div><div class="fn-v" style="color:var(--teal)">8,800+</div><div class="fn-l">Verified homes</div></div><div><div class="fn-v" style="color:var(--teal)">0</div><div class="fn-l">Fake listings</div></div></div>
+      </div>
+      <div class="fc wide" style="--fcc:var(--gold);--fcb:var(--gold-b);--fcbg:rgba(201,168,76,.02)">
+        <div class="wide-row" style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+          <div>
+            <div class="fc-ic">⚡</div>
+            <div class="fc-t">Zero Brokerage</div>
+            <div class="fc-d">We connect tenants and landlords directly — no broker fees, commissions or hidden charges. What you see is what you pay, every single time.</div>
+            <div class="fc-ns"><div><div class="fn-v">₹0</div><div class="fn-l">Brokerage fee</div></div><div><div class="fn-v">₹12K</div><div class="fn-l">Avg. tenant saving</div></div></div>
+          </div>
+          <div>
+            <div class="fc-ic">🔒</div>
+            <div class="fc-t">Secure Platform</div>
+            <div class="fc-d">KYC-verified landlords, end-to-end encrypted communications, secure payments and 24/7 dispute resolution — keeping every transaction completely safe.</div>
+            <div class="fc-ns"><div><div class="fn-v">256-bit</div><div class="fn-l">Encryption</div></div><div><div class="fn-v">24/7</div><div class="fn-l">Support team</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     CITIES
+════════════════════════ -->
+<section class="city-sec">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">Coverage</div><h2 class="sh2">Pan-India <em>Presence</em></h2></div>
+    <div class="city-grid rv d1">
+      <a class="cc" href="pg-hostel-listings.html"><span class="cc-flag">🌆</span><div class="cc-nm">Hyderabad</div><div class="cc-ct">3,200+ listings</div></a>
+      <a class="cc" href="#"><span class="cc-flag">🌇</span><div class="cc-nm">Bangalore</div><div class="cc-ct">4,800+ listings</div></a>
+      <a class="cc" href="#"><span class="cc-flag">🏙️</span><div class="cc-nm">Mumbai</div><div class="cc-ct">2,900+ listings</div></a>
+      <a class="cc" href="#"><span class="cc-flag">🏛️</span><div class="cc-nm">Delhi / NCR</div><div class="cc-ct">3,600+ listings</div></a>
+      <a class="cc" href="#"><span class="cc-flag">🌃</span><div class="cc-nm">Chennai</div><div class="cc-ct">1,400+ listings</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     TESTIMONIALS
+════════════════════════ -->
+<section class="tst-sec">
+  <div class="wrap">
+    <div class="rv" style="text-align:center">
+      <div class="eyebrow" style="justify-content:center">Tenant Stories</div>
+      <h2 class="sh2" style="text-align:center">What Our <em>Residents Say</em></h2>
+    </div>
+    <div class="tst-grid rv d1">
+      <div class="tc">
+        <div class="tc-st">★★★★★</div>
+        <div class="tc-q">Found my PG in Banjara Hills within two days. Verified photos, direct owner contact, zero brokerage. SmartRent AI is genuinely the best rental platform I have ever used.</div>
+        <div class="tc-au"><div class="tc-av">A</div><div><div class="tc-nm">Aditya Sharma</div><div class="tc-rl">Software Engineer · Hyderabad</div></div></div>
+      </div>
+      <div class="tc">
+        <div class="tc-st">★★★★★</div>
+        <div class="tc-q">The AI matching is remarkably accurate. It surfaced exactly what I needed — a girls-only PG near my office, with meals and AC, under ₹8,000. Moved in within the week.</div>
+        <div class="tc-au"><div class="tc-av" style="background:linear-gradient(135deg,#f43f5e,#9b79ff)">P</div><div><div class="tc-nm">Priya Menon</div><div class="tc-rl">UX Designer · Bangalore</div></div></div>
+      </div>
+      <div class="tc">
+        <div class="tc-st">★★★★★</div>
+        <div class="tc-q">Listing my hostel was effortless and free. I received twelve genuine inquiries in the very first week. The owner dashboard analytics make managing bookings a real pleasure.</div>
+        <div class="tc-au"><div class="tc-av" style="background:linear-gradient(135deg,var(--gold),var(--teal))">R</div><div><div class="tc-nm">Rajan Verma</div><div class="tc-rl">Property Owner · Mumbai</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     OWNER CTA
+════════════════════════ -->
+<section class="own-sec">
+  <div class="wrap">
+    <div class="own-inner rv">
+      <div>
+        <div class="eyebrow" style="margin-bottom:16px">For Property Owners</div>
+        <h2 class="own-h2">List Your Property,<br>Reach <em>50,000+</em> Tenants</h2>
+        <p class="own-p">Join India's fastest-growing rental platform. Receive genuine verified tenant inquiries, manage bookings, track revenue, and grow your rental income — all from one powerful dashboard.</p>
+        <div class="own-perks">
+          <div class="perk"><div class="perk-dot">✅</div>Free listing — no upfront costs, ever</div>
+          <div class="perk"><div class="perk-dot">🔐</div>KYC verification builds instant tenant trust</div>
+          <div class="perk"><div class="perk-dot">📊</div>Real-time analytics with booking insights</div>
+          <div class="perk"><div class="perk-dot">📞</div>Direct tenant connections, zero broker cuts</div>
+          <div class="perk"><div class="perk-dot">⚡</div>Go live in under 30 minutes with guided form</div>
+        </div>
+        <div class="own-ctas">
+          <a class="cta-main" href="post-property.html">🏠 List Your Property Free</a>
+          <a class="cta-sec" href="booking-dashboard.html">📋 Owner Dashboard</a>
+        </div>
+      </div>
+
+      <!-- DASHBOARD MOCKUP -->
+      <div class="mock">
+        <div class="mock-bar">
+          <div class="md md1"></div><div class="md md2"></div><div class="md md3"></div>
+          <div class="mock-url">smartrentai.in/dashboard</div>
+        </div>
+        <div class="mock-body">
+          <div class="mock-stats">
+            <div class="ms"><div class="msv" style="color:var(--gold)" id="ms1">0</div><div class="msl">Inquiries</div></div>
+            <div class="ms"><div class="msv" style="color:var(--teal)" id="ms2">0</div><div class="msl">Bookings</div></div>
+            <div class="ms"><div class="msv" style="color:var(--gold-lt)" id="ms3">₹0</div><div class="msl">Revenue</div></div>
+          </div>
+          <div class="mock-chart" id="mchart"></div>
+          <div id="mrows"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════
+     NEWSLETTER
+════════════════════════ -->
+<section class="nl-sec">
+  <div class="wrap"><div class="nl-inner rv">
+    <div><div class="eyebrow">Stay Updated</div><div class="nl-t">New Listings in Your Inbox</div><div class="nl-s">Daily alerts for verified properties matching your criteria. Unsubscribe any time.</div></div>
+    <div class="nl-form"><input class="nl-in" type="email" id="nlEmail" placeholder="your@email.com"><button class="nl-btn" onclick="subNL()">🔔 Subscribe Free</button></div>
+  </div></div>
+</section>
+
+<!-- ════════════════════════
+     FOOTER
+════════════════════════ -->
+<footer>
+  <div class="wrap">
+    <div class="fg">
+      <div>
+        <a href="index.html" class="nav-brand" style="margin-bottom:16px">
+          <div class="nav-gem" style="width:30px;height:30px;font-size:14px">💎</div>
+          <div class="nav-wordmark"><div style="display:flex;align-items:baseline;gap:1px"><span class="nw-sr" style="font-size:17px">SmartRent</span><span class="nw-ai">AI</span></div></div>
+        </a>
+        <p class="fb-desc">India's most intelligent rental platform. AI-powered matching for PGs, hostels, flats &amp; co-living — zero brokerage, fully verified.</p>
+        <div class="socials">
+          <a class="soc" href="#" title="Twitter">𝕏</a>
+          <a class="soc" href="#" title="Instagram">📸</a>
+          <a class="soc" href="#" title="LinkedIn">in</a>
+          <a class="soc" href="#" title="YouTube">▶</a>
+        </div>
+      </div>
+      <div>
+        <div class="fc-t">For Tenants</div>
+        <a class="fl" href="pgs-hostels.html">→ Browse PG &amp; Hostels</a>
+        <a class="fl" href="#">→ Flat Search</a>
+        <a class="fl" href="#">→ Co-living Spaces</a>
+        <a class="fl" href="#">→ How It Works</a>
+        <a class="fl" href="tenant-guide.html">→ Tenant Guide</a>
+        <a class="fl" href="#">→ Rent Calculator</a>
+      </div>
+      <div>
+        <div class="fc-t">For Owners</div>
+        <a class="fl" href="post-property.html">→ List Property Free</a>
+        <a class="fl" href="booking-dashboard.html">→ Owner Dashboard</a>
+        <a class="fl" href="admin.html">→ Admin Panel</a>
+        <a class="fl" href="plans.html">→ Pricing Plans</a>
+        <a class="fl" href="owner-guide.html">→ Owner Guide</a>
+        <a class="fl" href="verification.html">→ Verification Process</a>
+      </div>
+      <div>
+        <div class="fc-t">Company</div>
+        <a class="fl" href="about-us.html">→ About Us</a>
+        <a class="fl" href="#">→ Careers</a>
+        <a class="fl" href="#">→ Press &amp; Media</a>
+        <a class="fl" href="privacy.html">→ Privacy Policy</a>
+        <a class="fl" href="terms.html">→ Terms of Service</a>
+        <a class="fl" href="#">→ Contact Us</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">
+        © 2025–2026 SmartRent AI. All rights reserved. Built with ❤️ in India.<br>
+        <a href="privacy-policy.html">Privacy Policy</a> · <a href="privacy-policy.html">Terms of Service</a> · <a href="#">Cookie Settings</a>
+      </div>
+      <div class="foot-badges">
+        <span class="fbdg">GDPR READY</span><span class="fbdg">IT ACT 2000</span><span class="fbdg">DPDP 2023</span><span class="fbdg">SSL SECURED</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════
+     FIREBASE MODULE
+════════════════════════ -->
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import{getFirestore,collection,getDocs,query,where,limit,orderBy}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal"};
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+onAuthStateChanged(auth,u=>{
+  const av=document.getElementById('navAv');
+  if(u&&av){
+    av.textContent=(u.displayName||u.email||'U')[0].toUpperCase();
+    av.title=u.email;
+    av.onclick=()=>location.href='booking-dashboard.html';
+  }
+});
+
+try{
+  const q=query(collection(db,'pg_hostels'),where('approved','==',true),limit(6));
+  const snap=await getDocs(q);
+  if(!snap.empty){
+    const rows=[];
+    snap.forEach(d=>{
+      const p=d.data();
+      rows.push({
+        id:d.id,type:p.type||'PG',name:p.title||'Property',
+        area:p.address?.area||'—',city:p.address?.city||'—',
+        emoji:p.type==='Hostel'?'🏢':'🏠',
+        bg:'linear-gradient(135deg,#0c1422,#172035)',
+        rating:4.5,reviews:0,dist:p.address?.transit||'—',
+        price:p.basePrice||0,gender:p.gender||'Co-ed',
+        badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:p.type||'PG'}],
+        amenities:(p.amenities||[]).slice(0,4),tags:[]
+      });
+    });
+    if(rows.length){window._lst=rows;renderGrid(rows);}
+  }
+}catch(e){console.log('Firebase fallback to static data');}
+</script>
+
+<!-- ════════════════════════
+     APP SCRIPT
+════════════════════════ -->
+<script>
+/* ── STATIC LISTINGS ─────────────────────────────── */
+window._lst=[
+  {id:1,type:'PG',name:'Lotus Premium PG for Girls',area:'Kondapur',city:'Hyderabad',emoji:'🌸',bg:'linear-gradient(135deg,#0d1a2a,#1a2640)',rating:4.8,reviews:201,dist:'0.3km · DLF Cyber City',price:9500,gender:'Girls',badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['📶 WiFi','🍽️ 3 Meals','❄️ AC','💪 Gym'],tags:['Working Women','No Curfew']},
+  {id:2,type:'Hostel',name:'Urban Nest Co-living Hub',area:'Madhapur',city:'Hyderabad',emoji:'🏢',bg:'linear-gradient(135deg,#0d1525,#1a1035)',rating:4.5,reviews:89,dist:'1.2km · HITEC City',price:4500,gender:'Boys',badges:[{c:'pb-n',l:'HOSTEL'},{c:'pb-v',l:'✓ VERIFIED'}],amenities:['📶 WiFi','❄️ AC','💪 Gym','🚗 Parking'],tags:['IT Hub','Co-ed']},
+  {id:3,type:'PG',name:'Silicon Valley Suites',area:'Gachibowli',city:'Hyderabad',emoji:'💻',bg:'linear-gradient(135deg,#05112a,#0d2040)',rating:4.7,reviews:134,dist:'0.6km · DLF Tower',price:11000,gender:'Co-ed',badges:[{c:'pb-p',l:'★ PREMIUM'},{c:'pb-v',l:'✓ VERIFIED'}],amenities:['📶 Fiber WiFi','❄️ AC','🍽️ Meals','💻 Workstation'],tags:['Professionals','No Curfew']},
+];
+
+const savedSet=new Set();
+
+/* ── RENDER LISTINGS ─────────────────────────────── */
+function renderGrid(data){
+  document.getElementById('lgrid').innerHTML=data.map((l,i)=>`
+    <div class="pc" style="animation-delay:${i*.09}s" onclick="location.href='pg-hostel-listings.html'">
+      <div class="pc-img" style="background:${l.bg}">
+        <div class="pc-em">${l.emoji}</div>
+        <div class="pc-ov"></div>
+        <div class="pc-bdgs">${l.badges.map(b=>`<span class="pbdg ${b.c}">${b.l}</span>`).join('')}</div>
+        <div class="pc-sv" onclick="event.stopPropagation();saveProp(this,${l.id})" title="Save">🤍</div>
+        <div class="pc-imgft">
+          <div class="pc-rat">★ ${l.rating} <span style="opacity:.6;font-size:10px">(${l.reviews})</span></div>
+          <div class="pc-dst">📍 ${l.dist}</div>
+        </div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-top">
+          <div class="pc-tags">${l.tags.map(t=>`<span class="pc-tag">${t}</span>`).join('')}</div>
+          <div class="pc-gen">${l.gender==='Girls'?'👩 Girls':l.gender==='Boys'?'👨 Boys':'🤝 Co-ed'}</div>
+        </div>
+        <div class="pc-nm">${l.name}</div>
+        <div class="pc-loc"><svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>${l.area}, ${l.city}</div>
+        <div class="pc-amen">${l.amenities.map(a=>`<span class="pc-a">${a}</span>`).join('')}</div>
+        <div class="pc-ft">
+          <div>
+            <div class="pc-pv"><span class="cur">₹</span>${l.price.toLocaleString('en-IN')}</div>
+            <div class="pc-pl">/ month onwards</div>
+          </div>
+          <div class="pc-acts">
+            <button class="pc-call" onclick="event.stopPropagation();showToast('📞 Connecting with owner…')">Call</button>
+            <a class="pc-view" href="pg-hostel-listings.html" onclick="event.stopPropagation()">View →</a>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── FILTER ──────────────────────────────────────── */
+function filt(type,el){
+  document.querySelectorAll('.fchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderGrid(type==='all'?window._lst:window._lst.filter(l=>l.type===type));
+}
+
+/* ── SAVE ────────────────────────────────────────── */
+function saveProp(btn,id){
+  if(savedSet.has(id)){savedSet.delete(id);btn.textContent='🤍';btn.classList.remove('saved');showToast('💔 Removed from saved');}
+  else{savedSet.add(id);btn.textContent='❤️';btn.classList.add('saved');showToast('❤️ Saved to your wishlist!');}
+}
+
+/* ── SEARCH ──────────────────────────────────────── */
+function doSearch(){
+  const q=document.getElementById('heroQ').value.trim();
+  location.href='pg-hostel-listings.html'+(q?'?q='+encodeURIComponent(q):'');
+}
+
+/* ── PILLS ───────────────────────────────────────── */
+function setPill(el,type){
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  const s=document.getElementById('heroType');
+  if(s){for(let o of s.options){if(o.value===type){s.value=type;break;}}}
+}
+
+/* ── MARQUEE ─────────────────────────────────────── */
+const ITEMS=[
+  {i:'✅',t:'<strong>8,800+</strong> Verified Listings'},
+  {i:'🏙️',t:'<strong>15+</strong> Cities Covered'},
+  {i:'⚡',t:'<strong>Zero Brokerage</strong> Always'},
+  {i:'🔒',t:'<strong>KYC-Verified</strong> Landlords'},
+  {i:'📞',t:'<strong>Direct</strong> Owner Contact'},
+  {i:'🤖',t:'<strong>AI-Matched</strong> Listings'},
+  {i:'⭐',t:'<strong>4.8/5</strong> Average Rating'},
+  {i:'🏡',t:'<strong>50,000+</strong> Happy Tenants'},
+  {i:'🛡️',t:'<strong>DPDP 2023</strong> Compliant'},
+  {i:'📱',t:'<strong>Mobile-Friendly</strong> Platform'},
+];
+
+function buildMarquee(){
+  const t=document.getElementById('mtrack');
+  const h=ITEMS.map(m=>`<div class="mi"><span class="mi-ic">${m.i}</span><span class="mi-tx">${m.t}</span></div>`).join('');
+  t.innerHTML=h+h;
+}
+
+/* ── MOCK DASHBOARD ──────────────────────────────── */
+function buildMock(){
+  document.getElementById('mchart').innerHTML=
+    [32,48,38,65,78,58,85,68,92,72,88,95].map(h=>`<div class="mbar" style="height:${h}%"></div>`).join('');
+  animN('ms1',124);animN('ms2',48);
+  document.getElementById('ms3').textContent='₹1.2L';
+  document.getElementById('mrows').innerHTML=[
+    {n:'Rahul M.',t:'2m ago',s:'mrs-new',sl:'New'},
+    {n:'Priya S.',t:'18m ago',s:'mrs-ok',sl:'Confirmed'},
+    {n:'Amit K.',t:'1hr ago',s:'mrs-ok',sl:'Visited'},
+  ].map(r=>`<div class="mrow"><div class="mrn">${r.n}</div><span class="mrs ${r.s}">${r.sl}</span><div class="mrt">${r.t}</div></div>`).join('');
+}
+
+function animN(id,target){
+  const el=document.getElementById(id);if(!el)return;
+  const dur=1600,start=performance.now();
+  const tick=now=>{const p=Math.min((now-start)/dur,1);const e=1-Math.pow(1-p,3);el.textContent=Math.floor(e*target);if(p<1)requestAnimationFrame(tick);else el.textContent=target;};
+  requestAnimationFrame(tick);
+}
+
+/* ── LIVE TOASTS ─────────────────────────────────── */
+const LIVE=['Someone saved a PG in Banjara Hills','New hostel listed in Madhapur, Hyderabad','Tenant booked a room in Koramangala','New flat verified in Gachibowli','Owner got 3 inquiries this hour','12-bed hostel verified in Ameerpet','New co-living space opened in Jubilee Hills'];
+let li=0;
+function showLive(){const el=document.getElementById('ltst');document.getElementById('ltMsg').textContent=LIVE[li++%LIVE.length];el.style.display='block';setTimeout(()=>{el.style.display='none';},5000);}
+
+/* ── TOAST ───────────────────────────────────────── */
+let tT;
+function showToast(msg){const el=document.getElementById('toast');el.innerHTML=msg;el.style.display='block';clearTimeout(tT);tT=setTimeout(()=>{el.style.display='none';},3400);}
+
+/* ── NAVBAR ──────────────────────────────────────── */
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('solid',scrollY>40);});
+
+/* ── MOBILE MENU ─────────────────────────────────── */
+function toggleMob(){
+  const m=document.getElementById('mobMenu');
+  const b=document.getElementById('mobBtn');
+  const open=m.classList.toggle('open');
+  b.textContent=open?'✕':'☰';
+}
+
+/* ── NAV AVATAR ──────────────────────────────────── */
+function navAvClick(){showToast('📋 Sign in to access your dashboard');}
+
+/* ── CONSENT ─────────────────────────────────────── */
+function acceptConsent(){
+  document.getElementById('conOv').classList.add('out');
+  localStorage.setItem('sra_v4','1');
+  setTimeout(showLive,3500);
+  setInterval(showLive,14000);
+}
+
+/* ── NEWSLETTER ──────────────────────────────────── */
+function subNL(){
+  const e=document.getElementById('nlEmail').value.trim();
+  if(!e.includes('@')){showToast('⚠️ Please enter a valid email address');return;}
+  document.getElementById('nlEmail').value='';
+  showToast('🎉 Subscribed! You\'ll receive daily property alerts.');
+}
+
+/* ── SCROLL REVEAL ───────────────────────────────── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+/* ── INIT ────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  if(!localStorage.getItem('sra_v4')){
+    document.getElementById('conOv').classList.remove('out');
+  }else{
+    setTimeout(showLive,5000);
+    setInterval(showLive,14000);
+  }
+  renderGrid(window._lst);
+  buildMarquee();
+  buildMock();
+});
+
+/* EXPOSE GLOBALS */
+window.filt=filt;window.saveProp=saveProp;window.doSearch=doSearch;
+window.setPill=setPill;window.showToast=showToast;window.toggleMob=toggleMob;
+window.acceptConsent=acceptConsent;window.subNL=subNL;window.navAvClick=navAvClick;
+</script>
 </body>
 </html>

@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartRent AI — Rent Calculator | Estimate Fair Rent in India</title>
+<meta name="description" content="India's most advanced rent calculator. Get accurate rent estimates for any area based on BHK, furnishing, floor, amenities, commute and 10+ factors.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   DESIGN TOKENS — OBSIDIAN AMBER ORACLE
+   Instrument Serif (luxury editorial) + Syne (tech)
+   Obsidian dark + warm amber + ivory accents
+═══════════════════════════════════════════════════════ */
+:root {
+  /* Base surfaces */
+  --ob0: #09080a;   /* deepest obsidian */
+  --ob1: #0f0e12;
+  --ob2: #151318;
+  --ob3: #1c1a22;
+  --ob4: #232030;
+  --ob5: #2c2838;
+
+  /* Amber system */
+  --am:    #e8a832;
+  --am-lt: #f5c85a;
+  --am-dk: #9a6a14;
+  --am-d:  rgba(232,168,50,.1);
+  --am-b:  rgba(232,168,50,.22);
+  --am-g:  rgba(232,168,50,.06);
+  --am-glow: rgba(232,168,50,.38);
+
+  /* Ivory */
+  --iv:    #f2ede4;
+  --iv2:   rgba(242,237,228,.7);
+  --iv3:   rgba(220,210,195,.42);
+  --iv4:   rgba(190,180,165,.25);
+
+  /* Status colors */
+  --gr:    #22c55e;
+  --gr-d:  rgba(34,197,94,.1);
+  --gr-b:  rgba(34,197,94,.22);
+  --rd:    #ef4444;
+  --rd-d:  rgba(239,68,68,.1);
+  --bl:    #38bdf8;
+  --bl-d:  rgba(56,189,248,.1);
+  --bl-b:  rgba(56,189,248,.2);
+  --vio:   #a78bfa;
+  --vio-d: rgba(167,139,250,.1);
+  --vio-b: rgba(167,139,250,.2);
+
+  --div:  rgba(232,168,50,.07);
+  --div2: rgba(255,255,255,.07);
+  --r1:6px; --r2:12px; --r3:18px; --r4:26px; --r5:36px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--ob0);color:var(--iv);overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--ob0)}::-webkit-scrollbar-thumb{background:var(--am-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--am)}
+
+/* ── AMBIENT ─────────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:ofl 22s ease-in-out infinite alternate}
+.o1{width:800px;height:800px;top:-280px;left:-200px;background:radial-gradient(circle,rgba(232,168,50,.05) 0%,transparent 68%)}
+.o2{width:600px;height:600px;bottom:-230px;right:-160px;background:radial-gradient(circle,rgba(167,139,250,.04) 0%,transparent 68%);animation-delay:-9s}
+.o3{width:450px;height:450px;top:45%;left:38%;background:radial-gradient(circle,rgba(232,168,50,.028) 0%,transparent 68%);animation-delay:-16s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}45%{transform:translate(28px,-20px) scale(1.06)}80%{transform:translate(-16px,17px) scale(.97)}100%{transform:translate(12px,-8px) scale(1.03)}}
+
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(232,168,50,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(232,168,50,.032) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse 85% 70% at 50% 20%,black 0%,transparent 100%)}
+
+/* Progress bar */
+.pgbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--am),var(--am-lt));z-index:1000;transition:width .15s;pointer-events:none}
+
+/* ════════════════ NAVBAR ════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 36px;background:rgba(9,8,10,.8);backdrop-filter:blur(28px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(9,8,10,.98);box-shadow:0 1px 0 var(--am-b),0 6px 36px rgba(0,0,0,.7)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.bgem{width:34px;height:34px;background:linear-gradient(135deg,var(--am),var(--am-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(232,168,50,.32);flex-shrink:0}
+.bname{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--iv);letter-spacing:-.01em}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--am);background:var(--am-d);border:1px solid var(--am-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+.nav-links{display:flex;gap:1px;margin:0 auto;padding:0 24px}
+.nl{padding:6px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--iv3);text-decoration:none;transition:all .18s}.nl:hover{color:var(--iv)}.nl.on{color:var(--am)}
+.nav-r{display:flex;gap:8px;flex-shrink:0}
+.nb{padding:7px 16px;border-radius:var(--r1);font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;border:1px solid}
+.nb-o{background:transparent;border-color:var(--div2);color:var(--iv2)}.nb-o:hover{border-color:var(--am-b);color:var(--am)}
+.nb-a{background:linear-gradient(135deg,var(--am),var(--am-dk));border-color:transparent;color:#09080a;font-weight:800}.nb-a:hover{box-shadow:0 0 22px var(--am-glow);transform:translateY(-1px)}
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--iv2);cursor:pointer;align-items:center;justify-content:center}
+
+/* ════════════════ HERO ════════════════ */
+.hero{position:relative;z-index:1;padding:100px 24px 60px;text-align:center}
+.h-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--am-d);border:1px solid var(--am-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--am);letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;animation:su .7s both}
+.blink-dot{width:6px;height:6px;border-radius:50%;background:var(--am);animation:bld 1.8s infinite}
+@keyframes bld{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes su{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+.h-title{font-family:'Instrument Serif',serif;font-size:clamp(42px,7vw,88px);color:var(--iv);line-height:.94;letter-spacing:-.02em;margin-bottom:14px;animation:su .8s .08s both}
+.h-title em{font-style:italic;color:var(--am)}
+.h-sub{font-size:clamp(14px,1.7vw,17px);color:var(--iv3);max-width:580px;margin:0 auto 10px;line-height:1.82;animation:su .8s .16s both}
+.h-meta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:22px;animation:su .8s .24s both}
+.hm-tag{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--iv3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.hm-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gr);flex-shrink:0}
+
+/* ════════════════ MAIN CALC LAYOUT ════════════════ */
+section{position:relative;z-index:1}
+.calc-wrap{max-width:1320px;margin:0 auto;padding:0 24px 100px;display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start}
+
+/* ════════════════ INPUT PANEL ════════════════ */
+.inp-panel{display:flex;flex-direction:column;gap:16px}
+
+/* BLOCK */
+.blk{background:var(--ob2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r4);overflow:hidden;transition:border-color .2s}
+.blk:focus-within{border-color:var(--am-b)}
+.blk-head{padding:18px 22px 14px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,rgba(255,255,255,.012),transparent)}
+.blk-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bic-am{background:var(--am-d);box-shadow:inset 0 0 0 1px var(--am-b)}
+.bic-bl{background:var(--bl-d);box-shadow:inset 0 0 0 1px var(--bl-b)}
+.bic-gr{background:var(--gr-d);box-shadow:inset 0 0 0 1px var(--gr-b)}
+.bic-vio{background:var(--vio-d);box-shadow:inset 0 0 0 1px var(--vio-b)}
+.blk-t{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--iv);margin-bottom:2px;letter-spacing:-.01em}
+.blk-s{font-size:11px;color:var(--iv4);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.blk-body{padding:20px 22px}
+
+/* Form grid */
+.fg{display:grid;gap:14px;margin-bottom:14px}
+.fg1{grid-template-columns:1fr}
+.fg2{grid-template-columns:1fr 1fr}
+.fg3{grid-template-columns:1fr 1fr 1fr}
+.fg:last-child{margin-bottom:0}
+.ff{display:flex;flex-direction:column;gap:6px}
+.fl{font-size:11.5px;font-weight:600;color:var(--iv2);display:flex;align-items:center;justify-content:space-between;letter-spacing:.01em}
+.fl .fhint{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--iv4);font-weight:400}
+.fl .req{color:var(--am)}
+
+input[type="text"],input[type="number"],select{
+  background:var(--ob1);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);
+  padding:10px 13px;color:var(--iv);font-family:'DM Sans',sans-serif;font-size:13.5px;
+  outline:none;transition:all .2s;width:100%;-webkit-appearance:none;
+}
+input:focus,select:focus{border-color:var(--am-b);background:rgba(232,168,50,.025);box-shadow:0 0 0 3px rgba(232,168,50,.06)}
+input::placeholder{color:var(--iv4);font-style:italic}
+select{cursor:pointer;color:var(--iv2)}.select option{background:var(--ob2)}
+
+/* icon prefix */
+.inp-wrap{position:relative}.inp-wrap .pic{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;z-index:1}
+.inp-wrap input{padding-left:34px}
+.inp-suf-wrap{position:relative}.inp-suf-wrap input{padding-right:44px}
+.inp-suf{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--iv4);pointer-events:none}
+
+/* Chip selector */
+.chip-sel{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:7px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.08);background:var(--ob3);color:var(--iv3);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;user-select:none;display:flex;align-items:center;gap:5px}
+.chip:hover{border-color:var(--am-b);color:var(--iv)}
+.chip.on{background:var(--am-d);border-color:var(--am-b);color:var(--am)}
+.chip.on-gr{background:var(--gr-d);border-color:var(--gr-b);color:var(--gr)}
+
+/* Range slider */
+.range-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:11px;color:var(--iv3);font-family:'JetBrains Mono',monospace}
+.rv-val{color:var(--am);font-weight:700;font-size:13px}
+.frange{width:100%;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--am) var(--rp,50%),rgba(255,255,255,.1) var(--rp,50%))}
+.frange::-webkit-slider-thumb{appearance:none;width:20px;height:20px;border-radius:50%;background:var(--am);box-shadow:0 0 12px rgba(232,168,50,.4);cursor:pointer;border:2.5px solid var(--ob0);transition:transform .15s}
+.frange::-webkit-slider-thumb:hover{transform:scale(1.2)}
+
+/* Toggle row */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--ob3);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);cursor:pointer;transition:all .2s;margin-bottom:7px}
+.tog-row:last-child{margin-bottom:0}
+.tog-row:hover{border-color:rgba(255,255,255,.12)}
+.tog-left{display:flex;align-items:center;gap:9px}
+.tog-emoji{font-size:16px}
+.tog-name{font-size:13px;font-weight:500;color:var(--iv2)}
+.tog-sub{font-size:10px;color:var(--iv4);font-family:'JetBrains Mono',monospace;margin-top:1px}
+.tog-sw{width:40px;height:22px;background:rgba(255,255,255,.1);border-radius:11px;position:relative;transition:background .25s;flex-shrink:0}
+.tog-sw.on{background:var(--am)}
+.tog-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .25s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.tog-sw.on .tog-knob{left:21px}
+
+/* ════════════════ RESULT PANEL ════════════════ */
+.result-panel{position:sticky;top:84px;display:flex;flex-direction:column;gap:16px}
+
+/* Oracle card (main result) */
+.oracle-card{background:linear-gradient(145deg,var(--ob2),var(--ob3));border:1px solid var(--am-b);border-radius:var(--r4);overflow:hidden;box-shadow:0 0 40px rgba(232,168,50,.08),inset 0 1px 0 rgba(232,168,50,.07)}
+
+.oc-head{padding:22px 24px 16px;background:linear-gradient(135deg,rgba(232,168,50,.05),transparent);border-bottom:1px solid rgba(232,168,50,.08)}
+.oc-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--am);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.oc-ai-dot{width:7px;height:7px;border-radius:50%;background:var(--am);animation:bld 1.5s infinite}
+
+.oc-price{font-family:'Instrument Serif',serif;font-size:clamp(34px,5vw,52px);color:var(--iv);line-height:1;letter-spacing:-.02em;margin-bottom:4px}
+.oc-price .cur{font-size:22px;color:var(--iv2)}
+.oc-range{font-size:12px;color:var(--iv3);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.oc-accuracy{display:inline-flex;align-items:center;gap:6px;background:var(--gr-d);border:1px solid var(--gr-b);border-radius:100px;padding:4px 12px;font-size:11px;color:var(--gr);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+
+/* Gauge */
+.gauge-wrap{padding:20px 24px;border-bottom:1px solid rgba(255,255,255,.05)}
+.gauge-label{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--iv4);margin-bottom:10px;letter-spacing:.06em}
+.gauge-bar{height:8px;background:rgba(255,255,255,.06);border-radius:4px;position:relative;overflow:visible}
+.gauge-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--gr),var(--am),var(--rd));width:0%;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.gauge-thumb{position:absolute;top:-4px;width:16px;height:16px;border-radius:50%;background:var(--iv);border:3px solid var(--am);box-shadow:0 0 12px rgba(232,168,50,.5);transition:left 1.4s cubic-bezier(.4,0,.2,1);margin-left:-8px}
+.gauge-ticks{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--iv4)}
+
+/* Breakdown rows */
+.oc-body{padding:18px 24px}
+.bk-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--iv);margin-bottom:14px;letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.bk-title::before{content:'';width:3px;height:14px;background:var(--am);border-radius:2px}
+.bk-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.bk-row:last-child{border-bottom:none}
+.bk-left{display:flex;align-items:center;gap:8px}
+.bk-ic{font-size:16px}
+.bk-name{font-size:13px;color:var(--iv2)}
+.bk-val{font-family:'Instrument Serif',serif;font-size:15px;color:var(--iv);display:flex;align-items:center;gap:5px}
+.bk-delta{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:3px}
+.bd-pos{background:var(--gr-d);color:var(--gr)}
+.bd-neg{background:var(--rd-d);color:var(--rd)}
+.bd-neu{background:var(--bl-d);color:var(--bl)}
+
+/* Market position */
+.market-card{background:var(--ob2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:20px}
+.mc-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--iv);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em}
+
+/* Mini bar chart */
+.mini-chart{display:flex;align-items:flex-end;gap:5px;height:80px;margin-bottom:10px}
+.mc-bar{flex:1;border-radius:4px 4px 0 0;background:rgba(232,168,50,.15);border:1px solid rgba(232,168,50,.12);position:relative;transition:all .6s cubic-bezier(.4,0,.2,1);cursor:pointer;display:flex;align-items:flex-end;justify-content:center;min-height:6px}
+.mc-bar:hover{background:rgba(232,168,50,.28)}
+.mc-bar.active{background:linear-gradient(to top,var(--am),var(--am-lt));border-color:var(--am)}
+.mc-bar-val{position:absolute;top:-20px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--am);white-space:nowrap;opacity:0;transition:opacity .2s}
+.mc-bar:hover .mc-bar-val{opacity:1}
+.mc-bar.active .mc-bar-val{opacity:1;color:var(--am-lt);font-size:10px;font-weight:700}
+.mc-labels{display:flex;gap:5px;font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--iv4)}
+.mc-lbl{flex:1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Nearby compare */
+.nearby-card{background:var(--ob2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:20px}
+.nc-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s;border-radius:var(--r1);padding-left:8px;padding-right:8px}
+.nc-row:hover{background:rgba(255,255,255,.025)}.nc-row:last-child{border-bottom:none}
+.nc-rank{width:20px;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--iv4);text-align:center;flex-shrink:0}
+.nc-name{flex:1;font-size:13px;color:var(--iv2);font-weight:500}
+.nc-price{font-family:'Instrument Serif',serif;font-size:14px;color:var(--iv)}
+.nc-bar-wrap{width:60px;height:4px;background:rgba(255,255,255,.06);border-radius:2px}
+.nc-bar-fill{height:100%;border-radius:2px;background:var(--am);transition:width .8s}
+
+/* Insights */
+.insights-card{background:var(--ob2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:20px}
+.ins-item{display:flex;gap:10px;margin-bottom:12px;padding:10px;background:rgba(255,255,255,.025);border-radius:var(--r2);border:1px solid transparent;transition:border-color .2s}
+.ins-item:hover{border-color:var(--am-b)}
+.ins-item:last-child{margin-bottom:0}
+.ins-ic{font-size:20px;flex-shrink:0}
+.ins-t{font-size:13px;font-weight:600;color:var(--iv);margin-bottom:3px}
+.ins-d{font-size:12px;color:var(--iv3);line-height:1.65}
+
+/* Share + CTA */
+.cta-strip{background:linear-gradient(135deg,rgba(232,168,50,.08),rgba(232,168,50,.03));border:1px solid var(--am-b);border-radius:var(--r3);padding:20px;text-align:center}
+.cs-t{font-family:'Instrument Serif',serif;font-size:18px;color:var(--iv);margin-bottom:6px}
+.cs-d{font-size:12px;color:var(--iv3);margin-bottom:16px}
+.cs-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.cs-btn{padding:9px 18px;border-radius:var(--r1);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;border:1px solid;display:flex;align-items:center;gap:6px;text-decoration:none}
+.csb-main{background:linear-gradient(135deg,var(--am),var(--am-dk));border-color:transparent;color:#09080a}.csb-main:hover{box-shadow:0 0 20px var(--am-glow);transform:translateY(-1px)}
+.csb-o{background:transparent;border-color:var(--am-b);color:var(--am)}.csb-o:hover{background:var(--am-d)}
+
+/* AI thinking animation */
+.thinking{display:none;align-items:center;gap:10px;padding:14px 18px;background:var(--am-d);border:1px solid var(--am-b);border-radius:var(--r2);margin-top:14px;font-size:13px;color:var(--am);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.thinking.show{display:flex}
+.think-dots span{animation:td .8s infinite;display:inline-block}
+.think-dots span:nth-child(2){animation-delay:.2s}
+.think-dots span:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,80%,100%{transform:translateY(0);opacity:.3}40%{transform:translateY(-4px);opacity:1}}
+
+/* Toast */
+.toast{position:fixed;bottom:26px;right:26px;z-index:2000;background:var(--ob3);border:1px solid var(--am-b);border-left:3px solid var(--am);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:240px;animation:ti .3s ease;box-shadow:0 8px 34px rgba(0,0,0,.5);color:var(--iv)}
+@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* FOOTER */
+footer{position:relative;z-index:1;border-top:1px solid var(--am-b);padding:40px 36px 24px;background:var(--ob1)}
+.foot-inner{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.foot-copy{font-size:12px;color:var(--iv4)}.foot-copy a{color:var(--am);text-decoration:none}
+.foot-links{display:flex;gap:20px}.foot-links a{font-size:12px;color:var(--iv3);text-decoration:none;transition:color .18s}.foot-links a:hover{color:var(--am)}
+
+/* Responsive */
+@media(max-width:1100px){.calc-wrap{grid-template-columns:1fr}.result-panel{position:static}.nav-links{display:none}.mob-btn{display:flex}}
+@media(max-width:640px){.calc-wrap{padding:0 16px 80px}.fg2,.fg3{grid-template-columns:1fr}.h-title{font-size:clamp(36px,10vw,60px)}}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="noise"></div>
+<div class="bg-grid"></div>
+<div class="pgbar" id="pgBar"></div>
+<div class="toast" id="toast"></div>
+
+<!-- NAVBAR -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="properties.html">Properties</a>
+    <a class="nl" href="pg-hostel-listings.html">PG & Hostels</a>
+    <a class="nl" href="services.html">Services</a>
+    <a class="nl on" href="rent-calculator.html">Rent Calculator</a>
+    <a class="nl" href="about.html">About</a>
+  </div>
+  <div class="nav-r">
+    <a class="nb nb-o" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-a" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" id="mobBtn" onclick="this.textContent=this.textContent==='☰'?'✕':'☰'">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="h-eyebrow"><span class="blink-dot"></span>AI-Powered · 60+ Indian Cities · Real-Time Data</div>
+  <h1 class="h-title">Rent <em>Oracle</em></h1>
+  <p class="h-sub">India's most intelligent rent estimator. Get an accurate rent range for any area based on 12+ real-world factors — property type, locality, furnishing, floor, amenities, commute proximity and more.</p>
+  <div class="h-meta">
+    <span class="hm-tag">Based on 8,800+ verified listings</span>
+    <span class="hm-tag">Updated monthly</span>
+    <span class="hm-tag">±8% accuracy</span>
+    <span class="hm-tag">No sign-in required</span>
+  </div>
+</section>
+
+<!-- MAIN CALCULATOR -->
+<div class="calc-wrap">
+
+  <!-- ══════════ INPUT PANEL ══════════ -->
+  <div class="inp-panel">
+
+    <!-- Block 1: Location -->
+    <div class="blk rv">
+      <div class="blk-head">
+        <div class="blk-ic bic-am">📍</div>
+        <div><div class="blk-t">Location & Area</div><div class="blk-s">Neighbourhood and city determine 60% of rent</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="fg fg2">
+          <div class="ff">
+            <label class="fl">City <span class="req">*</span></label>
+            <select id="city" onchange="onCityChange()">
+              <option value="">Select City</option>
+              <optgroup label="Tier 1">
+                <option value="hyderabad">Hyderabad</option>
+                <option value="bangalore">Bangalore</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="delhi">Delhi / NCR</option>
+                <option value="chennai">Chennai</option>
+                <option value="pune">Pune</option>
+                <option value="kolkata">Kolkata</option>
+              </optgroup>
+              <optgroup label="Tier 2">
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="jaipur">Jaipur</option>
+                <option value="lucknow">Lucknow</option>
+                <option value="kochi">Kochi</option>
+                <option value="chandigarh">Chandigarh</option>
+                <option value="indore">Indore</option>
+                <option value="vizag">Visakhapatnam</option>
+                <option value="nagpur">Nagpur</option>
+                <option value="bhopal">Bhopal</option>
+                <option value="coimbatore">Coimbatore</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Area / Locality <span class="req">*</span> <span class="fhint" id="areaHint">Select city first</span></label>
+            <select id="area" onchange="calculate()">
+              <option value="">Select Area</option>
+            </select>
+          </div>
+        </div>
+        <div class="ff">
+          <label class="fl">Specific Sub-locality / Landmark <span class="fhint">Optional — improves accuracy</span></label>
+          <div class="inp-wrap"><span class="pic">🏛️</span><input type="text" id="landmark" placeholder="e.g. Near Cyber Towers, 500m from Metro…" oninput="calculate()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 2: Property Type -->
+    <div class="blk rv d1">
+      <div class="blk-head">
+        <div class="blk-ic bic-bl">🏠</div>
+        <div><div class="blk-t">Property Type & Size</div><div class="blk-s">Configuration is the second biggest rent driver</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="ff" style="margin-bottom:14px">
+          <label class="fl">Property Type <span class="req">*</span></label>
+          <div class="chip-sel" id="propTypeChips">
+            <div class="chip on" data-v="flat" onclick="selectChip(this,'propType')">🏡 Flat/Apartment</div>
+            <div class="chip" data-v="pg" onclick="selectChip(this,'propType')">🛏️ PG Room</div>
+            <div class="chip" data-v="hostel" onclick="selectChip(this,'propType')">🏢 Hostel Dorm</div>
+            <div class="chip" data-v="villa" onclick="selectChip(this,'propType')">🏰 Villa / Bungalow</div>
+            <div class="chip" data-v="studio" onclick="selectChip(this,'propType')">🏙️ Studio</div>
+            <div class="chip" data-v="coliving" onclick="selectChip(this,'propType')">🤝 Co-living</div>
+          </div>
+        </div>
+        <div class="fg fg2">
+          <div class="ff">
+            <label class="fl">BHK / Configuration <span class="req">*</span></label>
+            <div class="chip-sel" id="bhkChips">
+              <div class="chip" data-v="0.5" onclick="selectChip(this,'bhk')">Studio</div>
+              <div class="chip on" data-v="1" onclick="selectChip(this,'bhk')">1 BHK</div>
+              <div class="chip" data-v="2" onclick="selectChip(this,'bhk')">2 BHK</div>
+              <div class="chip" data-v="3" onclick="selectChip(this,'bhk')">3 BHK</div>
+              <div class="chip" data-v="4" onclick="selectChip(this,'bhk')">4+ BHK</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Carpet Area <span class="fhint">Approx.</span></label>
+            <div class="inp-suf-wrap">
+              <input type="number" id="area_sqft" placeholder="650" min="100" max="10000" oninput="calculate()">
+              <span class="inp-suf">sq.ft</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 3: Condition & Furnishing -->
+    <div class="blk rv d1">
+      <div class="blk-head">
+        <div class="blk-ic bic-gr">🪑</div>
+        <div><div class="blk-t">Condition & Furnishing</div><div class="blk-s">Furnished adds 18–35% to base rent</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="ff" style="margin-bottom:14px">
+          <label class="fl">Furnishing Level <span class="req">*</span></label>
+          <div class="chip-sel" id="furnishChips">
+            <div class="chip on" data-v="unfurnished" onclick="selectChip(this,'furnish')">📦 Unfurnished</div>
+            <div class="chip" data-v="semi" onclick="selectChip(this,'furnish')">🛋️ Semi-Furnished</div>
+            <div class="chip" data-v="fully" onclick="selectChip(this,'furnish')">✨ Fully Furnished</div>
+            <div class="chip" data-v="super" onclick="selectChip(this,'furnish')">💎 Super Premium</div>
+          </div>
+        </div>
+        <div class="fg fg2">
+          <div class="ff">
+            <label class="fl">Property Age</label>
+            <div class="chip-sel" id="ageChips">
+              <div class="chip on" data-v="new" onclick="selectChip(this,'age')">New (0–3yr)</div>
+              <div class="chip" data-v="mid" onclick="selectChip(this,'age')">Mid (3–10yr)</div>
+              <div class="chip" data-v="old" onclick="selectChip(this,'age')">Old (10yr+)</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Floor Number</label>
+            <div class="chip-sel" id="floorChips">
+              <div class="chip" data-v="ground" onclick="selectChip(this,'floor')">Ground</div>
+              <div class="chip on" data-v="low" onclick="selectChip(this,'floor')">1–5</div>
+              <div class="chip" data-v="mid" onclick="selectChip(this,'floor')">6–12</div>
+              <div class="chip" data-v="high" onclick="selectChip(this,'floor')">13+</div>
+              <div class="chip" data-v="top" onclick="selectChip(this,'floor')">Top Floor</div>
+            </div>
+          </div>
+        </div>
+        <div class="fg fg2" style="margin-top:14px">
+          <div class="ff">
+            <label class="fl">Society Type</label>
+            <select id="society" onchange="calculate()">
+              <option value="standalone">Standalone Building</option>
+              <option value="gated">Gated Society / Apartment</option>
+              <option value="luxury">Luxury Gated Complex</option>
+              <option value="builder">Builder Floor</option>
+              <option value="villa_society">Villa Community</option>
+            </select>
+          </div>
+          <div class="ff">
+            <label class="fl">Condition</label>
+            <select id="condition" onchange="calculate()">
+              <option value="excellent">Excellent / Newly Renovated</option>
+              <option value="good">Good / Well Maintained</option>
+              <option value="average">Average Condition</option>
+              <option value="needs_work">Needs Minor Work</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 4: Budget & Budget Range Slider -->
+    <div class="blk rv d2">
+      <div class="blk-head">
+        <div class="blk-ic bic-am">💰</div>
+        <div><div class="blk-t">Budget & Pricing Context</div><div class="blk-s">Help us calibrate the estimate to your market segment</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="ff">
+          <label class="fl">Target Monthly Budget Range <span class="fhint" id="budgetLabel">₹5,000 – ₹1,00,000</span></label>
+          <div class="range-row"><span>₹2K</span><span class="rv-val" id="budgetVal">₹40,000</span><span>₹3L+</span></div>
+          <input type="range" class="frange" id="budgetRange" min="2000" max="300000" value="40000" step="1000" oninput="updateBudget(this.value)" style="--rp:13%">
+        </div>
+        <div class="fg fg2" style="margin-top:16px">
+          <div class="ff">
+            <label class="fl">Maintenance / HOA Charges</label>
+            <div class="chip-sel" id="maintChips">
+              <div class="chip on" data-v="included" onclick="selectChip(this,'maint')">Included</div>
+              <div class="chip" data-v="extra" onclick="selectChip(this,'maint')">Extra (₹500–3K)</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Preferred Tenure</label>
+            <div class="chip-sel" id="tenureChips">
+              <div class="chip on" data-v="long" onclick="selectChip(this,'tenure')">Long (11m+)</div>
+              <div class="chip" data-v="short" onclick="selectChip(this,'tenure')">Short (&lt;6m)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 5: Amenities & Features -->
+    <div class="blk rv d2">
+      <div class="blk-head">
+        <div class="blk-ic bic-vio">✨</div>
+        <div><div class="blk-t">Amenities & Features</div><div class="blk-s">Each premium amenity adds 3–8% to rent</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="tog-row" onclick="toggleAmen('amenParking')"><div class="tog-left"><span class="tog-emoji">🚗</span><div><div class="tog-name">Covered Parking</div><div class="tog-sub">Reserved car/bike slot</div></div></div><div class="tog-sw" id="amenParking"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenGym')"><div class="tog-left"><span class="tog-emoji">💪</span><div><div class="tog-name">Gym / Fitness Centre</div><div class="tog-sub">In-complex fitness facility</div></div></div><div class="tog-sw" id="amenGym"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenPool')"><div class="tog-left"><span class="tog-emoji">🏊</span><div><div class="tog-name">Swimming Pool</div><div class="tog-sub">Community or private pool</div></div></div><div class="tog-sw" id="amenPool"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenSec')"><div class="tog-left"><span class="tog-emoji">🔒</span><div><div class="tog-name">24/7 Security + CCTV</div><div class="tog-sub">Professional security team</div></div></div><div class="tog-sw on" id="amenSec"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenPower')"><div class="tog-left"><span class="tog-emoji">⚡</span><div><div class="tog-name">Power Backup</div><div class="tog-sub">DG / inverter / solar</div></div></div><div class="tog-sw" id="amenPower"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenLift')"><div class="tog-left"><span class="tog-emoji">🛗</span><div><div class="tog-name">Lift / Elevator</div><div class="tog-sub">In working condition</div></div></div><div class="tog-sw" id="amenLift"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenPets')"><div class="tog-left"><span class="tog-emoji">🐾</span><div><div class="tog-name">Pet Friendly</div><div class="tog-sub">Owner allows pets</div></div></div><div class="tog-sw" id="amenPets"><div class="tog-knob"></div></div></div>
+        <div class="tog-row" onclick="toggleAmen('amenClub')"><div class="tog-left"><span class="tog-emoji">🎾</span><div><div class="tog-name">Clubhouse / Recreation</div><div class="tog-sub">Badminton, TT, lounge etc.</div></div></div><div class="tog-sw" id="amenClub"><div class="tog-knob"></div></div></div>
+      </div>
+    </div>
+
+    <!-- Block 6: Proximity Factors -->
+    <div class="blk rv d3">
+      <div class="blk-head">
+        <div class="blk-ic bic-bl">🚇</div>
+        <div><div class="blk-t">Proximity & Commute</div><div class="blk-s">Metro & IT hub proximity increases rent by 15–40%</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="fg fg2">
+          <div class="ff">
+            <label class="fl">Distance to Metro <span class="fhint" id="metroLabel">Any</span></label>
+            <div class="range-row"><span>Walk</span><span class="rv-val" id="metroVal">0.5 km</span><span>Far</span></div>
+            <input type="range" class="frange" id="metroRange" min="0" max="10" value="0.5" step="0.1" oninput="updateProximity('metro',this.value)" style="--rp:5%">
+          </div>
+          <div class="ff">
+            <label class="fl">Distance to IT Hub / Office</label>
+            <div class="range-row"><span>Walk</span><span class="rv-val" id="itVal">2 km</span><span>Far</span></div>
+            <input type="range" class="frange" id="itRange" min="0" max="20" value="2" step="0.5" oninput="updateProximity('it',this.value)" style="--rp:10%">
+          </div>
+        </div>
+        <div class="fg fg2" style="margin-top:14px">
+          <div class="ff">
+            <label class="fl">Nearest School / College</label>
+            <div class="chip-sel" id="schoolChips">
+              <div class="chip on" data-v="walk" onclick="selectChip(this,'school')">Walking</div>
+              <div class="chip" data-v="near" onclick="selectChip(this,'school')">&lt;2km</div>
+              <div class="chip" data-v="far" onclick="selectChip(this,'school')">Far</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Hospital / Medical</label>
+            <div class="chip-sel" id="hospitalChips">
+              <div class="chip on" data-v="near" onclick="selectChip(this,'hospital')">Nearby</div>
+              <div class="chip" data-v="far" onclick="selectChip(this,'hospital')">Far</div>
+            </div>
+          </div>
+        </div>
+        <div class="fg fg2" style="margin-top:14px">
+          <div class="ff">
+            <label class="fl">Facing / Vastu</label>
+            <div class="chip-sel" id="facingChips">
+              <div class="chip on" data-v="east" onclick="selectChip(this,'facing')">East</div>
+              <div class="chip" data-v="north" onclick="selectChip(this,'facing')">North</div>
+              <div class="chip" data-v="south" onclick="selectChip(this,'facing')">South</div>
+              <div class="chip" data-v="west" onclick="selectChip(this,'facing')">West</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Road Type</label>
+            <div class="chip-sel" id="roadChips">
+              <div class="chip on" data-v="main" onclick="selectChip(this,'road')">Main Road</div>
+              <div class="chip" data-v="inner" onclick="selectChip(this,'road')">Inner Lane</div>
+              <div class="chip" data-v="gated" onclick="selectChip(this,'road')">Gated Interior</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 7: Tenant Profile -->
+    <div class="blk rv d3">
+      <div class="blk-head">
+        <div class="blk-ic bic-gr">👤</div>
+        <div><div class="blk-t">Tenant & Market Demand</div><div class="blk-s">Market demand and season affect negotiation leverage</div></div>
+      </div>
+      <div class="blk-body">
+        <div class="fg fg3">
+          <div class="ff">
+            <label class="fl">Tenant Type</label>
+            <div class="chip-sel" id="tenantChips" style="flex-wrap:wrap">
+              <div class="chip on" data-v="professional" onclick="selectChip(this,'tenant')">Professional</div>
+              <div class="chip" data-v="student" onclick="selectChip(this,'tenant')">Student</div>
+              <div class="chip" data-v="family" onclick="selectChip(this,'tenant')">Family</div>
+              <div class="chip" data-v="couple" onclick="selectChip(this,'tenant')">Couple</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Moving In</label>
+            <div class="chip-sel" id="seasonChips" style="flex-wrap:wrap">
+              <div class="chip on" data-v="peak" onclick="selectChip(this,'season')">Peak Season</div>
+              <div class="chip" data-v="off" onclick="selectChip(this,'season')">Off Season</div>
+            </div>
+          </div>
+          <div class="ff">
+            <label class="fl">Market Trend</label>
+            <div class="chip-sel" id="trendChips" style="flex-wrap:wrap">
+              <div class="chip on" data-v="rising" onclick="selectChip(this,'trend')">📈 Rising</div>
+              <div class="chip" data-v="stable" onclick="selectChip(this,'trend')">➡️ Stable</div>
+              <div class="chip" data-v="falling" onclick="selectChip(this,'trend')">📉 Falling</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /inp-panel -->
+
+  <!-- ══════════ RESULT PANEL ══════════ -->
+  <div class="result-panel">
+
+    <!-- Oracle estimate card -->
+    <div class="oracle-card rv">
+      <div class="oc-head">
+        <div class="oc-label"><span class="oc-ai-dot"></span>AI RENT ESTIMATE</div>
+        <div class="oc-price" id="mainPrice"><span class="cur">₹</span><span id="priceNum">—</span></div>
+        <div class="oc-range" id="priceRange">Select city & area to generate estimate</div>
+        <div class="oc-accuracy" id="accuracyBadge" style="display:none">✓ &nbsp;±8% Accuracy</div>
+
+        <!-- Thinking animation -->
+        <div class="thinking" id="thinkAnim">
+          <span style="font-size:18px">🤖</span>
+          <div>Analysing 8,800+ listings<span class="think-dots"><span>.</span><span>.</span><span>.</span></span></div>
+        </div>
+      </div>
+
+      <!-- Gauge (Market Position) -->
+      <div class="gauge-wrap">
+        <div class="gauge-label"><span>BELOW MARKET</span><span id="gaugeLabel">Awaiting input</span><span>ABOVE MARKET</span></div>
+        <div class="gauge-bar">
+          <div class="gauge-fill" id="gaugeFill" style="width:0%"></div>
+          <div class="gauge-thumb" id="gaugeThumb" style="left:0%"></div>
+        </div>
+        <div class="gauge-ticks"><span>Bargain</span><span>Fair Value</span><span>Market Rate</span><span>Premium</span><span>Luxury</span></div>
+      </div>
+
+      <!-- Breakdown -->
+      <div class="oc-body">
+        <div class="bk-title">Factor Breakdown</div>
+        <div id="breakdownRows">
+          <div style="text-align:center;padding:20px;color:var(--iv4);font-size:13px;font-family:'JetBrains Mono',monospace">Select location & property type to see breakdown</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Market chart -->
+    <div class="market-card rv d1">
+      <div class="mc-title" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--iv);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em">📊 BHK Price Distribution in Area</div>
+      <div class="mini-chart" id="miniChart">
+        <div class="mc-bar" style="height:6%;opacity:.3"><div class="mc-bar-val">—</div></div>
+        <div class="mc-bar" style="height:6%;opacity:.3"><div class="mc-bar-val">—</div></div>
+        <div class="mc-bar" style="height:6%;opacity:.3"><div class="mc-bar-val">—</div></div>
+        <div class="mc-bar" style="height:6%;opacity:.3"><div class="mc-bar-val">—</div></div>
+        <div class="mc-bar" style="height:6%;opacity:.3"><div class="mc-bar-val">—</div></div>
+      </div>
+      <div class="mc-labels" id="chartLabels"><span class="mc-lbl">Studio</span><span class="mc-lbl">1BHK</span><span class="mc-lbl">2BHK</span><span class="mc-lbl">3BHK</span><span class="mc-lbl">4BHK</span></div>
+    </div>
+
+    <!-- Nearby comparison -->
+    <div class="nearby-card rv d1">
+      <div class="mc-title" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--iv);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em">📍 Nearby Areas Comparison</div>
+      <div id="nearbyRows">
+        <div style="text-align:center;padding:16px;color:var(--iv4);font-size:12px;font-family:'JetBrains Mono',monospace">Select city to see area comparison</div>
+      </div>
+    </div>
+
+    <!-- AI Insights -->
+    <div class="insights-card rv d2">
+      <div class="mc-title" style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--iv);margin-bottom:14px;text-transform:uppercase;letter-spacing:.04em">💡 AI Insights</div>
+      <div id="insightsWrap">
+        <div style="text-align:center;padding:16px;color:var(--iv4);font-size:12px;font-family:'JetBrains Mono',monospace">Complete the form to get personalised insights</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-strip rv d2">
+      <div class="cs-t">Ready to find your perfect home?</div>
+      <div class="cs-d">Browse 8,800+ verified properties matching your budget in this area</div>
+      <div class="cs-btns">
+        <a class="cs-btn csb-main" href="properties.html">🔍 Browse Properties</a>
+        <button class="cs-btn csb-o" onclick="downloadReport()">📄 Download Report</button>
+        <button class="cs-btn csb-o" onclick="shareResult()">🔗 Share</button>
+      </div>
+    </div>
+
+  </div><!-- /result-panel -->
+
+</div><!-- /calc-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-copy">© 2025–2026 SmartRent AI · Rent estimates based on aggregated market data · <a href="privacy-policy.html">Privacy</a></div>
+    <div class="foot-links">
+      <a href="properties.html">Properties</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="post-property.html">List Property</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   COMPREHENSIVE INDIAN RENT DATA
+   Based on real market data: PropTiger, Housing.com,
+   NoBroker, MagicBricks, 99acres — Q4 2025 estimates
+══════════════════════════════════════════════════════ */
+const CITY_DATA = {
+  hyderabad: {
+    name: 'Hyderabad',
+    base: 14000,
+    multiplier: 1.0,
+    areas: [
+      { name:'Banjara Hills', base:28000, tier:'premium', nearby:['Jubilee Hills','Film Nagar','Somajiguda'] },
+      { name:'Jubilee Hills', base:32000, tier:'premium', nearby:['Banjara Hills','Madhapur','Panjagutta'] },
+      { name:'Hitech City', base:22000, tier:'high', nearby:['Madhapur','Kondapur','Gachibowli'] },
+      { name:'Madhapur', base:20000, tier:'high', nearby:['Hitech City','Kondapur','Miyapur'] },
+      { name:'Kondapur', base:18000, tier:'high', nearby:['Madhapur','Gachibowli','Miyapur'] },
+      { name:'Gachibowli', base:19000, tier:'high', nearby:['Kondapur','Financial District','Nanakramguda'] },
+      { name:'Financial District', base:21000, tier:'high', nearby:['Gachibowli','Nanakramguda','Narsingi'] },
+      { name:'Ameerpet', base:14000, tier:'mid', nearby:['SR Nagar','Punjagutta','Begumpet'] },
+      { name:'Begumpet', base:17000, tier:'mid', nearby:['Ameerpet','Secunderabad','Somajiguda'] },
+      { name:'Kukatpally', base:12000, tier:'mid', nearby:['KPHB','Miyapur','Balanagar'] },
+      { name:'KPHB Colony', base:11000, tier:'mid', nearby:['Kukatpally','Miyapur','Bharat Nagar'] },
+      { name:'Miyapur', base:13000, tier:'mid', nearby:['Kukatpally','Kondapur','Bachupally'] },
+      { name:'LB Nagar', base:10000, tier:'budget', nearby:['Dilsukhnagar','Kothapet','Malakpet'] },
+      { name:'Dilsukhnagar', base:9500, tier:'budget', nearby:['LB Nagar','Kothapet','Amberpet'] },
+      { name:'Secunderabad', base:13500, tier:'mid', nearby:['Begumpet','Trimulgherry','Marredpally'] },
+      { name:'Uppal', base:9000, tier:'budget', nearby:['Habsiguda','Ramanthapur','ECIL'] },
+      { name:'Sainikpuri', base:10500, tier:'mid', nearby:['Kapra','ECIL','Malkajgiri'] },
+      { name:'Kompally', base:11000, tier:'mid', nearby:['Medchal','Dundigal','Shamirpet'] },
+      { name:'Narsingi', base:16000, tier:'high', nearby:['Gachibowli','Financial District','Puppalaguda'] },
+      { name:'Tolichowki', base:15000, tier:'mid', nearby:['Mehdipatnam','Attapur','Banjara Hills'] },
+    ]
+  },
+  bangalore: {
+    name: 'Bangalore',
+    base: 18000,
+    multiplier: 1.28,
+    areas: [
+      { name:'Indiranagar', base:38000, tier:'premium', nearby:['Domlur','Koramangala','Halasuru'] },
+      { name:'Koramangala', base:36000, tier:'premium', nearby:['Indiranagar','HSR Layout','BTM Layout'] },
+      { name:'HSR Layout', base:28000, tier:'high', nearby:['Koramangala','Sarjapur Road','Electronic City'] },
+      { name:'Whitefield', base:22000, tier:'high', nearby:['Varthur','Mahadevapura','Marathahalli'] },
+      { name:'Marathahalli', base:20000, tier:'high', nearby:['Whitefield','Bellandur','Outer Ring Road'] },
+      { name:'Electronic City', base:16000, tier:'mid', nearby:['Bannerghatta Road','Sarjapur','HSR Layout'] },
+      { name:'Sarjapur Road', base:23000, tier:'high', nearby:['HSR Layout','Electronic City','Bellandur'] },
+      { name:'Bellandur', base:21000, tier:'high', nearby:['Sarjapur Road','Marathahalli','Outer Ring Road'] },
+      { name:'BTM Layout', base:26000, tier:'high', nearby:['Koramangala','JP Nagar','Bannerghatta Road'] },
+      { name:'JP Nagar', base:22000, tier:'high', nearby:['BTM Layout','Bannerghatta Road','Jayanagar'] },
+      { name:'Jayanagar', base:24000, tier:'high', nearby:['JP Nagar','Banashankari','Basavanagudi'] },
+      { name:'Hebbal', base:19000, tier:'high', nearby:['Yelahanka','Thanisandra','RT Nagar'] },
+      { name:'Yelahanka', base:15000, tier:'mid', nearby:['Hebbal','Sahakara Nagar','Bagalur'] },
+      { name:'Malleshwaram', base:28000, tier:'premium', nearby:['Rajajinagar','Sadashivanagar','Yeshwantpur'] },
+      { name:'Rajajinagar', base:22000, tier:'high', nearby:['Malleshwaram','Basaveshwaranagar','Vijayanagar'] },
+      { name:'Banashankari', base:18000, tier:'mid', nearby:['JP Nagar','Jayanagar','Kanakapura Road'] },
+      { name:'Hennur', base:16000, tier:'mid', nearby:['Thanisandra','Banaswadi','Ramamurthy Nagar'] },
+      { name:'Bannerghatta Road', base:17000, tier:'mid', nearby:['Electronic City','JP Nagar','BTM Layout'] },
+      { name:'Outer Ring Road', base:20000, tier:'high', nearby:['Marathahalli','Bellandur','Sarjapur'] },
+      { name:'Horamavu', base:13000, tier:'budget', nearby:['Banaswadi','Kalyan Nagar','Hennur'] },
+    ]
+  },
+  mumbai: {
+    name: 'Mumbai',
+    base: 35000,
+    multiplier: 2.5,
+    areas: [
+      { name:'Bandra West', base:75000, tier:'luxury', nearby:['Khar West','Santacruz West','Juhu'] },
+      { name:'Juhu', base:80000, tier:'luxury', nearby:['Andheri West','Vile Parle','JVPD Scheme'] },
+      { name:'Andheri West', base:45000, tier:'premium', nearby:['Andheri East','Juhu','Versova'] },
+      { name:'Andheri East', base:35000, tier:'high', nearby:['Andheri West','Chakala','Sakinaka'] },
+      { name:'Powai', base:42000, tier:'premium', nearby:['Vikhroli','Kanjurmarg','Hiranandani Gardens'] },
+      { name:'Hiranandani Gardens', base:55000, tier:'luxury', nearby:['Powai','Bhandup','Kanjurmarg'] },
+      { name:'Thane', base:22000, tier:'mid', nearby:['Mulund','Ghodbunder Road','Manpada'] },
+      { name:'Navi Mumbai', base:18000, tier:'mid', nearby:['Vashi','Kharghar','Panvel'] },
+      { name:'Lower Parel', base:65000, tier:'luxury', nearby:['Worli','Parel','Dadar'] },
+      { name:'Worli', base:80000, tier:'luxury', nearby:['Lower Parel','Prabhadevi','Mahim'] },
+      { name:'Malad West', base:30000, tier:'high', nearby:['Borivali','Goregaon','Kandivali'] },
+      { name:'Goregaon East', base:27000, tier:'high', nearby:['Malad','Jogeshwari','Aarey'] },
+      { name:'Kandivali West', base:28000, tier:'high', nearby:['Borivali','Malad','Dahisar'] },
+      { name:'Borivali West', base:30000, tier:'high', nearby:['Kandivali','Dahisar','Mira Road'] },
+      { name:'Mira Road', base:16000, tier:'mid', nearby:['Borivali','Dahisar','Bhayander'] },
+    ]
+  },
+  delhi: {
+    name: 'Delhi / NCR',
+    base: 20000,
+    multiplier: 1.42,
+    areas: [
+      { name:'South Delhi (GK)', base:55000, tier:'luxury', nearby:['Hauz Khas','Saket','Malviya Nagar'] },
+      { name:'Hauz Khas', base:42000, tier:'premium', nearby:['South Delhi','Safdarjung','Vasant Vihar'] },
+      { name:'Vasant Kunj', base:38000, tier:'premium', nearby:['Vasant Vihar','Saket','Mehrauli'] },
+      { name:'Dwarka', base:18000, tier:'mid', nearby:['Uttam Nagar','Najafgarh','Janakpuri'] },
+      { name:'Rohini', base:15000, tier:'mid', nearby:['Pitampura','Shalimar Bagh','Prashant Vihar'] },
+      { name:'Pitampura', base:17000, tier:'mid', nearby:['Rohini','Shalimar Bagh','Model Town'] },
+      { name:'Lajpat Nagar', base:28000, tier:'high', nearby:['Kalkaji','Defence Colony','Jangpura'] },
+      { name:'Defence Colony', base:45000, tier:'premium', nearby:['Lajpat Nagar','GK 1','Jangpura'] },
+      { name:'Noida Sector 62', base:16000, tier:'mid', nearby:['Sector 18','Sector 50','Indirapuram'] },
+      { name:'Gurgaon DLF Phase', base:35000, tier:'premium', nearby:['Sector 29','MG Road','Sohna Road'] },
+      { name:'Gurgaon Sohna Road', base:22000, tier:'high', nearby:['DLF Phase','Sector 49','Golf Course Ext'] },
+      { name:'Indirapuram', base:14000, tier:'mid', nearby:['Noida','Vaishali','Kaushambi'] },
+    ]
+  },
+  chennai: {
+    name: 'Chennai',
+    base: 15000,
+    multiplier: 1.07,
+    areas: [
+      { name:'Anna Nagar', base:28000, tier:'premium', nearby:['Kilpauk','Choolaimedu','Arumbakkam'] },
+      { name:'Adyar', base:32000, tier:'premium', nearby:['Besant Nagar','Kotturpuram','Thiruvanmiyur'] },
+      { name:'T Nagar', base:25000, tier:'high', nearby:['Nandanam','Saidapet','Gopalapuram'] },
+      { name:'Velachery', base:18000, tier:'high', nearby:['Medavakkam','Pallikaranai','Guindy'] },
+      { name:'OMR (IT Corridor)', base:16000, tier:'high', nearby:['Sholinganallur','Perungudi','Kelambakkam'] },
+      { name:'Sholinganallur', base:17000, tier:'high', nearby:['OMR','Perungudi','Medavakkam'] },
+      { name:'Perambur', base:12000, tier:'mid', nearby:['Kolathur','Madhavaram','Purasawalkam'] },
+      { name:'Ambattur', base:11000, tier:'mid', nearby:['Padi','Avadi','Thirumangalam'] },
+      { name:'Porur', base:14000, tier:'mid', nearby:['Ramapuram','Mugalivakkam','Vadapalani'] },
+      { name:'Kodambakkam', base:20000, tier:'high', nearby:['Vadapalani','Valasaravakkam','Virugambakkam'] },
+    ]
+  },
+  pune: {
+    name: 'Pune',
+    base: 15000,
+    multiplier: 1.07,
+    areas: [
+      { name:'Koregaon Park', base:32000, tier:'premium', nearby:['Kalyani Nagar','Viman Nagar','Camp'] },
+      { name:'Kalyani Nagar', base:28000, tier:'premium', nearby:['Koregaon Park','Viman Nagar','Yerwada'] },
+      { name:'Hinjewadi', base:18000, tier:'high', nearby:['Wakad','Aundh','Baner'] },
+      { name:'Baner', base:22000, tier:'high', nearby:['Aundh','Balewadi','Pashan'] },
+      { name:'Aundh', base:24000, tier:'high', nearby:['Baner','Wakad','Pimple Saudagar'] },
+      { name:'Wakad', base:16000, tier:'mid', nearby:['Hinjewadi','Aundh','Pimpri'] },
+      { name:'Kharadi', base:19000, tier:'high', nearby:['Viman Nagar','Hadapsar','EON IT Park'] },
+      { name:'Viman Nagar', base:20000, tier:'high', nearby:['Kharadi','Kalyani Nagar','Nagar Road'] },
+      { name:'Hadapsar', base:14000, tier:'mid', nearby:['Kharadi','Magarpatta','Undri'] },
+      { name:'Magarpatta', base:22000, tier:'high', nearby:['Hadapsar','Kharadi','Salunke Vihar'] },
+      { name:'Pimple Saudagar', base:15000, tier:'mid', nearby:['Wakad','Aundh','Ravet'] },
+      { name:'Deccan', base:22000, tier:'high', nearby:['Shivajinagar','Erandwane','Kothrud'] },
+    ]
+  },
+  kolkata: {
+    name: 'Kolkata',
+    base: 12000,
+    multiplier: 0.86,
+    areas: [
+      { name:'Ballygunge', base:28000, tier:'premium', nearby:['Bhowanipore','Gariahat','Tollygunge'] },
+      { name:'Park Street', base:35000, tier:'premium', nearby:['Camac Street','AJC Bose Road','Loudon Street'] },
+      { name:'Salt Lake Sector V', base:18000, tier:'high', nearby:['New Town','Rajarhat','Bidhannagar'] },
+      { name:'New Town Rajarhat', base:16000, tier:'high', nearby:['Salt Lake','Action Area','Eco Space'] },
+      { name:'Behala', base:9000, tier:'budget', nearby:['Thakurpukur','Joka','Parnasree'] },
+      { name:'Kasba', base:14000, tier:'mid', nearby:['Gariahat','Tollygunge','Ruby'] },
+      { name:'Dum Dum', base:11000, tier:'mid', nearby:['Baranagar','Lake Town','Belgharia'] },
+      { name:'Garia', base:10000, tier:'mid', nearby:['Jadavpur','Sonarpur','Narendrapur'] },
+    ]
+  },
+  ahmedabad: {
+    name: 'Ahmedabad',
+    base: 11000,
+    multiplier: 0.78,
+    areas: [
+      { name:'Satellite', base:18000, tier:'high', nearby:['Bodakdev','Vastrapur','Prahladnagar'] },
+      { name:'Bodakdev', base:20000, tier:'high', nearby:['Satellite','Sindhu Bhavan Road','Thaltej'] },
+      { name:'Prahladnagar', base:16000, tier:'high', nearby:['Satellite','Makarba','Anand Nagar'] },
+      { name:'Chandkheda', base:10000, tier:'mid', nearby:['Sabarmati','Motera','Nava Vadaj'] },
+      { name:'Vastrapur', base:17000, tier:'high', nearby:['Satellite','IIM Area','Thaltej'] },
+      { name:'Maninagar', base:9000, tier:'budget', nearby:['Naroda','Odhav','Vatva'] },
+      { name:'Bopal', base:13000, tier:'mid', nearby:['South Bopal','Ambli','Science City'] },
+    ]
+  },
+  kochi: {
+    name: 'Kochi',
+    base: 12000,
+    multiplier: 0.86,
+    areas: [
+      { name:'Kakkanad', base:16000, tier:'high', nearby:['Infopark','Thrikkakkara','Seaport'] },
+      { name:'Edappally', base:14000, tier:'mid', nearby:['Kakkanad','MG Road','Vyttila'] },
+      { name:'MG Road', base:22000, tier:'premium', nearby:['Marine Drive','Ravipuram','Ernakulam'] },
+      { name:'Thrippunithura', base:12000, tier:'mid', nearby:['Tripunithura','Maradu','Kakkanad'] },
+      { name:'Aluva', base:10000, tier:'budget', nearby:['Kalady','Angamaly','Perumbavoor'] },
+    ]
+  },
+  jaipur: {
+    name: 'Jaipur',
+    base: 9000,
+    multiplier: 0.64,
+    areas: [
+      { name:'Vaishali Nagar', base:12000, tier:'mid', nearby:['Sodala','Shastri Nagar','Nirman Nagar'] },
+      { name:'Malviya Nagar', base:14000, tier:'mid', nearby:['Jagatpura','Sanganer','Pratap Nagar'] },
+      { name:'C-Scheme', base:18000, tier:'high', nearby:['Bapu Nagar','Tonk Road','Rajpur'] },
+      { name:'Mansarovar', base:10000, tier:'mid', nearby:['Vaishali Nagar','Jagatpura','Pratap Nagar'] },
+      { name:'Jagatpura', base:11000, tier:'mid', nearby:['Malviya Nagar','Pratap Nagar','Sanganer'] },
+    ]
+  },
+  lucknow: {
+    name: 'Lucknow',
+    base: 9000,
+    multiplier: 0.64,
+    areas: [
+      { name:'Gomti Nagar', base:14000, tier:'mid', nearby:['Vidhansabha Marg','Indira Nagar','Jankipuram'] },
+      { name:'Hazratganj', base:18000, tier:'high', nearby:['Aminabad','Lalbagh','Saadat Ganj'] },
+      { name:'Aliganj', base:12000, tier:'mid', nearby:['Indira Nagar','Vikas Nagar','Rajajipuram'] },
+      { name:'Jankipuram', base:10000, tier:'mid', nearby:['Gomti Nagar','Vikas Nagar','Chinhat'] },
+    ]
+  },
+  chandigarh: {
+    name: 'Chandigarh',
+    base: 13000,
+    multiplier: 0.93,
+    areas: [
+      { name:'Sector 17', base:22000, tier:'premium', nearby:['Sector 11','Sector 22','Sector 9'] },
+      { name:'Sector 26', base:15000, tier:'mid', nearby:['Sector 27','Sector 35','Sector 28'] },
+      { name:'Mohali Phase 7', base:16000, tier:'high', nearby:['Aerocity','Phase 5','Phase 6'] },
+      { name:'Panchkula Sector 20', base:12000, tier:'mid', nearby:['Sector 9','Sector 11','Sector 12'] },
+    ]
+  },
+  indore: {
+    name: 'Indore',
+    base: 9000,
+    multiplier: 0.64,
+    areas: [
+      { name:'Vijay Nagar', base:13000, tier:'mid', nearby:['Scheme 54','AB Road','Bhawarkuan'] },
+      { name:'Scheme 54', base:15000, tier:'high', nearby:['Vijay Nagar','Super Corridor','LIG Colony'] },
+      { name:'Super Corridor', base:11000, tier:'mid', nearby:['Scheme 54','IIM Indore','Simrol'] },
+      { name:'Palasia', base:14000, tier:'mid', nearby:['MG Road','Raj Mohalla','Old Palasia'] },
+    ]
+  },
+  vizag: {
+    name: 'Visakhapatnam',
+    base: 9000,
+    multiplier: 0.64,
+    areas: [
+      { name:'MVP Colony', base:14000, tier:'mid', nearby:['Maddilapalem','Srinagar','Siripuram'] },
+      { name:'Dwaraka Nagar', base:16000, tier:'high', nearby:['MVP Colony','Seethammadhara','Akkayyapalem'] },
+      { name:'Madhurawada', base:11000, tier:'mid', nearby:['Rushikonda','VUDA Layout','Bheemunipatnam'] },
+      { name:'Rushikonda', base:12000, tier:'mid', nearby:['Madhurawada','Beach Road','Kommadi'] },
+    ]
+  },
+  nagpur: {
+    name: 'Nagpur',
+    base: 8000,
+    multiplier: 0.57,
+    areas: [
+      { name:'Dharampeth', base:12000, tier:'mid', nearby:['Bajaj Nagar','Sitabuldi','Sadar'] },
+      { name:'Sadar', base:13000, tier:'mid', nearby:['Dharampeth','Itwari','Civil Lines'] },
+      { name:'Pratap Nagar', base:10000, tier:'mid', nearby:['Besa','Hingna Road','Katol Road'] },
+      { name:'Manish Nagar', base:9000, tier:'budget', nearby:['MIDC','Hingna','Butibori'] },
+    ]
+  },
+  bhopal: {
+    name: 'Bhopal',
+    base: 8000,
+    multiplier: 0.57,
+    areas: [
+      { name:'MP Nagar', base:13000, tier:'mid', nearby:['Arera Colony','New Market','Shahpura'] },
+      { name:'Arera Colony', base:12000, tier:'mid', nearby:['MP Nagar','Bittan Market','Zone 2'] },
+      { name:'Kolar Road', base:9000, tier:'budget', nearby:['Hoshangabad Road','Misrod','Bawadiya Kalan'] },
+      { name:'Shahpura', base:11000, tier:'mid', nearby:['MP Nagar','Sehore Road','Ayodhya Bypass'] },
+    ]
+  },
+  coimbatore: {
+    name: 'Coimbatore',
+    base: 9000,
+    multiplier: 0.64,
+    areas: [
+      { name:'RS Puram', base:14000, tier:'mid', nearby:['Peelamedu','Gandhipuram','Ganapathy'] },
+      { name:'Peelamedu', base:12000, tier:'mid', nearby:['RS Puram','Hopes College','Saibaba Colony'] },
+      { name:'Hopes College', base:11000, tier:'mid', nearby:['Peelamedu','Saibaba Colony','Avinashi Road'] },
+      { name:'Saravanampatti', base:10000, tier:'mid', nearby:['Kalapatti','Vilankurichi','Sungam'] },
+    ]
+  }
+};
+
+/* ══ RENT MULTIPLIERS ══════════════════════════════ */
+const MULT = {
+  propType:  { flat:1.0, studio:0.85, pg:0.6, hostel:0.45, villa:1.7, coliving:0.75 },
+  bhk:       { '0.5':0.7, '1':1.0, '2':1.55, '3':2.1, '4':2.8 },
+  furnish:   { unfurnished:1.0, semi:1.2, fully:1.38, super:1.6 },
+  floor:     { ground:0.96, low:1.0, mid:1.04, high:1.07, top:1.02 },
+  age:       { new:1.05, mid:1.0, old:0.92 },
+  society:   { standalone:0.92, gated:1.0, luxury:1.22, builder:0.95, villa_society:1.35 },
+  condition: { excellent:1.08, good:1.0, average:0.94, needs_work:0.87 },
+  school:    { walk:1.04, near:1.02, far:1.0 },
+  hospital:  { near:1.02, far:1.0 },
+  facing:    { east:1.03, north:1.02, west:1.0, south:0.98 },
+  road:      { main:0.97, inner:1.0, gated:1.04 },
+  maint:     { included:1.0, extra:0.96 },
+  tenure:    { long:1.0, short:1.08 },
+  tenant:    { professional:1.0, student:0.93, family:1.02, couple:0.97 },
+  season:    { peak:1.06, off:0.96 },
+  trend:     { rising:1.04, stable:1.0, falling:0.95 },
+  amenParking: 1.04, amenGym:1.03, amenPool:1.07, amenSec:1.02,
+  amenPower:1.025, amenLift:1.02, amenPets:1.02, amenClub:1.03,
+};
+
+const AMENITY_TOGGLES = ['amenParking','amenGym','amenPool','amenSec','amenPower','amenLift','amenPets','amenClub'];
+
+/* ══ STATE ═════════════════════════════════════════ */
+const state = {
+  city:'', area:'', propType:'flat', bhk:'1', furnish:'unfurnished',
+  floor:'low', age:'new', society:'gated', condition:'good',
+  school:'walk', hospital:'near', facing:'east', road:'inner',
+  maint:'included', tenure:'long', tenant:'professional', season:'peak', trend:'rising',
+  metroKm:0.5, itKm:2, area_sqft:0,
+  amens: { amenParking:false,amenGym:false,amenPool:false,amenSec:true,amenPower:false,amenLift:false,amenPets:false,amenClub:false }
+};
+
+let calcTimer = null;
+let currentAreaData = null;
+
+/* ══ POPULATE CITY AREAS ═══════════════════════════ */
+function onCityChange() {
+  const city = document.getElementById('city').value;
+  state.city = city;
+  const areaSelect = document.getElementById('area');
+  const hint = document.getElementById('areaHint');
+  areaSelect.innerHTML = '<option value="">Select Area</option>';
+  currentAreaData = null;
+
+  if (!city || !CITY_DATA[city]) { hint.textContent = 'Select city first'; schedCalc(); return; }
+  const cd = CITY_DATA[city];
+  hint.textContent = cd.areas.length + ' areas';
+  cd.areas.forEach(a => {
+    const opt = document.createElement('option');
+    opt.value = a.name;
+    opt.textContent = a.name + (a.tier==='luxury'?' ✦':a.tier==='premium'?' ★':a.tier==='high'?' •':'');
+    areaSelect.appendChild(opt);
+  });
+
+  // Render nearby comparison for city
+  renderNearby(cd.areas.slice(0,8), null);
+  renderMiniChart(cd.base, null);
+  schedCalc();
+}
+
+/* ══ MAIN CALCULATE ════════════════════════════════ */
+function calculate() {
+  state.city  = document.getElementById('city').value;
+  state.area  = document.getElementById('area').value;
+
+  const areaEl = document.getElementById('area').value;
+  if (!state.city || !areaEl) {
+    resetResult(); return;
+  }
+
+  const cd  = CITY_DATA[state.city];
+  if (!cd) { resetResult(); return; }
+
+  const aData = cd.areas.find(a => a.name === areaEl);
+  if (!aData) { resetResult(); return; }
+  currentAreaData = aData;
+
+  // Show thinking
+  showThinking();
+
+  setTimeout(() => {
+    let base = aData.base;
+
+    // Apply all multipliers
+    base *= MULT.propType[state.propType] || 1;
+    base *= MULT.bhk[state.bhk] || 1;
+    base *= MULT.furnish[state.furnish] || 1;
+    base *= MULT.floor[state.floor] || 1;
+    base *= MULT.age[state.age] || 1;
+    base *= MULT.society[state.society] || 1;
+    base *= MULT.condition[state.condition] || 1;
+    base *= MULT.school[state.school] || 1;
+    base *= MULT.hospital[state.hospital] || 1;
+    base *= MULT.facing[state.facing] || 1;
+    base *= MULT.road[state.road] || 1;
+    base *= MULT.maint[state.maint] || 1;
+    base *= MULT.tenure[state.tenure] || 1;
+    base *= MULT.tenant[state.tenant] || 1;
+    base *= MULT.season[state.season] || 1;
+    base *= MULT.trend[state.trend] || 1;
+
+    // Proximity: metro within 500m = +12%, 1km = +8%, 2km = +4%
+    const mKm = state.metroKm;
+    if (mKm <= 0.5) base *= 1.12;
+    else if (mKm <= 1) base *= 1.08;
+    else if (mKm <= 2) base *= 1.04;
+    else if (mKm <= 5) base *= 1.0;
+    else base *= 0.95;
+
+    // IT hub proximity
+    const iKm = state.itKm;
+    if (iKm <= 1) base *= 1.15;
+    else if (iKm <= 3) base *= 1.08;
+    else if (iKm <= 6) base *= 1.02;
+    else if (iKm <= 10) base *= 0.97;
+    else base *= 0.91;
+
+    // Amenities
+    AMENITY_TOGGLES.forEach(k => {
+      if (state.amens[k]) base *= MULT[k] || 1;
+    });
+
+    // Sqft correction
+    const sqft = parseInt(document.getElementById('area_sqft').value) || 0;
+    if (sqft > 0) {
+      const expectedSqft = { '0.5':350,'1':600,'2':950,'3':1350,'4':1800 }[state.bhk] || 600;
+      const sqftRatio = sqft / expectedSqft;
+      // Blend 30% sqft correction with 70% base
+      base *= (1 * 0.7 + sqftRatio * 0.3);
+    }
+
+    base = Math.round(base / 500) * 500;
+    const low  = Math.round(base * 0.88 / 500) * 500;
+    const high = Math.round(base * 1.14 / 500) * 500;
+
+    hideThinking();
+    renderResult(base, low, high, aData);
+    renderMiniChart(aData.base, state);
+    renderNearby(cd.areas, aData);
+    renderInsights(base, aData, state);
+  }, 800);
+}
+
+function schedCalc() { clearTimeout(calcTimer); calcTimer = setTimeout(calculate, 400); }
+
+function resetResult() {
+  document.getElementById('mainPrice').innerHTML = '<span class="cur">₹</span><span id="priceNum">—</span>';
+  document.getElementById('priceRange').textContent = 'Select city & area to generate estimate';
+  document.getElementById('accuracyBadge').style.display = 'none';
+  document.getElementById('breakdownRows').innerHTML = '<div style="text-align:center;padding:20px;color:var(--iv4);font-size:13px;font-family:\'JetBrains Mono\',monospace">Select location & property type to see breakdown</div>';
+  document.getElementById('gaugeFill').style.width = '0%';
+  document.getElementById('gaugeThumb').style.left = '0%';
+  document.getElementById('gaugeLabel').textContent = 'Awaiting input';
+}
+
+function showThinking() { document.getElementById('thinkAnim').classList.add('show'); document.getElementById('accuracyBadge').style.display = 'none'; }
+function hideThinking() { document.getElementById('thinkAnim').classList.remove('show'); }
+
+/* ══ RENDER RESULT ══════════════════════════════════ */
+function renderResult(est, low, high, aData) {
+  // Main price
+  document.getElementById('mainPrice').innerHTML = `<span class="cur">₹</span><span id="priceNum">${fmtINR(est)}</span>`;
+  document.getElementById('priceRange').textContent = `Range: ₹${fmtINR(low)} – ₹${fmtINR(high)} / month`;
+  document.getElementById('accuracyBadge').style.display = 'inline-flex';
+
+  // Gauge (30% = below market, 50% = fair, 70% = market, 90% = premium)
+  const ratio = est / (aData.base * 2.2);
+  const gaugePos = Math.min(Math.max(ratio * 100, 5), 95);
+  document.getElementById('gaugeFill').style.width = gaugePos + '%';
+  document.getElementById('gaugeThumb').style.left = gaugePos + '%';
+  const gaugeLabels = [[25,'Below Market'],[45,'Good Value'],[60,'Fair Market'],[78,'Market Rate'],[90,'Premium']];
+  const lbl = gaugeLabels.reduce((a,b) => gaugePos >= b[0] ? b : a);
+  document.getElementById('gaugeLabel').textContent = lbl[1];
+
+  // Breakdown rows
+  const breakdown = [
+    { ic:'📍', name:'Base Area Rate', val:fmtINR(aData.base), delta:'base', color:'neu' },
+    { ic:'🏠', name:'Property Type', val:'×' + (MULT.propType[state.propType]||1).toFixed(2), delta: MULT.propType[state.propType]>1?'pos':MULT.propType[state.propType]<1?'neg':'neu', color: MULT.propType[state.propType]>1?'pos':'neu' },
+    { ic:'🛏️', name:'BHK Config ('+(state.bhk==='0.5'?'Studio':state.bhk+' BHK')+')', val:'×' + MULT.bhk[state.bhk].toFixed(2), delta: MULT.bhk[state.bhk]>1?'pos':'neg', color:MULT.bhk[state.bhk]>1?'pos':'neg' },
+    { ic:'🪑', name:'Furnishing', val:'×' + (MULT.furnish[state.furnish]||1).toFixed(2), delta:MULT.furnish[state.furnish]>1?'pos':'neu', color:MULT.furnish[state.furnish]>1?'pos':'neu' },
+    { ic:'🏢', name:'Society Type', val:'×' + (MULT.society[state.society]||1).toFixed(2), delta:MULT.society[state.society]>1?'pos':MULT.society[state.society]<1?'neg':'neu', color:MULT.society[state.society]>1?'pos':'neu' },
+    { ic:'🚇', name:'Metro Distance ('+state.metroKm+'km)', val: state.metroKm<=0.5?'+12%':state.metroKm<=1?'+8%':state.metroKm<=2?'+4%':state.metroKm>5?'-5%':'0%', delta:state.metroKm<=2?'pos':state.metroKm>5?'neg':'neu', color:state.metroKm<=2?'pos':'neu' },
+    { ic:'💼', name:'IT Hub Distance ('+state.itKm+'km)', val:state.itKm<=1?'+15%':state.itKm<=3?'+8%':state.itKm<=6?'+2%':state.itKm>10?'-9%':'-3%', delta:state.itKm<=3?'pos':state.itKm>6?'neg':'neu', color:state.itKm<=3?'pos':'neu' },
+    { ic:'✨', name:'Amenities Premium', val:'+' + (AMENITY_TOGGLES.filter(k=>state.amens[k]).length * 2.5).toFixed(0) + '%', delta:'pos', color:'pos' },
+    { ic:'📈', name:'Market Trend', val:state.trend==='rising'?'+4%':state.trend==='falling'?'-5%':'0%', delta:state.trend==='rising'?'pos':state.trend==='falling'?'neg':'neu', color:state.trend==='rising'?'pos':'neu' },
+    { ic:'🎯', name:'Final Estimate', val:'₹'+fmtINR(est)+'/mo', delta:'pos', color:'pos', highlight:true },
+  ];
+
+  document.getElementById('breakdownRows').innerHTML = breakdown.map(b => `
+    <div class="bk-row" style="${b.highlight?'background:rgba(232,168,50,.06);border-radius:8px;padding:10px;margin-top:4px':''}">
+      <div class="bk-left"><span class="bk-ic">${b.ic}</span><span class="bk-name" style="${b.highlight?'font-weight:700;color:var(--iv)':''}">${b.name}</span></div>
+      <div class="bk-val">${b.val} <span class="bk-delta bd-${b.color}">${b.delta==='pos'?'▲':b.delta==='neg'?'▼':'—'}</span></div>
+    </div>`).join('');
+}
+
+/* ══ MINI CHART ═════════════════════════════════════ */
+function renderMiniChart(base, st) {
+  const bhkMultipliers = { 'Studio':0.7, '1BHK':1.0, '2BHK':1.55, '3BHK':2.1, '4BHK':2.8 };
+  const furnMult = st ? MULT.furnish[st.furnish] : 1.0;
+  const pricesByBhk = Object.entries(bhkMultipliers).map(([k,m]) => ({ label:k, val:Math.round(base * m * furnMult / 500)*500 }));
+  const maxVal = Math.max(...pricesByBhk.map(p=>p.val));
+  const activeIdx = { '0.5':0,'1':1,'2':2,'3':3,'4':4 }[st?.bhk] ?? 1;
+
+  document.getElementById('miniChart').innerHTML = pricesByBhk.map((p,i) => `
+    <div class="mc-bar ${i===activeIdx?'active':''}" style="height:${(p.val/maxVal)*100}%" onclick="showToast('${p.label}: ₹${fmtINR(p.val)}/mo')">
+      <div class="mc-bar-val">₹${fmtINR(p.val)}</div>
+    </div>`).join('');
+  document.getElementById('chartLabels').innerHTML = pricesByBhk.map(p=>`<span class="mc-lbl">${p.label}</span>`).join('');
+}
+
+/* ══ NEARBY COMPARISON ══════════════════════════════ */
+function renderNearby(areas, currentArea) {
+  const sorted = [...areas].sort((a,b) => a.base - b.base);
+  const maxBase = Math.max(...sorted.map(a=>a.base));
+  document.getElementById('nearbyRows').innerHTML = sorted.slice(0,8).map((a,i) => `
+    <div class="nc-row" onclick="document.getElementById('area').value='${a.name}';calculate()">
+      <div class="nc-rank">${i+1}</div>
+      <div class="nc-name" style="${currentArea&&a.name===currentArea.name?'color:var(--am);font-weight:700':''}">${a.name}${currentArea&&a.name===currentArea.name?' ●':''}</div>
+      <div class="nc-price">₹${fmtINR(a.base)}<span style="font-size:10px;color:var(--iv4);font-family:'JetBrains Mono',monospace">/mo</span></div>
+      <div class="nc-bar-wrap"><div class="nc-bar-fill" style="width:${(a.base/maxBase)*100}%"></div></div>
+    </div>`).join('');
+}
+
+/* ══ INSIGHTS ═══════════════════════════════════════ */
+function renderInsights(est, aData, st) {
+  const insights = [];
+
+  // Negotiation insight
+  if (st.season === 'off') insights.push({ ic:'🤝', t:'Negotiate 8–12%', d:`Off-season (${new Date().toLocaleString('default',{month:'long'})}) gives you strong negotiation leverage. Most landlords reduce asking price by 5–12% vs peak season.` });
+  else insights.push({ ic:'🏃', t:'Act Quickly — Peak Season', d:'You are in peak rental season. High demand means well-priced properties in '+aData.name+' are rented within 48–72 hours of listing.' });
+
+  // Furnishing ROI
+  if (st.furnish === 'unfurnished' && st.propType === 'flat') insights.push({ ic:'🛋️', t:'Furnishing adds ₹'+fmtINR(Math.round(est*0.2/500)*500)+'/mo value', d:'If the landlord furnishes, expect to pay 18–22% more. For your budget, semi-furnished may offer the best rent-to-value ratio.' });
+
+  // Metro insight
+  if (st.metroKm <= 0.5) insights.push({ ic:'🚇', t:'Metro Premium Active', d:'Your property is within 500m of a metro station — this adds ~12% to rent. However it also means excellent resale/re-rental value and tenant retention.' });
+
+  // Deposit advice
+  const deposit = est * 2;
+  insights.push({ ic:'💰', t:'Expect ₹'+fmtINR(deposit)+' security deposit', d:'In '+CITY_DATA[st.city]?.name+', typical deposit is 2–3 months rent. Negotiate 1 month if you can offer PDC or digital payment guarantee.' });
+
+  // Area trend
+  insights.push({ ic:'📊', t:'Area Trend: '+aData.tier.toUpperCase(), d:aData.name+' is classified as '+aData.tier+'-tier. Rents here have been rising 8–14% YoY. Consider locking in a longer lease at today\'s rate.' });
+
+  document.getElementById('insightsWrap').innerHTML = insights.map(ins => `
+    <div class="ins-item">
+      <span class="ins-ic">${ins.ic}</span>
+      <div><div class="ins-t">${ins.t}</div><div class="ins-d">${ins.d}</div></div>
+    </div>`).join('');
+}
+
+/* ══ UI HELPERS ═════════════════════════════════════ */
+function selectChip(el, group) {
+  const container = el.parentElement;
+  container.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  state[group] = el.dataset.v;
+  schedCalc();
+}
+
+function toggleAmen(id) {
+  state.amens[id] = !state.amens[id];
+  const sw = document.getElementById(id);
+  sw.classList.toggle('on', state.amens[id]);
+  schedCalc();
+}
+
+function toggleSw(id) {
+  const sw = document.getElementById(id);
+  sw.classList.toggle('on');
+}
+
+function updateBudget(val) {
+  const num = parseInt(val);
+  const fmt = num >= 100000 ? '₹' + (num/100000).toFixed(1) + 'L' : '₹' + num.toLocaleString('en-IN');
+  document.getElementById('budgetVal').textContent = fmt;
+  const pct = ((val - 2000) / (300000 - 2000)) * 100;
+  document.getElementById('budgetRange').style.setProperty('--rp', pct + '%');
+}
+
+function updateProximity(type, val) {
+  const num = parseFloat(val);
+  if (type === 'metro') {
+    state.metroKm = num;
+    document.getElementById('metroVal').textContent = num.toFixed(1) + ' km';
+    const pct = (num / 10) * 100;
+    document.getElementById('metroRange').style.setProperty('--rp', pct + '%');
+  } else {
+    state.itKm = num;
+    document.getElementById('itVal').textContent = num.toFixed(1) + ' km';
+    const pct = (num / 20) * 100;
+    document.getElementById('itRange').style.setProperty('--rp', pct + '%');
+  }
+  schedCalc();
+}
+
+function fmtINR(n) {
+  if (!n || isNaN(n)) return '—';
+  if (n >= 100000) return (n/100000).toFixed(1) + 'L';
+  return n.toLocaleString('en-IN');
+}
+
+/* ══ ACTIONS ════════════════════════════════════════ */
+function downloadReport() {
+  const city = CITY_DATA[state.city]?.name || 'Not selected';
+  const area = state.area || 'Not selected';
+  const price = document.getElementById('priceNum')?.textContent || '—';
+  const range = document.getElementById('priceRange')?.textContent || '—';
+  const blob = new Blob([`SmartRent AI — Rent Estimate Report\n${'='.repeat(40)}\nGenerated: ${new Date().toLocaleString('en-IN')}\n\nLOCATION\nCity: ${city}\nArea: ${area}\n\nPROPERTY DETAILS\nType: ${state.propType}\nBHK: ${state.bhk}\nFurnishing: ${state.furnish}\nFloor: ${state.floor}\nSociety: ${state.society}\n\nPROXIMITY\nMetro: ${state.metroKm} km\nIT Hub: ${state.itKm} km\n\nESTIMATE\nMonthly Rent: ₹${price}\n${range}\n\nNote: Estimates are based on aggregated market data and are indicative only.\nActual rents may vary by ±8-15% depending on specific property and negotiation.\n\nFor verified listings: https://smartrentai.in/properties\n`], { type:'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'SmartRent-RentEstimate.txt'; a.click();
+  showToast('📄 Report downloaded!');
+}
+
+function shareResult() {
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title:'SmartRent AI Rent Estimate', text:`Rent estimate for ${state.area}, ${CITY_DATA[state.city]?.name||'—'}: ${document.getElementById('priceRange')?.textContent}`, url });
+  } else {
+    navigator.clipboard?.writeText(url).then(() => showToast('🔗 Link copied to clipboard!'));
+  }
+}
+
+/* ══ SCROLL / NAVBAR ════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('solid', scrollY > 40);
+  const t = document.documentElement;
+  const pct = (scrollY / (t.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('pgBar').style.width = Math.min(pct, 100) + '%';
+});
+
+/* ══ SCROLL REVEAL ══════════════════════════════════ */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+/* ══ TOAST ══════════════════════════════════════════ */
+let _tT;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.innerHTML = msg; el.style.display = 'block';
+  clearTimeout(_tT);
+  _tT = setTimeout(() => { el.style.display = 'none'; }, 3500);
+}
+
+/* ══ CHIP SETUP — preload state ════════════════════ */
+document.querySelectorAll('.chip.on').forEach(c => {
+  const container = c.parentElement.id;
+  const groupMap = {propTypeChips:'propType',bhkChips:'bhk',furnishChips:'furnish',ageChips:'age',floorChips:'floor',maintChips:'maint',tenureChips:'tenure',tenantChips:'tenant',seasonChips:'season',trendChips:'trend',schoolChips:'school',hospitalChips:'hospital',facingChips:'facing',roadChips:'road'};
+  if (groupMap[container]) state[groupMap[container]] = c.dataset.v;
+});
+
+/* ══ EXPOSE ═════════════════════════════════════════ */
+window.onCityChange=onCityChange;window.calculate=calculate;window.schedCalc=schedCalc;
+window.selectChip=selectChip;window.toggleAmen=toggleAmen;
+window.updateBudget=updateBudget;window.updateProximity=updateProximity;
+window.downloadReport=downloadReport;window.shareResult=shareResult;
+window.showToast=showToast;
+</script>
+</body>
+</html>

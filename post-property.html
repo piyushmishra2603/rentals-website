@@ -4,573 +4,620 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Post Property — SmartRent AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #060d17;
-    --surface: rgba(255,255,255,0.04);
-    --surface-hover: rgba(255,255,255,0.07);
-    --border: rgba(255,255,255,0.08);
-    --border-focus: rgba(56,189,248,0.5);
-    --accent: #38bdf8;
-    --accent2: #818cf8;
-    --danger: #f87171;
-    --success: #34d399;
-    --warn: #fbbf24;
-    --text: #f1f5f9;
-    --muted: #64748b;
-    --font-d: 'Syne', sans-serif;
-    --font-b: 'DM Sans', sans-serif;
-  }
+/* ══════════════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════════════ */
+:root {
+  --bg: #060d17;
+  --bg1: #090f1c;
+  --bg2: #0d1628;
+  --surface: rgba(255,255,255,0.04);
+  --surface-h: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-f: rgba(56,189,248,0.5);
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --danger: #f87171;
+  --success: #34d399;
+  --warn: #fbbf24;
+  --gold: #f59e0b;
+  --text: #f1f5f9;
+  --muted: #64748b;
+  --muted2: #94a3b8;
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-b); background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 2px; }
 
-  body {
-    font-family: var(--font-b);
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+/* ── BG SCENE ── */
+.bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(130px); opacity: 0.12; animation: drift 14s ease-in-out infinite alternate; }
+.orb-1 { width: 600px; height: 600px; background: #0ea5e9; top: -200px; left: -200px; }
+.orb-2 { width: 480px; height: 480px; background: #6366f1; bottom: -130px; right: -130px; animation-delay: -6s; }
+.orb-3 { width: 300px; height: 300px; background: #06b6d4; top: 50%; left: 55%; animation-delay: -3s; }
+@keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(35px,25px) scale(1.07); } }
+.bg-scene::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
 
-  /* ── BG ── */
-  .bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-  .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: drift 14s ease-in-out infinite alternate; }
-  .orb-1 { width: 550px; height: 550px; background: #0ea5e9; top: -180px; left: -180px; }
-  .orb-2 { width: 450px; height: 450px; background: #6366f1; bottom: -120px; right: -120px; animation-delay: -6s; }
-  .orb-3 { width: 280px; height: 280px; background: #06b6d4; top: 50%; left: 55%; animation-delay: -3s; }
-  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(35px,25px) scale(1.07); } }
-  .bg-scene::after {
-    content: ''; position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px), linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
-    background-size: 60px 60px;
-  }
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.85rem 1.75rem;
+  background: rgba(6,13,23,0.82); backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 200;
+}
+.brand {
+  font-family: var(--font-d); font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em;
+  background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 0.4rem; align-items: center; }
+.nav-link {
+  font-size: 0.81rem; color: var(--muted); padding: 0.38rem 0.85rem;
+  border-radius: 8px; text-decoration: none; transition: all 0.2s; border: 1px solid transparent;
+}
+.nav-link:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
 
-  /* ── NAV ── */
-  .topbar {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.9rem 1.75rem;
-    background: rgba(6,13,23,0.75);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .brand { font-family: var(--font-d); font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; background: linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .nav-links { display: flex; gap: 0.5rem; }
-  .nav-link { font-size: 0.82rem; color: var(--muted); padding: 0.4rem 0.9rem; border-radius: 8px; text-decoration: none; transition: all 0.2s; border: 1px solid transparent; }
-  .nav-link:hover { color: var(--text); background: var(--surface); border-color: var(--border); }
+/* Firebase status pill */
+.fb-pill {
+  display: flex; align-items: center; gap: 5px; padding: 3px 10px;
+  border-radius: 20px; font-size: 10px; font-family: monospace; letter-spacing: 0.08em;
+  font-weight: 600; border: 1px solid; transition: all 0.3s;
+}
+.fb-pill.connecting { background: rgba(251,191,36,.1); border-color: rgba(251,191,36,.25); color: var(--warn); }
+.fb-pill.connected  { background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.25); color: var(--success); }
+.fb-pill.error      { background: rgba(248,113,113,.1); border-color: rgba(248,113,113,.25); color: var(--danger); }
+.fb-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.8s infinite; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.35} }
 
-  /* ── LAYOUT ── */
-  .page { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 2.5rem 1.25rem 5rem; }
+/* ── PAGE LAYOUT ── */
+.page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 2.5rem 1.25rem 6rem; }
 
-  /* ── STEP PROGRESS ── */
-  .stepper {
-    display: flex; align-items: center; gap: 0; margin-bottom: 2.5rem;
-  }
-  .step {
-    display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer;
-    transition: all 0.3s;
-  }
-  .step-circle {
-    width: 38px; height: 38px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-d); font-weight: 700; font-size: 0.85rem;
-    border: 2px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-    position: relative; z-index: 1;
-  }
-  .step.active .step-circle {
-    border-color: var(--accent);
-    background: linear-gradient(135deg,#0ea5e9,#6366f1);
-    color: white;
-    box-shadow: 0 0 20px rgba(56,189,248,0.4);
-  }
-  .step.done .step-circle {
-    border-color: var(--success);
-    background: rgba(52,211,153,0.15);
-    color: var(--success);
-  }
-  .step-label { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; letter-spacing: 0.04em; white-space: nowrap; }
-  .step.active .step-label { color: var(--accent); }
-  .step.done  .step-label { color: var(--success); }
-  .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 -1px; margin-bottom: 1.4rem; transition: background 0.4s; }
-  .step-line.done { background: linear-gradient(90deg,var(--success),var(--accent)); }
+/* ── STEPPER ── */
+.stepper { display: flex; align-items: center; gap: 0; margin-bottom: 2.5rem; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer; }
+.step-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-d); font-weight: 700; font-size: 0.85rem;
+  border: 2px solid var(--border); background: var(--surface); color: var(--muted);
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1); position: relative; z-index: 1;
+}
+.step.active .step-circle {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: white; box-shadow: 0 0 22px rgba(56,189,248,0.42);
+}
+.step.done .step-circle { border-color: var(--success); background: rgba(52,211,153,0.15); color: var(--success); }
+.step-label { font-size: 0.71rem; color: var(--muted); margin-top: 0.4rem; letter-spacing: 0.04em; white-space: nowrap; }
+.step.active .step-label { color: var(--accent); }
+.step.done  .step-label { color: var(--success); }
+.step-line { flex: 1; height: 2px; background: var(--border); margin: 0 -1px; margin-bottom: 1.5rem; transition: background 0.4s; }
+.step-line.done { background: linear-gradient(90deg, var(--success), var(--accent)); }
 
-  /* ── CARD ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    backdrop-filter: blur(24px);
-    padding: 2rem;
-    transition: border-color 0.3s;
-  }
+/* ── CARD ── */
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 22px; backdrop-filter: blur(28px);
+  padding: 2.25rem; margin-bottom: 1.25rem;
+  transition: border-color 0.3s;
+}
+.card:focus-within { border-color: rgba(56,189,248,0.15); }
 
-  /* ── SECTION HEADER ── */
-  .sec-header { margin-bottom: 1.75rem; }
-  .sec-tag { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.35rem; }
-  .sec-title { font-family: var(--font-d); font-weight: 800; font-size: 1.5rem; letter-spacing: -0.03em; }
-  .sec-sub { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+/* ── SECTION HEADER ── */
+.sec-header { margin-bottom: 1.75rem; }
+.sec-tag { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.35rem; }
+.sec-title { font-family: var(--font-d); font-weight: 800; font-size: 1.55rem; letter-spacing: -0.03em; }
+.sec-sub { color: var(--muted2); font-size: 0.84rem; margin-top: 0.3rem; line-height: 1.5; }
 
-  /* ── FORM ── */
-  .field { margin-bottom: 1.25rem; }
-  .field label {
-    display: flex; align-items: center; gap: 0.4rem;
-    font-size: 0.77rem; letter-spacing: 0.07em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 0.5rem; font-weight: 500;
-  }
-  .field label .req { color: var(--danger); }
-  .field input, .field select, .field textarea {
-    width: 100%; padding: 0.78rem 1rem;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 12px; color: var(--text);
-    font-family: var(--font-b); font-size: 0.9rem;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-    outline: none; appearance: none;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus {
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(56,189,248,0.1);
-    background: rgba(255,255,255,0.06);
-  }
-  .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
-  .field textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+/* ── FORM FIELDS ── */
+.field { margin-bottom: 1.3rem; }
+.field label {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase;
+  color: var(--muted2); margin-bottom: 0.5rem; font-weight: 500;
+}
+.field label .req { color: var(--danger); }
+.field label .hint-tag { margin-left: auto; font-size: 0.7rem; letter-spacing: 0.03em; text-transform: none; color: var(--muted); font-weight: 400; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 0.8rem 1rem;
+  background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+  border-radius: 12px; color: var(--text); font-family: var(--font-b); font-size: 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  outline: none; -webkit-appearance: none;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--border-f); box-shadow: 0 0 0 3px rgba(56,189,248,0.1); background: rgba(255,255,255,0.06);
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--muted); }
+.field textarea { resize: vertical; min-height: 115px; line-height: 1.65; }
+.field input.err, .field select.err, .field textarea.err { border-color: rgba(248,113,113,0.55) !important; }
+.input-hint { font-size: 0.74rem; color: var(--muted); margin-top: 0.35rem; }
+.input-error { font-size: 0.74rem; color: var(--danger); margin-top: 0.35rem; display: none; }
+.field.error .input-error { display: block; }
 
-  /* Input with icon */
-  .input-wrap { position: relative; }
-  .input-wrap .input-icon {
-    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-    color: var(--muted); font-size: 0.95rem; pointer-events: none;
-  }
-  .input-wrap input { padding-left: 2.4rem; }
-  .input-hint { font-size: 0.75rem; color: var(--muted); margin-top: 0.35rem; }
-  .input-error { font-size: 0.75rem; color: var(--danger); margin-top: 0.35rem; display: none; }
-  .field.error input, .field.error select, .field.error textarea { border-color: rgba(248,113,113,0.5); }
-  .field.error .input-error { display: block; }
+.input-wrap { position: relative; }
+.input-wrap .input-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.95rem; pointer-events: none; }
+.input-wrap input { padding-left: 2.4rem; }
+.input-suffix { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 0.78rem; color: var(--muted); pointer-events: none; font-family: monospace; }
+.input-suf-wrap { position: relative; }
+.input-suf-wrap input { padding-right: 3rem; }
 
-  /* Grid layout */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
 
-  /* Select arrow */
-  .select-wrap { position: relative; }
-  .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 0.8rem; }
-  .select-wrap select option { background: #0d1829; color: var(--text); }
+.select-wrap { position: relative; }
+.select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 0.8rem; }
+.select-wrap select option { background: #0d1829; color: var(--text); }
 
-  /* ── AMENITIES CHIPS ── */
-  .chips-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .chip {
-    padding: 0.4rem 0.9rem; border-radius: 999px;
-    border: 1px solid var(--border); font-size: 0.8rem;
-    cursor: pointer; transition: all 0.2s; user-select: none;
-    background: var(--surface); color: var(--muted);
-  }
-  .chip:hover { border-color: rgba(56,189,248,0.35); color: var(--text); }
-  .chip.selected { background: rgba(56,189,248,0.12); border-color: var(--accent); color: var(--accent); }
+/* ── PROPERTY TYPE CARDS ── */
+.type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+.type-card {
+  border: 1.5px solid var(--border); border-radius: 14px; padding: 1rem;
+  text-align: center; cursor: pointer; transition: all 0.25s; background: var(--surface);
+}
+.type-card:hover { border-color: rgba(56,189,248,0.3); background: var(--surface-h); transform: translateY(-2px); }
+.type-card.selected { border-color: var(--accent); background: rgba(56,189,248,0.08); box-shadow: 0 0 22px rgba(56,189,248,0.12); }
+.type-card .type-icon { font-size: 1.7rem; margin-bottom: 0.4rem; }
+.type-card .type-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+.type-card.selected .type-name { color: var(--accent); }
 
-  /* ── PROPERTY TYPE CARDS ── */
-  .type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
-  .type-card {
-    border: 1.5px solid var(--border); border-radius: 14px;
-    padding: 1rem; text-align: center; cursor: pointer;
-    transition: all 0.25s; background: var(--surface);
-  }
-  .type-card:hover { border-color: rgba(56,189,248,0.3); background: var(--surface-hover); transform: translateY(-2px); }
-  .type-card.selected { border-color: var(--accent); background: rgba(56,189,248,0.08); box-shadow: 0 0 20px rgba(56,189,248,0.12); }
-  .type-card .type-icon { font-size: 1.6rem; margin-bottom: 0.4rem; }
-  .type-card .type-name { font-size: 0.78rem; font-weight: 600; color: var(--text); }
-  .type-card.selected .type-name { color: var(--accent); }
+/* ── FURNISHING ── */
+.furnish-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.65rem; }
+.furnish-card {
+  border: 1.5px solid var(--border); border-radius: 12px; padding: 0.85rem 0.6rem;
+  text-align: center; cursor: pointer; transition: all 0.25s; background: var(--surface);
+}
+.furnish-card:hover { border-color: rgba(129,140,248,0.4); transform: translateY(-2px); }
+.furnish-card.selected { border-color: var(--accent2); background: rgba(129,140,248,0.1); box-shadow: 0 0 18px rgba(129,140,248,0.14); }
+.furnish-card .f-icon { font-size: 1.35rem; margin-bottom: 0.3rem; }
+.furnish-card .f-name { font-size: 0.73rem; font-weight: 600; }
+.furnish-card.selected .f-name { color: var(--accent2); }
 
-  /* ── FURNISHING ── */
-  .furnish-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
-  .furnish-card {
-    border: 1.5px solid var(--border); border-radius: 14px;
-    padding: 0.85rem; text-align: center; cursor: pointer;
-    transition: all 0.25s; background: var(--surface);
-  }
-  .furnish-card:hover { border-color: rgba(129,140,248,0.35); transform: translateY(-2px); }
-  .furnish-card.selected { border-color: var(--accent2); background: rgba(129,140,248,0.08); }
-  .furnish-card .f-icon { font-size: 1.3rem; margin-bottom: 0.3rem; }
-  .furnish-card .f-name { font-size: 0.75rem; font-weight: 600; }
-  .furnish-card.selected .f-name { color: var(--accent2); }
+/* ── AMENITY CHIPS ── */
+.chips-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  padding: 0.4rem 0.9rem; border-radius: 999px; border: 1px solid var(--border);
+  font-size: 0.79rem; cursor: pointer; transition: all 0.2s; user-select: none;
+  background: var(--surface); color: var(--muted2);
+}
+.chip:hover { border-color: rgba(56,189,248,0.35); color: var(--text); }
+.chip.selected { background: rgba(56,189,248,0.12); border-color: var(--accent); color: var(--accent); }
 
-  /* ── DROP ZONE ── */
-  .drop-zone {
-    border: 2px dashed rgba(255,255,255,0.12);
-    border-radius: 16px; padding: 2.5rem 1.5rem;
-    text-align: center; cursor: pointer;
-    transition: all 0.3s; position: relative;
-    background: rgba(255,255,255,0.02);
-  }
-  .drop-zone:hover, .drop-zone.drag-over {
-    border-color: var(--accent);
-    background: rgba(56,189,248,0.05);
-    box-shadow: 0 0 0 4px rgba(56,189,248,0.08);
-  }
-  .drop-zone.drag-over { transform: scale(1.01); }
-  .drop-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-  .drop-title { font-family: var(--font-d); font-weight: 700; font-size: 1rem; margin-bottom: 0.3rem; }
-  .drop-sub { font-size: 0.8rem; color: var(--muted); }
-  .drop-limit { display: inline-block; font-size: 0.72rem; margin-top: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--muted); }
+/* ── PHOTO UPLOAD ── */
+.photo-section-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;
+}
+.photo-count-badge {
+  font-size: 0.72rem; background: rgba(56,189,248,0.12); border: 1px solid var(--border-f);
+  color: var(--accent); padding: 2px 10px; border-radius: 999px; font-weight: 600;
+  font-family: monospace;
+}
+.drop-zone {
+  border: 2px dashed rgba(255,255,255,0.12); border-radius: 18px; padding: 2.5rem 1.5rem;
+  text-align: center; cursor: pointer; transition: all 0.3s; position: relative;
+  background: rgba(255,255,255,0.02);
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--accent); background: rgba(56,189,248,0.05);
+  box-shadow: 0 0 0 4px rgba(56,189,248,0.08);
+}
+.drop-zone.drag-over { transform: scale(1.01); }
+.drop-icon { font-size: 2.8rem; margin-bottom: 0.75rem; }
+.drop-title { font-family: var(--font-d); font-weight: 700; font-size: 1.05rem; margin-bottom: 0.3rem; }
+.drop-sub { font-size: 0.8rem; color: var(--muted2); }
+.drop-limit { display: inline-block; font-size: 0.72rem; margin-top: 0.75rem; padding: 0.25rem 0.8rem; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); }
 
-  /* Image preview grid */
-  .img-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin-top: 1rem; }
-  .img-thumb {
-    position: relative; border-radius: 12px; overflow: hidden;
-    aspect-ratio: 4/3; background: var(--surface);
-    border: 1px solid var(--border);
-    animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
-  @keyframes popIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
-  .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .img-thumb .img-remove {
-    position: absolute; top: 6px; right: 6px;
-    width: 26px; height: 26px; border-radius: 8px;
-    background: rgba(0,0,0,0.7); color: var(--danger);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 0.8rem;
-    opacity: 0; transition: opacity 0.2s;
-    border: 1px solid rgba(248,113,113,0.3);
-  }
-  .img-thumb:hover .img-remove { opacity: 1; }
-  .img-thumb .img-badge {
-    position: absolute; bottom: 6px; left: 6px;
-    font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 999px;
-    background: rgba(0,0,0,0.65); color: var(--muted);
-  }
-  .img-thumb.cover-img .img-badge { background: rgba(56,189,248,0.8); color: white; }
+/* ── IMAGE GRID ── */
+.img-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.75rem; margin-top: 1rem; }
+.img-thumb {
+  position: relative; border-radius: 13px; overflow: hidden;
+  aspect-ratio: 4/3; background: var(--surface); border: 2px solid var(--border);
+  animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  transition: border-color 0.2s;
+}
+@keyframes popIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+.img-thumb:hover { border-color: rgba(56,189,248,0.3); }
+.img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-thumb.cover-img { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(56,189,248,0.25); }
 
-  /* Upload progress */
-  .upload-progress {
-    margin-top: 1rem; display: none;
-  }
-  .progress-bar-wrap {
-    background: rgba(255,255,255,0.05); border-radius: 999px;
-    height: 6px; overflow: hidden; margin-top: 0.5rem;
-  }
-  .progress-bar {
-    height: 100%; background: linear-gradient(90deg,var(--accent),var(--accent2));
-    border-radius: 999px; width: 0%;
-    transition: width 0.3s ease;
-  }
-  .progress-label { font-size: 0.78rem; color: var(--muted); display: flex; justify-content: space-between; }
+/* img overlay */
+.img-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background 0.2s;
+  display: flex; flex-direction: column; justify-content: space-between; padding: 6px;
+}
+.img-thumb:hover .img-overlay { background: rgba(0,0,0,0.5); }
+.img-actions { display: flex; gap: 4px; justify-content: flex-end; opacity: 0; transition: opacity 0.2s; }
+.img-thumb:hover .img-actions { opacity: 1; }
+.img-action-btn {
+  width: 26px; height: 26px; border-radius: 7px; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+  transition: all 0.15s;
+}
+.img-btn-remove { background: rgba(248,113,113,0.85); color: white; }
+.img-btn-remove:hover { background: var(--danger); }
+.img-btn-cover { background: rgba(56,189,248,0.85); color: white; }
+.img-btn-cover:hover { background: var(--accent); }
+.img-badge {
+  font-size: 0.62rem; padding: 2px 7px; border-radius: 999px;
+  font-weight: 700; align-self: flex-start; font-family: monospace; letter-spacing: 0.05em;
+}
+.img-badge-cover { background: rgba(56,189,248,0.9); color: white; }
+.img-badge-num { background: rgba(0,0,0,0.6); color: var(--muted2); }
 
-  /* ── SUMMARY CARD ── */
-  .summary-card {
-    background: linear-gradient(135deg,rgba(14,165,233,0.08),rgba(99,102,241,0.08));
-    border: 1px solid rgba(56,189,248,0.2);
-    border-radius: 16px; padding: 1.5rem;
-  }
-  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
-  .summary-row:last-child { border-bottom: none; }
-  .summary-key { font-size: 0.8rem; color: var(--muted); }
-  .summary-val { font-size: 0.85rem; font-weight: 500; color: var(--text); text-align: right; max-width: 55%; }
+/* ── UPLOAD PROGRESS ── */
+.upload-item {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 12px; margin-bottom: 8px; transition: all 0.3s;
+}
+.upload-item.done { border-color: rgba(52,211,153,0.3); background: rgba(52,211,153,0.05); }
+.upload-item.error { border-color: rgba(248,113,113,0.3); background: rgba(248,113,113,0.05); }
+.ui-icon { font-size: 1.2rem; flex-shrink: 0; }
+.ui-name { font-size: 0.8rem; font-weight: 500; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ui-size { font-size: 0.72rem; color: var(--muted); font-family: monospace; flex-shrink: 0; }
+.ui-status { font-size: 0.72rem; font-weight: 600; flex-shrink: 0; min-width: 70px; text-align: right; }
+.ui-prog-wrap { width: 100%; height: 3px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.ui-prog-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg,var(--accent),var(--accent2)); width: 0%; transition: width 0.3s; }
 
-  /* ── BUTTONS ── */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
-    padding: 0.7rem 1.5rem; border-radius: 12px;
-    font-family: var(--font-b); font-size: 0.88rem; font-weight: 500;
-    border: none; cursor: pointer; transition: all 0.22s; letter-spacing: 0.01em;
-  }
-  .btn-primary {
-    background: linear-gradient(135deg,#0ea5e9,#6366f1); color: white;
-    box-shadow: 0 4px 18px rgba(56,189,248,0.25);
-  }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(56,189,248,0.38); }
-  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-  .btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-  .btn-ghost:hover { background: var(--surface-hover); transform: translateY(-2px); }
-  .btn-success { background: linear-gradient(135deg,#059669,#10b981); color: white; box-shadow: 0 4px 18px rgba(52,211,153,0.25); }
-  .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(52,211,153,0.35); }
-  .btn-lg { padding: 0.9rem 2rem; font-size: 0.95rem; }
+/* ── SUMMARY ── */
+.summary-card {
+  background: linear-gradient(135deg,rgba(14,165,233,0.07),rgba(99,102,241,0.07));
+  border: 1px solid rgba(56,189,248,0.18); border-radius: 16px; padding: 1.5rem;
+  overflow: hidden;
+}
+.summary-row {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 0.65rem 0; border-bottom: 1px solid var(--border); gap: 12px;
+}
+.summary-row:last-child { border-bottom: none; padding-bottom: 0; }
+.summary-key { font-size: 0.79rem; color: var(--muted2); flex-shrink: 0; min-width: 110px; }
+.summary-val { font-size: 0.84rem; font-weight: 500; color: var(--text); text-align: right; }
+.summary-img-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; margin-top: 4px; }
+.summary-img-thumb { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); }
 
-  .btn-row { display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; margin-top: 1.75rem; }
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
+  padding: 0.72rem 1.5rem; border-radius: 12px;
+  font-family: var(--font-b); font-size: 0.88rem; font-weight: 500;
+  border: none; cursor: pointer; transition: all 0.22s; letter-spacing: 0.01em; text-decoration: none;
+}
+.btn-primary { background: linear-gradient(135deg,#0ea5e9,#6366f1); color: white; box-shadow: 0 4px 18px rgba(56,189,248,0.22); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(56,189,248,0.38); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-ghost { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--surface-h); transform: translateY(-2px); }
+.btn-success { background: linear-gradient(135deg,#059669,#10b981); color: white; box-shadow: 0 4px 18px rgba(52,211,153,0.22); }
+.btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(52,211,153,0.35); }
+.btn-success:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-lg { padding: 0.9rem 2rem; font-size: 0.94rem; font-weight: 600; }
+.btn-row { display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; margin-top: 1.75rem; }
 
-  /* ── STEP PANELS ── */
-  .step-panel { display: none; }
-  .step-panel.active { display: block; animation: fadeUp 0.4s cubic-bezier(0.22,1,0.36,1) both; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+/* ── PANELS ── */
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeUp 0.38s cubic-bezier(0.22,1,0.36,1) both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
-    background: #0d1829; border: 1px solid var(--border); border-radius: 14px;
-    padding: 0.9rem 1.4rem; display: flex; align-items: center; gap: 0.6rem;
-    font-size: 0.87rem; font-weight: 500;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    transform: translateY(20px); opacity: 0; pointer-events: none;
-    transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; pointer-events: all; }
-  .toast-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .toast.success .toast-dot { background: var(--success); }
-  .toast.error   .toast-dot { background: var(--danger); }
-  .toast.warn    .toast-dot { background: var(--warn); }
+/* ── INFO ROW ── */
+.info-row {
+  display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px;
+  background: rgba(56,189,248,0.06); border: 1px solid rgba(56,189,248,0.16);
+  border-radius: 10px; margin-bottom: 1rem; font-size: 0.8rem; color: var(--muted2); line-height: 1.55;
+}
+.info-row .info-ic { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.info-row.warn { background: rgba(251,191,36,0.06); border-color: rgba(251,191,36,0.2); }
+.info-row.success { background: rgba(52,211,153,0.07); border-color: rgba(52,211,153,0.2); }
 
-  /* ── SUCCESS SCREEN ── */
-  #successScreen {
-    display: none; text-align: center; padding: 3rem 1.5rem;
-  }
-  #successScreen .success-icon {
-    font-size: 4rem; margin-bottom: 1rem;
-    animation: bounceIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
-  }
-  @keyframes bounceIn { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
-  #successScreen h2 { font-family: var(--font-d); font-weight: 800; font-size: 1.8rem; margin-bottom: 0.5rem; }
-  #successScreen p { color: var(--muted); margin-bottom: 1.5rem; }
+/* ── CHAR COUNT ── */
+.char-count { font-size: 0.72rem; color: var(--muted); text-align: right; margin-top: 0.35rem; }
+.char-count.warn { color: var(--warn); }
 
-  /* ── CHARACTER COUNT ── */
-  .char-count { font-size: 0.72rem; color: var(--muted); text-align: right; margin-top: 0.3rem; }
-  .char-count.warn { color: var(--warn); }
+/* ── SECTION DIVIDER ── */
+.sec-divider { display: flex; align-items: center; gap: 10px; margin: 1.5rem 0 1rem; }
+.sec-divider span { font-size: 0.69rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; white-space: nowrap; }
+.sec-divider::before, .sec-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 600px) {
-    .grid-2, .grid-3 { grid-template-columns: 1fr; }
-    .type-grid { grid-template-columns: repeat(2,1fr); }
-    .furnish-grid { grid-template-columns: repeat(3,1fr); }
-    .img-grid { grid-template-columns: repeat(2,1fr); }
-    .stepper { gap: 0; }
-    .step-label { display: none; }
-  }
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+  background: #0d1829; border: 1px solid var(--border); border-radius: 14px;
+  padding: 0.9rem 1.4rem; display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.86rem; font-weight: 500; min-width: 240px; max-width: 360px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: translateY(20px); opacity: 0; pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; pointer-events: all; }
+.toast-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.toast.success .toast-dot { background: var(--success); }
+.toast.error   .toast-dot { background: var(--danger); }
+.toast.warn    .toast-dot { background: var(--warn); }
+.toast.info    .toast-dot { background: var(--accent); }
+
+/* ── SUCCESS SCREEN ── */
+.success-screen { display: none; text-align: center; padding: 3rem 1.5rem; animation: fadeUp 0.5s both; }
+.success-icon { font-size: 4.5rem; margin-bottom: 1.2rem; animation: bounceIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
+@keyframes bounceIn { from{opacity:0;transform:scale(0.4)} to{opacity:1;transform:scale(1)} }
+.success-title { font-family: var(--font-d); font-weight: 800; font-size: 2rem; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+.success-sub { color: var(--muted2); margin-bottom: 0.75rem; line-height: 1.65; font-size: 0.92rem; }
+.success-id { display: inline-block; font-family: monospace; font-size: 0.82rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--accent); padding: 6px 16px; border-radius: 999px; margin-bottom: 1.75rem; }
+.success-images { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.success-img { width: 72px; height: 72px; border-radius: 12px; object-fit: cover; border: 2px solid var(--border); }
+.success-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px) {
+  .grid-2,.grid-3 { grid-template-columns:1fr; }
+  .type-grid { grid-template-columns:repeat(2,1fr); }
+  .furnish-grid { grid-template-columns:repeat(2,1fr); }
+  .img-grid { grid-template-columns:repeat(2,1fr); }
+  .step-label { display:none; }
+  .topbar { padding: 0.75rem 1rem; }
+  .page { padding: 1.5rem 0.85rem 5rem; }
+  .card { padding: 1.5rem 1.25rem; }
+}
 </style>
 </head>
 <body>
 
 <!-- BG -->
 <div class="bg-scene">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div>
 </div>
 
-<!-- NAV -->
-<nav class="topbar">
-  <span class="brand">⚡ SmartRent AI</span>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">🏠 Home</a>
-    <a href="dashboard.html" class="nav-link">📊 Dashboard</a>
-    <a href="profile.html" class="nav-link">👤 Profile</a>
-    <a href="submit.html" class="post-btn">+ Post Property</a>
+<!-- TOAST -->
+<div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg">Message</span></div>
 
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="index.html" class="brand">⚡ SmartRent AI</a>
+  <div class="nav-links">
+    <div class="fb-pill connecting" id="fbPill"><div class="fb-dot"></div><span id="fbPillText">CONNECTING</span></div>
+    <a href="index.html" class="nav-link">🏠 Home</a>
+    <a href="booking-dashboard.html" class="nav-link">📊 Dashboard</a>
   </div>
 </nav>
 
+<!-- PAGE -->
 <div class="page">
 
-  <!-- PAGE TITLE -->
+  <!-- Page Header -->
   <div style="margin-bottom:2rem;animation:fadeUp 0.4s both;">
-    <div style="font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.4rem;">New Listing</div>
+    <div style="font-size:0.69rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.4rem;">New Listing</div>
     <h1 style="font-family:var(--font-d);font-weight:800;font-size:2rem;letter-spacing:-0.03em;">Post a Property 🏘️</h1>
-    <p style="color:var(--muted);font-size:0.88rem;margin-top:0.3rem;">Fill in 3 simple steps to list your property on SmartRent AI.</p>
+    <p style="color:var(--muted2);font-size:0.87rem;margin-top:0.35rem;">Fill in 3 simple steps — your listing goes live instantly and reaches 50,000+ tenants.</p>
   </div>
 
   <!-- STEPPER -->
   <div class="stepper" id="stepper" style="animation:fadeUp 0.4s 0.1s both;">
-    <div class="step active" id="s1" onclick="goStep(1)">
-      <div class="step-circle" id="sc1">1</div>
-      <div class="step-label">Basic Info</div>
-    </div>
+    <div class="step active" id="s1" onclick="goStep(1)"><div class="step-circle" id="sc1">1</div><div class="step-label">Basic Info</div></div>
     <div class="step-line" id="sl1"></div>
-    <div class="step" id="s2" onclick="goStep(2)">
-      <div class="step-circle" id="sc2">2</div>
-      <div class="step-label">Details</div>
-    </div>
+    <div class="step" id="s2" onclick="goStep(2)"><div class="step-circle" id="sc2">2</div><div class="step-label">Details & Rules</div></div>
     <div class="step-line" id="sl2"></div>
-    <div class="step" id="s3" onclick="goStep(3)">
-      <div class="step-circle" id="sc3">3</div>
-      <div class="step-label">Photos & Review</div>
-    </div>
+    <div class="step" id="s3" onclick="goStep(3)"><div class="step-circle" id="sc3">3</div><div class="step-label">Photos & Review</div></div>
   </div>
 
   <!-- ══ STEP 1 — BASIC INFO ══ -->
   <div class="step-panel active" id="panel1">
-    <div class="card" style="animation:fadeUp 0.4s 0.15s both;">
-
+    <div class="card">
       <div class="sec-header">
-        <div class="sec-tag">Step 1 of 3</div>
+        <div class="sec-tag">Step 1 of 3 · ~3 minutes</div>
         <div class="sec-title">Basic Information</div>
-        <div class="sec-sub">Let's start with the essentials of your property.</div>
+        <div class="sec-sub">Start with the essentials. The more accurate you are, the better quality tenants you attract.</div>
       </div>
 
       <!-- Property Type -->
       <div class="field">
         <label>Property Type <span class="req">*</span></label>
         <div class="type-grid" id="typeGrid">
-          <div class="type-card selected" data-type="Apartment" onclick="selectType(this)">
-            <div class="type-icon">🏢</div>
-            <div class="type-name">Apartment</div>
-          </div>
-          <div class="type-card" data-type="House" onclick="selectType(this)">
-            <div class="type-icon">🏠</div>
-            <div class="type-name">House</div>
-          </div>
-          <div class="type-card" data-type="Villa" onclick="selectType(this)">
-            <div class="type-icon">🏡</div>
-            <div class="type-name">Villa</div>
-          </div>
-          <div class="type-card" data-type="Studio" onclick="selectType(this)">
-            <div class="type-icon">🛋️</div>
-            <div class="type-name">Studio</div>
-          </div>
-          <div class="type-card" data-type="Commercial" onclick="selectType(this)">
-            <div class="type-icon">🏗️</div>
-            <div class="type-name">Commercial</div>
-          </div>
-          <div class="type-card" data-type="PG/Hostel" onclick="selectType(this)">
-            <div class="type-icon">🛏️</div>
-            <div class="type-name">PG / Hostel</div>
-          </div>
+          <div class="type-card selected" data-type="Apartment" onclick="selectType(this)"><div class="type-icon">🏢</div><div class="type-name">Apartment</div></div>
+          <div class="type-card" data-type="Independent House" onclick="selectType(this)"><div class="type-icon">🏠</div><div class="type-name">House</div></div>
+          <div class="type-card" data-type="Villa" onclick="selectType(this)"><div class="type-icon">🏡</div><div class="type-name">Villa</div></div>
+          <div class="type-card" data-type="Studio" onclick="selectType(this)"><div class="type-icon">🛋️</div><div class="type-name">Studio</div></div>
+          <div class="type-card" data-type="Builder Floor" onclick="selectType(this)"><div class="type-icon">🏗️</div><div class="type-name">Builder Floor</div></div>
+          <div class="type-card" data-type="PG / Hostel" onclick="selectType(this)"><div class="type-icon">🛏️</div><div class="type-name">PG / Hostel</div></div>
         </div>
       </div>
 
       <!-- Title -->
       <div class="field" id="f-title">
-        <label>Property Title <span class="req">*</span></label>
-        <input id="title" placeholder="e.g. Spacious 2BHK in Downtown with Sea View" maxlength="80">
-        <div class="char-count" id="titleCount">0 / 80</div>
-        <div class="input-error">Please enter a property title.</div>
+        <label>Property Title <span class="req">*</span> <span class="hint-tag">Be specific — mention BHK + area + USP</span></label>
+        <input id="title" placeholder="e.g. Spacious 2BHK with Modular Kitchen & Sea View in Bandra West" maxlength="90"
+               oninput="updateCharCount('title','titleCount',90)">
+        <div class="char-count" id="titleCount">0 / 90</div>
+        <div class="input-error">Please enter a property title (minimum 10 characters).</div>
       </div>
 
       <!-- Price & BHK -->
       <div class="grid-2">
         <div class="field" id="f-price">
-          <label>Monthly Rent (₹) <span class="req">*</span></label>
+          <label>Monthly Rent <span class="req">*</span></label>
           <div class="input-wrap">
             <span class="input-icon">₹</span>
-            <input id="price" type="number" placeholder="25000" min="0">
+            <input id="price" type="number" placeholder="25000" min="1000" max="1000000">
           </div>
-          <div class="input-error">Enter a valid price.</div>
+          <div class="input-hint">Enter the expected monthly rent amount</div>
+          <div class="input-error">Enter a valid rent amount.</div>
         </div>
         <div class="field" id="f-bhk">
           <label>Configuration <span class="req">*</span></label>
           <div class="select-wrap">
             <select id="bhk">
-              <option value="">Select BHK</option>
-              <option>1 RK</option>
-              <option>1 BHK</option>
-              <option>2 BHK</option>
-              <option>3 BHK</option>
-              <option>4 BHK</option>
-              <option>4+ BHK</option>
-              <option>Villa</option>
-              <option>Penthouse</option>
+              <option value="">— Select BHK —</option>
+              <option>1 RK / Studio</option><option>1 BHK</option><option>2 BHK</option>
+              <option>3 BHK</option><option>4 BHK</option><option>4+ BHK</option>
+              <option>Villa</option><option>Penthouse</option><option>Commercial Space</option>
             </select>
           </div>
           <div class="input-error">Please select a configuration.</div>
         </div>
       </div>
 
-      <!-- City & Area -->
+      <!-- City & Locality -->
       <div class="grid-2">
         <div class="field" id="f-city">
           <label>City <span class="req">*</span></label>
-          <input id="city" placeholder="e.g. Mumbai, Delhi, Bangalore">
-          <div class="input-error">Please enter a city.</div>
+          <div class="select-wrap">
+            <select id="city">
+              <option value="">— Select City —</option>
+              <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
+              <option>Delhi</option><option>Chennai</option><option>Pune</option>
+              <option>Kolkata</option><option>Ahmedabad</option><option>Noida</option>
+              <option>Gurgaon</option><option>Kochi</option><option>Jaipur</option>
+              <option>Chandigarh</option><option>Indore</option><option>Vizag</option>
+            </select>
+          </div>
+          <div class="input-error">Please select a city.</div>
         </div>
-        <div class="field" id="f-locality">
-          <label>Locality / Neighbourhood</label>
-          <input id="locality" placeholder="e.g. Bandra West, Koramangala">
+        <div class="field">
+          <label>Locality / Neighbourhood <span class="req">*</span></label>
+          <input id="locality" placeholder="e.g. Banjara Hills, Koramangala, Whitefield">
+          <div class="input-error">Please enter the locality.</div>
         </div>
       </div>
 
-      <!-- Area & Floor -->
-      <div class="grid-2">
+      <!-- Full Address -->
+      <div class="field">
+        <label>Full Address <span class="hint-tag">Shown to tenants after they contact you</span></label>
+        <input id="fullAddress" placeholder="Flat No., Building Name, Street, Area, PIN code">
+        <div class="input-hint">Exact address is only revealed to verified tenants</div>
+      </div>
+
+      <!-- Area, Floor, Total Floors -->
+      <div class="grid-3">
         <div class="field">
-          <label>Carpet Area (sq.ft)</label>
-          <input id="area" type="number" placeholder="850" min="0">
+          <label>Carpet Area</label>
+          <div class="input-suf-wrap">
+            <input id="area" type="number" placeholder="850" min="50">
+            <span class="input-suffix">sq.ft</span>
+          </div>
         </div>
         <div class="field">
           <label>Floor Number</label>
           <div class="select-wrap">
             <select id="floor">
-              <option value="">Select Floor</option>
-              <option>Ground Floor</option>
-              <option>1st Floor</option>
-              <option>2nd Floor</option>
-              <option>3rd Floor</option>
-              <option>4th Floor</option>
-              <option>5th Floor</option>
-              <option>6–10th Floor</option>
-              <option>10+ Floor</option>
+              <option value="">—</option>
+              <option>Ground Floor</option><option>1st Floor</option><option>2nd Floor</option>
+              <option>3rd Floor</option><option>4th Floor</option><option>5th Floor</option>
+              <option>6–10th Floor</option><option>11–20th Floor</option><option>20+ Floor</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Total Floors in Bldg</label>
+          <input id="totalFloors" type="number" placeholder="12" min="1">
+        </div>
+      </div>
+
+      <!-- Deposit & Available -->
+      <div class="grid-2">
+        <div class="field">
+          <label>Security Deposit <span class="hint-tag">Typical: 1–3 months</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">₹</span>
+            <input id="deposit" type="number" placeholder="50000" min="0">
+          </div>
+        </div>
+        <div class="field">
+          <label>Available From</label>
+          <input id="availableFrom" type="date">
+        </div>
+      </div>
+
+      <!-- Facing & Age -->
+      <div class="grid-2">
+        <div class="field">
+          <label>Property Facing</label>
+          <div class="select-wrap">
+            <select id="facing">
+              <option value="">— Select —</option>
+              <option>East Facing</option><option>North Facing</option>
+              <option>West Facing</option><option>South Facing</option>
+              <option>North-East</option><option>North-West</option>
+              <option>South-East</option><option>South-West</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Age of Property</label>
+          <div class="select-wrap">
+            <select id="propAge">
+              <option value="">— Select —</option>
+              <option>Under Construction</option><option>0–1 year</option>
+              <option>1–3 years</option><option>3–7 years</option>
+              <option>7–10 years</option><option>10+ years</option>
             </select>
           </div>
         </div>
       </div>
 
       <div class="btn-row">
-        <span style="font-size:0.8rem;color:var(--muted);">Step 1 of 3</span>
+        <span style="font-size:0.79rem;color:var(--muted);">Step 1 of 3 · <span id="s1prog">0</span> fields complete</span>
         <button class="btn btn-primary btn-lg" onclick="nextStep(1)">Continue →</button>
       </div>
     </div>
   </div>
 
-  <!-- ══ STEP 2 — DETAILS ══ -->
+  <!-- ══ STEP 2 — DETAILS & RULES ══ -->
   <div class="step-panel" id="panel2">
     <div class="card">
-
       <div class="sec-header">
-        <div class="sec-tag">Step 2 of 3</div>
-        <div class="sec-title">Property Details</div>
-        <div class="sec-sub">Help renters understand what makes your property special.</div>
+        <div class="sec-tag">Step 2 of 3 · ~4 minutes</div>
+        <div class="sec-title">Details, Amenities & Rules</div>
+        <div class="sec-sub">The more detail you provide, the higher your listing ranks and the better quality enquiries you receive.</div>
       </div>
 
       <!-- Furnishing -->
       <div class="field">
-        <label>Furnishing Status</label>
+        <label>Furnishing Status <span class="req">*</span></label>
         <div class="furnish-grid" id="furnishGrid">
-          <div class="furnish-card selected" data-f="Unfurnished" onclick="selectFurnish(this)">
-            <div class="f-icon">🪑</div>
-            <div class="f-name">Unfurnished</div>
-          </div>
-          <div class="furnish-card" data-f="Semi-Furnished" onclick="selectFurnish(this)">
-            <div class="f-icon">🛋️</div>
-            <div class="f-name">Semi-Furnished</div>
-          </div>
-          <div class="furnish-card" data-f="Fully Furnished" onclick="selectFurnish(this)">
-            <div class="f-icon">🏠</div>
-            <div class="f-name">Fully Furnished</div>
-          </div>
+          <div class="furnish-card selected" data-f="Unfurnished" onclick="selectFurnish(this)"><div class="f-icon">📦</div><div class="f-name">Unfurnished</div></div>
+          <div class="furnish-card" data-f="Semi-Furnished" onclick="selectFurnish(this)"><div class="f-icon">🪑</div><div class="f-name">Semi-Furnished</div></div>
+          <div class="furnish-card" data-f="Fully Furnished" onclick="selectFurnish(this)"><div class="f-icon">🛋️</div><div class="f-name">Fully Furnished</div></div>
+          <div class="furnish-card" data-f="Premium Furnished" onclick="selectFurnish(this)"><div class="f-icon">💎</div><div class="f-name">Premium Furnished</div></div>
         </div>
       </div>
+
+      <div class="sec-divider"><span>Amenities & Features</span></div>
 
       <!-- Amenities -->
       <div class="field">
-        <label>Amenities</label>
+        <label>Basic Amenities <span class="hint-tag">Select all that apply</span></label>
         <div class="chips-wrap" id="amenitiesWrap">
-          <div class="chip" onclick="toggleChip(this)">🅿️ Parking</div>
+          <div class="chip" onclick="toggleChip(this)">🅿️ Covered Parking</div>
           <div class="chip" onclick="toggleChip(this)">🏊 Swimming Pool</div>
           <div class="chip" onclick="toggleChip(this)">🏋️ Gym</div>
-          <div class="chip" onclick="toggleChip(this)">🔒 Security</div>
-          <div class="chip" onclick="toggleChip(this)">🛗 Lift</div>
+          <div class="chip" onclick="toggleChip(this)">🔒 24/7 Security</div>
+          <div class="chip" onclick="toggleChip(this)">📹 CCTV</div>
+          <div class="chip" onclick="toggleChip(this)">🛗 Lift / Elevator</div>
           <div class="chip" onclick="toggleChip(this)">⚡ Power Backup</div>
-          <div class="chip" onclick="toggleChip(this)">💧 24H Water</div>
-          <div class="chip" onclick="toggleChip(this)">📶 WiFi</div>
-          <div class="chip" onclick="toggleChip(this)">🌿 Garden</div>
+          <div class="chip" onclick="toggleChip(this)">💧 24H Water Supply</div>
+          <div class="chip" onclick="toggleChip(this)">📶 Fibre WiFi Ready</div>
+          <div class="chip" onclick="toggleChip(this)">🌿 Garden / Park</div>
           <div class="chip" onclick="toggleChip(this)">🐾 Pet Friendly</div>
           <div class="chip" onclick="toggleChip(this)">🍳 Modular Kitchen</div>
           <div class="chip" onclick="toggleChip(this)">♨️ Geyser</div>
-        </div>
-      </div>
-
-      <!-- Available From & Deposit -->
-      <div class="grid-2">
-        <div class="field">
-          <label>Available From</label>
-          <input id="availableFrom" type="date">
-        </div>
-        <div class="field">
-          <label>Security Deposit (₹)</label>
-          <div class="input-wrap">
-            <span class="input-icon">₹</span>
-            <input id="deposit" type="number" placeholder="50000" min="0">
-          </div>
-          <div class="input-hint">Typically 2–3 months rent</div>
+          <div class="chip" onclick="toggleChip(this)">❄️ Air Conditioning</div>
+          <div class="chip" onclick="toggleChip(this)">🎾 Clubhouse</div>
+          <div class="chip" onclick="toggleChip(this)">🚿 Attached Bathroom</div>
+          <div class="chip" onclick="toggleChip(this)">🏠 Society Maintenance</div>
+          <div class="chip" onclick="toggleChip(this)">🌞 Balcony</div>
+          <div class="chip" onclick="toggleChip(this)">🏗️ Rainwater Harvesting</div>
+          <div class="chip" onclick="toggleChip(this)">🌳 Gated Society</div>
         </div>
       </div>
 
@@ -582,15 +629,117 @@
           <div class="chip" onclick="toggleChip(this)">🧑‍💼 Working Professional</div>
           <div class="chip" onclick="toggleChip(this)">🎓 Student</div>
           <div class="chip" onclick="toggleChip(this)">👥 Bachelors</div>
-          <div class="chip" onclick="toggleChip(this)">🌍 Any</div>
+          <div class="chip" onclick="toggleChip(this)">🌍 Anyone Welcome</div>
+          <div class="chip" onclick="toggleChip(this)">👩 Women Only</div>
         </div>
       </div>
 
+      <div class="sec-divider"><span>Property Rules & Policies</span></div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label>Cooking Allowed</label>
+          <div class="select-wrap">
+            <select id="cooking">
+              <option value="">— Select —</option>
+              <option>Yes</option><option>Veg Only</option><option>No</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Non-Vegetarian</label>
+          <div class="select-wrap">
+            <select id="nonveg">
+              <option value="">— Select —</option>
+              <option>Allowed</option><option>Not Allowed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Smoking Policy</label>
+          <div class="select-wrap">
+            <select id="smoking">
+              <option value="">— Select —</option>
+              <option>Not Allowed</option><option>Allowed Outside</option><option>Allowed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Drinking Allowed</label>
+          <div class="select-wrap">
+            <select id="drinking">
+              <option value="">— Select —</option>
+              <option>Not Allowed</option><option>In Rooms Only</option><option>Allowed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Guests / Visitors</label>
+          <div class="select-wrap">
+            <select id="guests">
+              <option value="">— Select —</option>
+              <option>Allowed (Reasonable hours)</option><option>Not Allowed</option><option>24/7 Allowed</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Maintenance</label>
+          <div class="select-wrap">
+            <select id="maintenance">
+              <option value="">— Select —</option>
+              <option>Included in Rent</option><option>Extra Charge</option><option>Owner Pays</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-divider"><span>Owner / Contact Details</span></div>
+
+      <div class="grid-2">
+        <div class="field" id="f-ownerName">
+          <label>Owner Name <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">👤</span>
+            <input id="ownerName" placeholder="Full name">
+          </div>
+          <div class="input-error">Please enter your name.</div>
+        </div>
+        <div class="field" id="f-ownerPhone">
+          <label>Mobile Number <span class="req">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">📞</span>
+            <input id="ownerPhone" type="tel" placeholder="+91 98765 43210" maxlength="14">
+          </div>
+          <div class="input-error">Please enter a valid phone number.</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>WhatsApp Number <span class="hint-tag">For tenant enquiries</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">💬</span>
+            <input id="ownerWA" type="tel" placeholder="Same as mobile or alternate">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">📧</span>
+            <input id="ownerEmail" type="email" placeholder="you@email.com">
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-divider"><span>Description</span></div>
+
       <!-- Description -->
-      <div class="field">
-        <label>Description <span class="req">*</span></label>
-        <textarea id="description" placeholder="Describe your property — mention key highlights, nearby landmarks, and any special features…" maxlength="600"></textarea>
-        <div class="char-count" id="descCount">0 / 600</div>
+      <div class="field" id="f-desc">
+        <label>Property Description <span class="req">*</span> <span class="hint-tag">min 50 characters</span></label>
+        <textarea id="description" maxlength="800"
+          placeholder="Describe your property thoughtfully — mention natural light, room sizes, nearby landmarks (metro, schools, IT parks), what makes it unique, community vibe, maintenance quality, nearby conveniences…"
+          oninput="updateCharCount('description','descCount',800)"></textarea>
+        <div class="char-count" id="descCount">0 / 800</div>
+        <div class="input-error">Please write a description (minimum 50 characters).</div>
       </div>
 
       <div class="btn-row">
@@ -602,100 +751,140 @@
 
   <!-- ══ STEP 3 — PHOTOS & REVIEW ══ -->
   <div class="step-panel" id="panel3">
-    <div class="card" style="margin-bottom:1.25rem;">
 
+    <!-- Photo Upload Card -->
+    <div class="card">
       <div class="sec-header">
         <div class="sec-tag">Step 3 of 3</div>
         <div class="sec-title">Photos & Final Review</div>
-        <div class="sec-sub">Great photos = 3× more enquiries. Upload at least 3.</div>
+        <div class="sec-sub">Great photos get <strong>3× more enquiries</strong>. Upload at least 3. The first photo becomes your cover image.</div>
+      </div>
+
+      <div class="info-row">
+        <span class="info-ic">💡</span>
+        <div>Photos are <strong>uploaded to Cloudinary CDN</strong> for fast, optimised delivery. Max 5MB per image · JPG, PNG, WEBP · Up to 15 photos. Click a photo's ⭐ icon to set it as the cover.</div>
       </div>
 
       <!-- Drop Zone -->
+      <div class="photo-section-header">
+        <label style="font-size:0.76rem;letter-spacing:0.07em;text-transform:uppercase;color:var(--muted2);font-weight:500;">Upload Photos</label>
+        <div class="photo-count-badge" id="photoCountBadge">0 / 15</div>
+      </div>
       <div id="dropZone" class="drop-zone">
         <div class="drop-icon">📸</div>
-        <div class="drop-title">Drag & Drop your photos here</div>
+        <div class="drop-title">Drag & Drop photos here</div>
         <div class="drop-sub">or click to browse from your device</div>
-        <span class="drop-limit">JPG · PNG · WEBP · Max 5MB each · Up to 10 photos</span>
-        <input type="file" id="imageInput" multiple accept="image/*" hidden>
+        <span class="drop-limit">JPG · PNG · WEBP · Max 5MB each · Up to 15 photos</span>
+        <input type="file" id="imageInput" multiple accept="image/jpeg,image/png,image/webp" hidden>
       </div>
-
       <div id="imgGrid" class="img-grid"></div>
 
-      <!-- Upload Progress -->
-      <div class="upload-progress" id="uploadProgress">
-        <div class="progress-label">
-          <span id="progressText">Uploading images…</span>
-          <span id="progressPct">0%</span>
-        </div>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" id="progressBar"></div>
-        </div>
-      </div>
+      <!-- Per-file upload progress -->
+      <div id="uploadItemsList" style="margin-top:1rem;"></div>
     </div>
 
     <!-- REVIEW SUMMARY -->
-    <div class="card" style="margin-bottom:1.25rem;">
+    <div class="card">
       <div class="sec-header" style="margin-bottom:1rem;">
-        <div class="sec-tag">Review</div>
-        <div class="sec-title" style="font-size:1.15rem;">Listing Summary</div>
+        <div class="sec-tag">Review Before Publishing</div>
+        <div class="sec-title" style="font-size:1.3rem;">Listing Summary</div>
+        <div class="sec-sub">Verify all details below. You can always edit after publishing via your Owner Dashboard.</div>
       </div>
-      <div class="summary-card" id="summaryCard"></div>
+      <div class="summary-card" id="summaryCard">
+        <div style="text-align:center;padding:1rem;color:var(--muted);font-size:0.85rem;">Go back and complete the previous steps first.</div>
+      </div>
     </div>
 
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
       <button class="btn btn-success btn-lg" id="submitBtn" onclick="submitProperty()">
-        🚀 Post Property
+        🚀 Upload Photos & Publish
       </button>
     </div>
   </div>
 
   <!-- SUCCESS SCREEN -->
-  <div id="successScreen">
+  <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
-    <h2>Property Listed!</h2>
-    <p>Your property is now live on SmartRent AI and visible to thousands of renters.</p>
-    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
-      <a href="dashboard.html" class="btn btn-primary btn-lg">Go to Dashboard</a>
-      <button class="btn btn-ghost btn-lg" onclick="resetForm()">Post Another</button>
+    <div class="success-title">Property Listed Successfully!</div>
+    <div class="success-sub">Your property is now live on SmartRent AI and visible to 50,000+ tenants across India.<br>You'll receive enquiries directly on your WhatsApp and email.</div>
+    <div class="success-id" id="successDocId">Firestore ID: Generating…</div>
+    <div class="success-images" id="successImageRow"></div>
+    <div class="success-btns">
+      <a href="booking-dashboard.html" class="btn btn-primary btn-lg">📊 Go to Dashboard</a>
+      <a href="properties.html" class="btn btn-ghost btn-lg">🔍 Browse All Listings</a>
+      <button class="btn btn-ghost btn-lg" onclick="location.reload()">+ Post Another Property</button>
     </div>
   </div>
 
-</div><!-- end .page -->
+</div><!-- /page -->
 
-<!-- TOAST -->
-<div class="toast" id="toast"><div class="toast-dot"></div><span id="toastMsg"></span></div>
-
+<!-- FIREBASE + CLOUDINARY -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* ════════════════════════════════════════
+   FIREBASE CONFIG
+════════════════════════════════════════ */
 const firebaseConfig = {
-  apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-  authDomain: "smart-property-portal.firebaseapp.com",
-  projectId: "smart-property-portal"
+  apiKey:       "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain:   "smart-property-portal.firebaseapp.com",
+  projectId:    "smart-property-portal",
+  storageBucket:"smart-property-portal.appspot.com"
 };
-
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 let currentUser = null;
 
+/* ════════════════════════════════════════
+   CLOUDINARY CONFIG
+   Cloud: dq3hko9hn  |  Preset: dl6dnzau
+════════════════════════════════════════ */
+const CLOUD_NAME   = "dq3hko9hn";
+const UPLOAD_PRESET = "dl6dnzau";
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+/* ══ AUTH ══ */
+const setFbPill = (state) => {
+  const pill = document.getElementById('fbPill');
+  const txt  = document.getElementById('fbPillText');
+  if (!pill) return;
+  pill.className = 'fb-pill ' + state;
+  txt.textContent = state.toUpperCase();
+};
+
+setFbPill('connecting');
+
 onAuthStateChanged(auth, (user) => {
-  if (!user) { window.location.href = "login.html"; return; }
   currentUser = user;
+  setFbPill('connected');
+  if (user?.email) {
+    const emailEl = document.getElementById('ownerEmail');
+    if (emailEl && !emailEl.value) emailEl.value = user.email;
+    if (user.displayName) {
+      const nameEl = document.getElementById('ownerName');
+      if (nameEl && !nameEl.value) nameEl.value = user.displayName;
+    }
+  }
 });
 
-/* ══ STATE ══ */
-let selectedType      = "Apartment";
-let selectedFurnish   = "Unfurnished";
-let uploadedFiles     = [];
-let currentStep       = 1;
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+let selectedType    = "Apartment";
+let selectedFurnish = "Unfurnished";
+let uploadedFiles   = [];   // {file, previewUrl, cloudinaryUrl, status}
+let coverIdx        = 0;
+let currentStep     = 1;
 
-/* ══ STEP NAVIGATION ══ */
+/* ════════════════════════════════════════
+   STEP NAVIGATION
+════════════════════════════════════════ */
 window.goStep = (n) => {
-  if (n > currentStep) return; // prevent skipping forward
+  if (n > currentStep) return;
   setStep(n);
 };
 
@@ -705,9 +894,9 @@ function setStep(n) {
     document.getElementById(`panel${i}`).classList.toggle("active", i === n);
     const sc = document.getElementById(`sc${i}`);
     const s  = document.getElementById(`s${i}`);
-    if (i < n) { s.className = "step done"; sc.textContent = "✓"; }
+    if (i < n)       { s.className = "step done"; sc.textContent = "✓"; }
     else if (i === n) { s.className = "step active"; sc.textContent = i; }
-    else { s.className = "step"; sc.textContent = i; }
+    else              { s.className = "step"; sc.textContent = i; }
     if (i < 3) document.getElementById(`sl${i}`).classList.toggle("done", i < n);
   });
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -720,64 +909,98 @@ window.nextStep = (from) => {
   setStep(from + 1);
 };
 
-/* ══ VALIDATION ══ */
+/* ════════════════════════════════════════
+   VALIDATION
+════════════════════════════════════════ */
 function validateStep1() {
   let ok = true;
   const checks = [
-    { id: "title", fid: "f-title", msg: "Please enter a property title." },
-    { id: "price", fid: "f-price", msg: "Enter a valid price." },
-    { id: "bhk",   fid: "f-bhk",   msg: "Please select a configuration." },
-    { id: "city",  fid: "f-city",  msg: "Please enter a city." },
+    { id:"title",    fid:"f-title",    min:10, msg:"Title must be at least 10 characters." },
+    { id:"price",    fid:"f-price",    num:true, min:1000, msg:"Enter a valid rent amount (min ₹1,000)." },
+    { id:"bhk",      fid:"f-bhk",     msg:"Please select a configuration." },
+    { id:"city",     fid:"f-city",    msg:"Please select a city." },
   ];
   checks.forEach(c => {
     const el = document.getElementById(c.id);
     const f  = document.getElementById(c.fid);
-    if (!el.value.trim()) { f.classList.add("error"); ok = false; }
-    else { f.classList.remove("error"); }
+    if (!f) return;
+    let valid = true;
+    if (c.num) valid = el.value && Number(el.value) >= (c.min||0);
+    else valid = el.value && el.value.trim().length >= (c.min||1);
+    if (!valid) {
+      el.classList.add("err"); f.classList.add("error"); ok = false;
+      el.scrollIntoView({ behavior:"smooth", block:"center" });
+    } else {
+      el.classList.remove("err"); f.classList.remove("error");
+    }
   });
+  // Locality
+  const loc = document.getElementById('locality');
+  if (!loc.value.trim()) { loc.classList.add('err'); ok = false; } else loc.classList.remove('err');
+
   if (!ok) showToast("Please fill in all required fields.", "error");
   return ok;
 }
 
 function validateStep2() {
+  let ok = true;
   const desc = document.getElementById("description").value.trim();
-  if (!desc) { showToast("Please add a property description.", "error"); return false; }
-  return true;
+  if (desc.length < 50) {
+    document.getElementById("f-desc")?.classList.add("error");
+    document.getElementById("description").classList.add("err");
+    showToast("Description must be at least 50 characters.", "error");
+    ok = false;
+  } else {
+    document.getElementById("f-desc")?.classList.remove("error");
+    document.getElementById("description").classList.remove("err");
+  }
+
+  const name = document.getElementById('ownerName').value.trim();
+  const phone = document.getElementById('ownerPhone').value.trim();
+  if (!name) {
+    document.getElementById("f-ownerName")?.classList.add("error");
+    document.getElementById('ownerName').classList.add('err');
+    ok = false;
+  } else {
+    document.getElementById("f-ownerName")?.classList.remove("error");
+    document.getElementById('ownerName').classList.remove('err');
+  }
+  if (!phone) {
+    document.getElementById("f-ownerPhone")?.classList.add("error");
+    document.getElementById('ownerPhone').classList.add('err');
+    ok = false;
+  } else {
+    document.getElementById("f-ownerPhone")?.classList.remove("error");
+    document.getElementById('ownerPhone').classList.remove('err');
+  }
+
+  if (!ok) showToast("Please complete all required fields in this step.", "error");
+  return ok;
 }
 
-/* ══ TYPE & FURNISH SELECT ══ */
-window.selectType = (el) => {
+/* ════════════════════════════════════════
+   SELECTORS
+════════════════════════════════════════ */
+window.selectType    = (el) => {
   document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
   el.classList.add("selected");
   selectedType = el.dataset.type;
 };
-
 window.selectFurnish = (el) => {
   document.querySelectorAll(".furnish-card").forEach(c => c.classList.remove("selected"));
   el.classList.add("selected");
   selectedFurnish = el.dataset.f;
 };
-
 window.toggleChip = (el) => el.classList.toggle("selected");
 
-/* ══ CHAR COUNTERS ══ */
-document.getElementById("title").addEventListener("input", function() {
-  const cc = document.getElementById("titleCount");
-  cc.textContent = `${this.value.length} / 80`;
-  cc.className = "char-count" + (this.value.length > 70 ? " warn" : "");
-});
-document.getElementById("description").addEventListener("input", function() {
-  const cc = document.getElementById("descCount");
-  cc.textContent = `${this.value.length} / 600`;
-  cc.className = "char-count" + (this.value.length > 550 ? " warn" : "");
-});
-
-/* ══ DRAG & DROP ══ */
-const dropZone = document.getElementById("dropZone");
+/* ════════════════════════════════════════
+   IMAGE UPLOAD — DRAG/DROP + CLOUDINARY
+════════════════════════════════════════ */
+const dropZone  = document.getElementById("dropZone");
 const fileInput = document.getElementById("imageInput");
 const imgGrid   = document.getElementById("imgGrid");
 
-dropZone.onclick = () => fileInput.click();
+dropZone.addEventListener("click", () => fileInput.click());
 
 ["dragover","dragenter"].forEach(ev => dropZone.addEventListener(ev, e => {
   e.preventDefault(); dropZone.classList.add("drag-over");
@@ -789,142 +1012,349 @@ dropZone.addEventListener("drop", e => {
   e.preventDefault(); dropZone.classList.remove("drag-over");
   addFiles([...e.dataTransfer.files]);
 });
-fileInput.addEventListener("change", () => addFiles([...fileInput.files]));
+fileInput.addEventListener("change", () => { addFiles([...fileInput.files]); fileInput.value = ''; });
 
 function addFiles(newFiles) {
-  const valid = newFiles.filter(f => f.type.startsWith("image/") && f.size <= 5 * 1024 * 1024);
-  const rejected = newFiles.length - valid.length;
-  if (rejected > 0) showToast(`${rejected} file(s) skipped — must be images under 5MB.`, "warn");
-  if (uploadedFiles.length + valid.length > 10) {
-    showToast("Max 10 photos allowed.", "warn"); return;
-  }
-  uploadedFiles = [...uploadedFiles, ...valid];
+  const valid = newFiles.filter(f =>
+    ["image/jpeg","image/png","image/webp"].includes(f.type) && f.size <= 5 * 1024 * 1024
+  );
+  const tooLarge = newFiles.filter(f => f.size > 5 * 1024 * 1024);
+  const wrongType = newFiles.filter(f => !["image/jpeg","image/png","image/webp"].includes(f.type) && f.size <= 5 * 1024 * 1024);
+
+  if (tooLarge.length) showToast(`${tooLarge.length} file(s) skipped — must be under 5MB.`, "warn");
+  if (wrongType.length) showToast(`${wrongType.length} file(s) skipped — JPG, PNG, WEBP only.`, "warn");
+
+  const available = 15 - uploadedFiles.length;
+  const toAdd = valid.slice(0, available);
+  if (valid.length > available) showToast(`Only ${available} more photo(s) can be added (max 15).`, "warn");
+
+  toAdd.forEach(file => {
+    uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" });
+  });
   renderPreviews();
+  updatePhotoCount();
 }
 
 function renderPreviews() {
   imgGrid.innerHTML = "";
-  uploadedFiles.forEach((file, i) => {
+  uploadedFiles.forEach((item, i) => {
     const div = document.createElement("div");
-    div.className = "img-thumb" + (i === 0 ? " cover-img" : "");
+    div.className = "img-thumb" + (i === coverIdx ? " cover-img" : "");
+    div.setAttribute("data-index", i);
     div.innerHTML = `
-      <img src="${URL.createObjectURL(file)}" alt="Photo ${i+1}">
-      <div class="img-badge">${i === 0 ? "Cover" : `Photo ${i+1}`}</div>
-      <div class="img-remove" onclick="removeImg(${i})">✕</div>
-    `;
+      <img src="${item.previewUrl}" alt="Photo ${i+1}" loading="lazy">
+      <div class="img-overlay">
+        <div class="img-actions">
+          <button class="img-action-btn img-btn-cover" onclick="setCover(${i})" title="Set as cover">⭐</button>
+          <button class="img-action-btn img-btn-remove" onclick="removeImg(${i})" title="Remove">✕</button>
+        </div>
+        <span class="img-badge ${i===coverIdx?'img-badge-cover':'img-badge-num'}">${i===coverIdx?'Cover':('Photo '+(i+1))}</span>
+      </div>`;
     imgGrid.appendChild(div);
   });
 }
 
-window.removeImg = (i) => {
-  uploadedFiles.splice(i, 1);
+window.setCover = (i) => {
+  coverIdx = i;
   renderPreviews();
+  // Reorder so cover is first
+  const cover = uploadedFiles.splice(i, 1)[0];
+  uploadedFiles.unshift(cover);
+  coverIdx = 0;
+  renderPreviews();
+  showToast("Cover photo updated!", "success");
 };
 
-/* ══ BUILD SUMMARY ══ */
+window.removeImg = (i) => {
+  URL.revokeObjectURL(uploadedFiles[i].previewUrl);
+  uploadedFiles.splice(i, 1);
+  if (coverIdx >= uploadedFiles.length) coverIdx = 0;
+  renderPreviews();
+  updatePhotoCount();
+};
+
+function updatePhotoCount() {
+  const badge = document.getElementById("photoCountBadge");
+  if (badge) badge.textContent = `${uploadedFiles.length} / 15`;
+}
+
+/* ────────────────────────────────────────
+   CLOUDINARY UPLOAD WITH PROGRESS
+──────────────────────────────────────── */
+async function uploadAllToCloudinary() {
+  const listEl = document.getElementById("uploadItemsList");
+  listEl.innerHTML = "";
+  const urls = [];
+
+  for (let i = 0; i < uploadedFiles.length; i++) {
+    const item = uploadedFiles[i];
+    const fname = item.file.name;
+    const fsize = (item.file.size / 1024).toFixed(0) + "KB";
+
+    // Create progress row
+    const row = document.createElement("div");
+    row.className = "upload-item";
+    row.id = `ui-row-${i}`;
+    row.innerHTML = `
+      <span class="ui-icon">🖼️</span>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px">
+          <span class="ui-name">${fname}</span>
+          <span class="ui-size">${fsize}</span>
+          <span class="ui-status" id="ui-status-${i}" style="color:var(--muted)">Uploading…</span>
+        </div>
+        <div class="ui-prog-wrap"><div class="ui-prog-bar" id="ui-bar-${i}"></div></div>
+      </div>`;
+    listEl.appendChild(row);
+
+    try {
+      const url = await uploadSingleImage(item.file, i);
+      urls.push(url);
+      uploadedFiles[i].cloudinaryUrl = url;
+      uploadedFiles[i].status = "done";
+      document.getElementById(`ui-bar-${i}`).style.width = "100%";
+      document.getElementById(`ui-status-${i}`).textContent = "✓ Done";
+      document.getElementById(`ui-status-${i}`).style.color = "var(--success)";
+      row.classList.add("done");
+    } catch (err) {
+      uploadedFiles[i].status = "error";
+      document.getElementById(`ui-status-${i}`).textContent = "✗ Failed";
+      document.getElementById(`ui-status-${i}`).style.color = "var(--danger)";
+      row.classList.add("error");
+      console.error(`Upload failed for ${fname}:`, err);
+    }
+  }
+
+  return urls.filter(Boolean);
+}
+
+function uploadSingleImage(file, idx) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", UPLOAD_PRESET);
+    fd.append("cloud_name", CLOUD_NAME);
+    fd.append("folder", "smartrent/properties");
+    // Auto-generate optimised formats
+    fd.append("quality", "auto:good");
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", CLOUDINARY_URL, true);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 95);
+        const bar = document.getElementById(`ui-bar-${idx}`);
+        if (bar) bar.style.width = pct + "%";
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        // Use secure URL with auto format & quality transformation
+        const optimisedUrl = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/');
+        resolve(optimisedUrl);
+      } else {
+        reject(new Error(`HTTP ${xhr.status}: ${xhr.responseText}`));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error("Network error during upload"));
+    xhr.send(fd);
+  });
+}
+
+/* ════════════════════════════════════════
+   BUILD SUMMARY
+════════════════════════════════════════ */
 function buildSummary() {
   const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
   const tenants   = [...document.querySelectorAll("#tenantWrap .chip.selected")].map(c => c.textContent.trim());
+  const price = Number(document.getElementById("price").value);
 
   const rows = [
-    ["Type",       selectedType],
-    ["Title",      document.getElementById("title").value],
-    ["Rent",       `₹${Number(document.getElementById("price").value).toLocaleString()}/mo`],
-    ["Config",     document.getElementById("bhk").value],
-    ["City",       document.getElementById("city").value + (document.getElementById("locality").value ? ", " + document.getElementById("locality").value : "")],
-    ["Area",       document.getElementById("area").value ? document.getElementById("area").value + " sq.ft" : "—"],
-    ["Floor",      document.getElementById("floor").value || "—"],
-    ["Furnishing", selectedFurnish],
-    ["Deposit",    document.getElementById("deposit").value ? `₹${Number(document.getElementById("deposit").value).toLocaleString()}` : "—"],
-    ["Available",  document.getElementById("availableFrom").value || "Immediately"],
-    ["Amenities",  amenities.length ? amenities.join(", ") : "None"],
-    ["Tenants",    tenants.length ? tenants.join(", ") : "Any"],
+    ["Type",        selectedType],
+    ["Title",       document.getElementById("title").value],
+    ["Rent",        `₹${price.toLocaleString("en-IN")} / month`],
+    ["Deposit",     document.getElementById("deposit").value ? `₹${Number(document.getElementById("deposit").value).toLocaleString("en-IN")}` : "—"],
+    ["Config",      document.getElementById("bhk").value],
+    ["City",        document.getElementById("city").value],
+    ["Locality",    document.getElementById("locality").value],
+    ["Area",        document.getElementById("area").value ? document.getElementById("area").value + " sq.ft" : "—"],
+    ["Floor",       document.getElementById("floor").value || "—"],
+    ["Facing",      document.getElementById("facing").value || "—"],
+    ["Property Age",document.getElementById("propAge").value || "—"],
+    ["Furnishing",  selectedFurnish],
+    ["Available",   document.getElementById("availableFrom").value || "Immediately"],
+    ["Amenities",   amenities.length ? amenities.slice(0,8).join(", ") + (amenities.length>8?` +${amenities.length-8} more`:"") : "None"],
+    ["Tenants",     tenants.length ? tenants.join(", ") : "Any"],
+    ["Cooking",     document.getElementById("cooking").value || "—"],
+    ["Smoking",     document.getElementById("smoking").value || "—"],
+    ["Guests",      document.getElementById("guests").value || "—"],
+    ["Owner",       document.getElementById("ownerName").value],
+    ["Phone",       document.getElementById("ownerPhone").value],
+    ["Photos",      `${uploadedFiles.length} uploaded (uploads to Cloudinary on publish)`],
   ];
 
-  document.getElementById("summaryCard").innerHTML = rows.map(([k,v]) =>
+  let html = rows.map(([k,v]) =>
     `<div class="summary-row"><span class="summary-key">${k}</span><span class="summary-val">${v}</span></div>`
   ).join("");
+
+  // Photo previews
+  if (uploadedFiles.length > 0) {
+    html += `<div class="summary-row" style="align-items:flex-start"><span class="summary-key">Preview</span><div class="summary-img-row">`;
+    uploadedFiles.slice(0,6).forEach((item, i) => {
+      html += `<img src="${item.previewUrl}" class="summary-img" alt="Photo ${i+1}" title="${i===0?'Cover':('Photo '+(i+1))}">`;
+    });
+    if (uploadedFiles.length > 6) html += `<div style="width:44px;height:44px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)">+${uploadedFiles.length-6}</div>`;
+    html += `</div></div>`;
+  }
+
+  document.getElementById("summaryCard").innerHTML = html;
 }
 
-/* ══ SUBMIT ══ */
+/* ════════════════════════════════════════
+   SUBMIT — CLOUDINARY + FIRESTORE
+════════════════════════════════════════ */
 window.submitProperty = async () => {
   if (uploadedFiles.length < 1) {
     showToast("Please upload at least 1 photo.", "error"); return;
   }
 
   const btn = document.getElementById("submitBtn");
-  btn.disabled = true; btn.textContent = "Posting…";
+  btn.disabled = true;
+  btn.innerHTML = "⏳ Uploading photos…";
 
-  const progress  = document.getElementById("uploadProgress");
-  const bar       = document.getElementById("progressBar");
-  const pct       = document.getElementById("progressPct");
-  const ptxt      = document.getElementById("progressText");
-  progress.style.display = "block";
+  showToast(`Uploading ${uploadedFiles.length} photo(s) to Cloudinary…`, "info");
 
   try {
-    let imageUrls = [];
-    for (let i = 0; i < uploadedFiles.length; i++) {
-      ptxt.textContent = `Uploading photo ${i+1} of ${uploadedFiles.length}…`;
-      const pVal = Math.round(((i) / uploadedFiles.length) * 100);
-      bar.style.width = pVal + "%"; pct.textContent = pVal + "%";
+    /* ── STEP A: Upload all images to Cloudinary ── */
+    const imageUrls = await uploadAllToCloudinary();
 
-      const fd = new FormData();
-      fd.append("file", uploadedFiles[i]);
-      fd.append("upload_preset", "dl6dnzau");
-
-      const res  = await fetch("https://api.cloudinary.com/v1_1/dq3hko9hn/image/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      imageUrls.push(data.secure_url);
+    if (imageUrls.length === 0) {
+      throw new Error("All photo uploads failed. Please check your internet connection and try again.");
     }
-    bar.style.width = "100%"; pct.textContent = "100%";
 
+    if (imageUrls.length < uploadedFiles.length) {
+      showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed to upload — continuing with ${imageUrls.length} photos.`, "warn");
+    }
+
+    btn.innerHTML = "⏳ Saving to database…";
+    showToast("Photos uploaded! Saving listing to database…", "success");
+
+    /* ── STEP B: Collect all form values ── */
+    const gv = (id) => document.getElementById(id)?.value?.trim() || "";
     const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
     const tenants   = [...document.querySelectorAll("#tenantWrap .chip.selected")].map(c => c.textContent.trim());
 
-    await addDoc(collection(db, "properties"), {
+    /* ── STEP C: Write to Firestore ── */
+    const docRef = await addDoc(collection(db, "properties"), {
+      /* Core */
       type:          selectedType,
-      title:         document.getElementById("title").value.trim(),
-      price:         Number(document.getElementById("price").value),
-      bhk:           document.getElementById("bhk").value,
-      city:          document.getElementById("city").value.trim(),
-      locality:      document.getElementById("locality").value.trim(),
-      area:          document.getElementById("area").value,
-      floor:         document.getElementById("floor").value,
+      title:         gv("title"),
+      price:         Number(gv("price")),
+      bhk:           gv("bhk"),
+      city:          gv("city"),
+      locality:      gv("locality"),
+      fullAddress:   gv("fullAddress"),
+      area:          gv("area") ? Number(gv("area")) : null,
+      floor:         gv("floor"),
+      totalFloors:   gv("totalFloors") ? Number(gv("totalFloors")) : null,
+      facing:        gv("facing"),
+      propAge:       gv("propAge"),
+
+      /* Pricing */
+      deposit:       gv("deposit") ? Number(gv("deposit")) : null,
+      availableFrom: gv("availableFrom") || null,
+      maintenance:   gv("maintenance"),
+
+      /* Details */
       furnishing:    selectedFurnish,
-      deposit:       document.getElementById("deposit").value || null,
-      availableFrom: document.getElementById("availableFrom").value || null,
-      description:   document.getElementById("description").value.trim(),
+      description:   gv("description"),
       amenities,
       preferredTenants: tenants,
+
+      /* Rules */
+      cooking:       gv("cooking"),
+      nonveg:        gv("nonveg"),
+      smoking:       gv("smoking"),
+      drinking:      gv("drinking"),
+      guests:        gv("guests"),
+
+      /* Owner */
+      owner: {
+        name:    gv("ownerName"),
+        phone:   gv("ownerPhone"),
+        whatsapp:gv("ownerWA") || gv("ownerPhone"),
+        email:   gv("ownerEmail"),
+        uid:     currentUser?.uid || null,
+      },
+
+      /* Media — Cloudinary URLs */
       images:        imageUrls,
-      ownerId:       currentUser.uid,
+      coverImage:    imageUrls[0] || null,
+      imageCount:    imageUrls.length,
+      cloudName:     CLOUD_NAME,
+
+      /* Meta */
       status:        "active",
+      approved:      true,
       views:         0,
       enquiries:     0,
+      savedCount:    0,
       createdAt:     serverTimestamp(),
+      updatedAt:     serverTimestamp(),
     });
 
-    // Show success
-    document.querySelector(".page").innerHTML = "";
-    document.getElementById("successScreen").style.display = "block";
-    document.getElementById("successScreen").style.animation = "fadeUp 0.5s both";
+    /* ── STEP D: Show success ── */
+    showSuccess(docRef.id, imageUrls);
 
   } catch (err) {
+    console.error("Submission error:", err);
     showToast("Error: " + err.message, "error");
-    btn.disabled = false; btn.textContent = "🚀 Post Property";
-    progress.style.display = "none";
+    btn.disabled = false;
+    btn.innerHTML = "🚀 Upload Photos & Publish";
   }
 };
 
-/* ══ RESET ══ */
-window.resetForm = () => location.reload();
+function showSuccess(docId, imageUrls) {
+  document.querySelectorAll(".step-panel").forEach(p => p.style.display = "none");
+  document.getElementById("stepper").style.display = "none";
 
-/* ══ TOAST ══ */
+  const ss = document.getElementById("successScreen");
+  ss.style.display = "block";
+  document.getElementById("successDocId").textContent = "Firestore ID: " + docId;
+
+  // Show uploaded images
+  const imgRow = document.getElementById("successImageRow");
+  imageUrls.slice(0, 5).forEach((url, i) => {
+    const img = document.createElement("img");
+    img.src = url; img.className = "success-img"; img.alt = "Photo " + (i+1);
+    imgRow.appendChild(img);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  showToast("🎉 Property listed successfully!", "success");
+}
+
+/* ════════════════════════════════════════
+   UTILS
+════════════════════════════════════════ */
+window.updateCharCount = (id, countId, max) => {
+  const el = document.getElementById(id);
+  const cc = document.getElementById(countId);
+  if (!el || !cc) return;
+  cc.textContent = `${el.value.length} / ${max}`;
+  cc.className = "char-count" + (el.value.length > max * 0.9 ? " warn" : "");
+};
+
 function showToast(msg, type = "success") {
   const t = document.getElementById("toast");
   document.getElementById("toastMsg").textContent = msg;
   t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove("show"), 3500);
+  clearTimeout(window._tT);
+  window._tT = setTimeout(() => t.classList.remove("show"), 4000);
 }
 window.showToast = showToast;
 </script>

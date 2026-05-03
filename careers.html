@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers at SmartRent AI — Join India's Most Intelligent Rental Platform</title>
+<meta name="description" content="Build the future of renting in India. Explore open roles across engineering, design, product, growth and more at SmartRent AI — India's fastest growing proptech startup.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   DESIGN TOKENS — EDITORIAL INK GOLD LUXURY
+   Playfair Display (editorial serif) + Outfit (modern sans)
+   Deep Ink #0d0b0f + Warm Gold + Ivory accents
+═══════════════════════════════════════════════════════ */
+:root {
+  /* Surface */
+  --ink:    #0d0b0f;
+  --ink1:   #12101a;
+  --ink2:   #1a1824;
+  --ink3:   #221f30;
+  --ink4:   #2c283d;
+  --ink5:   #38344a;
+
+  /* Gold system */
+  --gold:      #c8922a;
+  --gold-lt:   #e8b84a;
+  --gold-xl:   #f5d080;
+  --gold-dk:   #8a5f12;
+  --gold-d:    rgba(200,146,42,.1);
+  --gold-b:    rgba(200,146,42,.24);
+  --gold-bb:   rgba(200,146,42,.45);
+  --gold-glow: rgba(200,146,42,.35);
+
+  /* Ivory */
+  --iv:   #f4efe6;
+  --iv2:  rgba(240,232,216,.72);
+  --iv3:  rgba(215,200,175,.48);
+  --iv4:  rgba(185,165,138,.28);
+
+  /* Accents */
+  --teal: #2dd4aa;
+  --tl-d: rgba(45,212,170,.1);
+  --tl-b: rgba(45,212,170,.22);
+  --rose: #f85a5a;
+  --ro-d: rgba(248,90,90,.1);
+  --ro-b: rgba(248,90,90,.2);
+  --blue: #5b8af5;
+  --bl-d: rgba(91,138,245,.1);
+  --bl-b: rgba(91,138,245,.2);
+  --sage: #6ab08a;
+  --sg-d: rgba(106,176,138,.1);
+  --sg-b: rgba(106,176,138,.2);
+  --ambe: #f5a623;
+  --am-d: rgba(245,166,35,.1);
+
+  --div:  rgba(200,146,42,.07);
+  --div2: rgba(255,255,255,.07);
+  --div3: rgba(255,255,255,.13);
+
+  --r1:7px; --r2:13px; --r3:19px; --r4:28px; --r5:40px;
+  --sh1: 0 2px 20px rgba(0,0,0,.3);
+  --sh2: 0 10px 50px rgba(0,0,0,.45);
+  --sh3: 0 28px 90px rgba(0,0,0,.6);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--iv);overflow-x:hidden;line-height:1.7}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+
+/* ── AMBIENT ─────────────────────────────────────── */
+.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);animation:ofl 24s ease-in-out infinite alternate}
+.o1{width:900px;height:900px;top:-320px;left:-250px;background:radial-gradient(circle,rgba(200,146,42,.055) 0%,transparent 68%)}
+.o2{width:700px;height:700px;bottom:-280px;right:-200px;background:radial-gradient(circle,rgba(45,212,170,.042) 0%,transparent 68%);animation-delay:-11s}
+.o3{width:500px;height:500px;top:44%;left:38%;background:radial-gradient(circle,rgba(200,146,42,.028) 0%,transparent 68%);animation-delay:-18s}
+@keyframes ofl{0%{transform:translate(0,0) scale(1)}45%{transform:translate(30px,-22px) scale(1.07)}80%{transform:translate(-18px,18px) scale(.97)}100%{transform:translate(13px,-9px) scale(1.04)}}
+
+.noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+
+/* progress bar */
+.pgbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-lt),var(--teal));z-index:1000;transition:width .15s;pointer-events:none}
+
+/* ════════════════ NAVBAR ════════════════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:66px;display:flex;align-items:center;padding:0 36px;background:rgba(13,11,15,.78);backdrop-filter:blur(30px) saturate(1.6);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(13,11,15,.98);box-shadow:0 1px 0 var(--gold-b),0 8px 40px rgba(0,0,0,.65)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.bgem{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 0 18px rgba(200,146,42,.32),inset 0 1px 0 rgba(255,255,255,.18);flex-shrink:0}
+.bname{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--iv);letter-spacing:.01em}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--teal);background:var(--tl-d);border:1px solid var(--tl-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+.nav-links{display:flex;gap:1px;margin:0 auto;padding:0 24px}
+.nl{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--iv3);text-decoration:none;transition:all .18s}.nl:hover{color:var(--iv)}.nl.on{color:var(--gold)}
+.nav-r{display:flex;gap:8px;flex-shrink:0;align-items:center}
+.nb{padding:7px 16px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:1px solid}
+.nb-o{background:transparent;border-color:var(--div2);color:var(--iv2)}.nb-o:hover{border-color:var(--gold-b);color:var(--gold)}
+.nb-g{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-color:transparent;color:#0d0b0f;font-weight:700}.nb-g:hover{box-shadow:0 0 22px var(--gold-glow);transform:translateY(-1px)}
+.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--iv2);cursor:pointer;align-items:center;justify-content:center}
+.mob-menu{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(13,11,15,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0;backdrop-filter:blur(24px)}
+.mob-menu.open{display:flex}
+.ml{padding:12px 0;font-size:14px;font-weight:500;color:var(--iv2);text-decoration:none;border-bottom:1px solid var(--div);display:flex;align-items:center;gap:8px;transition:color .18s}.ml:hover{color:var(--gold)}.ml:last-of-type{border-bottom:none}
+
+/* ════════════════ SHARED ════════════════ */
+section{position:relative;z-index:1}
+.W{max-width:1280px;margin:0 auto;padding:0 28px}
+.ey{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+.ey::before{content:'';width:20px;height:1px;background:var(--gold)}
+.H2{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,58px);font-weight:700;color:var(--iv);line-height:1.02;letter-spacing:-.02em;margin-bottom:14px}
+.H2 em{font-style:italic;color:var(--gold)}
+.para{font-size:15px;color:var(--iv3);line-height:1.9;margin-bottom:14px}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
+
+/* ════════════════ HERO ════════════════ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 72px;text-align:center;overflow:hidden;position:relative;z-index:1}
+
+/* Large background text */
+.hero-bg-word{position:absolute;font-family:'Playfair Display',serif;font-size:clamp(140px,22vw,280px);font-weight:900;font-style:italic;color:rgba(200,146,42,.038);line-height:1;user-select:none;pointer-events:none;letter-spacing:-.04em;top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap}
+
+/* Rotating ring */
+.hero-ring{position:absolute;border-radius:50%;border:1px solid rgba(200,146,42,.06);animation:spin 100s linear infinite}
+.ring-1{width:800px;height:800px;top:50%;left:50%;margin-top:-400px;margin-left:-400px}
+.ring-2{width:580px;height:580px;top:50%;left:50%;margin-top:-290px;margin-left:-290px;animation-direction:reverse;border-style:dashed;border-color:rgba(45,212,170,.05)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;background:rgba(200,146,42,.09);border:1px solid var(--gold-b);border-radius:100px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:30px;position:relative;z-index:1;animation:su .7s both}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:lp 2s infinite}
+@keyframes lp{0%{box-shadow:0 0 0 0 rgba(45,212,170,.6)}70%{box-shadow:0 0 0 9px rgba(45,212,170,0)}100%{box-shadow:0 0 0 0 rgba(45,212,170,0)}}
+
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(54px,9.5vw,118px);font-weight:900;line-height:.88;letter-spacing:-.04em;margin-bottom:10px;position:relative;z-index:1;animation:su .8s .08s both}
+.hero-h1 .line-1{color:var(--iv);display:block}
+.hero-h1 .line-2{font-style:italic;background:linear-gradient(90deg,var(--gold-lt),var(--gold),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.hero-h1 .line-3{color:rgba(240,232,216,.35);display:block;font-weight:300;font-size:.55em;letter-spacing:.04em;font-style:normal}
+
+@keyframes su{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+.hero-sub{font-size:clamp(14px,1.8vw,18px);color:var(--iv3);max-width:600px;line-height:1.85;margin:0 auto 48px;position:relative;z-index:1;animation:su .8s .18s both}
+
+/* Hero stat chips */
+.hero-chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:48px;position:relative;z-index:1;animation:su .8s .28s both}
+.hchip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:100px;padding:8px 18px;font-size:13px;font-weight:500;color:var(--iv2)}
+.hchip-ic{font-size:16px}
+.hchip-v{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--gold-lt);margin-right:2px}
+
+/* Hero CTA */
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;animation:su .8s .36s both}
+.hcta-main{padding:14px 32px;border-radius:var(--r2);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#0d0b0f;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .22s;letter-spacing:.02em}.hcta-main:hover{box-shadow:0 0 32px var(--gold-glow);transform:translateY(-2px)}
+.hcta-sec{padding:13px 26px;border-radius:var(--r2);background:transparent;border:1.5px solid rgba(255,255,255,.14);color:var(--iv2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .2s}.hcta-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+
+/* Scroll indicator */
+.scroll-ind{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;opacity:.45;z-index:1;animation:su .8s .5s both}
+.scroll-ind-line{width:1px;height:56px;background:linear-gradient(to bottom,var(--gold),transparent)}
+.scroll-ind-txt{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;color:var(--iv4);text-transform:uppercase}
+
+/* ════════════════ STATS STRIP ════════════════ */
+.stats-strip{background:var(--ink1);border-top:1px solid var(--gold-b);border-bottom:1px solid rgba(255,255,255,.04);position:relative;z-index:1}
+.stats-inner{max-width:1280px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.stat-box{padding:28px 20px;text-align:center;border-right:1px solid rgba(200,146,42,.08);cursor:default;transition:background .3s}.stat-box:last-child{border-right:none}.stat-box:hover{background:rgba(200,146,42,.025)}
+.stat-v{font-family:'Playfair Display',serif;font-size:clamp(26px,3.5vw,38px);font-weight:800;color:var(--gold-lt);line-height:1;margin-bottom:5px;letter-spacing:-.02em}
+.stat-l{font-size:11px;color:var(--iv4);font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase}
+
+/* ════════════════ MARQUEE ════════════════ */
+.mqbar{background:rgba(13,11,15,.88);border-bottom:1px solid rgba(255,255,255,.04);overflow:hidden;position:relative;z-index:1}
+.mqtrack{display:flex;width:max-content;animation:mql 38s linear infinite}.mqtrack:hover{animation-play-state:paused}
+@keyframes mql{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mqi{display:flex;align-items:center;gap:9px;padding:12px 48px;border-right:1px solid rgba(200,146,42,.06);white-space:nowrap;flex-shrink:0}
+.mqi-ic{font-size:14px;opacity:.7}.mqi-tx{font-size:12px;color:var(--iv3);font-weight:500}.mqi-tx strong{color:var(--gold-lt);font-weight:700}
+.mqbar::before,.mqbar::after{content:'';position:absolute;top:0;bottom:0;width:90px;z-index:2;pointer-events:none}
+.mqbar::before{left:0;background:linear-gradient(to right,rgba(13,11,15,.9),transparent)}.mqbar::after{right:0;background:linear-gradient(to left,rgba(13,11,15,.9),transparent)}
+
+/* ════════════════ WHY JOIN ════════════════ */
+.why-sec{padding:100px 0}
+.why-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.why-left{}
+.why-right{}
+.why-quote{background:linear-gradient(145deg,var(--ink2),var(--ink3));border:1px solid var(--gold-b);border-radius:var(--r4);padding:38px 36px;position:relative;overflow:hidden;box-shadow:var(--sh2)}
+.why-quote::before{content:'\201C';font-family:'Playfair Display',serif;font-size:120px;font-weight:900;color:rgba(200,146,42,.1);line-height:1;position:absolute;top:-18px;left:22px;z-index:0}
+.wq-text{font-family:'Playfair Display',serif;font-size:clamp(18px,2.2vw,24px);font-weight:400;font-style:italic;color:var(--iv2);line-height:1.65;margin-bottom:24px;position:relative;z-index:1}
+.wq-text em{font-style:normal;color:var(--gold-lt)}
+.wq-author{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.wq-av{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#0d0b0f;flex-shrink:0;border:2px solid var(--gold-b)}
+.wq-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--iv);margin-bottom:2px}
+.wq-role{font-size:12px;color:var(--iv4);font-family:'JetBrains Mono',monospace;letter-spacing:.07em}
+
+/* ════════════════ PERKS ════════════════ */
+.perks-sec{padding:0 0 100px;background:var(--ink1);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.perks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:52px}
+.perk-card{background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:32px 28px;position:relative;overflow:hidden;transition:all .36s cubic-bezier(.34,1.1,.64,1)}
+.perk-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--pc,var(--gold)),transparent);opacity:.7}
+.perk-card:hover{border-color:var(--pcb,var(--gold-b));transform:translateY(-5px);box-shadow:0 18px 56px rgba(0,0,0,.45)}
+.perk-card.c-gold{--pc:var(--gold);--pcb:var(--gold-b)}.perk-card.c-teal{--pc:var(--teal);--pcb:var(--tl-b)}.perk-card.c-rose{--pc:var(--rose);--pcb:var(--ro-b)}.perk-card.c-blue{--pc:var(--blue);--pcb:var(--bl-b)}.perk-card.c-sage{--pc:var(--sage);--pcb:var(--sg-b)}.perk-card.c-ambe{--pc:var(--ambe);--pcb:var(--am-d)}
+.perk-ic{font-size:40px;margin-bottom:16px;display:block}
+.perk-t{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--iv);margin-bottom:10px;letter-spacing:-.01em}
+.perk-d{font-size:13.5px;color:var(--iv3);line-height:1.8}
+
+/* ════════════════ CULTURE ════════════════ */
+.culture-sec{padding:100px 0}
+.culture-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:52px}
+.culture-card{background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);overflow:hidden;cursor:pointer;transition:all .32s cubic-bezier(.34,1.1,.64,1);position:relative}
+.culture-card:hover{transform:translateY(-6px) scale(1.02);border-color:var(--gold-b);box-shadow:var(--sh2)}
+.cc-img{height:200px;display:flex;align-items:center;justify-content:center;font-size:80px;transition:transform .4s ease;background:linear-gradient(145deg,var(--ink3),var(--ink4))}
+.culture-card:hover .cc-img{transform:scale(1.08)}
+.cc-body{padding:18px}
+.cc-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--iv);margin-bottom:5px;letter-spacing:-.01em}
+.cc-desc{font-size:12.5px;color:var(--iv3);line-height:1.7}
+/* Featured culture card */
+.culture-card.featured{grid-column:span 2}
+.culture-card.featured .cc-img{height:300px;font-size:120px}
+
+/* ════════════════ DEPARTMENTS ════════════════ */
+.dept-sec{padding:100px 0;background:var(--ink1);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.dept-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px}
+.dept-card{background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:28px 22px;cursor:pointer;transition:all .32s cubic-bezier(.34,1.1,.64,1);position:relative;overflow:hidden}
+.dept-card::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,var(--dcg,rgba(200,146,42,.07)),transparent);opacity:0;transition:opacity .3s}
+.dept-card:hover,.dept-card.on{border-color:var(--dcb,var(--gold-b));transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.4)}.dept-card:hover::after,.dept-card.on::after{opacity:1}
+.dept-card.on{background:var(--dcd,var(--gold-d))}
+.dc-gold{--dcg:rgba(200,146,42,.08);--dcb:var(--gold-b);--dcd:var(--gold-d)}
+.dc-teal{--dcg:rgba(45,212,170,.07);--dcb:var(--tl-b);--dcd:var(--tl-d)}
+.dc-blue{--dcg:rgba(91,138,245,.07);--dcb:var(--bl-b);--dcd:var(--bl-d)}
+.dc-rose{--dcg:rgba(248,90,90,.07);--dcb:var(--ro-b);--dcd:var(--ro-d)}
+.dc-sage{--dcg:rgba(106,176,138,.07);--dcb:var(--sg-b);--dcd:var(--sg-d)}
+.dc-ambe{--dcg:rgba(245,166,35,.07);--dcb:rgba(245,166,35,.25);--dcd:var(--am-d)}
+.dc-vio{--dcg:rgba(139,92,246,.07);--dcb:rgba(139,92,246,.22);--dcd:rgba(139,92,246,.08)}
+.dc-cyan{--dcg:rgba(6,182,212,.07);--dcb:rgba(6,182,212,.22);--dcd:rgba(6,182,212,.08)}
+.dc-ic{font-size:36px;margin-bottom:14px;display:block}
+.dc-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--iv);margin-bottom:6px;letter-spacing:-.01em}
+.dc-desc{font-size:12.5px;color:var(--iv3);line-height:1.72;margin-bottom:14px}
+.dc-count{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-family:'JetBrains Mono',monospace;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:3px 10px;color:var(--gold)}
+
+/* ════════════════ OPEN ROLES ════════════════ */
+.roles-sec{padding:100px 0}
+.roles-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px}
+.rf-chip{padding:7px 18px;border-radius:100px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid rgba(255,255,255,.08);background:var(--ink2);color:var(--iv3);transition:all .2s}
+.rf-chip:hover{border-color:var(--gold-b);color:var(--iv)}
+.rf-chip.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
+.roles-list{display:flex;flex-direction:column;gap:12px}
+.role-card{background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:24px 28px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:all .3s;text-decoration:none}
+.role-card:hover{border-color:var(--gold-b);transform:translateX(4px);box-shadow:0 8px 36px rgba(0,0,0,.4)}
+.rc-dept-ic{font-size:28px;flex-shrink:0}
+.rc-info{flex:1}
+.rc-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--iv);margin-bottom:5px;letter-spacing:-.01em;transition:color .2s}
+.role-card:hover .rc-title{color:var(--gold-lt)}
+.rc-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rc-tag{font-size:11px;font-family:'JetBrains Mono',monospace;padding:2px 9px;border-radius:4px;letter-spacing:.06em}
+.rt-dept{background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)}
+.rt-loc{background:var(--tl-d);color:var(--teal);border:1px solid var(--tl-b)}
+.rt-type{background:var(--bl-d);color:var(--blue);border:1px solid var(--bl-b)}
+.rt-exp{background:rgba(255,255,255,.04);color:var(--iv3);border:1px solid rgba(255,255,255,.07)}
+.rc-desc{font-size:13px;color:var(--iv3);margin-top:8px;line-height:1.65;max-width:650px}
+.rc-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0}
+.rc-apply-btn{padding:10px 22px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#0d0b0f;font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.02em}.rc-apply-btn:hover{box-shadow:0 0 18px var(--gold-glow);transform:translateY(-1px)}
+.rc-time{font-size:11px;color:var(--iv4);font-family:'JetBrains Mono',monospace}
+
+/* Empty state */
+.roles-empty{text-align:center;padding:60px 24px;color:var(--iv3)}
+.re-ic{font-size:56px;margin-bottom:16px;display:block;opacity:.5}
+.re-t{font-family:'Playfair Display',serif;font-size:24px;color:var(--iv);margin-bottom:8px}
+
+/* ════════════════ PROCESS ════════════════ */
+.process-sec{padding:100px 0;background:var(--ink1);border-top:1px solid var(--div)}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:52px;border:1px solid var(--gold-b);border-radius:var(--r3);overflow:hidden;background:var(--ink2)}
+.ps{padding:36px 28px;border-right:1px solid rgba(200,146,42,.09);position:relative;transition:background .3s}.ps:last-child{border-right:none}.ps:hover{background:rgba(200,146,42,.025)}
+.ps-num{font-family:'Playfair Display',serif;font-size:80px;font-weight:900;font-style:italic;color:rgba(200,146,42,.07);line-height:1;position:absolute;bottom:12px;right:16px;user-select:none}
+.ps-ic{width:52px;height:52px;border-radius:14px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px}
+.ps-t{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--iv);margin-bottom:9px;letter-spacing:-.01em}
+.ps-d{font-size:13px;color:var(--iv3);line-height:1.78}
+
+/* ════════════════ LIFE AT SR ════════════════ */
+.life-sec{padding:100px 0}
+.life-bento{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto;gap:14px;margin-top:52px}
+.lb{background:var(--ink2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r3);padding:28px;transition:all .3s;position:relative;overflow:hidden}
+.lb:hover{border-color:var(--gold-b);box-shadow:0 12px 44px rgba(0,0,0,.4)}
+.lb.wide{grid-column:span 2}.lb.tall{grid-row:span 2}.lb.big{grid-column:span 2;grid-row:span 2}
+.lb-ic{font-size:36px;margin-bottom:14px;display:block}
+.lb-t{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--iv);margin-bottom:8px;letter-spacing:-.01em}
+.lb-d{font-size:13.5px;color:var(--iv3);line-height:1.8}
+.lb-stat{font-family:'Playfair Display',serif;font-size:clamp(32px,4vw,52px);font-weight:800;color:var(--gold-lt);line-height:1;margin-bottom:4px;letter-spacing:-.03em}
+
+/* ════════════════ TESTIMONIALS ════════════════ */
+.testi-sec{padding:0 0 100px;background:var(--ink1);border-top:1px solid var(--div);border-bottom:1px solid var(--div)}
+.testi-track{display:flex;gap:18px;overflow-x:auto;padding:4px 4px 16px;scrollbar-width:none;margin-top:52px}.testi-track::-webkit-scrollbar{display:none}
+.tcard{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:28px;min-width:340px;max-width:380px;flex-shrink:0;transition:all .3s}.tcard:hover{border-color:var(--gold-b);transform:translateY(-4px);box-shadow:var(--sh2)}
+.tc-stars{font-size:14px;margin-bottom:14px;color:var(--gold)}
+.tc-quote{font-family:'Playfair Display',serif;font-size:17px;font-style:italic;color:var(--iv2);line-height:1.72;margin-bottom:20px;position:relative;padding-left:20px}
+.tc-quote::before{content:'"';font-size:52px;font-weight:900;color:rgba(200,146,42,.15);line-height:1;position:absolute;left:0;top:-12px}
+.tc-author{display:flex;align-items:center;gap:12px}
+.tc-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#0d0b0f;flex-shrink:0;font-family:'Playfair Display',serif}
+.tc-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--iv);margin-bottom:2px}
+.tc-role{font-size:11px;color:var(--iv4);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+.tc-tenure{font-size:11px;color:var(--gold);margin-top:2px;font-family:'JetBrains Mono',monospace}
+
+/* ════════════════ FINAL CTA ════════════════ */
+.cta-sec{padding:100px 0;position:relative;overflow:hidden}
+.cta-sec::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 80% at 50% 50%,rgba(200,146,42,.05) 0%,transparent 65%)}
+.cta-inner{text-align:center;position:relative;z-index:1;max-width:720px;margin:0 auto}
+.cta-ring{position:absolute;border-radius:50%;border:1px solid rgba(200,146,42,.07)}
+.cr1{width:700px;height:700px;top:50%;left:50%;margin:-350px 0 0 -350px;animation:ringp 14s ease-in-out infinite}
+.cr2{width:500px;height:500px;top:50%;left:50%;margin:-250px 0 0 -250px;border-style:dashed;animation:ringp 14s ease-in-out infinite;animation-delay:-5s;opacity:.6}
+@keyframes ringp{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:1}}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,68px);font-weight:800;color:var(--iv);margin-bottom:16px;letter-spacing:-.03em;line-height:1.04}
+.cta-title em{font-style:italic;color:var(--gold)}
+.cta-desc{font-size:16px;color:var(--iv3);line-height:1.85;margin-bottom:38px}
+.cta-note{font-size:13px;color:var(--iv4);margin-top:20px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+
+/* ════════════════ FOOTER ════════════════ */
+footer{padding:60px 0 28px;background:var(--ink1);border-top:1px solid var(--gold-b);position:relative;z-index:1}
+.fg{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.fb-d{font-size:13px;color:var(--iv3);line-height:1.84;margin:14px 0 20px;max-width:260px}
+.fsocs{display:flex;gap:8px}
+.fsoc{width:36px;height:36px;border-radius:8px;background:var(--ink2);border:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:15px;text-decoration:none;transition:all .2s}.fsoc:hover{border-color:var(--gold-b);background:var(--gold-d);transform:translateY(-2px)}
+.ft-t{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold-lt);margin-bottom:18px;letter-spacing:.01em}
+.fl{font-size:13px;color:var(--iv3);text-decoration:none;transition:color .2s;display:block;margin-bottom:10px}.fl:hover{color:var(--gold-lt)}
+.foot-bot{border-top:1px solid rgba(200,146,42,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-copy{font-size:12px;color:var(--iv4)}.foot-copy a{color:var(--gold);text-decoration:none}
+.fbdgs{display:flex;gap:6px}
+.fbdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:var(--ink2);border:1px solid rgba(255,255,255,.07);color:var(--iv4)}
+
+/* ════════════════ APPLICATION MODAL ════════════════ */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(5,4,8,.94);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .26s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal-box{background:var(--ink2);border:1px solid var(--gold-b);border-radius:var(--r4);width:100%;max-width:600px;max-height:92vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.75),inset 0 1px 0 rgba(200,146,42,.08);transform:scale(.95) translateY(12px);transition:transform .28s cubic-bezier(.34,1.2,.64,1)}
+.modal-bg.show .modal-box{transform:scale(1) translateY(0)}
+.modal-head{padding:28px 28px 20px;border-bottom:1px solid rgba(200,146,42,.08);background:linear-gradient(90deg,rgba(200,146,42,.04),transparent);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.mh-left{}
+.mh-role{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--iv);margin-bottom:6px;letter-spacing:-.01em}
+.mh-meta{display:flex;gap:7px;flex-wrap:wrap}
+.modal-close{width:34px;height:34px;border-radius:50%;background:var(--ink3);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s;color:var(--iv3);flex-shrink:0}.modal-close:hover{background:var(--ro-d);border-color:var(--ro-b);color:var(--rose)}
+.modal-body{padding:24px 28px}
+.ml-lbl{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--iv4);display:block;margin-bottom:8px;margin-top:4px}
+.m-inp{width:100%;background:var(--ink1);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);padding:11px 14px;color:var(--iv);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .2s;margin-bottom:16px}
+.m-inp:focus{border-color:var(--gold-bb);box-shadow:0 0 0 3px rgba(200,146,42,.07)}
+.m-inp::placeholder{color:var(--iv4);font-style:italic}
+.m-inp-area{min-height:100px;resize:vertical;line-height:1.65}
+select.m-inp{cursor:pointer;color:var(--iv2)}.select option{background:var(--ink2)}
+.m-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-file-label{display:flex;align-items:center;justify-content:center;gap:9px;border:1.5px dashed rgba(255,255,255,.12);border-radius:var(--r2);padding:18px;cursor:pointer;transition:all .22s;font-size:13px;color:var(--iv3);background:rgba(255,255,255,.02);margin-bottom:16px}
+.m-file-label:hover{border-color:var(--gold-b);color:var(--gold);background:var(--gold-d)}
+.m-file-input{display:none}
+.m-file-name{font-size:11px;color:var(--gold);font-family:'JetBrains Mono',monospace;margin-bottom:16px;display:none}
+.m-submit{width:100%;padding:14px;border-radius:var(--r2);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#0d0b0f;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.02em}.m-submit:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
+.m-success{display:none;text-align:center;padding:24px 0}
+.m-success.show{display:block}
+.ms-ic{font-size:60px;margin-bottom:14px;display:block;animation:bounce .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes bounce{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.ms-t{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;color:var(--iv);margin-bottom:8px}
+.ms-d{font-size:14px;color:var(--iv3);line-height:1.72}
+.ms-ref{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);background:var(--gold-d);border:1px solid var(--gold-b);border-radius:var(--r1);padding:6px 14px;margin-top:14px;display:inline-block}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--ink3);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:250px;animation:ti .3s ease;box-shadow:0 8px 34px rgba(0,0,0,.5);color:var(--iv)}
+@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Responsive */
+@media(max-width:1100px){.nav-links{display:none}.mob-btn{display:flex}.stats-inner{grid-template-columns:repeat(3,1fr)}.perks-grid{grid-template-columns:1fr 1fr}.dept-grid{grid-template-columns:repeat(2,1fr)}.culture-grid{grid-template-columns:1fr 1fr}.culture-card.featured{grid-column:span 1}.process-steps{grid-template-columns:repeat(2,1fr)}.life-bento{grid-template-columns:1fr 1fr}.lb.big{grid-column:span 2;grid-row:span 1}.lb.wide{grid-column:span 2}.lb.tall{grid-row:span 1}.fg{grid-template-columns:1fr 1fr}.testi-track{gap:12px}.why-inner{grid-template-columns:1fr}.m-grid2{grid-template-columns:1fr}}
+@media(max-width:640px){.W{padding:0 18px}.stats-inner{grid-template-columns:1fr 1fr}.stat-box:last-child{border-right:none;grid-column:span 2}.perks-grid,.dept-grid,.culture-grid{grid-template-columns:1fr}.process-steps{grid-template-columns:1fr;border:none;border-radius:0;background:transparent}.ps{border:1px solid rgba(200,146,42,.08);border-radius:var(--r2);margin-bottom:10px}.ps:last-child{margin-bottom:0}.life-bento{grid-template-columns:1fr}.lb.wide,.lb.big{grid-column:span 1}.foot-bot{flex-direction:column;text-align:center}.fg{grid-template-columns:1fr}.hero-h1{font-size:clamp(44px,13vw,80px)}.modal-box{border-radius:var(--r3)}}
+</style>
+</head>
+<body>
+
+<!-- AMBIENT -->
+<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="noise"></div>
+<div class="pgbar" id="pgBar"></div>
+<div class="toast" id="toast"></div>
+
+<!-- APPLICATION MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeOnBg(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-head">
+      <div class="mh-left">
+        <div class="mh-role" id="modalRoleTitle">Senior Frontend Engineer</div>
+        <div class="mh-meta" id="modalRoleMeta"></div>
+      </div>
+      <div class="modal-close" onclick="closeModal()">✕</div>
+    </div>
+    <div class="modal-body">
+      <div id="appForm">
+        <div class="m-grid2">
+          <div>
+            <label class="ml-lbl">Full Name *</label>
+            <input class="m-inp" id="appName" placeholder="Your full name">
+          </div>
+          <div>
+            <label class="ml-lbl">Email Address *</label>
+            <input class="m-inp" id="appEmail" type="email" placeholder="you@email.com">
+          </div>
+        </div>
+        <div class="m-grid2">
+          <div>
+            <label class="ml-lbl">Mobile Number *</label>
+            <input class="m-inp" id="appPhone" type="tel" placeholder="+91 98765 43210">
+          </div>
+          <div>
+            <label class="ml-lbl">Years of Experience</label>
+            <select class="m-inp" id="appExp">
+              <option value="">Select experience</option>
+              <option>Fresher (0–1 yr)</option><option>1–3 years</option><option>3–5 years</option>
+              <option>5–8 years</option><option>8–12 years</option><option>12+ years</option>
+            </select>
+          </div>
+        </div>
+        <label class="ml-lbl">Current Company & Role <span style="color:var(--iv4);text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input class="m-inp" id="appCurrent" placeholder="e.g. Senior Engineer at Infosys">
+        <label class="ml-lbl">LinkedIn / Portfolio URL</label>
+        <input class="m-inp" id="appLink" type="url" placeholder="https://linkedin.com/in/yourname">
+        <label class="ml-lbl">Why do you want to join SmartRent AI? *</label>
+        <textarea class="m-inp m-inp-area" id="appWhy" placeholder="Tell us what excites you about this role and SmartRent AI's mission…"></textarea>
+        <label class="ml-lbl">Resume / CV</label>
+        <label class="m-file-label" id="fileLabel" onclick="document.getElementById('resumeFile').click()">
+          📎 Click to upload your resume (PDF, DOC, DOCX — Max 5MB)
+        </label>
+        <input class="m-file-input" type="file" id="resumeFile" accept=".pdf,.doc,.docx" onchange="fileSelected(this)">
+        <div class="m-file-name" id="fileNameDisplay"></div>
+        <label class="ml-lbl">Notice Period / Earliest Joining</label>
+        <select class="m-inp" id="appNotice">
+          <option value="">— Select —</option>
+          <option>Immediately (can join now)</option><option>15 days</option><option>30 days</option>
+          <option>45 days</option><option>60 days</option><option>90 days</option>
+        </select>
+        <label class="ml-lbl">Expected CTC (Annual)</label>
+        <input class="m-inp" id="appCtc" placeholder="e.g. ₹18 LPA or Open to discussion">
+        <button class="m-submit" onclick="submitApplication()">🚀 Submit Application</button>
+      </div>
+      <div class="m-success" id="appSuccess">
+        <span class="ms-ic">🎉</span>
+        <div class="ms-t">Application Received!</div>
+        <div class="ms-d">Thank you! Our talent team will review your application and reach out within <strong>5 working days</strong>. Please check your email — including spam.</div>
+        <div class="ms-ref" id="appRefId">REF: SR-CAREERS-000000</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mobMenu">
+  <a class="ml" href="index.html">🏠 Home</a>
+  <a class="ml" href="properties.html">🏘️ Properties</a>
+  <a class="ml" href="services.html">🔧 Services</a>
+  <a class="ml" href="about.html">ℹ️ About Us</a>
+  <a class="ml" href="careers.html" style="color:var(--gold)">💼 Careers</a>
+  <hr style="border:none;border-top:1px solid var(--div);margin:8px 0">
+  <a class="nb nb-o" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="nb nb-g" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:8px">+ List Property</a>
+</div>
+
+<!-- ════════════ NAVBAR ════════════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="properties.html">Properties</a>
+    <a class="nl" href="services.html">Services</a>
+    <a class="nl" href="about.html">About</a>
+    <a class="nl on" href="careers.html">Careers</a>
+  </div>
+  <div class="nav-r">
+    <a class="nb nb-o" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-g" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
+  </div>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="hero-bg-word">Build</div>
+  <div class="hero-ring ring-1"></div>
+  <div class="hero-ring ring-2"></div>
+
+  <div class="hero-eyebrow"><span class="live-dot"></span>We're Hiring · 24 Open Roles · Hyderabad & Remote</div>
+
+  <h1 class="hero-h1">
+    <span class="line-1">Build the</span>
+    <span class="line-2">Future of Renting</span>
+    <span class="line-3">India's Most Intelligent Rental Platform</span>
+  </h1>
+
+  <p class="hero-sub">Join a team of builders, dreamers, and people who are fundamentally changing how 300 million Indians rent. We move fast, think deeply, and care deeply about the people we serve.</p>
+
+  <div class="hero-chips">
+    <div class="hchip"><span class="hchip-ic">🏙️</span>Hyderabad HQ</div>
+    <div class="hchip"><span class="hchip-ic">🌐</span>Remote-friendly</div>
+    <div class="hchip"><span class="hchip-v">65</span><span>Team members</span></div>
+    <div class="hchip"><span class="hchip-v">24</span><span>Open roles</span></div>
+    <div class="hchip"><span class="hchip-ic">🚀</span>Series A stage</div>
+    <div class="hchip"><span class="hchip-v">4.8★</span><span>Glassdoor</span></div>
+  </div>
+
+  <div class="hero-ctas">
+    <a class="hcta-main" href="#open-roles">💼 View Open Roles</a>
+    <a class="hcta-sec" href="#life">🌿 Our Culture</a>
+    <a class="hcta-sec" href="#perks">✨ Perks & Benefits</a>
+  </div>
+
+  <div class="scroll-ind">
+    <div class="scroll-ind-txt">Scroll to explore</div>
+    <div class="scroll-ind-line"></div>
+  </div>
+</section>
+
+<!-- ════════════ STATS ════════════ -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-box"><div class="stat-v" id="sv1">65</div><div class="stat-l">Team Members</div></div>
+    <div class="stat-box"><div class="stat-v">4</div><div class="stat-l">Office Cities</div></div>
+    <div class="stat-box"><div class="stat-v">24</div><div class="stat-l">Open Positions</div></div>
+    <div class="stat-box"><div class="stat-v">4.8★</div><div class="stat-l">Glassdoor Rating</div></div>
+    <div class="stat-box"><div class="stat-v">₹12Cr+</div><div class="stat-l">Funds Raised</div></div>
+  </div>
+</div>
+
+<!-- ════════════ MARQUEE ════════════ -->
+<div class="mqbar"><div class="mqtrack" id="mqtrack"></div></div>
+
+<!-- ════════════ WHY JOIN ════════════ -->
+<section class="why-sec">
+  <div class="W">
+    <div class="why-inner">
+      <div class="rv">
+        <div class="ey">Why SmartRent AI</div>
+        <h2 class="H2">Build Something<br><em>That Actually Matters</em></h2>
+        <p class="para">Every line of code you write, every product decision you make, every campaign you run — it directly changes the lives of real Indian families who are searching for a home. That's not corporate speak. That's the actual impact.</p>
+        <p class="para">We're not building another CRUD app. We're building an intelligence layer on top of one of India's most chaotic, broken and important markets. The problems are genuinely hard. The stakes are real. The team is exceptional.</p>
+        <p class="para">If you want to work on problems that haven't been solved, with people who hold each other to extraordinary standards, in a culture that values craft, honesty and speed — you belong here.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:28px">
+          <a class="hcta-main" href="#open-roles">See Open Roles →</a>
+        </div>
+      </div>
+      <div class="rv d1">
+        <div class="why-quote">
+          <div class="wq-text">"I left a <em>₹42 LPA</em> offer at a FAANG to join SmartRent AI with a 40% pay cut. Within 8 months I'm more senior, more challenged, and building things that matter. Best professional decision of my life."</div>
+          <div class="wq-author">
+            <div class="wq-av">A</div>
+            <div>
+              <div class="wq-name">Arun Krishnan</div>
+              <div class="wq-role">CTO & Co-Founder · Ex-Google India</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ PERKS ════════════ -->
+<section class="perks-sec" id="perks">
+  <div class="W" style="padding-top:100px">
+    <div class="rv" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="ey" style="justify-content:center">Perks & Benefits</div>
+      <h2 class="H2" style="text-align:center">We Take Care of<br><em>Our People</em></h2>
+      <p class="para" style="text-align:center">We believe exceptional people deserve exceptional support. Here's what working at SmartRent AI actually looks like.</p>
+    </div>
+    <div class="perks-grid rv d1">
+      <div class="perk-card c-gold"><span class="perk-ic">💰</span><div class="perk-t">Market-Leading Compensation</div><div class="perk-d">Top-quartile salaries benchmarked quarterly. Pre-Series A ESOPs for every employee. Accelerated vesting for exceptional contributors. Annual performance reviews with meaningful increments.</div></div>
+      <div class="perk-card c-teal"><span class="perk-ic">🌐</span><div class="perk-t">Flexible Work</div><div class="perk-d">Remote-friendly culture with a world-class office in Hyderabad. Flexible hours — we care about outcomes, not presence. Work-from-anywhere weeks twice a year. Async-first communication for deep work.</div></div>
+      <div class="perk-card c-rose"><span class="perk-ic">🏥</span><div class="perk-t">Comprehensive Health</div><div class="perk-d">Full health insurance for you, your spouse, children, and parents. Mental health support via 1:1 sessions with certified therapists. Gym & wellness reimbursement up to ₹2,000/month.</div></div>
+      <div class="perk-card c-blue"><span class="perk-ic">📚</span><div class="perk-t">Grow Without Limits</div><div class="perk-d">₹75,000 annual learning budget for courses, books, and conferences. Monthly "Masterclass Fridays" — 3pm onwards is protected learning time. Conference speaker support. Leadership fast-track programme.</div></div>
+      <div class="perk-card c-sage"><span class="perk-ic">🍽️</span><div class="perk-t">Food & Office Life</div><div class="perk-d">Catered daily lunches, snacks, and barista-quality coffee in the office. Team dinners every Friday. Annual company retreats in beautiful destinations. Generous team celebrations for every milestone.</div></div>
+      <div class="perk-card c-ambe"><span class="perk-ic">✈️</span><div class="perk-t">Time to Recharge</div><div class="perk-d">25 days paid annual leave + all public holidays. Parental leave: 6 months maternity, 3 months paternity, fully paid. Sabbatical leave at 3-year anniversary. Quarterly mental health days — no questions asked.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ CULTURE WALL ════════════ -->
+<section class="culture-sec" id="life">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="ey" style="justify-content:center">Our Culture</div>
+      <h2 class="H2" style="text-align:center">A Culture Worth<br><em>Being Part Of</em></h2>
+    </div>
+    <div class="culture-grid rv d1">
+      <div class="culture-card featured">
+        <div class="cc-img" style="background:linear-gradient(145deg,#0e1a2e,#1a3050)">🚀</div>
+        <div class="cc-body">
+          <div class="cc-title">Move Fast, Think Deep</div>
+          <div class="cc-desc">We ship every Friday. Not because we have to — because we love seeing real users interact with what we built. Speed is a form of respect for the problem and the people it affects.</div>
+        </div>
+      </div>
+      <div class="culture-card">
+        <div class="cc-img" style="background:linear-gradient(145deg,#1a1030,#301040)">🔬</div>
+        <div class="cc-body">
+          <div class="cc-title">Data Over Opinions</div>
+          <div class="cc-desc">Every decision is backed by evidence. We run 15+ A/B tests a month. The best argument wins, regardless of seniority.</div>
+        </div>
+      </div>
+      <div class="culture-card">
+        <div class="cc-img" style="background:linear-gradient(145deg,#0e2018,#1a4030)">🤝</div>
+        <div class="cc-body">
+          <div class="cc-title">Radical Honesty</div>
+          <div class="cc-desc">We say hard things with kindness. No politics, no hidden agendas. If something isn't working, we say so — and fix it together.</div>
+        </div>
+      </div>
+      <div class="culture-card">
+        <div class="cc-img" style="background:linear-gradient(145deg,#1a1008,#3a2a0a)">🏆</div>
+        <div class="cc-body">
+          <div class="cc-title">Ownership Culture</div>
+          <div class="cc-desc">Everyone owns a piece of the product and the company (literally — ESOPs for all). No hand-holding. No micromanagement. Full trust from Day 1.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ DEPARTMENTS ════════════ -->
+<section class="dept-sec">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:600px;margin:0 auto">
+      <div class="ey" style="justify-content:center">Departments</div>
+      <h2 class="H2" style="text-align:center">Where Would<br><em>You Thrive?</em></h2>
+      <p class="para" style="text-align:center;margin-bottom:0">Click a department to filter open roles below.</p>
+    </div>
+    <div class="dept-grid rv d1" id="deptGrid">
+      <div class="dept-card dc-gold on" data-dept="all" onclick="filterDept(this,'all')">
+        <span class="dc-ic">⚡</span>
+        <div class="dc-name">All Departments</div>
+        <div class="dc-desc">Browse every open position across the company.</div>
+        <div class="dc-count">24 open roles</div>
+      </div>
+      <div class="dept-card dc-blue" data-dept="engineering" onclick="filterDept(this,'engineering')">
+        <span class="dc-ic">💻</span>
+        <div class="dc-name">Engineering</div>
+        <div class="dc-desc">Build the platform that powers rental intelligence across India.</div>
+        <div class="dc-count">8 open roles</div>
+      </div>
+      <div class="dept-card dc-rose" data-dept="product" onclick="filterDept(this,'product')">
+        <span class="dc-ic">🎯</span>
+        <div class="dc-name">Product</div>
+        <div class="dc-desc">Define what SmartRent AI builds and why it matters to users.</div>
+        <div class="dc-count">3 open roles</div>
+      </div>
+      <div class="dept-card dc-teal" data-dept="design" onclick="filterDept(this,'design')">
+        <span class="dc-ic">🎨</span>
+        <div class="dc-name">Design & UX</div>
+        <div class="dc-desc">Craft experiences that are beautiful, intuitive and trustworthy.</div>
+        <div class="dc-count">2 open roles</div>
+      </div>
+      <div class="dept-card dc-sage" data-dept="growth" onclick="filterDept(this,'growth')">
+        <span class="dc-ic">📈</span>
+        <div class="dc-name">Growth & Marketing</div>
+        <div class="dc-desc">Drive user acquisition, retention and brand love across India.</div>
+        <div class="dc-count">4 open roles</div>
+      </div>
+      <div class="dept-card dc-ambe" data-dept="operations" onclick="filterDept(this,'operations')">
+        <span class="dc-ic">🔧</span>
+        <div class="dc-name">Operations</div>
+        <div class="dc-desc">Build and scale the ground operations that make us trustworthy.</div>
+        <div class="dc-count">3 open roles</div>
+      </div>
+      <div class="dept-card dc-vio" data-dept="data" onclick="filterDept(this,'data')">
+        <span class="dc-ic">🤖</span>
+        <div class="dc-name">Data & AI</div>
+        <div class="dc-desc">Build the intelligence engine that powers our rental platform.</div>
+        <div class="dc-count">2 open roles</div>
+      </div>
+      <div class="dept-card dc-cyan" data-dept="people" onclick="filterDept(this,'people')">
+        <span class="dc-ic">👥</span>
+        <div class="dc-name">People & Culture</div>
+        <div class="dc-desc">Attract, grow and retain the exceptional people who build SmartRent.</div>
+        <div class="dc-count">2 open roles</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ OPEN ROLES ════════════ -->
+<section class="roles-sec" id="open-roles">
+  <div class="W">
+    <div class="rv">
+      <div class="ey">Open Positions</div>
+      <h2 class="H2">Find Your <em>Perfect Role</em></h2>
+    </div>
+    <div class="roles-filter rv d1" id="rolesFilter">
+      <div class="rf-chip on" data-f="all" onclick="filterRole(this,'all')">All Roles</div>
+      <div class="rf-chip" data-f="fulltime" onclick="filterRole(this,'fulltime')">Full-time</div>
+      <div class="rf-chip" data-f="remote" onclick="filterRole(this,'remote')">Remote</div>
+      <div class="rf-chip" data-f="hybrid" onclick="filterRole(this,'hybrid')">Hybrid</div>
+      <div class="rf-chip" data-f="senior" onclick="filterRole(this,'senior')">Senior</div>
+      <div class="rf-chip" data-f="fresher" onclick="filterRole(this,'fresher')">Fresher Friendly</div>
+    </div>
+    <div class="roles-list rv d2" id="rolesList"></div>
+  </div>
+</section>
+
+<!-- ════════════ PROCESS ════════════ -->
+<section class="process-sec">
+  <div class="W">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto">
+      <div class="ey" style="justify-content:center">Hiring Process</div>
+      <h2 class="H2" style="text-align:center">No Surprises,<br><em>No Nonsense</em></h2>
+      <p class="para" style="text-align:center;margin-bottom:0">We respect your time. Our process is fast, transparent, and designed to let you do your best work.</p>
+    </div>
+    <div class="process-steps rv d1">
+      <div class="ps"><div class="ps-num">01</div><div class="ps-ic">📋</div><div class="ps-t">Apply</div><div class="ps-d">Submit your application on this page. We read every single one. No automated rejection — real humans review your background within 48 hours.</div></div>
+      <div class="ps"><div class="ps-num">02</div><div class="ps-ic">☎️</div><div class="ps-t">Intro Call</div><div class="ps-d">A 30-minute call with someone from the team (not just HR). We'll tell you what we're building, what the role actually involves, and answer any questions honestly.</div></div>
+      <div class="ps"><div class="ps-num">03</div><div class="ps-ic">🎯</div><div class="ps-t">Skill Assessment</div><div class="ps-d">A focused, 3–4 hour assessment for technical roles. Or a portfolio review and case discussion for creative/product roles. We pay ₹5,000 stipend for any assignment over 2 hours.</div></div>
+      <div class="ps"><div class="ps-num">04</div><div class="ps-ic">🤝</div><div class="ps-t">Offer & Join</div><div class="ps-d">Final conversation with the founding team. Offer sent within 24 hours of decision. We move fast — from first application to offer in under 3 weeks, usually 10 days.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ LIFE AT SR (BENTO) ════════════ -->
+<section class="life-sec">
+  <div class="W">
+    <div class="rv">
+      <div class="ey">Life at SmartRent AI</div>
+      <h2 class="H2">Numbers That Tell<br><em>Our Story</em></h2>
+    </div>
+    <div class="life-bento rv d1">
+      <div class="lb big" style="background:linear-gradient(145deg,var(--ink3),var(--ink4));border-color:var(--gold-b)">
+        <span class="lb-ic">🏆</span>
+        <div class="lb-stat" id="lbStat1">0%</div>
+        <div class="lb-t">Employee Retention</div>
+        <div class="lb-d">Year 1 retention rate. 94% of our team says they'd recommend SmartRent AI as a place to work. We've had zero involuntary attrition in 18 months.</div>
+      </div>
+      <div class="lb" style="border-color:var(--tl-b)"><span class="lb-ic">⏱️</span><div class="lb-stat" style="color:var(--teal)" id="lbStat2">0</div><div class="lb-t">Days to Hire</div><div class="lb-d">Average time from application to offer. Fastest: 4 days.</div></div>
+      <div class="lb" style="border-color:var(--gold-b)"><span class="lb-ic">📚</span><div class="lb-stat" id="lbStat3">₹0</div><div class="lb-t">Learning Budget</div><div class="lb-d">Annual per-person L&D budget. Fully spent by 90% of the team.</div></div>
+      <div class="lb wide" style="background:linear-gradient(145deg,var(--ink2),var(--ink3));border-color:var(--tl-b)">
+        <span class="lb-ic">🌍</span>
+        <div class="lb-stat" style="color:var(--teal)" id="lbStat4">0</div>
+        <div class="lb-t">Countries Represented</div>
+        <div class="lb-d">Our team speaks 12 languages and has worked at companies across 8 countries. Diversity of thought is a competitive advantage, not a box to tick.</div>
+      </div>
+      <div class="lb" style="border-color:var(--ro-b)"><span class="lb-ic">⭐</span><div class="lb-stat" style="color:var(--rose)" id="lbStat5">0</div><div class="lb-t">Glassdoor Rating</div><div class="lb-d">Out of 5.0 — one of the highest rated proptech startups in India.</div></div>
+      <div class="lb"><span class="lb-ic">🚀</span><div class="lb-stat" style="color:var(--gold-lt)" id="lbStat6">0%</div><div class="lb-t">Promoted Internally</div><div class="lb-d">Of senior roles filled by promoting existing team members first.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ TESTIMONIALS ════════════ -->
+<section class="testi-sec">
+  <div class="W" style="padding-top:100px">
+    <div class="rv" style="text-align:center;max-width:560px;margin:0 auto">
+      <div class="ey" style="justify-content:center">Team Stories</div>
+      <h2 class="H2" style="text-align:center">Hear it from the<br><em>Team Themselves</em></h2>
+    </div>
+    <div class="testi-track rv d1">
+      <div class="tcard">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">I've worked at Google and two well-funded startups before SmartRent. The quality of engineering problems here genuinely rivals anywhere I've been. And the ownership? Unmatched.</div>
+        <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--gold),#5a3a00)">A</div><div><div class="tc-name">Aditya Sharma</div><div class="tc-role">Staff Engineer · Platform</div><div class="tc-tenure">2.5 years at SmartRent</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">As a woman in tech, I was sceptical. But SmartRent is genuinely the most inclusive culture I've experienced. My ideas are heard, my growth is supported, and I just got promoted 14 months in.</div>
+        <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--rose),#7a0020)">P</div><div><div class="tc-name">Priya Nair</div><div class="tc-role">Senior PM · Tenant Experience</div><div class="tc-tenure">1.5 years at SmartRent</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">I joined straight out of college and in 18 months I'm leading the entire data analytics function. The learning here is compressive — 5 years of experience in 18 months. No exaggeration.</div>
+        <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--teal),#006650)">K</div><div><div class="tc-name">Karthik Venkat</div><div class="tc-role">Head of Data Analytics</div><div class="tc-tenure">1.5 years at SmartRent</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">The remote culture is genuinely excellent. I'm based in Chennai, the team is in Hyderabad, and I've never felt excluded or second-class. The async documentation culture is world-class.</div>
+        <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--blue),#003080)">R</div><div><div class="tc-name">Ramesh Iyer</div><div class="tc-role">Senior Designer · Brand</div><div class="tc-tenure">1 year at SmartRent</div></div></div>
+      </div>
+      <div class="tcard">
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-quote">The ESOPs alone made me say yes. But staying? That's the people, the culture, the mission. When your work helps real families find homes, it changes how you feel about Monday mornings.</div>
+        <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--sage),#003a18)">D</div><div><div class="tc-name">Deepika Reddy</div><div class="tc-role">Growth Lead · Acquisitions</div><div class="tc-tenure">2 years at SmartRent</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FINAL CTA ════════════ -->
+<section class="cta-sec">
+  <div class="cta-ring cr1"></div>
+  <div class="cta-ring cr2"></div>
+  <div class="W">
+    <div class="cta-inner rv">
+      <div class="ey" style="justify-content:center">Ready to Build?</div>
+      <div class="cta-title">Your Most Impactful Work<br>Starts <em>Here</em></div>
+      <div class="cta-desc">We're building India's rental future — and we need extraordinary people. Browse our 24 open roles or drop us a note even if you don't see a perfect fit. We'll find a way to work together.</div>
+      <div class="hero-ctas">
+        <a class="hcta-main" href="#open-roles">💼 View All Roles</a>
+        <button class="hcta-sec" onclick="openModal({title:'General Application',dept:'All Departments',loc:'Hyderabad / Remote',type:'Full-time',exp:'Any'})">✉️ Send Open Application</button>
+      </div>
+      <div class="cta-note">📧 We also accept open applications at <a href="mailto:careers@smartrentai.in" style="color:var(--gold);text-decoration:none">careers@smartrentai.in</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <div class="W">
+    <div class="fg">
+      <div>
+        <a href="index.html" class="brand" style="text-decoration:none">
+          <div class="bgem" style="width:30px;height:30px;font-size:14px">💎</div>
+          <span class="bname" style="font-size:17px">SmartRent<span class="bai">AI</span></span>
+        </a>
+        <p class="fb-d">India's most intelligent rental platform. AI-powered matching, zero brokerage, fully verified — for owners and tenants across 15+ cities.</p>
+        <div class="fsocs"><a class="fsoc" href="#">𝕏</a><a class="fsoc" href="#">📸</a><a class="fsoc" href="#">in</a><a class="fsoc" href="#">▶</a></div>
+      </div>
+      <div>
+        <div class="ft-t">Platform</div>
+        <a class="fl" href="index.html">Home</a>
+        <a class="fl" href="properties.html">All Properties</a>
+        <a class="fl" href="pg-hostel-listings.html">PG & Hostels</a>
+        <a class="fl" href="services.html">Home Services</a>
+        <a class="fl" href="rent-calculator.html">Rent Calculator</a>
+      </div>
+      <div>
+        <div class="ft-t">Company</div>
+        <a class="fl" href="about.html">About Us</a>
+        <a class="fl" href="careers.html" style="color:var(--gold-lt)">Careers</a>
+        <a class="fl" href="#">Press & Media</a>
+        <a class="fl" href="verification.html">Verification</a>
+        <a class="fl" href="privacy-policy.html">Privacy Policy</a>
+      </div>
+      <div>
+        <div class="ft-t">Contact</div>
+        <a class="fl" href="mailto:careers@smartrentai.in">careers@smartrentai.in</a>
+        <a class="fl" href="mailto:hello@smartrentai.in">hello@smartrentai.in</a>
+        <a class="fl" href="#">+91 40 2345 6789</a>
+        <a class="fl" href="#">Hyderabad · Bangalore</a>
+        <a class="fl" href="#">Mumbai · Delhi</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-copy">© 2023–2026 SmartRent AI. All rights reserved. Built with ❤️ in India. <a href="privacy-policy.html">Privacy</a> · <a href="privacy-policy.html">Terms</a></div>
+      <div class="fbdgs"><span class="fbdg">GREAT PLACE TO WORK</span><span class="fbdg">NASSCOM</span><span class="fbdg">DPDP 2023</span></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ══ OPEN ROLES DATA ════════════════════════════════════════════ */
+const ROLES = [
+  /* ENGINEERING */
+  {id:'e1',dept:'engineering',title:'Senior Full-Stack Engineer (React + Node)',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'3–6 years',posted:'2 days ago',desc:'Build and own critical features across our core rental platform. You\'ll work on everything from real-time search algorithms to booking flows that handle ₹1Cr+ in transactions daily.',ic:'💻',tags:['React','Node.js','Firebase','TypeScript']},
+  {id:'e2',dept:'engineering',title:'Lead Backend Engineer — Platform & APIs',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'5–9 years',posted:'1 week ago',desc:'Design and build the APIs and services that power India\'s most intelligent rental platform. Own infrastructure decisions for a system processing 2M+ requests/day.',ic:'⚙️',tags:['Node.js','PostgreSQL','Redis','AWS'],extra:'senior'},
+  {id:'e3',dept:'engineering',title:'Mobile Engineer — React Native (iOS & Android)',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'2–5 years',posted:'3 days ago',desc:'Build our upcoming mobile app — the primary interface for 50,000+ tenants on-the-go. Deep experience with React Native and native performance optimisation required.',ic:'📱',tags:['React Native','iOS','Android']},
+  {id:'e4',dept:'engineering',title:'DevOps Engineer — Cloud & Infrastructure',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'3–6 years',posted:'5 days ago',desc:'Own our cloud infrastructure on AWS. Build CI/CD pipelines, monitoring systems, and reliability engineering that keeps our platform running at 99.9% uptime.',ic:'☁️',tags:['AWS','Docker','Kubernetes','Terraform'],extra:'senior'},
+  {id:'e5',dept:'engineering',title:'Software Engineer — New Grad / Fresher',loc:'Hyderabad · In-office',type:'fulltime',emptype:'fulltime',exp:'0–1 year',posted:'Today',desc:'Just graduated or in your first year? We\'re hiring exceptional freshers who want to grow 5x faster than at a large company. Strong CS fundamentals required.',ic:'🎓',tags:['Any Stack','CS Fundamentals'],extra:'fresher'},
+  {id:'e6',dept:'engineering',title:'Security Engineer — Application & Cloud Security',loc:'Remote',type:'fulltime',emptype:'remote',exp:'4–8 years',posted:'1 week ago',desc:'Own security across our entire stack — from application-level vulnerabilities to cloud infrastructure security. Critical role as we scale to handle sensitive financial and identity data.',ic:'🔒',tags:['OWASP','Pen Testing','AWS Security'],extra:'senior'},
+  {id:'e7',dept:'engineering',title:'QA Lead — Test Automation & Quality Engineering',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'3–6 years',posted:'4 days ago',desc:'Build and own our quality engineering function from scratch. Define testing frameworks, own automation, and partner with engineering to ship confidently at velocity.',ic:'🧪',tags:['Playwright','Jest','CI/CD']},
+  {id:'e8',dept:'engineering',title:'Engineering Intern (6 months)',loc:'Hyderabad · In-office',type:'fulltime',emptype:'fulltime',exp:'Student / Fresher',posted:'Today',desc:'6-month paid internship with mentorship from senior engineers. ₹40,000/month stipend. Strong conversion rate to full-time. Work on real production code from Day 1.',ic:'🌱',tags:['Any Stack','Mentored'],extra:'fresher'},
+
+  /* PRODUCT */
+  {id:'p1',dept:'product',title:'Senior Product Manager — Tenant Experience',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'4–7 years',posted:'3 days ago',desc:'Own the end-to-end tenant journey — from the first search to moving in. Define strategy, ship features, and use data to make renting dramatically better for 50,000+ users.',ic:'🎯',tags:['Product Strategy','A/B Testing','SQL'],extra:'senior'},
+  {id:'p2',dept:'product',title:'Product Manager — Owner & Listings Platform',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'3–6 years',posted:'1 week ago',desc:'Own the product experience for 10,000+ property owners. Build tools that make listing, managing and analysing rental properties effortless.',ic:'🏠',tags:['B2B Product','Analytics','User Research']},
+  {id:'p3',dept:'product',title:'Product Analyst — Data & Insights',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'1–3 years',posted:'2 days ago',desc:'Work at the intersection of product and data. Define metrics, run experiments, build dashboards, and help the product team make evidence-based decisions.',ic:'📊',tags:['SQL','Python','Mixpanel','Tableau'],extra:'fresher'},
+
+  /* DESIGN */
+  {id:'d1',dept:'design',title:'Senior Product Designer — Mobile & Web',loc:'Remote',type:'fulltime',emptype:'remote',exp:'4–7 years',posted:'1 week ago',desc:'Design the experiences that make finding a home feel magical. Own design across mobile and web with deep craft for interaction design, typography, and visual systems.',ic:'🎨',tags:['Figma','Design Systems','Motion'],extra:'senior'},
+  {id:'d2',dept:'design',title:'Brand & Visual Designer',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'2–5 years',posted:'5 days ago',desc:'Own SmartRent AI\'s visual identity across all touchpoints — from marketing to product. Create campaigns, illustrations, and visual language that builds a premium brand.',ic:'✨',tags:['Figma','After Effects','Illustrator']},
+
+  /* GROWTH */
+  {id:'g1',dept:'growth',title:'Head of Growth Marketing',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'6–10 years',posted:'2 weeks ago',desc:'Lead our end-to-end growth function. Own everything from paid acquisition to SEO, CRO, and viral product loops. We\'re targeting 10× growth in 18 months — you\'ll build the engine.',ic:'📈',tags:['Performance Marketing','SEO','Analytics'],extra:'senior'},
+  {id:'g2',dept:'growth',title:'Content Lead — SEO & Editorial',loc:'Remote',type:'fulltime',emptype:'remote',exp:'3–5 years',posted:'1 week ago',desc:'Own our content strategy and SEO. Build a content engine that makes SmartRent AI the authoritative voice on renting in India. Strong writing + analytical mindset essential.',ic:'✍️',tags:['Content Strategy','SEO','Copywriting']},
+  {id:'g3',dept:'growth',title:'Performance Marketing Manager',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'2–5 years',posted:'3 days ago',desc:'Own paid acquisition across Google, Meta, and emerging channels. Manage a ₹50L+/month budget. Data-driven, creative, and relentlessly focused on CAC and ROI.',ic:'💰',tags:['Google Ads','Meta Ads','Attribution']},
+  {id:'g4',dept:'growth',title:'Community & Social Media Manager',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'1–3 years',posted:'Today',desc:'Build and grow our community of tenants, owners, and proptech enthusiasts across platforms. Create content, manage conversations, and turn users into advocates.',ic:'🌐',tags:['Social Media','Community','Content'],extra:'fresher'},
+
+  /* OPERATIONS */
+  {id:'o1',dept:'operations',title:'City Operations Manager — Hyderabad',loc:'Hyderabad · In-office',type:'fulltime',emptype:'fulltime',exp:'4–7 years',posted:'1 week ago',desc:'Own all on-ground operations in Hyderabad — property verification, field agent management, landlord relationships, and quality control. This role directly affects listing quality for 3,200+ properties.',ic:'🏙️',tags:['Operations','Field Management','CRM'],extra:'senior'},
+  {id:'o2',dept:'operations',title:'Property Verification Agent',loc:'Hyderabad · Field',type:'fulltime',emptype:'fulltime',exp:'0–2 years',posted:'Today',desc:'Visit properties, take verified photos, check amenities, and award the SmartRent Verified Badge. You are the human quality filter that makes our platform trusted. Vehicle preferred.',ic:'🔍',tags:['Field Work','Photography','QC'],extra:'fresher'},
+  {id:'o3',dept:'operations',title:'Customer Success Manager — Owners',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'2–4 years',posted:'5 days ago',desc:'Be the first point of contact for our 10,000+ property owners. Help them list better, get more enquiries, and resolve issues. The face and voice of SmartRent AI.',ic:'🤝',tags:['Customer Success','CRM','Communication']},
+
+  /* DATA & AI */
+  {id:'ai1',dept:'data',title:'Machine Learning Engineer — Rental Intelligence',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'3–6 years',posted:'1 week ago',desc:'Build the recommendation, matching, and pricing intelligence systems that are at the core of SmartRent AI\'s differentiation. Our AI serves 50K+ users daily.',ic:'🤖',tags:['Python','TensorFlow','Recommendation Systems'],extra:'senior'},
+  {id:'ai2',dept:'data',title:'Data Engineer — Pipelines & Warehouse',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'2–5 years',posted:'4 days ago',desc:'Build and maintain the data infrastructure that powers analytics, ML models, and product decisions. Own our entire data pipeline from ingestion to reporting.',ic:'🗄️',tags:['dbt','BigQuery','Python','Airflow']},
+
+  /* PEOPLE */
+  {id:'hr1',dept:'people',title:'Senior Talent Acquisition Partner',loc:'Hyderabad / Remote',type:'fulltime',emptype:'remote',exp:'3–6 years',posted:'1 week ago',desc:'Own full-cycle technical and non-technical hiring. Build our talent brand, manage candidate experience, and help us hire the 40+ people we need to hire in the next 12 months.',ic:'🎯',tags:['Technical Recruiting','Employer Branding'],extra:'senior'},
+  {id:'hr2',dept:'people',title:'People Operations & Culture Manager',loc:'Hyderabad / Hybrid',type:'fulltime',emptype:'hybrid',exp:'2–5 years',posted:'3 days ago',desc:'Own onboarding, L&D, engagement, and the people programmes that make SmartRent AI a truly great place to work. You\'ll work directly with the founders on culture strategy.',ic:'🌱',tags:['HR Operations','Culture','L&D']}
+];
+
+/* ══ STATE ════════════════════════════════════════════════════ */
+let activeDept = 'all';
+let activeFilter = 'all';
+let currentRole = null;
+
+/* ══ RENDER ROLES ════════════════════════════════════════════ */
+function renderRoles() {
+  const list = document.getElementById('rolesList');
+  let data = ROLES;
+
+  if (activeDept !== 'all') data = data.filter(r => r.dept === activeDept);
+  if (activeFilter === 'remote') data = data.filter(r => r.emptype === 'remote');
+  else if (activeFilter === 'hybrid') data = data.filter(r => r.emptype === 'hybrid');
+  else if (activeFilter === 'senior') data = data.filter(r => r.extra === 'senior');
+  else if (activeFilter === 'fresher') data = data.filter(r => r.extra === 'fresher');
+
+  if (!data.length) {
+    list.innerHTML = `<div class="roles-empty"><span class="re-ic">🔍</span><div class="re-t">No roles match this filter</div><div style="color:var(--iv3);font-size:13px;margin-top:8px">Try removing some filters or explore all departments</div></div>`;
+    return;
+  }
+
+  const deptColors = {engineering:'#5b8af5',product:'#f85a5a',design:'#2dd4aa',growth:'#6ab08a',operations:'#f5a623',data:'#a78bfa',people:'#38bdf8'};
+
+  list.innerHTML = data.map(r => `
+    <div class="role-card rv" onclick="openModal(r)" style="text-decoration:none" data-id="${r.id}">
+      <div class="rc-dept-ic">${r.ic}</div>
+      <div class="rc-info">
+        <div class="rc-title">${r.title}</div>
+        <div class="rc-meta">
+          <span class="rc-tag rt-dept" style="background:${deptColors[r.dept]||'var(--gold)'}22;color:${deptColors[r.dept]||'var(--gold)'};border-color:${deptColors[r.dept]||'var(--gold)'}44">${r.dept.charAt(0).toUpperCase()+r.dept.slice(1)}</span>
+          <span class="rc-tag rt-loc">📍 ${r.loc}</span>
+          <span class="rc-tag rt-type">${r.emptype==='remote'?'🌐 Remote':r.emptype==='hybrid'?'🏢 Hybrid':'🏙️ In-office'}</span>
+          <span class="rc-tag rt-exp">🎯 ${r.exp}</span>
+          ${r.extra==='fresher'?'<span class="rc-tag" style="background:var(--sg-d);color:var(--sage);border:1px solid var(--sg-b)">🌱 Fresher Friendly</span>':''}
+          ${r.extra==='senior'?'<span class="rc-tag" style="background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)">⭐ Senior</span>':''}
+        </div>
+        <div class="rc-desc">${r.desc}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px">${(r.tags||[]).map(t=>`<span style="font-size:10px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:2px 8px;border-radius:4px;color:var(--iv4);letter-spacing:.04em">${t}</span>`).join('')}</div>
+      </div>
+      <div class="rc-right">
+        <button class="rc-apply-btn" onclick="event.stopPropagation();openModal(ROLES.find(x=>x.id==='${r.id}'))">Apply Now →</button>
+        <div class="rc-time">Posted ${r.posted}</div>
+      </div>
+    </div>`).join('');
+
+  // Reattach reveal observers
+  document.querySelectorAll('.roles-list .rv').forEach(el => obs.observe(el));
+}
+
+/* ══ FILTER FUNCTIONS ════════════════════════════════════════ */
+function filterDept(el, dept) {
+  document.querySelectorAll('.dept-card').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  activeDept = dept;
+  document.getElementById('open-roles').scrollIntoView({ behavior:'smooth' });
+  renderRoles();
+}
+
+function filterRole(el, f) {
+  document.querySelectorAll('.rf-chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  activeFilter = f;
+  renderRoles();
+}
+
+/* ══ APPLICATION MODAL ══════════════════════════════════════ */
+function openModal(role) {
+  currentRole = role;
+  document.getElementById('modalRoleTitle').textContent = role.title;
+
+  const deptColors = {engineering:'#5b8af5',product:'#f85a5a',design:'#2dd4aa',growth:'#6ab08a',operations:'#f5a623',data:'#a78bfa',people:'#38bdf8'};
+  const col = deptColors[role.dept] || 'var(--gold)';
+
+  document.getElementById('modalRoleMeta').innerHTML = `
+    <span class="rc-tag rt-loc">📍 ${role.loc||'Hyderabad'}</span>
+    <span class="rc-tag rt-type">${role.type||'Full-time'}</span>
+    <span class="rc-tag rt-exp">🎯 ${role.exp||'Any'}</span>`;
+
+  document.getElementById('appForm').style.display = 'block';
+  document.getElementById('appSuccess').classList.remove('show');
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeOnBg(e) { if (e.target === document.getElementById('modalBg')) closeModal(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══ SUBMIT APPLICATION ══════════════════════════════════════ */
+function submitApplication() {
+  const name  = document.getElementById('appName').value.trim();
+  const email = document.getElementById('appEmail').value.trim();
+  const phone = document.getElementById('appPhone').value.trim();
+  const why   = document.getElementById('appWhy').value.trim();
+
+  if (!name)  { showToast('⚠️ Please enter your full name'); return; }
+  if (!email || !email.includes('@')) { showToast('⚠️ Please enter a valid email'); return; }
+  if (!phone) { showToast('⚠️ Please enter your mobile number'); return; }
+  if (why.length < 30) { showToast('⚠️ Please tell us why you want to join (min 30 characters)'); return; }
+
+  const refId = 'SR-' + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById('appRefId').textContent = 'REF: ' + refId;
+  document.getElementById('appForm').style.display = 'none';
+  document.getElementById('appSuccess').classList.add('show');
+  showToast('🎉 Application submitted successfully!');
+}
+
+/* ══ FILE SELECTION ══════════════════════════════════════════ */
+function fileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { showToast('⚠️ File too large — max 5MB'); input.value = ''; return; }
+  const nameEl = document.getElementById('fileNameDisplay');
+  nameEl.textContent = '✓ ' + file.name;
+  nameEl.style.display = 'block';
+  document.getElementById('fileLabel').style.borderColor = 'var(--gold-b)';
+  document.getElementById('fileLabel').style.color = 'var(--gold)';
+  showToast('📎 Resume attached: ' + file.name);
+}
+
+/* ══ MARQUEE ════════════════════════════════════════════════ */
+function buildMarquee() {
+  const items = [
+    {i:'🚀',t:'<strong>Series A</strong> stage · Scaling fast'},
+    {i:'💰',t:'<strong>ESOPs</strong> for every employee'},
+    {i:'🌐',t:'<strong>Remote-friendly</strong> culture'},
+    {i:'🏆',t:'<strong>Glassdoor 4.8★</strong> rated employer'},
+    {i:'📚',t:'<strong>₹75,000</strong> annual L&D budget'},
+    {i:'🏥',t:'<strong>Full health coverage</strong> for family'},
+    {i:'⚡',t:'<strong>Hire in 10 days</strong> — average'},
+    {i:'🌿',t:'<strong>25 days PTO</strong> + unlimited mental health days'},
+    {i:'🎯',t:'<strong>24 open roles</strong> across 8 departments'},
+    {i:'🤝',t:'<strong>Zero attrition</strong> in 18 months'},
+  ];
+  const t = document.getElementById('mqtrack');
+  const h = items.map(m => `<div class="mqi"><span class="mqi-ic">${m.i}</span><span class="mqi-tx">${m.t}</span></div>`).join('');
+  t.innerHTML = h + h;
+}
+
+/* ══ STAT COUNTERS ══════════════════════════════════════════ */
+function animCount(id, target, opts={}) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const dur = 1800, start = performance.now();
+  const tick = now => {
+    const p = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 4);
+    const val = ease * target;
+    el.textContent = (opts.pre||'') + (opts.dec ? val.toFixed(1) : Math.floor(val)) + (opts.suf||'');
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = (opts.pre||'') + (opts.int ? target.toLocaleString() : target) + (opts.suf||'');
+  };
+  requestAnimationFrame(tick);
+}
+
+let statsAnimated = false;
+const statsObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting && !statsAnimated) {
+    statsAnimated = true;
+    animCount('sv1', 65, { suf:'+' });
+    // Life bento
+    animCount('lbStat1', 96, { suf:'%' });
+    animCount('lbStat2', 10, {});
+    animCount('lbStat3', 75000, { pre:'₹', int:true });
+    animCount('lbStat4', 8, {});
+    animCount('lbStat5', 4.8, { dec:true });
+    animCount('lbStat6', 68, { suf:'%' });
+  }
+}, { threshold:0.3 });
+const statsEl = document.querySelector('.stats-strip');
+if (statsEl) statsObs.observe(statsEl);
+
+/* ══ NAVBAR + SCROLL ════════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('solid', scrollY > 44);
+  const t = document.documentElement;
+  const pct = (scrollY / (t.scrollHeight - window.innerHeight)) * 100;
+  document.getElementById('pgBar').style.width = Math.min(pct, 100) + '%';
+});
+
+/* ══ MOBILE MENU ════════════════════════════════════════════ */
+function toggleMob() {
+  const d = document.getElementById('mobMenu');
+  const b = document.getElementById('mobBtn');
+  const open = d.classList.toggle('open');
+  b.textContent = open ? '✕' : '☰';
+}
+
+/* ══ TOAST ══════════════════════════════════════════════════ */
+let _tT;
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.innerHTML = msg; el.style.display = 'block';
+  clearTimeout(_tT); _tT = setTimeout(() => { el.style.display = 'none'; }, 3800);
+}
+
+/* ══ SCROLL REVEAL ══════════════════════════════════════════ */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+/* ══ INIT ═══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  buildMarquee();
+  renderRoles();
+});
+
+/* EXPOSE */
+window.filterDept=filterDept; window.filterRole=filterRole;
+window.openModal=openModal; window.closeModal=closeModal; window.closeOnBg=closeOnBg;
+window.submitApplication=submitApplication; window.fileSelected=fileSelected;
+window.toggleMob=toggleMob; window.showToast=showToast;
+window.ROLES=ROLES;
+</script>
+</body>
+</html>

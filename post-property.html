@@ -1218,6 +1218,10 @@ function buildSummary() {
    SUBMIT — CLOUDINARY + FIRESTORE
 ════════════════════════════════════════ */
 window.submitProperty = async () => {
+   if (!currentUser) {
+  showToast("Please login first.", "error");
+  return;
+   }
   if (uploadedFiles.length < 1) {
     showToast("Please upload at least 1 photo.", "error"); return;
   }

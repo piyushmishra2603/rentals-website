@@ -1288,7 +1288,7 @@ window.submitProperty = async () => {
         phone:   gv("ownerPhone"),
         whatsapp:gv("ownerWA") || gv("ownerPhone"),
         email:   gv("ownerEmail"),
-        uid:     currentUser?.uid || null,
+        uid:     currentUser.uid
       },
 
       /* Media — Cloudinary URLs */

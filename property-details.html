@@ -3,299 +3,331 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="meta-title">SmartRent AI — Property Details</title>
+<title>Property Details — SmartRent AI</title>
 <meta name="description" content="View full property details, photos, amenities, location, owner info and book a site visit on SmartRent AI.">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════════════════
-   DESIGN TOKENS — DEEP LUXURY DARK GOLD
-══════════════════════════════════════════════════════ */
-:root{
-  --void:#030509;--deep:#060b14;--surf:#09101c;
-  --card:#0d1828;--card2:#111f34;--card3:#152540;
-
-  --gold:#c9a84c;--gold-lt:#e8c870;--gold-dk:#876a28;
-  --gold-d:rgba(201,168,76,.1);--gold-b:rgba(201,168,76,.24);
-  --gold-bb:rgba(201,168,76,.42);--gold-glow:rgba(201,168,76,.4);
-
-  --teal:#22d4b0;--teal-d:rgba(34,212,176,.1);--teal-b:rgba(34,212,176,.22);
-  --emerald:#10b981;--em-d:rgba(16,185,129,.1);--em-b:rgba(16,185,129,.22);
-  --rose:#f43f5e;--rose-d:rgba(244,63,94,.1);--rose-b:rgba(244,63,94,.2);
-  --amber:#f59e0b;--amb-d:rgba(245,158,11,.1);--amb-b:rgba(245,158,11,.2);
-  --blue:#3b82f6;--blue-d:rgba(59,130,246,.1);--blue-b:rgba(59,130,246,.2);
-  --violet:#8b5cf6;--vio-d:rgba(139,92,246,.1);--vio-b:rgba(139,92,246,.2);
-
-  --t0:#ecf0ff;--t1:rgba(218,226,255,.82);--t2:rgba(175,192,238,.54);--t3:rgba(135,158,212,.3);
-  --div:rgba(201,168,76,.07);--div2:rgba(255,255,255,.07);--div3:rgba(255,255,255,.13);
-
-  --r1:7px;--r2:13px;--r3:19px;--r4:27px;--r5:38px;
+/* ══════════════════════════════════════════════
+   DESIGN TOKENS — WARM EDITORIAL LIGHT
+   Matches properties.html perfectly
+══════════════════════════════════════════════ */
+:root {
+  --cream:    #faf7f2;
+  --cream2:   #f3ede4;
+  --cream3:   #ede4d8;
+  --cream4:   #e4d8c8;
+  --white:    #ffffff;
+  --ink:      #1a1410;
+  --ink2:     #2e2820;
+  --ink3:     #4a4038;
+  --ink4:     #6b5f55;
+  --ink5:     #9c8e84;
+  --terra:    #c45c3c;
+  --terra-lt: #d97a5c;
+  --terra-dk: #8a3620;
+  --terra-d:  rgba(196,92,60,.1);
+  --terra-b:  rgba(196,92,60,.22);
+  --terra-g:  rgba(196,92,60,.06);
+  --gold:     #c8943a;
+  --gold-lt:  #e0b060;
+  --gold-d:   rgba(200,148,58,.1);
+  --gold-b:   rgba(200,148,58,.24);
+  --sage:     #4a7c6f;
+  --sage-d:   rgba(74,124,111,.1);
+  --sage-b:   rgba(74,124,111,.22);
+  --wa:       #25D366;
+  --wa-dk:    #128C7E;
+  --avail:    #2d7a5a;
+  --avail-d:  rgba(45,122,90,.1);
+  --avail-b:  rgba(45,122,90,.2);
+  --t0: var(--ink);
+  --t1: var(--ink2);
+  --t2: var(--ink3);
+  --t3: var(--ink4);
+  --t4: var(--ink5);
+  --div:  rgba(30,20,10,.07);
+  --div2: rgba(30,20,10,.12);
+  --div3: rgba(30,20,10,.2);
+  --r1:6px; --r2:12px; --r3:18px; --r4:24px; --r5:36px;
+  --sh1: 0 2px 16px rgba(30,20,10,.06);
+  --sh2: 0 8px 40px rgba(30,20,10,.1);
+  --sh3: 0 24px 80px rgba(30,20,10,.14);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);overflow-x:hidden;line-height:1.7}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}
-::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}
-::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.7;font-size:15px}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--cream2)}
+::-webkit-scrollbar-thumb{background:var(--terra-b);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--terra)}
 
-/* AMBIENT */
-.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(110px);animation:ofl 22s ease-in-out infinite alternate}
-.o1{width:680px;height:680px;top:-220px;left:-180px;background:radial-gradient(circle,rgba(201,168,76,.055) 0%,transparent 68%)}
-.o2{width:540px;height:540px;bottom:-190px;right:-140px;background:radial-gradient(circle,rgba(34,212,176,.045) 0%,transparent 68%);animation-delay:-9s}
-.o3{width:380px;height:380px;top:50%;left:42%;background:radial-gradient(circle,rgba(201,168,76,.028) 0%,transparent 68%);animation-delay:-16s}
-@keyframes ofl{0%{transform:translate(0,0) scale(1)}45%{transform:translate(28px,-20px) scale(1.06)}80%{transform:translate(-16px,17px) scale(.97)}100%{transform:translate(12px,-8px) scale(1.03)}}
-.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.38}
+.pgbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold));z-index:2000;transition:width .15s;pointer-events:none}
+.bg-texture{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.3;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")}
 
-/* PROGRESS BAR */
-.pgbar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));z-index:1000;transition:width .15s;pointer-events:none}
-
-/* ════════════════ NAVBAR ════════════════ */
-.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(3,5,9,.78);backdrop-filter:blur(28px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
-.nav.solid{background:rgba(3,5,9,.97);box-shadow:0 1px 0 var(--gold-b),0 6px 36px rgba(0,0,0,.6)}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0}
-.bgem{width:33px;height:33px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 0 14px rgba(201,168,76,.32);flex-shrink:0}
-.bname{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0)}
-.bai{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:600;letter-spacing:.16em;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);padding:1px 4px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:1px}
-.nav-r{display:flex;gap:8px;align-items:center;margin-left:auto;flex-shrink:0}
-.nb{padding:7px 15px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
-.nb-gh{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nb-gh:hover{border-color:var(--gold-b);color:var(--gold)}
-.nb-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-weight:700}.nb-gold:hover{box-shadow:0 0 24px var(--gold-glow);transform:translateY(-1px)}
+/* ══ NAVBAR ══ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:66px;display:flex;align-items:center;padding:0 36px;background:rgba(250,247,242,.92);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--div);transition:all .3s}
+.nav.solid{background:rgba(250,247,242,.99);box-shadow:0 2px 0 rgba(196,92,60,.12),0 6px 30px rgba(30,20,10,.08)}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
+.bgem{width:36px;height:36px;background:linear-gradient(135deg,var(--terra),var(--terra-dk));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;box-shadow:0 3px 14px rgba(196,92,60,.3);flex-shrink:0}
+.bname{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink);letter-spacing:-.01em}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--sage);background:var(--sage-d);border:1px solid var(--sage-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
+/* Breadcrumb */
 .breadcrumb{display:flex;align-items:center;gap:6px;margin-left:20px;font-size:12px;color:var(--t3)}
-.bc-sep{color:var(--t3);opacity:.5}
-.bc-a{color:var(--t2);text-decoration:none;transition:color .18s}.bc-a:hover{color:var(--gold)}
-.bc-cur{color:var(--t1)}
-.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
+.bc-sep{opacity:.5}
+.bc-a{color:var(--t2);text-decoration:none;transition:color .18s}.bc-a:hover{color:var(--terra)}
+.bc-cur{color:var(--ink2);font-weight:600;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-r{display:flex;gap:8px;align-items:center;margin-left:auto;flex-shrink:0}
+.nb{padding:8px 16px;border-radius:var(--r1);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
+.nb-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3)}.nb-out:hover{border-color:var(--terra-b);color:var(--terra)}
+.nb-terra{background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-weight:800}.nb-terra:hover{box-shadow:0 4px 18px rgba(196,92,60,.4);transform:translateY(-1px)}
+.mob-btn{display:none;width:38px;height:38px;border-radius:var(--r1);border:1.5px solid var(--div2);background:transparent;font-size:18px;color:var(--ink3);cursor:pointer;align-items:center;justify-content:center}
+.mob-drawer{display:none;position:fixed;top:66px;left:0;right:0;background:var(--white);border-bottom:2px solid var(--terra-b);padding:20px 28px;z-index:800;flex-direction:column;box-shadow:0 8px 40px rgba(30,20,10,.12)}
+.mob-drawer.open{display:flex}
+.mob-l{padding:12px 0;font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--div);display:flex;align-items:center;gap:9px;transition:color .18s}.mob-l:hover{color:var(--terra)}.mob-l:last-of-type{border-bottom:none}
 
-/* ════════════════ GALLERY ════════════════ */
-.gallery{position:relative;z-index:1;padding-top:64px;background:var(--deep)}
-.gallery-inner{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:320px 180px;gap:4px;height:504px;overflow:hidden}
-.gallery-main{grid-row:span 2;position:relative;overflow:hidden;cursor:pointer;background:var(--surf)}
-.gallery-thumb{position:relative;overflow:hidden;cursor:pointer;background:var(--surf)}
-.gal-content{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;background:var(--card);transition:transform .5s ease}
-.gallery-main .gal-content{font-size:120px;background:linear-gradient(145deg,var(--card),var(--card2))}
-.gallery-thumb .gal-content{font-size:60px}
-.gallery-main:hover .gal-content,.gallery-thumb:hover .gal-content{transform:scale(1.04)}
-.gallery-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(3,5,9,.7));pointer-events:none}
-.gallery-more-btn{position:absolute;bottom:16px;right:16px;background:rgba(3,5,9,.75);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);border-radius:var(--r1);padding:8px 16px;font-size:12px;font-weight:600;color:var(--t0);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}.gallery-more-btn:hover{border-color:var(--gold-b);color:var(--gold)}
-.gallery-badge{position:absolute;top:16px;left:16px;display:flex;gap:6px;flex-wrap:wrap}
-.gbdg{font-size:9.5px;font-family:'JetBrains Mono',monospace;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:4px;backdrop-filter:blur(8px)}
-.gb-v{background:rgba(16,185,129,.2);color:var(--emerald);border:1px solid var(--em-b)}
-.gb-p{background:rgba(201,168,76,.18);color:var(--gold-lt);border:1px solid var(--gold-b)}
-.gb-h{background:rgba(244,63,94,.2);color:#faa;border:1px solid var(--rose-b)}
-.gb-n{background:rgba(59,130,246,.18);color:#93c5fd;border:1px solid var(--blue-b)}
-.gallery-save{position:absolute;top:16px;right:16px;width:38px;height:38px;border-radius:50%;background:rgba(3,5,9,.65);backdrop-filter:blur(6px);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s}.gallery-save:hover,.gallery-save.saved{background:rgba(244,63,94,.2);border-color:var(--rose-b)}
+/* ══ GALLERY ══ */
+.gallery{position:relative;z-index:1;padding-top:66px;background:var(--cream2)}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:320px 170px;gap:4px;height:494px;overflow:hidden}
+.gal-main{grid-row:span 2;position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;background:var(--cream3)}
+.gal-thumb{position:relative;overflow:hidden;cursor:pointer;display:flex;align-items:center;justify-content:center;background:var(--cream3)}
+.gal-emoji{font-size:100px;transition:transform .45s cubic-bezier(.34,1.3,.64,1);z-index:1;filter:drop-shadow(0 4px 20px rgba(30,20,10,.18))}
+.gal-main .gal-emoji{font-size:140px}
+.gal-thumb .gal-emoji{font-size:72px}
+.gal-main:hover .gal-emoji,.gal-thumb:hover .gal-emoji{transform:scale(1.08) translateY(-4px)}
+.gal-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(26,20,16,.42))}
+.gal-thumb .gal-ov{background:linear-gradient(to bottom,transparent 50%,rgba(26,20,16,.35))}
+/* Badges */
+.gal-badges{position:absolute;top:14px;left:14px;display:flex;gap:6px;flex-wrap:wrap;z-index:3}
+.gbdg{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:4px;font-family:'JetBrains Mono',monospace;backdrop-filter:blur(8px)}
+.gbv{background:rgba(45,122,90,.2);color:#27a96a;border:1px solid rgba(45,122,90,.35)}
+.gbp{background:rgba(200,148,58,.2);color:var(--gold);border:1px solid var(--gold-b)}
+.gbh{background:rgba(196,92,60,.2);color:var(--terra);border:1px solid var(--terra-b)}
+.gbn{background:rgba(74,124,111,.2);color:var(--sage);border:1px solid var(--sage-b)}
+/* Save button */
+.gal-save{position:absolute;top:14px;right:14px;z-index:3;width:38px;height:38px;border-radius:50%;background:rgba(250,247,242,.88);backdrop-filter:blur(6px);border:1.5px solid rgba(30,20,10,.1);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.gal-save:hover,.gal-save.saved{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.35)}
+/* Photo counter */
+.gal-count-btn{position:absolute;bottom:14px;right:14px;z-index:3;background:rgba(26,20,16,.72);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:var(--r1);padding:8px 16px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}.gal-count-btn:hover{background:rgba(196,92,60,.8);border-color:rgba(196,92,60,.5)}
+/* Rating overlay */
+.gal-rating{position:absolute;bottom:14px;left:14px;z-index:3;background:rgba(250,247,242,.88);backdrop-filter:blur(6px);border-radius:var(--r1);padding:5px 10px;font-size:12px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:5px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
 
-/* ════════════════ MAIN LAYOUT ════════════════ */
-.page-layout{display:grid;grid-template-columns:1fr 380px;gap:28px;max-width:1280px;margin:0 auto;padding:36px 28px 100px;position:relative;z-index:1;align-items:start}
+/* ══ PAGE LAYOUT ══ */
+.page-wrap{max-width:1300px;margin:0 auto;padding:36px 28px 100px;display:grid;grid-template-columns:1fr 380px;gap:32px;align-items:start;position:relative;z-index:1}
 
-/* ════════════════ LEFT COLUMN ════════════════ */
+/* ══ LEFT COLUMN ══ */
 .left-col{}
-
 /* Property header */
 .prop-header{margin-bottom:28px}
-.prop-type-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.pt-chip{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:var(--amb-d);color:var(--amber);border:1px solid var(--amb-b)}
-.pt-avail{font-size:12px;color:var(--emerald);display:flex;align-items:center;gap:5px}
-.pt-avail::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px rgba(16,185,129,.5)}
-.prop-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3.5vw,40px);font-weight:800;color:var(--t0);line-height:1.08;letter-spacing:-.02em;margin-bottom:10px}
-.prop-loc{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--t2);margin-bottom:18px}
-.prop-rating-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.rat-stars{font-size:14px;color:var(--amber);letter-spacing:2px}
-.rat-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold-lt)}
+.type-avail-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.type-chip{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border-radius:4px;background:var(--terra-d);color:var(--terra);border:1px solid var(--terra-b);font-weight:700}
+.avail-badge{font-size:12px;font-weight:700;color:var(--avail);display:flex;align-items:center;gap:5px}
+.avail-badge::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--avail);animation:avpulse 2s infinite;flex-shrink:0}
+@keyframes avpulse{0%{box-shadow:0 0 0 0 rgba(45,122,90,.5)}70%{box-shadow:0 0 0 6px rgba(45,122,90,0)}100%{box-shadow:0 0 0 0 rgba(45,122,90,0)}}
+.avail-badge.leased{color:#b04040}.avail-badge.leased::before{background:#b04040;animation:none}
+.prop-title{font-family:'DM Serif Display',serif;font-size:clamp(22px,3.5vw,38px);color:var(--ink);line-height:1.08;letter-spacing:-.02em;margin-bottom:10px}
+.prop-loc{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);font-weight:500;margin-bottom:16px}
+.prop-meta-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.rat-stars{font-size:14px;color:var(--gold);letter-spacing:1px}
+.rat-num{font-family:'DM Serif Display',serif;font-size:17px;font-weight:700;color:var(--gold)}
 .rat-count{font-size:12px;color:var(--t3)}
-.rat-divider{width:1px;height:14px;background:var(--div2)}
-.rat-views{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:4px}
+.meta-divider{width:1px;height:14px;background:var(--div2)}
+.meta-item{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:4px}
 
 /* Spec pills */
-.spec-pills{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0}
-.sp{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:10px 16px;font-size:13px;font-weight:600;color:var(--t1);transition:all .2s}
-.sp:hover{border-color:var(--gold-b);background:var(--gold-d)}
-.sp-ic{font-size:18px}
-.sp-val{font-size:16px;font-weight:700;color:var(--t0)}
+.spec-pills{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
+.spec-pill{display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:10px 16px;transition:all .2s;box-shadow:var(--sh1)}
+.spec-pill:hover{border-color:var(--terra-b);box-shadow:var(--sh2)}
+.sp-ic{font-size:20px}
+.sp-val{font-size:15px;font-weight:800;color:var(--ink);line-height:1}
 .sp-lbl{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
 
-/* Section headings */
-.sec-h{font-family:'Playfair Display',serif;font-size:clamp(18px,2.2vw,24px);font-weight:700;color:var(--t0);margin-bottom:16px;letter-spacing:-.01em;display:flex;align-items:center;gap:10px}
-.sec-h::before{content:'';width:3px;height:22px;background:var(--gold);border-radius:2px;flex-shrink:0}
-.sec-line{height:1px;background:linear-gradient(90deg,rgba(255,255,255,.08),transparent);margin:24px 0}
+/* Section heading */
+.sec-h{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.2vw,24px);color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
+.sec-h::before{content:'';width:4px;height:22px;background:var(--terra);border-radius:2px;flex-shrink:0}
+.sec-line{height:1.5px;background:linear-gradient(90deg,var(--div2),transparent);margin:28px 0}
 
 /* Description */
-.desc-text{font-size:14.5px;color:var(--t2);line-height:1.92;margin-bottom:16px}
-.desc-text strong{color:var(--t0);font-weight:600}
-.read-more-btn{background:transparent;border:none;color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;padding:0;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:5px;transition:opacity .2s}.read-more-btn:hover{opacity:.7}
+.desc-text{font-size:14.5px;color:var(--t2);line-height:1.92}
+.desc-text p{margin-bottom:14px}.desc-text p:last-child{margin-bottom:0}
+.desc-text strong{color:var(--ink);font-weight:700}
+.read-more-btn{background:transparent;border:none;color:var(--terra);font-size:13px;font-weight:700;cursor:pointer;padding:8px 0;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:5px;transition:opacity .2s}.read-more-btn:hover{opacity:.7}
 
-/* Amenities grid */
-.amen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;margin-bottom:8px}
-.amen-item{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:11px 14px;font-size:12.5px;color:var(--t1);transition:all .2s}
-.amen-item:hover{border-color:var(--gold-b);background:var(--gold-d)}
-.ai-ic{font-size:18px;flex-shrink:0}
+/* Amenities */
+.amen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.amen-item{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink2);transition:all .2s;box-shadow:var(--sh1)}
+.amen-item:hover{border-color:var(--terra-b);background:var(--terra-d);transform:translateY(-1px)}
+.amen-ic{font-size:20px;flex-shrink:0}
 
 /* Floor plan */
-.floor-plan{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);overflow:hidden;margin-bottom:4px}
-.fp-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
-.fp-header-t{font-size:14px;font-weight:600;color:var(--t0)}
+.floor-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1)}
+.floor-head{padding:16px 20px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
+.floor-title{font-family:'DM Serif Display',serif;font-size:16px;color:var(--ink)}
 .fp-tabs{display:flex;gap:6px}
-.fp-tab{padding:5px 13px;border-radius:var(--r1);font-size:11px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,.08);background:transparent;color:var(--t2);transition:all .18s}
-.fp-tab.on{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
-.fp-body{padding:28px;display:flex;align-items:center;justify-content:center;min-height:280px;position:relative}
-.fp-svg-wrap{width:100%;max-width:520px}
-.fp-rooms{display:flex;gap:10px;flex-wrap:wrap;padding:16px 20px;border-top:1px solid rgba(255,255,255,.05)}
-.fp-room-tag{font-size:11px;font-family:'JetBrains Mono',monospace;padding:3px 9px;border-radius:4px;background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b);letter-spacing:.05em}
+.fp-tab{padding:5px 13px;border-radius:var(--r1);font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid var(--div2);background:transparent;color:var(--t2);transition:all .18s;font-family:'Nunito',sans-serif}
+.fp-tab.on{background:var(--terra-d);border-color:var(--terra-b);color:var(--terra)}
+.floor-body{padding:28px;display:flex;align-items:center;justify-content:center;background:var(--cream)}
+.fp-svg-wrap{width:100%;max-width:560px}
+.floor-tags{padding:14px 20px;border-top:1px solid var(--div);display:flex;gap:8px;flex-wrap:wrap;background:var(--cream2)}
+.fp-tag{font-size:10px;font-family:'JetBrains Mono',monospace;padding:3px 9px;border-radius:4px;background:var(--terra-d);color:var(--terra);border:1px solid var(--terra-b);letter-spacing:.05em}
 
 /* Map */
-.map-sec{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);overflow:hidden;margin-bottom:4px}
-.map-header{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:space-between}
-.map-body{height:300px;background:linear-gradient(145deg,var(--surf),var(--card2));position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.map-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.04) 1px,transparent 1px);background-size:40px 40px}
-.map-roads{position:absolute;inset:0;overflow:hidden}
+.map-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1)}
+.map-head{padding:16px 20px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
+.map-head-t{font-size:13px;font-weight:700;color:var(--ink)}
+.map-body{height:280px;background:linear-gradient(145deg,var(--cream2),var(--cream3));position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.map-grid-svg{position:absolute;inset:0;width:100%;height:100%;opacity:.3}
 .map-pin{position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);z-index:3;display:flex;flex-direction:column;align-items:center}
-.mp-ic{font-size:36px;filter:drop-shadow(0 4px 12px rgba(201,168,76,.5));animation:pinBounce 2s ease-in-out infinite}
+.mp-emoji{font-size:38px;filter:drop-shadow(0 4px 12px rgba(196,92,60,.5));animation:pinBounce 2s ease-in-out infinite}
 @keyframes pinBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-.mp-ring{width:60px;height:20px;background:rgba(201,168,76,.15);border-radius:50%;filter:blur(4px)}
-.map-pulse{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(201,168,76,.6);animation:mapPulse 2s infinite}
-@keyframes mapPulse{0%{box-shadow:0 0 0 0 rgba(201,168,76,.6)}70%{box-shadow:0 0 0 32px rgba(201,168,76,0)}100%{box-shadow:0 0 0 0 rgba(201,168,76,0)}}
-.map-nearby{padding:14px 20px;display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.06)}
-.mn-item{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:100px;padding:4px 12px;font-size:11px;color:var(--t2)}
-.mn-ic{font-size:13px}
+.mp-ring{width:60px;height:18px;background:rgba(196,92,60,.18);border-radius:50%;filter:blur(4px)}
+.map-pulse{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--terra);box-shadow:0 0 0 0 rgba(196,92,60,.5);animation:mapPulse 2s infinite}
+@keyframes mapPulse{0%{box-shadow:0 0 0 0 rgba(196,92,60,.5)}70%{box-shadow:0 0 0 28px rgba(196,92,60,0)}100%{box-shadow:0 0 0 0 rgba(196,92,60,0)}}
+.map-nearby{padding:14px 20px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--div);background:var(--cream)}
+.mn-item{display:flex;align-items:center;gap:5px;background:var(--white);border:1px solid var(--div);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--ink3)}
 
 /* Reviews */
-.review-list{display:flex;flex-direction:column;gap:14px;margin-bottom:16px}
-.review-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:18px 20px}
+.review-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:20px;box-shadow:var(--sh1);margin-bottom:12px;transition:all .2s}
+.review-card:hover{border-color:var(--terra-b);box-shadow:var(--sh2)}
 .rc-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
-.rc-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#04060a;flex-shrink:0;font-family:'Playfair Display',serif}
-.rc-info{flex:1}
-.rc-name{font-size:14px;font-weight:700;color:var(--t0);margin-bottom:2px}
-.rc-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t3)}
-.rc-stars{color:var(--amber);font-size:11px;letter-spacing:1px}
-.rc-text{font-size:13.5px;color:var(--t2);line-height:1.78}
-.rc-helpful{display:flex;align-items:center;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.05)}
-.rch-btn{font-size:12px;color:var(--t3);cursor:pointer;background:transparent;border:none;font-family:'Outfit',sans-serif;transition:color .18s}.rch-btn:hover{color:var(--gold)}
+.rc-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:#fff;flex-shrink:0;font-family:'DM Serif Display',serif}
+.rc-name{font-size:14px;font-weight:800;color:var(--ink);margin-bottom:2px}
+.rc-meta{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t3);flex-wrap:wrap}
+.rc-stars{color:var(--gold);font-size:12px;letter-spacing:1px}
+.rc-text{font-size:13.5px;color:var(--t2);line-height:1.8}
+.rc-foot{display:flex;gap:14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--div)}
+.rch-btn{font-size:12px;color:var(--t3);cursor:pointer;background:transparent;border:none;font-family:'Nunito',sans-serif;font-weight:600;transition:color .18s}.rch-btn:hover{color:var(--terra)}
+.view-all-btn{width:100%;padding:12px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--t2);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}.view-all-btn:hover{border-color:var(--terra-b);color:var(--terra)}
 
-/* Similar properties */
+/* Similar */
 .similar-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.sim-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .3s}
-.sim-card:hover{border-color:var(--gold-b);transform:translateY(-4px);box-shadow:0 14px 44px rgba(0,0,0,.5)}
-.sim-img{height:130px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
-.sim-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(3,5,9,.75))}
+.sim-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .3s;box-shadow:var(--sh1)}
+.sim-card:hover{border-color:var(--terra-b);transform:translateY(-4px);box-shadow:var(--sh3)}
+.sim-img{height:130px;display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;overflow:hidden}
+.sim-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(26,20,16,.3))}
 .sim-body{padding:13px}
-.sim-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--t0);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sim-loc{font-size:11px;color:var(--t2);margin-bottom:8px}
-.sim-price{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--gold-lt)}
+.sim-name{font-family:'DM Serif Display',serif;font-size:14px;color:var(--ink);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim-loc{font-size:11px;color:var(--t2);font-weight:500;margin-bottom:8px}
+.sim-price{font-family:'DM Serif Display',serif;font-size:17px;color:var(--terra)}
 .sim-price span{font-size:10px;font-weight:400;color:var(--t3);font-family:'JetBrains Mono',monospace}
 
-/* ════════════════ RIGHT SIDEBAR ════════════════ */
-.sidebar{position:sticky;top:84px;display:flex;flex-direction:column;gap:16px}
+/* ══ SIDEBAR ══ */
+.sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:82px}
 
 /* Price card */
-.price-card{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r4);overflow:hidden;box-shadow:0 0 40px rgba(201,168,76,.08),inset 0 1px 0 rgba(201,168,76,.08)}
-.price-card-top{padding:24px 24px 18px;background:linear-gradient(135deg,rgba(201,168,76,.06),transparent)}
+.price-card{background:var(--white);border:1.5px solid var(--terra-b);border-radius:var(--r4);overflow:hidden;box-shadow:0 8px 32px rgba(196,92,60,.1),inset 0 1px 0 rgba(196,92,60,.06)}
+.pc-top{padding:24px 24px 18px;background:linear-gradient(135deg,var(--terra-g),transparent)}
 .pc-label{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:5px}
-.pc-price{font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,42px);font-weight:800;color:var(--gold-lt);letter-spacing:-.02em;line-height:1;margin-bottom:3px}
-.pc-price .cur{font-size:20px;font-weight:600}
+.pc-price{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,44px);color:var(--ink);letter-spacing:-.02em;line-height:1;margin-bottom:3px}
+.pc-price .cur{font-size:20px}
 .pc-per{font-size:11px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
 .pc-deposit{margin-top:10px;font-size:13px;color:var(--t2);display:flex;align-items:center;gap:6px}
-.pc-deposit span{color:var(--gold);font-weight:600}
-.price-card-body{padding:18px 24px 24px}
-
-/* Action buttons */
-.btn-enquire{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.02em;margin-bottom:10px}.btn-enquire:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
-.btn-visit{width:100%;padding:13px;border-radius:var(--r1);background:var(--teal-d);border:1px solid var(--teal-b);color:var(--teal);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:10px}.btn-visit:hover{background:rgba(34,212,176,.18)}
-.btn-call{width:100%;padding:12px;border-radius:var(--r1);background:transparent;border:1px solid var(--div2);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}.btn-call:hover{border-color:var(--gold-b);color:var(--gold)}
-
-.pc-perks{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(201,168,76,.07)}
-.perk{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2)}
+.pc-deposit strong{color:var(--terra);font-weight:700}
+.pc-body{padding:18px 24px 24px}
+.btn-enquire{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.01em;margin-bottom:10px}.btn-enquire:hover{box-shadow:0 4px 20px rgba(196,92,60,.45);transform:translateY(-1px)}
+.btn-visit{width:100%;padding:13px;border-radius:var(--r1);background:var(--sage-d);border:1.5px solid var(--sage-b);color:var(--sage);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:10px}.btn-visit:hover{background:rgba(74,124,111,.18)}
+.btn-wa-owner{width:100%;padding:12px;border-radius:var(--r1);background:rgba(37,211,102,.08);border:1.5px solid rgba(37,211,102,.3);color:var(--wa-dk);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;margin-bottom:10px}
+.btn-wa-owner:hover{background:rgba(37,211,102,.15);transform:translateY(-1px)}
+.btn-call-owner{width:100%;padding:11px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--ink3);font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}.btn-call-owner:hover{border-color:var(--terra-b);color:var(--terra)}
+.pc-perks{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--div)}
+.perk-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--t2)}
 .perk-ic{font-size:15px;flex-shrink:0}
 
 /* Owner card */
-.owner-card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:22px;transition:border-color .2s}
-.owner-card:hover{border-color:var(--gold-b)}
+.owner-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r3);padding:22px;box-shadow:var(--sh1);transition:border-color .2s}
+.owner-card:hover{border-color:var(--terra-b)}
 .oc-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.oc-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid var(--gold-b);flex-shrink:0;background:linear-gradient(135deg,var(--card2),var(--card3));position:relative}
-.oc-verified{position:absolute;bottom:-1px;right:-1px;width:18px;height:18px;border-radius:50%;background:var(--emerald);border:2px solid var(--card);display:flex;align-items:center;justify-content:center;font-size:9px}
-.oc-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--t0);margin-bottom:2px}
+.oc-avatar{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;border:2px solid var(--terra-b);flex-shrink:0;background:var(--cream2);position:relative}
+.oc-verified{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:var(--avail);border:2px solid var(--white);display:flex;align-items:center;justify-content:center;font-size:8px;color:white}
+.oc-name{font-family:'DM Serif Display',serif;font-size:16px;color:var(--ink);margin-bottom:2px}
 .oc-type{font-size:11px;color:var(--t2);font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase}
 .oc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
-.ocs{text-align:center;background:var(--surf);border:1px solid rgba(255,255,255,.05);border-radius:var(--r1);padding:9px 6px}
-.ocs-v{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold-lt);line-height:1;margin-bottom:2px}
+.ocs{text-align:center;background:var(--cream2);border-radius:var(--r1);padding:9px 6px}
+.ocs-v{font-family:'DM Serif Display',serif;font-size:16px;color:var(--terra);line-height:1;margin-bottom:2px}
 .ocs-l{font-size:9px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase}
-.oc-resp{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2);margin-bottom:14px;padding:9px 12px;background:var(--em-d);border:1px solid var(--em-b);border-radius:var(--r1)}
-.oc-msg-btn{width:100%;padding:10px;border-radius:var(--r1);background:transparent;border:1px solid var(--gold-b);color:var(--gold);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}.oc-msg-btn:hover{background:var(--gold-d)}
+.oc-resp{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2);margin-bottom:14px;padding:9px 12px;background:var(--avail-d);border:1px solid var(--avail-b);border-radius:var(--r1)}
+.oc-msg{width:100%;padding:10px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--terra-b);color:var(--terra);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}.oc-msg:hover{background:var(--terra-d)}
 
 /* Safety card */
-.safety-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:18px;font-size:12.5px;color:var(--t2);line-height:1.72}
-.sc-title{font-size:13px;font-weight:700;color:var(--t0);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.safety-card{background:var(--cream2);border:1px solid var(--div);border-radius:var(--r2);padding:16px;font-size:13px;color:var(--t2);line-height:1.7}
+.safety-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:7px}
 
-/* Enquiry modal */
-.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(2,4,7,.9);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .26s}
+/* ══ ENQUIRY MODAL ══ */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(26,20,16,.7);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .26s}
 .modal-bg.show{opacity:1;pointer-events:all}
-.modal-box{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r4);width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(201,168,76,.1);transform:scale(.95) translateY(10px);transition:transform .26s cubic-bezier(.34,1.2,.64,1)}
+.modal-box{background:var(--white);border:1.5px solid var(--terra-b);border-radius:var(--r4);width:100%;max-width:540px;max-height:92vh;overflow-y:auto;box-shadow:var(--sh3);transform:scale(.95) translateY(10px);transition:transform .26s cubic-bezier(.34,1.2,.64,1)}
 .modal-bg.show .modal-box{transform:scale(1) translateY(0)}
-.modal-head{padding:24px 26px 18px;border-bottom:1px solid rgba(201,168,76,.08);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(90deg,rgba(201,168,76,.04),transparent)}
-.modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--t0);letter-spacing:-.01em}
-.modal-close{width:32px;height:32px;border-radius:50%;background:var(--card2);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .2s;color:var(--t2)}.modal-close:hover{background:var(--rose-d);border-color:var(--rose-b);color:var(--rose)}
+.modal-head{padding:24px 26px 18px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,var(--terra-g),transparent)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+.modal-close{width:32px;height:32px;border-radius:50%;background:var(--cream2);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .2s;color:var(--t2)}.modal-close:hover{background:var(--terra-d);border-color:var(--terra-b);color:var(--terra)}
 .modal-body{padding:22px 26px}
-.modal-label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:7px}
-.modal-input,.modal-select,.modal-textarea{width:100%;background:var(--surf);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);padding:11px 14px;color:var(--t0);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .2s;margin-bottom:16px}
-.modal-input:focus,.modal-select:focus,.modal-textarea:focus{border-color:var(--gold-bb);box-shadow:0 0 0 3px rgba(201,168,76,.07)}
-.modal-input::placeholder,.modal-textarea::placeholder{color:var(--t3);font-style:italic}
-.modal-select{cursor:pointer;color:var(--t1)}.modal-select option{background:var(--card2)}
-.modal-textarea{resize:vertical;min-height:90px}
-.modal-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.modal-submit{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.02em}.modal-submit:hover{box-shadow:0 0 24px var(--gold-glow);transform:translateY(-1px)}
-.modal-success{display:none;text-align:center;padding:20px 0}
-.modal-success.show{display:block}
-.ms-icon{font-size:60px;margin-bottom:14px;display:block;animation:bounce .6s cubic-bezier(.34,1.56,.64,1)}
+.modal-lbl{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:7px}
+.m-inp,.m-sel,.m-ta{width:100%;background:var(--cream);border:1.5px solid var(--div2);border-radius:var(--r2);padding:11px 14px;color:var(--ink);font-family:'Nunito',sans-serif;font-size:14px;font-weight:500;outline:none;transition:all .2s;margin-bottom:14px}
+.m-inp:focus,.m-sel:focus,.m-ta:focus{border-color:var(--terra-b);box-shadow:0 0 0 3px rgba(196,92,60,.07);background:var(--white)}
+.m-inp::placeholder,.m-ta::placeholder{color:var(--t4);font-style:italic}
+.m-sel{cursor:pointer;color:var(--ink2)}.m-sel option{background:white}
+.m-ta{resize:vertical;min-height:90px}
+.m-2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.m-submit{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.01em}.m-submit:hover{box-shadow:0 4px 20px rgba(196,92,60,.45);transform:translateY(-1px)}
+.m-success{display:none;text-align:center;padding:24px 0}
+.m-success.show{display:block}
+.ms-ic{font-size:64px;margin-bottom:14px;display:block;animation:bounce .6s cubic-bezier(.34,1.56,.64,1)}
 @keyframes bounce{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
-.ms-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:800;color:var(--t0);margin-bottom:8px}
-.ms-sub{font-size:14px;color:var(--t2);line-height:1.75}
+.ms-t{font-family:'DM Serif Display',serif;font-size:24px;color:var(--ink);margin-bottom:8px}
+.ms-d{font-size:14px;color:var(--t2);line-height:1.75}
+.ms-ref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--terra-d);border:1px solid var(--terra-b);color:var(--terra);padding:5px 14px;border-radius:100px;margin-top:12px}
 
-/* Gallery lightbox */
-.lightbox{position:fixed;inset:0;z-index:1100;background:rgba(1,2,5,.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .26s}
+/* ══ LIGHTBOX ══ */
+.lightbox{position:fixed;inset:0;z-index:1100;background:rgba(26,20,16,.96);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .26s}
 .lightbox.show{opacity:1;pointer-events:all}
 .lb-inner{width:90vw;max-width:900px;text-align:center;position:relative}
-.lb-main{width:100%;height:70vh;background:var(--card);border-radius:var(--r3);display:flex;align-items:center;justify-content:center;font-size:160px;border:1px solid var(--gold-b);overflow:hidden;position:relative}
-.lb-ov{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(201,168,76,.04),transparent)}
-.lb-close{position:absolute;top:-44px;right:0;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--t1);transition:all .2s}.lb-close:hover{background:var(--rose-d);color:var(--rose)}
+.lb-main{width:100%;height:68vh;background:var(--cream2);border-radius:var(--r3);display:flex;align-items:center;justify-content:center;font-size:160px;border:2px solid var(--terra-b);overflow:hidden;transition:background .3s}
+.lb-close{position:absolute;top:-44px;right:0;width:36px;height:36px;border-radius:50%;background:rgba(250,247,242,.15);border:1px solid rgba(250,247,242,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--cream);transition:all .2s}.lb-close:hover{background:rgba(196,92,60,.5)}
 .lb-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px}
-.lb-btn{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--div2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--t1);transition:all .2s}.lb-btn:hover{background:var(--gold-d);border-color:var(--gold-b);color:var(--gold)}
-.lb-counter{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t3);letter-spacing:.1em}
+.lb-btn{width:44px;height:44px;border-radius:50%;background:rgba(250,247,242,.15);border:1px solid rgba(250,247,242,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--cream);transition:all .2s}.lb-btn:hover{background:rgba(196,92,60,.6);border-color:var(--terra)}
+.lb-counter{font-family:'JetBrains Mono',monospace;font-size:12px;color:rgba(250,247,242,.5);letter-spacing:.1em}
 .lb-thumbs{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.lb-thumb{width:60px;height:44px;border-radius:var(--r1);background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;border:2px solid transparent;transition:all .2s}.lb-thumb.on{border-color:var(--gold);box-shadow:0 0 12px rgba(201,168,76,.3)}.lb-thumb:hover{border-color:var(--gold-b)}
+.lb-thumb{width:62px;height:46px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;border:2px solid transparent;transition:all .2s}.lb-thumb.on{border-color:var(--terra);box-shadow:0 0 12px rgba(196,92,60,.35)}.lb-thumb:hover{border-color:var(--terra-b)}
+
+/* ══ MOBILE SHARE BAR ══ */
+.share-bar{position:fixed;bottom:0;left:0;right:0;z-index:700;background:rgba(250,247,242,.97);border-top:2px solid var(--terra-b);backdrop-filter:blur(16px);padding:12px 20px;display:none;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(30,20,10,.1)}
+.sb-price{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);flex:1;line-height:1}
+.sb-price span{font-size:11px;font-weight:400;color:var(--t3);font-family:'JetBrains Mono',monospace;display:block;margin-top:2px}
+.sb-btns{display:flex;gap:8px}
+.sb-call{padding:11px 14px;border-radius:var(--r1);background:var(--cream2);border:1.5px solid var(--div2);color:var(--ink3);font-size:16px;cursor:pointer;transition:all .2s}
+.sb-enq{padding:11px 22px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s}.sb-enq:hover{box-shadow:0 3px 14px rgba(196,92,60,.4)}
 
 /* Toast */
-.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--card2);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:250px;animation:tIn .3s ease;box-shadow:0 8px 34px rgba(0,0,0,.5)}
+.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--ink);color:var(--cream);border-left:3px solid var(--terra);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:260px;animation:tIn .3s ease;box-shadow:0 8px 34px rgba(30,20,10,.25)}
 @keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* Share bar (mobile bottom) */
-.share-bar{position:fixed;bottom:0;left:0;right:0;z-index:700;background:rgba(3,5,9,.96);border-top:1px solid var(--gold-b);backdrop-filter:blur(18px);padding:12px 20px;display:flex;gap:10px;align-items:center}
-.share-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold-lt);flex:1}
-.share-price span{font-size:11px;font-weight:400;color:var(--t3);font-family:'JetBrains Mono',monospace;display:block}
-.share-btns{display:flex;gap:8px}
-.sb-enq{padding:11px 22px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s}
-.sb-call{padding:11px 16px;border-radius:var(--r1);background:var(--teal-d);border:1px solid var(--teal-b);color:var(--teal);font-size:14px;cursor:pointer;transition:all .2s}
-
 /* Reveal */
-.rv{opacity:0;transform:translateY(20px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+
+/* WhatsApp float */
+.wa-float{position:fixed;bottom:90px;right:28px;z-index:600;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--wa),var(--wa-dk));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.45);cursor:pointer;transition:all .22s;animation:wap 3s ease-in-out infinite}
+@keyframes wap{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 32px rgba(37,211,102,.65),0 0 0 8px rgba(37,211,102,.1)}}.wa-float:hover{transform:scale(1.1);animation:none}
 
 /* Responsive */
-@media(max-width:1100px){.page-layout{grid-template-columns:1fr}.sidebar{position:static}.share-bar{display:flex}.similar-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){.gallery-inner{grid-template-columns:1fr;grid-template-rows:280px;height:280px}.gallery-main{grid-row:span 1}.gallery-thumb{display:none}.page-layout{padding:20px 16px 110px}.spec-pills{gap:7px}.amen-grid{grid-template-columns:1fr 1fr}.modal-2col{grid-template-columns:1fr}.similar-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.page-wrap{grid-template-columns:1fr}.sidebar{position:static}.share-bar{display:flex}.similar-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.gallery-grid{grid-template-columns:1fr;grid-template-rows:260px;height:260px}.gal-thumb{display:none}.page-wrap{padding:20px 16px 110px}.spec-pills{gap:7px}.amen-grid{grid-template-columns:1fr 1fr}.m-2col{grid-template-columns:1fr}.similar-grid{grid-template-columns:1fr}.breadcrumb{display:none}.nav{padding:0 16px}}
 </style>
 </head>
 <body>
 
-<!-- AMBIENT -->
-<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
-<div class="bg-noise"></div>
+<!-- TEXTURES -->
+<div class="bg-texture"></div>
 <div class="pgbar" id="pgBar"></div>
 <div class="toast" id="toast"></div>
 
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float" title="Chat with us on WhatsApp" id="waFloat">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</div>
+
 <!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+<div class="lightbox" id="lightbox" onclick="closeLbOnBg(event)">
   <div class="lb-inner">
-    <div class="lb-close" onclick="closeLightbox()">✕</div>
-    <div class="lb-main"><div id="lbMainImg" style="font-size:160px;position:relative;z-index:1"></div><div class="lb-ov"></div></div>
+    <div class="lb-close" onclick="closeLb()">✕</div>
+    <div class="lb-main" id="lbMain"></div>
     <div class="lb-nav">
       <div class="lb-btn" onclick="lbPrev()">◀</div>
       <div class="lb-counter" id="lbCounter">1 / 6</div>
@@ -306,45 +338,54 @@ body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);over
 </div>
 
 <!-- ENQUIRY MODAL -->
-<div class="modal-bg" id="modalBg" onclick="closeEnquiryOnBg(event)">
+<div class="modal-bg" id="modalBg" onclick="closeMoBg(event)">
   <div class="modal-box">
     <div class="modal-head">
       <div class="modal-title" id="modalTitle">Send Enquiry</div>
-      <div class="modal-close" onclick="closeEnquiry()">✕</div>
+      <div class="modal-close" onclick="closeMo()">✕</div>
     </div>
-    <div class="modal-body" id="modalForm">
-      <div class="modal-2col">
-        <div>
-          <label class="modal-label">Your Name *</label>
-          <input class="modal-input" id="eqName" placeholder="Full name">
+    <div class="modal-body">
+      <div id="moForm">
+        <div class="m-2col">
+          <div><label class="modal-lbl">Your Name *</label><input class="m-inp" id="eqName" placeholder="Full name"></div>
+          <div><label class="modal-lbl">Mobile Number *</label><input class="m-inp" id="eqPhone" type="tel" placeholder="+91 XXXXX XXXXX"></div>
         </div>
-        <div>
-          <label class="modal-label">Mobile Number *</label>
-          <input class="modal-input" id="eqPhone" type="tel" placeholder="+91 10-digit">
-        </div>
+        <label class="modal-lbl">Email Address</label>
+        <input class="m-inp" id="eqEmail" type="email" placeholder="you@email.com">
+        <label class="modal-lbl">Preferred Move-in Date</label>
+        <input class="m-inp" id="eqDate" type="date">
+        <label class="modal-lbl">Purpose of Enquiry</label>
+        <select class="m-sel" id="eqPurpose">
+          <option>I want to rent this property</option>
+          <option>Schedule a site visit</option>
+          <option>Request more details</option>
+          <option>Check availability</option>
+          <option>Negotiate rent</option>
+        </select>
+        <label class="modal-lbl">Message to Owner (Optional)</label>
+        <textarea class="m-ta" id="eqMsg" placeholder="Hi, I'm interested in this property…"></textarea>
+        <button class="m-submit" onclick="submitEnq()">⚡ Send Enquiry Now</button>
       </div>
-      <label class="modal-label">Email Address</label>
-      <input class="modal-input" id="eqEmail" type="email" placeholder="you@email.com">
-      <label class="modal-label">Preferred Move-In Date</label>
-      <input class="modal-input" id="eqDate" type="date">
-      <label class="modal-label">Purpose of Enquiry</label>
-      <select class="modal-select" id="eqPurpose">
-        <option>I want to rent this property</option>
-        <option>Schedule a site visit</option>
-        <option>Request more details</option>
-        <option>Check availability</option>
-        <option>Negotiate rent</option>
-      </select>
-      <label class="modal-label">Message to Owner (Optional)</label>
-      <textarea class="modal-textarea" id="eqMsg" placeholder="Hi, I'm interested in this property. I'm a working professional looking for…"></textarea>
-      <button class="modal-submit" onclick="submitEnquiry()">⚡ Send Enquiry Now</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <span class="ms-icon">🏠</span>
-      <div class="ms-title">Enquiry Sent!</div>
-      <div class="ms-sub">The property owner will contact you within <strong style="color:var(--gold)">2 hours</strong>. You'll also receive a confirmation SMS at your registered number. Reference ID: <strong style="color:var(--teal)" id="refId">—</strong></div>
+      <div class="m-success" id="moSuccess">
+        <span class="ms-ic">🏠</span>
+        <div class="ms-t">Enquiry Sent!</div>
+        <div class="ms-d">The owner will contact you within <strong>2 hours</strong>. Check your phone and email for a confirmation message.</div>
+        <div class="ms-ref" id="refId">REF: —</div>
+      </div>
     </div>
   </div>
+</div>
+
+<!-- MOBILE MENU -->
+<div class="mob-drawer" id="mobDrawer">
+  <a class="mob-l" href="index.html">🏠 Home</a>
+  <a class="mob-l" href="properties.html">🏘️ All Properties</a>
+  <a class="mob-l" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
+  <a class="mob-l" href="commercial.html">🏢 Commercial</a>
+  <a class="mob-l" href="services.html">🔧 Services</a>
+  <hr style="border:none;border-top:1.5px solid var(--div);margin:8px 0">
+  <a class="nb nb-out" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
+  <a class="nb nb-terra" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:8px">+ List Property</a>
 </div>
 
 <!-- NAVBAR -->
@@ -356,63 +397,56 @@ body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);over
   <div class="breadcrumb">
     <a class="bc-a" href="index.html">Home</a>
     <span class="bc-sep">›</span>
-    <a class="bc-a" href="pg-hostel-listings.html" id="bcListLink">Listings</a>
+    <a class="bc-a" href="properties.html" id="bcListLink">All Properties</a>
     <span class="bc-sep">›</span>
-    <span class="bc-cur" id="bcName">Property Details</span>
+    <span class="bc-cur" id="bcCur">Property Details</span>
   </div>
   <div class="nav-r">
-    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
-    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <a class="nb nb-out" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-terra" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
   </div>
 </nav>
 
-<!-- GALLERY -->
-<div class="gallery">
-  <div class="gallery-inner" id="galleryInner">
-    <!-- Rendered by JS -->
-  </div>
-</div>
+<!-- GALLERY (populated by JS) -->
+<div class="gallery"><div class="gallery-grid" id="galleryGrid"></div></div>
 
-<!-- MAIN PAGE LAYOUT -->
-<div class="page-layout">
-
+<!-- PAGE LAYOUT -->
+<div class="page-wrap">
   <!-- LEFT COLUMN -->
   <div class="left-col">
-
-    <!-- Property Header -->
+    <!-- Header -->
     <div class="prop-header rv">
-      <div class="prop-type-row">
-        <span class="pt-chip" id="propTypeBadge">PG</span>
-        <span class="pt-avail" id="propAvail">Available from 1 Jun 2025</span>
+      <div class="type-avail-row">
+        <span class="type-chip" id="propTypeChip">—</span>
+        <span class="avail-badge" id="availBadge">Available</span>
       </div>
       <h1 class="prop-title" id="propTitle">Loading…</h1>
       <div class="prop-loc" id="propLoc">
-        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        <span id="propLocText">Location</span>
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span id="propLocTxt">—</span>
       </div>
-      <div class="prop-rating-row">
-        <div class="rat-stars" id="propStars">★★★★★</div>
-        <div class="rat-num" id="propRating">4.8</div>
-        <div class="rat-count" id="propReviews">(142 reviews)</div>
-        <div class="rat-divider"></div>
-        <div class="rat-views">👁 <span id="propViews">1,240</span> views this week</div>
-        <div class="rat-divider"></div>
-        <div style="font-size:12px;color:var(--teal);display:flex;align-items:center;gap:4px">⚡ <span id="propEnq">18</span> enquiries today</div>
+      <div class="prop-meta-row">
+        <span class="rat-stars" id="propStars">★★★★★</span>
+        <span class="rat-num" id="propRatNum">4.8</span>
+        <span class="rat-count" id="propRevCt">(0 reviews)</span>
+        <div class="meta-divider"></div>
+        <span class="meta-item">👁 <span id="propViews">—</span> views this week</span>
+        <div class="meta-divider"></div>
+        <span class="meta-item" style="color:var(--sage)">⚡ <span id="propEnq">—</span> enquiries today</span>
       </div>
     </div>
 
-    <!-- Spec Pills -->
+    <!-- Spec pills -->
     <div class="spec-pills rv d1" id="specPills"></div>
-
     <div class="sec-line"></div>
 
     <!-- Description -->
     <div class="rv d1">
       <div class="sec-h">About this Property</div>
-      <div class="desc-text" id="propDesc">Loading description…</div>
+      <div class="desc-text" id="propDesc"></div>
       <button class="read-more-btn" id="readMoreBtn" onclick="toggleDesc()">Read more ▼</button>
     </div>
-
     <div class="sec-line"></div>
 
     <!-- Amenities -->
@@ -420,136 +454,116 @@ body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);over
       <div class="sec-h">Amenities &amp; Features</div>
       <div class="amen-grid" id="amenGrid"></div>
     </div>
-
     <div class="sec-line"></div>
 
     <!-- Floor Plan -->
     <div class="rv d1">
       <div class="sec-h">Floor Plan</div>
-      <div class="floor-plan">
-        <div class="fp-header">
-          <div class="fp-header-t">Layout Diagram</div>
+      <div class="floor-card">
+        <div class="floor-head">
+          <div class="floor-title">Layout Diagram</div>
           <div class="fp-tabs">
-            <button class="fp-tab on" onclick="fpTab(this,'2d')">2D</button>
-            <button class="fp-tab" onclick="fpTab(this,'3d')">3D View</button>
+            <button class="fp-tab on" onclick="fpTab(this,'2d')">2D View</button>
             <button class="fp-tab" onclick="fpTab(this,'furnished')">Furnished</button>
+            <button class="fp-tab" onclick="fpTab(this,'3d')">3D</button>
           </div>
         </div>
-        <div class="fp-body" id="fpBody">
-          <!-- SVG Floor Plan -->
+        <div class="floor-body" id="floorBody">
           <div class="fp-svg-wrap">
             <svg viewBox="0 0 520 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%">
-              <!-- Outer walls -->
-              <rect x="10" y="10" width="500" height="260" rx="4" fill="none" stroke="rgba(201,168,76,0.35)" stroke-width="2"/>
-              <!-- Bedroom 1 -->
-              <rect x="10" y="10" width="190" height="150" fill="rgba(201,168,76,0.04)" stroke="rgba(201,168,76,0.2)" stroke-width="1.2"/>
-              <text x="105" y="60" text-anchor="middle" fill="rgba(201,168,76,0.6)" font-size="11" font-family="JetBrains Mono">BEDROOM 1</text>
-              <text x="105" y="76" text-anchor="middle" fill="rgba(201,168,76,0.35)" font-size="9" font-family="JetBrains Mono">12 × 10 ft</text>
-              <!-- Bed icon -->
-              <rect x="55" y="90" width="50" height="34" rx="3" fill="rgba(201,168,76,0.12)" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
-              <rect x="55" y="90" width="50" height="12" rx="2" fill="rgba(201,168,76,0.2)"/>
-              <!-- Bedroom 2 -->
-              <rect x="200" y="10" width="170" height="150" fill="rgba(34,212,176,0.04)" stroke="rgba(34,212,176,0.2)" stroke-width="1.2"/>
-              <text x="285" y="60" text-anchor="middle" fill="rgba(34,212,176,0.6)" font-size="11" font-family="JetBrains Mono">BEDROOM 2</text>
-              <text x="285" y="76" text-anchor="middle" fill="rgba(34,212,176,0.35)" font-size="9" font-family="JetBrains Mono">11 × 10 ft</text>
-              <rect x="235" y="90" width="48" height="32" rx="3" fill="rgba(34,212,176,0.1)" stroke="rgba(34,212,176,0.22)" stroke-width="1"/>
-              <rect x="235" y="90" width="48" height="11" rx="2" fill="rgba(34,212,176,0.18)"/>
-              <!-- Living Room -->
-              <rect x="370" y="10" width="140" height="150" fill="rgba(59,130,246,0.04)" stroke="rgba(59,130,246,0.2)" stroke-width="1.2"/>
-              <text x="440" y="60" text-anchor="middle" fill="rgba(59,130,246,0.6)" font-size="11" font-family="JetBrains Mono">LIVING</text>
-              <text x="440" y="76" text-anchor="middle" fill="rgba(59,130,246,0.35)" font-size="9" font-family="JetBrains Mono">16 × 10 ft</text>
-              <!-- Sofa icon -->
-              <rect x="390" y="90" width="80" height="24" rx="4" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.22)" stroke-width="1"/>
-              <!-- Kitchen -->
-              <rect x="10" y="160" width="150" height="110" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.2)" stroke-width="1.2"/>
-              <text x="85" y="210" text-anchor="middle" fill="rgba(245,158,11,0.6)" font-size="11" font-family="JetBrains Mono">KITCHEN</text>
-              <text x="85" y="226" text-anchor="middle" fill="rgba(245,158,11,0.35)" font-size="9" font-family="JetBrains Mono">10 × 7 ft</text>
-              <!-- Bathroom -->
-              <rect x="160" y="160" width="100" height="60" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.2)" stroke-width="1.2"/>
-              <text x="210" y="192" text-anchor="middle" fill="rgba(16,185,129,0.6)" font-size="9" font-family="JetBrains Mono">BATHROOM</text>
-              <!-- Balcony -->
-              <rect x="160" y="220" width="100" height="50" fill="rgba(139,92,246,0.04)" stroke="rgba(139,92,246,0.2)" stroke-width="1.2"/>
-              <text x="210" y="250" text-anchor="middle" fill="rgba(139,92,246,0.6)" font-size="9" font-family="JetBrains Mono">BALCONY</text>
-              <!-- Hall -->
-              <rect x="260" y="160" width="250" height="110" fill="rgba(201,168,76,0.025)" stroke="rgba(201,168,76,0.12)" stroke-width="1.2" stroke-dasharray="6,3"/>
-              <text x="385" y="216" text-anchor="middle" fill="rgba(201,168,76,0.4)" font-size="11" font-family="JetBrains Mono">HALL / DINING</text>
-              <!-- Compass -->
-              <circle cx="490" cy="255" r="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-              <text x="490" y="250" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="JetBrains Mono">N</text>
-              <line x1="490" y1="243" x2="490" y2="258" stroke="rgba(201,168,76,0.5)" stroke-width="1"/>
+              <rect x="10" y="10" width="500" height="260" rx="4" fill="none" stroke="rgba(196,92,60,.3)" stroke-width="2"/>
+              <rect x="10" y="10" width="190" height="150" fill="rgba(196,92,60,.04)" stroke="rgba(196,92,60,.18)" stroke-width="1.2"/>
+              <text x="105" y="58" text-anchor="middle" fill="rgba(196,92,60,.55)" font-size="10" font-family="JetBrains Mono">BEDROOM 1</text>
+              <text x="105" y="72" text-anchor="middle" fill="rgba(196,92,60,.32)" font-size="8.5" font-family="JetBrains Mono">12 × 10 ft</text>
+              <rect x="50" y="88" width="52" height="36" rx="3" fill="rgba(196,92,60,.1)" stroke="rgba(196,92,60,.22)" stroke-width="1"/>
+              <rect x="50" y="88" width="52" height="12" rx="2" fill="rgba(196,92,60,.18)"/>
+              <rect x="200" y="10" width="170" height="150" fill="rgba(74,124,111,.04)" stroke="rgba(74,124,111,.18)" stroke-width="1.2"/>
+              <text x="285" y="58" text-anchor="middle" fill="rgba(74,124,111,.55)" font-size="10" font-family="JetBrains Mono">BEDROOM 2</text>
+              <text x="285" y="72" text-anchor="middle" fill="rgba(74,124,111,.32)" font-size="8.5" font-family="JetBrains Mono">11 × 10 ft</text>
+              <rect x="232" y="88" width="50" height="34" rx="3" fill="rgba(74,124,111,.1)" stroke="rgba(74,124,111,.22)" stroke-width="1"/>
+              <rect x="232" y="88" width="50" height="11" rx="2" fill="rgba(74,124,111,.18)"/>
+              <rect x="370" y="10" width="140" height="150" fill="rgba(200,148,58,.04)" stroke="rgba(200,148,58,.18)" stroke-width="1.2"/>
+              <text x="440" y="58" text-anchor="middle" fill="rgba(200,148,58,.55)" font-size="10" font-family="JetBrains Mono">LIVING ROOM</text>
+              <text x="440" y="72" text-anchor="middle" fill="rgba(200,148,58,.32)" font-size="8.5" font-family="JetBrains Mono">16 × 10 ft</text>
+              <rect x="388" y="92" width="82" height="24" rx="4" fill="rgba(200,148,58,.1)" stroke="rgba(200,148,58,.22)" stroke-width="1"/>
+              <rect x="10" y="160" width="148" height="110" fill="rgba(196,92,60,.03)" stroke="rgba(196,92,60,.12)" stroke-width="1.2"/>
+              <text x="84" y="208" text-anchor="middle" fill="rgba(196,92,60,.48)" font-size="10" font-family="JetBrains Mono">KITCHEN</text>
+              <text x="84" y="222" text-anchor="middle" fill="rgba(196,92,60,.28)" font-size="8.5" font-family="JetBrains Mono">10 × 7 ft</text>
+              <rect x="158" y="160" width="102" height="62" fill="rgba(74,124,111,.03)" stroke="rgba(74,124,111,.12)" stroke-width="1.2"/>
+              <text x="209" y="193" text-anchor="middle" fill="rgba(74,124,111,.48)" font-size="9" font-family="JetBrains Mono">BATHROOM</text>
+              <rect x="158" y="222" width="102" height="48" fill="rgba(200,148,58,.03)" stroke="rgba(200,148,58,.12)" stroke-width="1.2"/>
+              <text x="209" y="250" text-anchor="middle" fill="rgba(200,148,58,.48)" font-size="9" font-family="JetBrains Mono">BALCONY</text>
+              <rect x="260" y="160" width="250" height="110" fill="rgba(196,92,60,.02)" stroke="rgba(196,92,60,.1)" stroke-width="1.2" stroke-dasharray="6,3"/>
+              <text x="385" y="215" text-anchor="middle" fill="rgba(196,92,60,.38)" font-size="10" font-family="JetBrains Mono">HALL / DINING</text>
+              <circle cx="492" cy="258" r="14" fill="rgba(26,20,16,.05)" stroke="rgba(26,20,16,.12)" stroke-width="1"/>
+              <text x="492" y="253" text-anchor="middle" fill="rgba(26,20,16,.35)" font-size="8" font-family="JetBrains Mono">N</text>
+              <line x1="492" y1="247" x2="492" y2="258" stroke="rgba(196,92,60,.4)" stroke-width="1.5"/>
             </svg>
           </div>
         </div>
-        <div class="fp-rooms">
-          <span class="fp-room-tag">2 Bedrooms</span>
-          <span class="fp-room-tag">1 Bathroom</span>
-          <span class="fp-room-tag">Kitchen</span>
-          <span class="fp-room-tag">Living Room</span>
-          <span class="fp-room-tag">Balcony</span>
-          <span class="fp-room-tag" id="fpArea">950 sq.ft</span>
+        <div class="floor-tags" id="floorTags">
+          <span class="fp-tag">2 Bedrooms</span>
+          <span class="fp-tag">1 Bathroom</span>
+          <span class="fp-tag">Kitchen</span>
+          <span class="fp-tag">Living Room</span>
+          <span class="fp-tag">Balcony</span>
+          <span class="fp-tag" id="fpAreaTag">950 sq.ft</span>
         </div>
       </div>
     </div>
-
     <div class="sec-line"></div>
 
     <!-- Map -->
     <div class="rv d2">
       <div class="sec-h">Location &amp; Neighbourhood</div>
-      <div class="map-sec">
-        <div class="map-header">
-          <div style="font-size:13px;font-weight:600;color:var(--t0)" id="mapAddr">Kondapur, Hyderabad — 500084</div>
-          <button style="padding:6px 14px;border-radius:var(--r1);background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif" onclick="showToast('📍 Opening in Google Maps…')">Open in Maps ↗</button>
+      <div class="map-card">
+        <div class="map-head">
+          <div class="map-head-t" id="mapAddr">Location, City</div>
+          <button style="padding:6px 14px;border-radius:var(--r1);background:var(--terra-d);border:1.5px solid var(--terra-b);color:var(--terra);font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif" onclick="showToast('📍 Opening in Google Maps…')">Open in Maps ↗</button>
         </div>
         <div class="map-body">
-          <div class="map-grid"></div>
-          <!-- Road lines -->
-          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.25" viewBox="0 0 600 300" preserveAspectRatio="none">
-            <line x1="0" y1="150" x2="600" y2="150" stroke="rgba(201,168,76,0.5)" stroke-width="8"/>
-            <line x1="300" y1="0" x2="300" y2="300" stroke="rgba(201,168,76,0.5)" stroke-width="6"/>
-            <line x1="0" y1="80" x2="600" y2="80" stroke="rgba(255,255,255,0.25)" stroke-width="3"/>
-            <line x1="0" y1="220" x2="600" y2="220" stroke="rgba(255,255,255,0.25)" stroke-width="3"/>
-            <line x1="150" y1="0" x2="150" y2="300" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
-            <line x1="450" y1="0" x2="450" y2="300" stroke="rgba(255,255,255,0.2)" stroke-width="3"/>
+          <svg class="map-grid-svg" viewBox="0 0 600 280" preserveAspectRatio="none">
+            <line x1="0" y1="140" x2="600" y2="140" stroke="rgba(196,92,60,.3)" stroke-width="7"/>
+            <line x1="300" y1="0" x2="300" y2="280" stroke="rgba(196,92,60,.3)" stroke-width="5"/>
+            <line x1="0" y1="75" x2="600" y2="75" stroke="rgba(26,20,16,.12)" stroke-width="2.5"/>
+            <line x1="0" y1="205" x2="600" y2="205" stroke="rgba(26,20,16,.12)" stroke-width="2.5"/>
+            <line x1="150" y1="0" x2="150" y2="280" stroke="rgba(26,20,16,.1)" stroke-width="2.5"/>
+            <line x1="450" y1="0" x2="450" y2="280" stroke="rgba(26,20,16,.1)" stroke-width="2.5"/>
+            <rect x="30" y="88" width="90" height="44" rx="3" fill="rgba(26,20,16,.05)" stroke="rgba(26,20,16,.08)" stroke-width="1"/>
+            <rect x="165" y="30" width="70" height="40" rx="3" fill="rgba(26,20,16,.05)" stroke="rgba(26,20,16,.08)" stroke-width="1"/>
+            <rect x="335" y="95" width="80" height="35" rx="3" fill="rgba(26,20,16,.05)" stroke="rgba(26,20,16,.08)" stroke-width="1"/>
+            <rect x="470" y="155" width="90" height="45" rx="3" fill="rgba(26,20,16,.05)" stroke="rgba(26,20,16,.08)" stroke-width="1"/>
           </svg>
           <div class="map-pin">
-            <div class="mp-ic">📍</div>
+            <div class="mp-emoji">📍</div>
             <div class="mp-ring"></div>
           </div>
           <div class="map-pulse"></div>
-          <!-- Landmark labels -->
-          <div style="position:absolute;top:22px;left:32px;font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,0.35);letter-spacing:.06em">METRO 0.4KM ↑</div>
-          <div style="position:absolute;bottom:22px;right:24px;font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,0.35);letter-spacing:.06em">AIRPORT 22KM →</div>
+          <div style="position:absolute;top:14px;left:16px;font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(26,20,16,.4);letter-spacing:.06em">🚇 METRO 0.4KM ↑</div>
+          <div style="position:absolute;bottom:14px;right:16px;font-size:10px;font-family:'JetBrains Mono',monospace;color:rgba(26,20,16,.4);letter-spacing:.06em">IT PARK 1.5KM →</div>
         </div>
         <div class="map-nearby">
-          <div class="mn-item"><span class="mn-ic">🚇</span>Metro 0.4 km</div>
-          <div class="mn-item"><span class="mn-ic">🛒</span>Supermarket 0.3 km</div>
-          <div class="mn-item"><span class="mn-ic">🏥</span>Hospital 1.2 km</div>
-          <div class="mn-item"><span class="mn-ic">🏫</span>School 0.8 km</div>
-          <div class="mn-item"><span class="mn-ic">☕</span>Café 0.1 km</div>
-          <div class="mn-item"><span class="mn-ic">✈️</span>Airport 22 km</div>
-          <div class="mn-item"><span class="mn-ic">💼</span>IT Hub 1.5 km</div>
+          <div class="mn-item"><span>🚇</span>Metro 0.4km</div>
+          <div class="mn-item"><span>🛒</span>Supermarket 0.3km</div>
+          <div class="mn-item"><span>🏥</span>Hospital 1.2km</div>
+          <div class="mn-item"><span>🏫</span>School 0.8km</div>
+          <div class="mn-item"><span>☕</span>Café 0.1km</div>
+          <div class="mn-item"><span>💼</span>IT Hub 1.5km</div>
+          <div class="mn-item"><span>✈️</span>Airport 22km</div>
         </div>
       </div>
     </div>
-
     <div class="sec-line"></div>
 
     <!-- Reviews -->
     <div class="rv d1">
-      <div class="sec-h" style="justify-content:space-between;align-items:center">
-        <span style="display:flex;align-items:center;gap:10px">
-          <span style="display:flex;align-items:center;gap:7px">
-            <svg width="3" height="22" viewBox="0 0 3 22" fill="none"><rect width="3" height="22" rx="1.5" fill="var(--gold)"/></svg>
-            Reviews &amp; Ratings
-          </span>
-        </span>
-        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3)">4.8 / 5.0 · 142 reviews</span>
+      <div class="sec-h" style="justify-content:space-between">
+        <span style="display:flex;align-items:center;gap:10px"><span style="display:inline-block;width:4px;height:22px;background:var(--terra);border-radius:2px;flex-shrink:0"></span>Reviews &amp; Ratings</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3)" id="ratSummary">4.8 / 5.0</span>
       </div>
-      <div class="review-list" id="reviewList"></div>
-      <button style="width:100%;padding:10px;border-radius:var(--r1);background:transparent;border:1px solid var(--div2);color:var(--t2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--gold-b)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--div2)';this.style.color='var(--t2)'" onclick="showToast('📋 Loading all 142 reviews…')">View All Reviews ↓</button>
+      <div id="reviewList"></div>
+      <button class="view-all-btn" onclick="showToast('📋 Loading all reviews…')">View All Reviews ↓</button>
     </div>
-
     <div class="sec-line"></div>
 
     <!-- Similar Properties -->
@@ -557,73 +571,72 @@ body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);over
       <div class="sec-h">Similar Properties Nearby</div>
       <div class="similar-grid" id="simGrid"></div>
     </div>
-
   </div><!-- /left-col -->
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
-    <!-- Price Card -->
     <div class="price-card rv">
-      <div class="price-card-top">
+      <div class="pc-top">
         <div class="pc-label">Monthly Rent</div>
         <div class="pc-price"><span class="cur">₹</span><span id="sidePrice">—</span></div>
-        <div class="pc-per">PER MONTH</div>
-        <div class="pc-deposit">Deposit: <span id="sideDeposit">₹—</span> (2 months)</div>
+        <div class="pc-per">PER MONTH · NEGOTIABLE</div>
+        <div class="pc-deposit">Security Deposit: <strong id="sideDeposit">₹—</strong></div>
       </div>
-      <div class="price-card-body">
-        <button class="btn-enquire" onclick="openEnquiry()">⚡ Send Enquiry</button>
-        <button class="btn-visit" onclick="openEnquiry('visit')">📅 Schedule Site Visit</button>
-        <button class="btn-call" onclick="showToast('📞 Revealing owner contact…')">📞 Call Owner</button>
+      <div class="pc-body">
+        <button class="btn-enquire" onclick="openMo('enquiry')">⚡ Send Enquiry</button>
+        <button class="btn-visit" onclick="openMo('visit')">📅 Schedule Site Visit</button>
+        <a class="btn-wa-owner" id="btnWaOwner" href="#" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Owner
+        </a>
+        <button class="btn-call-owner" onclick="showToast('📞 Revealing owner contact number…')">📞 Call Owner</button>
         <div class="pc-perks">
-          <div class="perk"><span class="perk-ic">✅</span>Zero brokerage · Direct owner contact</div>
-          <div class="perk"><span class="perk-ic">🛡️</span>KYC-verified owner · Safe transaction</div>
-          <div class="perk"><span class="perk-ic">⚡</span>Typically responds within 2 hours</div>
-          <div class="perk"><span class="perk-ic">📋</span>Free agreement drafting on request</div>
+          <div class="perk-row"><span class="perk-ic">✅</span>Zero brokerage · Direct owner</div>
+          <div class="perk-row"><span class="perk-ic">🛡️</span>KYC-verified & safe</div>
+          <div class="perk-row"><span class="perk-ic">⚡</span>Typically responds within 2 hrs</div>
+          <div class="perk-row"><span class="perk-ic">📋</span>Free rental agreement drafting</div>
         </div>
       </div>
     </div>
 
-    <!-- Owner Card -->
+    <!-- Owner card -->
     <div class="owner-card rv d1">
       <div class="oc-head">
         <div class="oc-avatar">🧑‍💼<div class="oc-verified">✓</div></div>
         <div>
-          <div class="oc-name" id="ownerName">Rajesh Kumar</div>
+          <div class="oc-name" id="ownerName">Owner</div>
           <div class="oc-type">Verified Property Owner</div>
         </div>
       </div>
       <div class="oc-stats">
-        <div class="ocs"><div class="ocs-v">12</div><div class="ocs-l">Properties</div></div>
+        <div class="ocs"><div class="ocs-v">12</div><div class="ocs-l">Listings</div></div>
         <div class="ocs"><div class="ocs-v">4.9★</div><div class="ocs-l">Rating</div></div>
         <div class="ocs"><div class="ocs-v">98%</div><div class="ocs-l">Response</div></div>
       </div>
-      <div class="oc-resp">⚡ Usually responds within <strong style="color:var(--emerald);margin-left:3px">1–2 hours</strong></div>
-      <button class="oc-msg-btn" onclick="openEnquiry()">✉️ Message Owner</button>
+      <div class="oc-resp">⚡ Usually responds within <strong style="color:var(--avail);margin-left:4px">1–2 hours</strong></div>
+      <button class="oc-msg" onclick="openMo('message')">✉️ Message Owner</button>
     </div>
 
-    <!-- Safety Card -->
+    <!-- Safety -->
     <div class="safety-card rv d2">
-      <div class="sc-title">🛡️ Your Safety First</div>
+      <div class="safety-t">🛡️ Your Safety First</div>
       Never transfer money before visiting the property in person. SmartRent AI supports direct, secure communication — we never ask for payment outside the platform.
-      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
-        <a href="tenant-guide.html" style="font-size:11px;color:var(--gold);text-decoration:none;font-weight:600">Tenant Safety Guide →</a>
-        <a href="verification.html" style="font-size:11px;color:var(--teal);text-decoration:none;font-weight:600">Verification →</a>
+      <div style="margin-top:10px;display:flex;gap:12px;flex-wrap:wrap">
+        <a href="tenant-guide.html" style="font-size:12px;color:var(--terra);text-decoration:none;font-weight:700">Tenant Safety Guide →</a>
+        <a href="verification.html" style="font-size:12px;color:var(--sage);text-decoration:none;font-weight:700">Verification →</a>
       </div>
     </div>
-
   </aside>
+</div><!-- /page-wrap -->
 
-</div><!-- /page-layout -->
-
-<!-- SHARE BAR (mobile) -->
-<div class="share-bar" id="shareBar" style="display:none">
+<!-- MOBILE SHARE BAR -->
+<div class="share-bar" id="shareBar">
   <div>
-    <div class="share-price">₹<span id="sharePriceVal">—</span><span>/month</span></div>
+    <div class="sb-price">₹<span id="sbPrice">—</span><span>/month</span></div>
   </div>
-  <div class="share-btns">
+  <div class="sb-btns">
     <button class="sb-call" onclick="showToast('📞 Calling owner…')">📞</button>
-    <button class="sb-enq" onclick="openEnquiry()">Send Enquiry</button>
+    <button class="sb-enq" onclick="openMo('enquiry')">Send Enquiry</button>
   </div>
 </div>
 
@@ -631,109 +644,170 @@ body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);over
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,collection,getDocs,query,where,limit,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{getFirestore,doc,getDoc,collection,query,where,limit,getDocs}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal"};
-const app=initializeApp(cfg);const auth=getAuth(app);const db=getFirestore(app);
-window._db=db;window._getDoc=getDoc;window._doc=doc;window._getDocs=getDocs;window._collection=collection;window._query=query;window._where=where;window._limit=limit;
-onAuthStateChanged(auth,u=>{if(u)console.log('User:',u.email);});
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+const db=getFirestore(app);
+window._db=db;window._doc=doc;window._getDoc=getDoc;window._collection=collection;window._query=query;window._where=where;window._limit=limit;window._getDocs=getDocs;
+onAuthStateChanged(auth,u=>{if(u){console.log('User:',u.email);}});
+
+/* Try to load property from Firestore by doc ID */
+const urlId = new URLSearchParams(window.location.search).get('id');
+if(urlId && urlId.length > 5) {
+  try {
+    const snap = await getDoc(doc(db,'properties',urlId));
+    if(snap.exists()){window._FBPROP={id:snap.id,...snap.data()};console.log('Loaded from Firestore:',window._FBPROP.title);}
+  } catch(e){ console.log('Firestore fetch error, using static data'); }
+}
 </script>
 
 <script>
-/* ══════════════════════════════════════════════
-   STATIC PROPERTY DATA (with URL param override)
-══════════════════════════════════════════════ */
-const PROPERTIES = {
-  1:{id:1,title:'Spacious 2BHK Flat with Premium Amenities | Kondapur',type:'2BHK Flat',loc:'Kondapur, Hyderabad — 500084',price:18500,deposit:37000,area:950,floor:'4th',bhk:2,bath:2,furnish:'Semi-Furnished',avail:'01 Jun 2025',rating:4.8,reviews:142,views:1240,enq:18,emoji:'🏡',bg:'linear-gradient(145deg,#0a1528,#162035)',badges:[{c:'gb-v',l:'✓ VERIFIED'},{c:'gb-p',l:'★ PREMIUM'}],desc:'Welcome to this beautifully designed <strong>2BHK apartment</strong> in the heart of Kondapur — Hyderabad\'s most sought-after residential and IT corridor. This <strong>950 sq.ft</strong> semi-furnished home offers everything a modern professional couple or small family needs.\n\nThe apartment features <strong>floor-to-ceiling windows</strong> in both bedrooms offering excellent natural light and ventilation, a fully modular kitchen with granite countertops, and an attached 140 sq.ft balcony with stunning unobstructed city views.\n\nLocated just <strong>400 metres from the Kondapur Metro Station</strong>, commuting to HITEC City, Gachibowli, and Madhapur is effortless. The building has 24/7 security with CCTV, covered car parking, and a resident welfare committee that maintains exceptional building standards.',descShort:true,amenities:['🛗 High-Speed Lift','🅿️ Covered Car Parking','⚡ Power Backup 24/7','🔒 CCTV & Security','📶 Fibre Internet Ready','🏊 Swimming Pool','🏋️ Gym & Fitness Centre','🚿 Geyser All Bathrooms','🌿 Landscaped Garden','🚗 Visitor Parking','🛒 Supermarket Nearby','🚇 Metro 400m Walk'],tags:['Metro Nearby','Pet Friendly','Kids Welcome','IT Hub Proximity'],owner:'Rajesh Kumar',ownerPhone:'+91 98765 43210',listingType:'residential'},
-  2:{id:2,title:'Premium PG for Working Professionals | HITEC City',type:'PG',loc:'HITEC City, Hyderabad — 500081',price:8500,deposit:17000,area:180,floor:'2nd',bhk:1,bath:1,furnish:'Fully Furnished',avail:'Immediate',rating:4.6,reviews:89,views:820,enq:12,emoji:'🛏️',bg:'linear-gradient(145deg,#0d1a20,#162535)',badges:[{c:'gb-v',l:'✓ VERIFIED'},{c:'gb-h',l:'🔥 HOT'}],desc:'Modern <strong>fully furnished PG room</strong> in a premium managed hostel in HITEC City — perfectly suited for IT professionals working in Cyberabad\'s tech parks. The <strong>attached bathroom</strong> gives you complete privacy, and the room comes with AC, bed, wardrobe, study table, and high-speed WiFi.\n\nMeals are provided twice daily (breakfast + dinner) by a professional cook using fresh ingredients. The building features <strong>24/7 WiFi at 100Mbps</strong>, a common lounge area, Netflix-enabled common TV, and laundry service.\n\nThe location is exceptional — <strong>8 minutes walk to Cyber Towers</strong>, close to Inorbit Mall, and on the main road with excellent auto and cab availability at any hour.',descShort:true,amenities:['🍽️ Meals (Breakfast + Dinner)','📶 100Mbps WiFi','❄️ AC','🪑 Fully Furnished','🏠 24/7 Access','🔒 Security Guard','🚿 Attached Bathroom','📺 Common TV (Netflix)','👔 Laundry Service','⚡ Power Backup'],tags:['Meals Included','AC','Attached Bath','IT Hub Walk'],owner:'Priya Mehta',ownerPhone:'+91 98765 11234',listingType:'pg'},
-  3:{id:3,title:'Grade-A Office Space with Modern Fit-Out | Gachibowli',type:'Office',loc:'Gachibowli Financial District, Hyderabad — 500032',price:290000,deposit:870000,area:4800,floor:'12th',bhk:null,bath:4,furnish:'Plug & Play',avail:'15 Jun 2025',rating:4.8,reviews:42,views:640,enq:8,emoji:'🏢',bg:'linear-gradient(145deg,#08142a,#12243a)',badges:[{c:'gb-v',l:'✓ VERIFIED'},{c:'gb-p',l:'★ PREMIUM'}],desc:'Premium <strong>Grade-A office space</strong> spanning 4,800 sq.ft on the 12th floor of Skyline Corporate Tower in Gachibowli Financial District — the most prestigious business address in Hyderabad.\n\nThis <strong>plug-and-play office</strong> comes pre-fitted with high-quality workstations for 80 employees, 5 glass-partitioned meeting rooms, an executive boardroom, dedicated server room with raised flooring, and a fully equipped reception and pantry area.\n\nThe tower has <strong>100% power backup, 6 high-speed Schindler lifts, biometric access control, CCTV on all floors, and a basement parking for 40 vehicles</strong>. The building's on-site cafeteria, fitness centre, and concierge services make this a truly premium corporate experience.',descShort:true,amenities:['🅿️ 40 Car Parking','⚡ 100% Power Backup','🌐 Redundant Fibre','🛗 6 Panoramic Lifts','🍽️ On-site Cafeteria','🏋️ Gym & Wellness','🎯 5 Meeting Rooms','🔒 Biometric Access','📹 CCTV All Floors','🧹 Daily Housekeeping'],tags:['Grade-A','IT Park','Plug & Play','LEED'],owner:'Skyline Properties Ltd',ownerPhone:'+91 40 2345 6789',listingType:'commercial'},
-};
+/* ══════════════════════════════════════════════════
+   SHARED PROPERTY DATA — EXACT MATCH with properties.html
+   This mirrors the PROPS array in properties.html so
+   clicking "View →" on any card loads the correct property.
+══════════════════════════════════════════════════ */
+const PROPS = [
+  {id:1,type:'flat',title:'Spacious 2BHK with Modular Kitchen & Balcony',city:'Hyderabad',area:'Kondapur',price:18500,deposit:37000,rating:4.8,reviews:142,furnish:'Semi-Furnished',bhk:'2BHK',floor:'4th Floor',size:950,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'}],amenities:['🛗 High-Speed Lift','🅿️ Covered Car Parking','⚡ Power Backup 24/7','🔒 CCTV & Security','📶 Fibre Internet Ready','🏊 Swimming Pool','🏋️ Gym & Fitness Centre','🚿 Geyser All Bathrooms','🌿 Landscaped Garden','🚗 Visitor Parking','🛒 Supermarket Nearby','🚇 Metro 400m Walk','❄️ Air Conditioning','🐾 Pet Friendly','🏠 24/7 Security Guard'],whatsapp:'+919876543210',available:true,isNew:false,views:'1.2K',phone:'+91 98765 43210',owner:'Rajesh Kumar',enq:18,emoji:'🏡',bgColors:['linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e8ece4,#d4dcc8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏡','🛋️','🍳','🛁','🌅','🏙️'],desc:`<p>Welcome to this beautifully designed <strong>2BHK apartment</strong> in the heart of Kondapur — Hyderabad's most sought-after residential and IT corridor. This <strong>950 sq.ft</strong> semi-furnished home offers everything a modern professional couple or small family needs.</p><p>The apartment features <strong>floor-to-ceiling windows</strong> in both bedrooms offering excellent natural light and ventilation, a fully modular kitchen with granite countertops, and an attached 140 sq.ft balcony with stunning unobstructed city views.</p><p>Located just <strong>400 metres from the Kondapur Metro Station</strong>, commuting to HITEC City, Gachibowli, and Madhapur is effortless. The building has 24/7 security with CCTV, covered car parking, and a resident welfare committee that maintains exceptional building standards.</p>`,descShort:'Welcome to this beautifully designed <strong>2BHK apartment</strong> in the heart of Kondapur — Hyderabad\'s most sought-after residential and IT corridor. This <strong>950 sq.ft</strong> semi-furnished home offers everything a modern professional couple or small family needs…',listingType:'residential'},
+  {id:2,type:'flat',title:'3BHK Luxury Flat | Gated Society with Pool',city:'Bangalore',area:'Whitefield',price:38000,deposit:76000,rating:4.9,reviews:88,furnish:'Fully Furnished',bhk:'3BHK',floor:'8th Floor',size:1450,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'}],amenities:['🏊 Swimming Pool','🏋️ Gym','📶 WiFi','🅿️ Parking','🔒 Security','❄️ AC All Rooms','🛗 Lift','⚡ Power Backup','🌿 Garden','🎾 Clubhouse'],whatsapp:'+919876543211',available:true,isNew:false,views:'3.1K',phone:'+91 98765 43211',owner:'Anita Sharma',enq:34,emoji:'🏢',bgColors:['linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4ece8,#c8d8d0)','linear-gradient(145deg,#e8ece4,#d4dcc8)'],emojis:['🏢','🛋️','🍳','🏊','🌿','🏙️'],desc:`<p>Experience luxury living in this stunning <strong>3BHK fully furnished apartment</strong> in Whitefield's most prestigious gated community. Spanning <strong>1,450 sq.ft</strong> across the 8th floor, this property offers breathtaking views and world-class amenities.</p><p>The interiors feature imported marble flooring, modular kitchen with chimney and hob, brand-new split ACs in all rooms, designer bathrooms with premium fittings, and a spacious balcony overlooking the landscaped grounds and swimming pool.</p><p>The society includes a <strong>temperature-controlled swimming pool, fully equipped gymnasium, indoor games room, children's play area, and 24/7 concierge service</strong>. Located minutes from the Whitefield IT corridor and ITPL.</p>`,descShort:'Experience luxury living in this stunning <strong>3BHK fully furnished apartment</strong> in Whitefield\'s most prestigious gated community. Spanning <strong>1,450 sq.ft</strong> across the 8th floor, this property offers breathtaking views and world-class amenities…',listingType:'residential'},
+  {id:3,type:'flat',title:'Cozy 1BHK Near Metro Station | Ready to Move',city:'Hyderabad',area:'Madhapur',price:13000,deposit:26000,rating:4.6,reviews:56,furnish:'Semi-Furnished',bhk:'1BHK',floor:'2nd Floor',size:620,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbn',l:'✨ NEW'}],amenities:['🚇 Metro 0.3km','📶 WiFi','🔒 Security','⚡ Power Backup','🅿️ Bike Parking'],whatsapp:'+919876543212',available:true,isNew:true,views:'890',phone:'+91 98765 43212',owner:'Suresh Nair',enq:9,emoji:'🏠',bgColors:['linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏠','🛏️','🍳','🚿','🚇','🌆'],desc:`<p>A beautifully maintained <strong>1BHK apartment</strong> in the heart of Madhapur, just <strong>300 metres from the Madhapur Metro Station</strong>. Perfect for working professionals who want to be close to HITEC City, Cyberabad, and all major tech parks.</p><p>The apartment is <strong>semi-furnished</strong> with a wardrobe, kitchen shelving, and geyser already installed. The building has CCTV cameras, security guard, and power backup. Natural light floods in from the east-facing windows every morning.</p><p>The locality has excellent restaurants, cafés, supermarkets, and pharmacies within walking distance. Zero brokerage — direct owner contact only.</p>`,descShort:'A beautifully maintained <strong>1BHK apartment</strong> in the heart of Madhapur, just <strong>300 metres from the Madhapur Metro Station</strong>. Perfect for working professionals who want to be close to HITEC City and all major tech parks…',listingType:'residential'},
+  {id:4,type:'flat',title:'2BHK Villa-Style Flat | Jubilee Hills',city:'Hyderabad',area:'Jubilee Hills',price:32000,deposit:64000,rating:4.7,reviews:73,furnish:'Fully Furnished',bhk:'2BHK',floor:'Ground Floor',size:1200,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbh',l:'🔥 HOT'}],amenities:['🌿 Garden','🅿️ Parking','❄️ AC','🔒 Security','🛒 Supermarket Nearby','🐾 Pet Friendly'],whatsapp:'+919876543213',available:true,isNew:false,views:'2.4K',phone:'+91 98765 43213',owner:'Priya Reddy',enq:22,emoji:'🏰',bgColors:['linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e8ece4,#d4dcc8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏰','🛋️','🌿','🍳','🅿️','🏙️'],desc:`<p>A rare <strong>villa-style ground floor 2BHK</strong> in one of Jubilee Hills' most exclusive residential streets. This fully furnished 1,200 sq.ft property features a private garden, ensuring you have your own green space in the city.</p><p>The interiors are elegantly designed with <strong>hardwood flooring, modular kitchen, brand-new ACs, premium bathroom fittings, and a private patio</strong> accessible from the master bedroom. Covered car parking and extra bike parking included.</p><p>Pet-friendly building in a quiet, tree-lined street. Walking distance to Jubilee Hills Checkpost, Road No. 36 restaurants, and multiple supermarkets. Excellent connectivity to Banjara Hills, Film Nagar, and Madhapur.</p>`,descShort:'A rare <strong>villa-style ground floor 2BHK</strong> in one of Jubilee Hills\' most exclusive residential streets. This fully furnished 1,200 sq.ft property features a private garden, ensuring your own green space in the city…',listingType:'residential'},
+  {id:5,type:'flat',title:'Budget 1BHK | Ideal for Bachelor Working Professionals',city:'Pune',area:'Baner',price:10500,deposit:21000,rating:4.4,reviews:38,furnish:'Semi-Furnished',bhk:'1BHK',floor:'3rd Floor',size:540,badges:[{c:'gbv',l:'✓ VERIFIED'}],amenities:['📶 WiFi','⚡ Power Backup','🔒 Security','🛗 Lift'],whatsapp:'+919876543214',available:true,isNew:false,views:'640',phone:'+91 98765 43214',owner:'Mohan Kulkarni',enq:7,emoji:'🏡',bgColors:['linear-gradient(145deg,#e4ece8,#c8d8d0)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ece4,#d4dcc8)'],emojis:['🏡','🛏️','🍳','🚿','🏙️','🌅'],desc:`<p>An affordable and well-maintained <strong>1BHK apartment</strong> in Baner, ideal for bachelor working professionals or young couples. Located on the <strong>3rd floor</strong> of a clean, secure building with lift access.</p><p>The unit is <strong>semi-furnished</strong> with a wardrobe, kitchen platform, and overhead tank. The building has power backup, a security guard, and a clean common area. Monthly water charges included in rent.</p><p>Baner is perfectly located for professionals working at Hinjewadi IT Park, Balewadi, or Aundh. Excellent metro connectivity in the pipeline. Several restaurants, gyms, and supermarkets within walking distance.</p>`,descShort:'An affordable and well-maintained <strong>1BHK apartment</strong> in Baner, ideal for bachelor working professionals or young couples. Located on the 3rd floor of a clean, secure building with lift access and power backup…',listingType:'residential'},
+  {id:6,type:'flat',title:'4BHK Duplex | Premium Gated Community',city:'Mumbai',area:'Andheri West',price:82000,deposit:164000,rating:4.9,reviews:121,furnish:'Fully Furnished',bhk:'4BHK',floor:'14th Floor',size:2200,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'}],amenities:['🏊 Pool','🏋️ Gym','🎭 Concierge','🅿️ Parking ×2','🔒 24/7 Security','🛗 3 Lifts','📶 Fibre WiFi','⚡ Power Backup'],whatsapp:'+919876543215',available:true,isNew:false,views:'4.8K',phone:'+91 98765 43215',owner:'Ramesh Properties',enq:51,emoji:'🏯',bgColors:['linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e8ece4,#d4dcc8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏯','🛋️','🍳','🏊','🌃','🏙️'],desc:`<p>An exceptional <strong>4BHK duplex apartment</strong> spanning two floors in Andheri West's most prestigious tower. At 2,200 sq.ft with private staircase between floors, this is truly a sky villa experience.</p><p>Fully furnished to the highest standards with Italian marble flooring, a chef's kitchen with island, home theatre, four en-suite bedrooms with walk-in wardrobes, and a stunning private terrace on the upper level offering panoramic city views.</p><p>The building features a <strong>rooftop infinity pool, concierge service, valet parking, spa, yoga deck, and premium gymnasium</strong>. Located minutes from the metro, Mumbai's best restaurants, and premium malls.</p>`,descShort:'An exceptional <strong>4BHK duplex apartment</strong> spanning two floors in Andheri West\'s most prestigious tower. At 2,200 sq.ft with private staircase, this is truly a sky villa experience with rooftop infinity pool…',listingType:'residential'},
+  {id:7,type:'flat',title:'3BHK Semi-Furnished Near School & Hospital',city:'Chennai',area:'Anna Nagar',price:28000,deposit:56000,rating:4.5,reviews:62,furnish:'Semi-Furnished',bhk:'3BHK',floor:'5th Floor',size:1350,badges:[{c:'gbv',l:'✓ VERIFIED'}],amenities:['🅿️ Parking','🔒 Security','⚡ Power Backup','🛗 Lift','🏫 School 0.5km','🏥 Hospital 1km'],whatsapp:'+919876543216',available:false,isNew:false,views:'1.1K',phone:'+91 98765 43216',owner:'Kavya Iyer',enq:12,emoji:'🏠',bgColors:['linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e8ece4,#d4dcc8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏠','🛏️','🍳','🚿','🏫','🌆'],desc:`<p>A well-maintained <strong>3BHK apartment</strong> in Anna Nagar — one of Chennai's most sought-after residential localities. Spanning 1,350 sq.ft on the 5th floor with excellent cross-ventilation and natural light in all rooms.</p><p>The apartment is <strong>semi-furnished</strong> with wardrobes in all bedrooms, modular kitchen with basic appliances, geyser in bathrooms, and a built-in loft storage. The society has CCTV, security guard, covered parking, and power backup.</p><p>Ideally located for families — renowned CBSE schools within 500m, Apollo Hospital within 1km, and Anna Nagar's bustling commercial street with every amenity at your doorstep. Please note: currently <strong>leased</strong> — enquire for availability from August.</p>`,descShort:'A well-maintained <strong>3BHK apartment</strong> in Anna Nagar — one of Chennai\'s most sought-after residential localities. Spanning 1,350 sq.ft on the 5th floor with excellent cross-ventilation and natural light…',listingType:'residential'},
+  {id:8,type:'flat',title:'Studio Apartment | Fully Furnished | IT Park Walk',city:'Hyderabad',area:'Gachibowli',price:15000,deposit:30000,rating:4.7,reviews:94,furnish:'Fully Furnished',bhk:'Studio',floor:'6th Floor',size:380,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbh',l:'🔥 HOT'}],amenities:['📶 WiFi','❄️ AC','🏋️ Gym','🚇 IT Park Walk','🛗 Lift','🔒 Security','⚡ Power Backup'],whatsapp:'+919876543217',available:true,isNew:false,views:'2.2K',phone:'+91 98765 43217',owner:'Arun Singh',enq:29,emoji:'🌆',bgColors:['linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e8ece4,#d4dcc8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🌆','🛋️','💻','🍳','🏋️','🌃'],desc:`<p>A premium <strong>fully furnished studio apartment</strong> on the 6th floor in Gachibowli, with direct walkable access to DLF Cybercity and the Financial District. Perfect for solo IT professionals who want zero commute.</p><p>The 380 sq.ft studio is ingeniously designed to feel spacious — a queen-sized Murphy bed, a dedicated work-from-home desk with dual monitor setup, an open kitchen with all appliances, and a smart TV with OTT subscriptions included in rent.</p><p>The building has a rooftop gym, high-speed fibre internet included in rent, and is walking distance to six major tech parks. Uber, Rapido, and autos available round the clock outside the building.</p>`,descShort:'A premium <strong>fully furnished studio apartment</strong> on the 6th floor in Gachibowli, with direct walkable access to DLF Cybercity and the Financial District. Perfect for solo IT professionals who want zero commute…',listingType:'residential'},
+  {id:9,type:'pg',title:'Premium PG for Working Men | AC Rooms, Meals',city:'Hyderabad',area:'HITEC City',price:8500,deposit:17000,rating:4.6,reviews:89,furnish:'Fully Furnished',bhk:'Single Room',floor:'2nd Floor',size:180,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbh',l:'🔥 HOT'}],amenities:['🍽️ Meals (2 times)','📶 WiFi','❄️ AC','👔 Laundry','⚡ Power Backup','🔒 Security','📺 Common TV','🛁 Hot Water'],whatsapp:'+919876543218',available:true,isNew:false,views:'820',phone:'+91 98765 43218',owner:'PG Universe',enq:15,emoji:'🛏️',bgColors:['linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4ece8,#c8d8d0)','linear-gradient(145deg,#e8ece4,#d4dcc8)'],emojis:['🛏️','🍽️','📶','❄️','📺','🌆'],desc:`<p>A well-managed <strong>premium PG accommodation</strong> for working men in HITEC City, just 8 minutes walk from Cyber Towers. The property offers clean, fully furnished AC rooms with attached and common bathrooms, high-speed WiFi, and home-cooked meals twice daily.</p><p>Each room includes a <strong>single bed, wardrobe, study table, AC, and personal locker</strong>. Common areas include a lounge with Netflix-enabled TV, a clean dining area, and a laundry room. The building has 24/7 security with CCTV and biometric access.</p><p>Rent includes meals, WiFi, power backup, and weekly housekeeping. Only electricity charged separately at actuals. Minimum 3-month stay preferred.</p>`,descShort:'A well-managed <strong>premium PG accommodation</strong> for working men in HITEC City, just 8 minutes walk from Cyber Towers. Fully furnished AC rooms with home-cooked meals twice daily, high-speed WiFi, and 24/7 security…',listingType:'pg'},
+  {id:10,type:'pg',title:'Girls Only PG | Premium Rooms | 24/7 Security',city:'Bangalore',area:'Koramangala',price:11000,deposit:22000,rating:4.8,reviews:134,furnish:'Fully Furnished',bhk:'Double Sharing',floor:'All Floors',size:200,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'},{c:'gbh',l:'👩 Girls Only'}],amenities:['🍽️ 3 Meals/Day','📶 WiFi','❄️ AC','🔒 24/7 Security','🛋️ Common Lounge','👩 Women Only','👔 Laundry Service','🏠 Housekeeping'],whatsapp:'+919876543219',available:true,isNew:false,views:'3.2K',phone:'+91 98765 43219',owner:'She Stays',enq:24,emoji:'🏠',bgColors:['linear-gradient(145deg,#ece4e8,#d4c8d0)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4ec,#d0c8d8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🏠','🛏️','🍽️','❄️','🛋️','🌆'],desc:`<p>A safe, secure and premium <strong>girls-only PG accommodation</strong> in Koramangala — Bangalore's most vibrant and professionally active neighbourhood. This 3-storey building is designed exclusively for women with the highest standards of security and comfort.</p><p>Rooms are available in <strong>double-sharing and single occupancy</strong> configurations, all with AC, premium mattresses, wardrobes, study tables, and high-speed WiFi. Three full meals per day are provided by an experienced cook using fresh, hygienic ingredients.</p><p>The building has a CCTV system covering all entrances and corridors, biometric entry, a dedicated female security staff at night, a comfortable common lounge, and daily housekeeping. Zero male visitor policy in room corridors. 24/7 access for working professionals.</p>`,descShort:'A safe, secure and premium <strong>girls-only PG accommodation</strong> in Koramangala — Bangalore\'s most vibrant neighbourhood. 3 meals/day, AC rooms, biometric entry, 24/7 female security, and daily housekeeping…',listingType:'pg'},
+  {id:15,type:'hostel',title:'Modern Hostel | Dormitory Rooms | Student Friendly',city:'Hyderabad',area:'Begumpet',price:5000,deposit:10000,rating:4.5,reviews:212,furnish:'Furnished',bhk:'4-Bed Dorm',floor:'All Floors',size:null,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbh',l:'🔥 POPULAR'}],amenities:['📶 WiFi','🛋️ Common Lounge','❄️ AC Dorms','🔒 Security','☀️ Rooftop Terrace','🎮 Game Room','☕ Café','📚 Study Area'],whatsapp:'+919876543224',available:true,isNew:false,views:'1.9K',phone:'+91 98765 43224',owner:'StayEasy Hostels',enq:19,emoji:'🏢',bgColors:['linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4ece8,#c8d8d0)','linear-gradient(145deg,#e8ece4,#d4dcc8)'],emojis:['🏢','🛋️','☕','🎮','☀️','🌆'],desc:`<p>A vibrant, modern <strong>hostel in Begumpet</strong> offering clean and comfortable dormitory rooms at highly affordable prices. Ideal for students, working professionals, and travellers who want good value accommodation in a central Hyderabad location.</p><p>4-bed air-conditioned dormitory rooms have <strong>individual lockers, reading lights, USB charging ports at each bunk, and privacy curtains</strong>. All bathrooms are cleaned twice daily. Fresh linen provided every 3 days.</p><p>Common areas include a stylish lounge with Netflix, a rooftop terrace perfect for sunsets, a game room with PS5 and TT table, a fully equipped study area, and a café serving fresh coffee and snacks from 7am.</p>`,descShort:'A vibrant, modern <strong>hostel in Begumpet</strong> offering clean, air-conditioned dormitory rooms with individual lockers, USB charging, privacy curtains, rooftop terrace, game room, and study area…',listingType:'pg'},
+  {id:19,type:'coliving',title:'Luxury Co-living | Private Rooms | Community Events',city:'Bangalore',area:'Indiranagar',price:22000,deposit:44000,rating:4.9,reviews:201,furnish:'Fully Furnished',bhk:'Private Studio',floor:'Various',size:320,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'}],amenities:['📶 High-Speed WiFi','🏋️ Gym','💻 Co-working Space','🎉 Community Events','☕ Café & Bar','🏊 Pool','🌿 Terrace Garden','🔒 Smart Access'],whatsapp:'+919876543228',available:true,isNew:false,views:'5.6K',phone:'+91 98765 43228',owner:'Colive India',enq:38,emoji:'🤝',bgColors:['linear-gradient(145deg,#ece4e8,#d4c8d0)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8e4ec,#d0c8d8)','linear-gradient(145deg,#e4ece8,#c8d8d0)'],emojis:['🤝','🛋️','💻','☕','🏊','🌆'],desc:`<p>India's most premium <strong>co-living community</strong> in the heart of Indiranagar — Bangalore's most beloved neighbourhood. Each private studio is meticulously designed with <strong>high-end furniture, smart home controls, blackout blinds, and a dedicated work desk</strong> with ergonomic chair.</p><p>Rent includes 1 Gbps WiFi, bi-weekly housekeeping, access to all community spaces, and a monthly events calendar ranging from workshops to rooftop dinners. The co-working space has 50 dedicated desks, 5 glass-walled meeting rooms, and a podcast studio.</p><p>Community of 120+ young professionals from 22 cities. Monthly community events, weekly yoga, movie nights, and networking mixers. <strong>Zero brokerage, flexible lease terms from 3 months.</strong></p>`,descShort:'India\'s most premium <strong>co-living community</strong> in Indiranagar. Private studios with smart home controls, 1 Gbps WiFi, co-working space, pool, gym, café & bar, and a vibrant community of 120+ professionals…',listingType:'coliving'},
+  {id:22,type:'commercial',title:'Grade-A Office Space | Plug & Play | IT Park',city:'Hyderabad',area:'Gachibowli',price:290000,deposit:870000,rating:4.8,reviews:42,furnish:'Plug & Play',bhk:'4,800 sqft',floor:'12th Floor',size:4800,badges:[{c:'gbv',l:'✓ VERIFIED'},{c:'gbp',l:'★ PREMIUM'}],amenities:['⚡ 100% Power Backup','🌐 Redundant Fibre','🅿️ 40 Car Parking','🍽️ On-site Cafeteria','🏋️ Fitness Centre','🛗 6 Panoramic Lifts','🎯 5 Meeting Rooms','🔒 Biometric Access','📹 CCTV All Floors','🧹 Daily Housekeeping'],whatsapp:'+919040234567',available:true,isNew:false,views:'640',phone:'+91 90402 34567',owner:'Skyline Properties Ltd',enq:8,emoji:'🏢',bgColors:['linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)','linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e8e4dc,#dcd4c8)','linear-gradient(145deg,#e4ece8,#c8d8d0)','linear-gradient(145deg,#e8ece4,#d4dcc8)'],emojis:['🏢','💼','🖥️','📅','🅿️','🌇'],desc:`<p>Premium <strong>Grade-A office space</strong> spanning 4,800 sq.ft on the 12th floor of Skyline Corporate Tower in Gachibowli's Financial District — the most prestigious business address in Hyderabad.</p><p>This <strong>plug-and-play office</strong> comes pre-fitted with 80 workstations, 5 glass-partitioned meeting rooms, an executive boardroom, dedicated server room with raised flooring, and a fully equipped reception and pantry area.</p><p>The tower has <strong>100% power backup, 6 Schindler panoramic lifts, biometric access control, CCTV on all floors, and basement parking for 40 vehicles</strong>. The on-site cafeteria, fitness centre, and concierge make this a truly premium corporate experience. LEED Gold certified building.</p>`,descShort:'Premium <strong>Grade-A office space</strong> spanning 4,800 sq.ft on the 12th floor of Skyline Corporate Tower in Gachibowli — pre-fitted with 80 workstations, 5 meeting rooms, 100% power backup, and 40 parking slots…',listingType:'commercial'},
+];
 
-/* GALLERY IMAGES (per property) */
-const GALLERY_EMOJIS = {
-  1:['🏡','🛋️','🍳','🛁','🌅','🏙️'],
-  2:['🛏️','🪑','📺','🍽️','🚿','🌆'],
-  3:['🏢','💼','🖥️','📅','🅿️','🌇'],
-};
-const GALLERY_BG = {
-  1:['linear-gradient(145deg,#0a1830,#152035)','linear-gradient(145deg,#121820,#1a2530)','linear-gradient(145deg,#18120a,#2a200e)','linear-gradient(145deg,#0a1825,#102030)','linear-gradient(145deg,#0a1020,#15182a)','linear-gradient(145deg,#050810,#0e1220)'],
-  2:['linear-gradient(145deg,#0d1a20,#152535)','linear-gradient(145deg,#10181a,#182020)','linear-gradient(145deg,#081018,#121c25)','linear-gradient(145deg,#0a1010,#141818)','linear-gradient(145deg,#05080d,#0c1015)','linear-gradient(145deg,#080c12,#101820)'],
-  3:['linear-gradient(145deg,#08142a,#12243a)','linear-gradient(145deg,#0c1828,#162030)','linear-gradient(145deg,#081222,#10202a)','linear-gradient(145deg,#060e1a,#0c1825)','linear-gradient(145deg,#06101c,#0c1628)','linear-gradient(145deg,#040810,#080e18)'],
-};
-
-/* REVIEWS */
+/* Reviews data */
 const REVIEWS = [
-  {name:'Aditya S.',rating:5,date:'March 2025',text:'Exceptional property — exactly as advertised. The owner was responsive and professional throughout. Location is unbeatable and the building maintenance is genuinely impressive. Highly recommend!',av:'A',col:'linear-gradient(135deg,var(--gold),#5a3a00)'},
-  {name:'Priya R.',rating:5,date:'February 2025',text:'Moved in 2 months ago and couldn\'t be happier. The natural light, spacious rooms, and proximity to the metro make daily life so much easier. Owner Rajesh is very cooperative and addresses issues promptly.',av:'P',col:'linear-gradient(135deg,var(--teal),#006650)'},
-  {name:'Kiran M.',rating:4,date:'January 2025',text:'Good property overall. The amenities are as listed and the locality is great. Minor maintenance issue was fixed within 24 hours of reporting. Would recommend for young professionals.',av:'K',col:'linear-gradient(135deg,var(--rose),#7a0020)'},
+  {name:'Aditya S.',rating:5,date:'March 2025',text:'Exceptional property — exactly as advertised. The owner was responsive and professional throughout. Location is unbeatable and the building maintenance is genuinely impressive. Highly recommend!',av:'A',col:'linear-gradient(135deg,#c8943a,#8a5f12)'},
+  {name:'Priya R.',rating:5,date:'February 2025',text:'Moved in 2 months ago and couldn\'t be happier. The natural light, spacious rooms, and proximity to the metro make daily life so much easier. Owner is very cooperative and addresses issues promptly.',av:'P',col:'linear-gradient(135deg,#4a7c6f,#2d5546)'},
+  {name:'Kiran M.',rating:4,date:'January 2025',text:'Good property overall. The amenities are as listed and the locality is great. Minor maintenance issue was fixed within 24 hours. Would recommend for young professionals.',av:'K',col:'linear-gradient(135deg,#c45c3c,#8a3620)'},
 ];
 
-/* SIMILAR PROPERTIES */
-const SIMILAR = [
-  {id:2,title:'Premium 2BHK | Madhapur',loc:'Madhapur, Hyderabad',price:16500,emoji:'🏠',bg:'linear-gradient(145deg,#0d1a20,#162535)'},
-  {id:1,title:'Cozy 1BHK | Gachibowli',loc:'Gachibowli, Hyderabad',price:12000,emoji:'🏡',bg:'linear-gradient(145deg,#0a1225,#14203a)'},
-  {id:3,title:'Furnished Studio | KPHB',loc:'KPHB Colony, Hyderabad',price:14000,emoji:'🛋️',bg:'linear-gradient(145deg,#12100a,#1a180e)'},
-  {id:1,title:'3BHK Villa | Jubilee Hills',loc:'Jubilee Hills, Hyderabad',price:38000,emoji:'🏰',bg:'linear-gradient(145deg,#0a1830,#152040)'},
-];
+/* TYPE LABELS */
+const TYPE_LABELS = {flat:'Flat',pg:'PG',hostel:'Hostel',coliving:'Co-living',commercial:'Commercial',villa:'Villa'};
 
 /* ══ STATE ══ */
 let currentProp = null;
 let savedState = false;
-let lbIdx = 0;
-let lbImages = [];
 let descExpanded = false;
-let enquiryType = 'enquiry';
+let lbIdx = 0;
 
 /* ══ INIT ══ */
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
-  const id = parseInt(params.get('id')) || 1;
-  const type = params.get('type') || 'residential';
-  loadProperty(id, type);
-  showShareBar();
+  const rawId = params.get('id');
+  const type = params.get('type');
+
+  // Try to find property: first by numeric ID, then by string ID (Firestore doc ID)
+  let prop = null;
+
+  // Check if Firestore loaded a matching property
+  if(window._FBPROP) {
+    prop = mapFirestoreProp(window._FBPROP);
+  }
+
+  // Fallback: match from static data by numeric id
+  if(!prop) {
+    const numId = parseInt(rawId);
+    prop = PROPS.find(p => p.id === numId);
+  }
+
+  // Final fallback: first property
+  if(!prop) prop = PROPS[0];
+
+  currentProp = prop;
+  renderAll(prop);
   initScrollReveal();
   initNavScroll();
+  setupShareBar();
+
+  // WA float click
+  document.getElementById('waFloat').onclick = () => {
+    const wa = 'https://wa.me/919876543210?text=' + encodeURIComponent('Hi! I need help finding a property on SmartRent AI.');
+    window.open(wa, '_blank', 'noopener');
+  };
 });
 
-function loadProperty(id, type) {
-  // Try static data, fallback to ID 1
-  const p = PROPERTIES[id] || PROPERTIES[1];
-  currentProp = p;
-  renderAll(p);
+/* Map Firestore property to our format */
+function mapFirestoreProp(fb) {
+  return {
+    id: fb.id,
+    type: fb.type?.toLowerCase() || 'flat',
+    title: fb.title || fb.name || 'Property',
+    city: fb.address?.city || fb.city || '—',
+    area: fb.address?.area || fb.area || '—',
+    price: fb.price || fb.basePrice || 0,
+    deposit: fb.deposit || (fb.price * 2) || 0,
+    rating: 4.5, reviews: 0,
+    furnish: fb.furnishing || 'Furnished',
+    bhk: fb.bhk || fb.rooms?.[0]?.type || '—',
+    floor: fb.floor || '—',
+    size: fb.area_sqft || fb.size || null,
+    badges: [{c:'gbv',l:'✓ VERIFIED'}],
+    amenities: (fb.amenities || []).slice(0,12),
+    whatsapp: fb.owner?.whatsapp || fb.owner?.phone || '+919999999999',
+    available: fb.approved !== false,
+    isNew: true,
+    views: '0',
+    phone: fb.owner?.phone || '—',
+    owner: fb.owner?.name || 'Property Owner',
+    enq: fb.inquiries || 0,
+    emoji: '🏠',
+    bgColors: ['linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)'],
+    emojis: ['🏠','🛋️','🍳','🛁','🌅','🏙️'],
+    desc: `<p>${fb.description || 'This is a verified property listed on SmartRent AI. Contact the owner for more details.'}</p>`,
+    descShort: (fb.description || '').substring(0, 200) + '…',
+    listingType: fb.type?.toLowerCase() === 'commercial' ? 'commercial' : 'residential',
+  };
 }
 
+/* ══ RENDER ALL ══ */
 function renderAll(p) {
-  // Meta
-  document.title = p.title + ' | SmartRent AI';
-  document.getElementById('meta-title').textContent = p.title + ' | SmartRent AI';
-
-  // Breadcrumb
-  document.getElementById('bcName').textContent = p.title.substring(0, 40) + '…';
-  document.getElementById('bcListLink').href = p.listingType === 'commercial' ? 'commercial.html' : 'pg-hostel-listings.html';
-  document.getElementById('bcListLink').textContent = p.listingType === 'commercial' ? 'Commercial' : (p.listingType === 'pg' ? 'PG & Hostels' : 'Listings');
-
-  // Header
-  document.getElementById('propTypeBadge').textContent = p.type;
-  document.getElementById('propAvail').textContent = 'Available from ' + p.avail;
-  document.getElementById('propTitle').textContent = p.title;
-  document.getElementById('propLocText').textContent = p.loc;
-  document.getElementById('propRating').textContent = p.rating;
-  document.getElementById('propReviews').textContent = '(' + p.reviews + ' reviews)';
-  document.getElementById('propViews').textContent = p.views.toLocaleString('en-IN');
-  document.getElementById('propEnq').textContent = p.enq;
-  document.getElementById('propStars').textContent = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5 - Math.round(p.rating));
-
-  // Sidebar price
-  document.getElementById('sidePrice').textContent = p.price.toLocaleString('en-IN');
-  document.getElementById('sideDeposit').textContent = '₹' + p.deposit.toLocaleString('en-IN');
-  document.getElementById('sharePriceVal').textContent = p.price.toLocaleString('en-IN');
-  document.getElementById('ownerName').textContent = p.owner;
-  document.getElementById('mapAddr').textContent = p.loc;
-
-  // Floor plan
-  document.getElementById('fpArea').textContent = p.area + ' sq.ft';
+  // Meta & breadcrumb
+  document.title = p.title + ' — SmartRent AI';
+  document.getElementById('bcCur').textContent = p.title.substring(0, 44) + (p.title.length > 44 ? '…' : '');
+  const listLink = document.getElementById('bcListLink');
+  if(p.listingType === 'commercial') { listLink.href = 'commercial.html'; listLink.textContent = 'Commercial'; }
+  else if(p.listingType === 'pg') { listLink.href = 'pg-hostel-listings.html'; listLink.textContent = 'PG & Hostels'; }
+  else { listLink.href = 'properties.html'; listLink.textContent = 'All Properties'; }
 
   // Gallery
   renderGallery(p);
+
+  // Header
+  document.getElementById('propTypeChip').textContent = TYPE_LABELS[p.type] || p.type;
+  const avail = document.getElementById('availBadge');
+  avail.textContent = p.available ? 'Available Now' : 'Currently Leased';
+  avail.className = 'avail-badge' + (p.available ? '' : ' leased');
+  document.getElementById('propTitle').textContent = p.title;
+  document.getElementById('propLocTxt').textContent = p.area + ', ' + p.city;
+  document.getElementById('propStars').textContent = '★'.repeat(Math.round(p.rating)) + '☆'.repeat(5 - Math.round(p.rating));
+  document.getElementById('propRatNum').textContent = p.rating;
+  document.getElementById('propRevCt').textContent = '(' + p.reviews + ' reviews)';
+  document.getElementById('propViews').textContent = p.views || '0';
+  document.getElementById('propEnq').textContent = p.enq || '0';
+
+  // Sidebar
+  document.getElementById('sidePrice').textContent = p.price.toLocaleString('en-IN');
+  document.getElementById('sideDeposit').textContent = '₹' + p.deposit.toLocaleString('en-IN');
+  document.getElementById('sbPrice').textContent = p.price.toLocaleString('en-IN');
+  document.getElementById('ownerName').textContent = p.owner || 'Property Owner';
+
+  // WhatsApp link
+  const waNum = (p.whatsapp || '+919999999999').replace(/[^\d]/g,'');
+  const waMsg = encodeURIComponent(`Hi! I'm interested in "${p.title}" listed on SmartRent AI. Could you please share availability and more details?`);
+  document.getElementById('btnWaOwner').href = `https://wa.me/${waNum}?text=${waMsg}`;
+
+  // Map
+  document.getElementById('mapAddr').textContent = p.area + ', ' + p.city;
 
   // Spec pills
   renderSpecs(p);
@@ -744,141 +818,139 @@ function renderAll(p) {
   // Amenities
   renderAmenities(p);
 
-  // Reviews
-  renderReviews();
+  // Floor plan area
+  if(p.size) document.getElementById('fpAreaTag').textContent = p.size + ' sq.ft';
 
-  // Similar
-  renderSimilar();
+  // Review rating summary
+  document.getElementById('ratSummary').textContent = p.rating + ' / 5.0 · ' + p.reviews + ' reviews';
+
+  // Reviews
+  renderReviews(p);
+
+  // Similar properties (exclude current)
+  renderSimilar(p);
 }
 
 function renderGallery(p) {
-  const imgs = GALLERY_EMOJIS[p.id] || GALLERY_EMOJIS[1];
-  const bgs = GALLERY_BG[p.id] || GALLERY_BG[1];
-  lbImages = imgs;
+  const emojis = p.emojis || ['🏠','🛋️','🍳','🛁','🌅','🏙️'];
+  const bgs = p.bgColors || ['linear-gradient(145deg,#e8ede4,#d4dcc8)','linear-gradient(145deg,#e4e8ec,#c8d4dc)','linear-gradient(145deg,#ece8e4,#d8d0c8)'];
+  const badges = p.badges || [];
 
-  document.getElementById('galleryInner').innerHTML = `
-    <div class="gallery-main" onclick="openLightbox(0)">
-      <div class="gal-content" style="background:${bgs[0]};font-size:130px">${imgs[0]}</div>
-      <div class="gallery-ov"></div>
-      <div class="gallery-badge">${p.badges.map(b=>`<span class="gbdg ${b.c}">${b.l}</span>`).join('')}</div>
-      <div class="gallery-save" id="galSave" onclick="event.stopPropagation();toggleSave()">🤍</div>
-      <div class="gallery-more-btn" onclick="event.stopPropagation();openLightbox(0)">📷 View All ${imgs.length} Photos</div>
+  document.getElementById('galleryGrid').innerHTML = `
+    <div class="gal-main" onclick="openLb(0)">
+      <div class="gal-emoji" style="font-size:140px">${emojis[0]}</div>
+      <div class="gal-ov"></div>
+      <div class="gal-badges">${badges.map(b=>`<span class="gbdg ${b.c}">${b.l}</span>`).join('')}</div>
+      <div class="gal-save" id="galSave" onclick="event.stopPropagation();toggleSave()">🤍</div>
+      <div class="gal-rating">⭐ ${p.rating} <span style="opacity:.6;font-size:10px">(${p.reviews})</span></div>
+      <div class="gal-count-btn" onclick="event.stopPropagation();openLb(0)">📷 All ${emojis.length} Photos</div>
     </div>
-    ${[1,2].map((i,idx) => `
-    <div class="gallery-thumb" onclick="openLightbox(i)">
-      <div class="gal-content" style="background:${bgs[i]}">${imgs[i]}</div>
-      <div class="gallery-ov"></div>
-    </div>`).join('')}`;
+    <div class="gal-thumb" onclick="openLb(1)" style="background:${bgs[1]||bgs[0]}">
+      <div class="gal-emoji">${emojis[1]||emojis[0]}</div>
+      <div class="gal-ov"></div>
+    </div>
+    <div class="gal-thumb" onclick="openLb(2)" style="background:${bgs[2]||bgs[0]}">
+      <div class="gal-emoji">${emojis[2]||emojis[0]}</div>
+      <div class="gal-ov"></div>
+    </div>`;
+
+  // Set backgrounds properly
+  const main = document.querySelector('.gal-main');
+  if(main) main.style.background = bgs[0];
 }
 
 function renderSpecs(p) {
-  const specs = p.bhk
-    ? [{ic:'🛏️',val:p.bhk+'BHK',lbl:'Bedrooms'},{ic:'🚿',val:p.bath,lbl:'Bathrooms'},{ic:'📐',val:p.area+' sqft',lbl:'Area'},{ic:'🏢',val:p.floor+' Fl.',lbl:'Floor'},{ic:'🪑',val:p.furnish,lbl:'Furnishing'},{ic:'📅',val:p.avail,lbl:'Available'}]
-    : [{ic:'📐',val:p.area+' sqft',lbl:'Area'},{ic:'🏢',val:p.floor+' Fl.',lbl:'Floor'},{ic:'🪑',val:p.furnish,lbl:'Furnishing'},{ic:'🚿',val:p.bath,lbl:'Washrooms'},{ic:'📅',val:p.avail,lbl:'Available'}];
+  const specs = [];
+  if(p.bhk) specs.push({ic:'🛏️',val:p.bhk,lbl:'Configuration'});
+  if(p.size) specs.push({ic:'📐',val:p.size+' sqft',lbl:'Carpet Area'});
+  if(p.floor) specs.push({ic:'🏢',val:p.floor,lbl:'Floor'});
+  if(p.furnish) specs.push({ic:'🪑',val:p.furnish,lbl:'Furnishing'});
+  specs.push({ic:'📅',val:p.available?'Immediate':'Ask Owner',lbl:'Available'});
+  specs.push({ic:'₹',val:'₹'+p.deposit.toLocaleString('en-IN'),lbl:'Deposit'});
 
   document.getElementById('specPills').innerHTML = specs.map(s => `
-    <div class="sp">
+    <div class="spec-pill">
       <span class="sp-ic">${s.ic}</span>
       <div><div class="sp-val">${s.val}</div><div class="sp-lbl">${s.lbl}</div></div>
     </div>`).join('');
 }
 
 function renderDesc(p) {
-  const full = p.desc.replace(/\n\n/g,'</p><p class="desc-text">');
-  const short = p.desc.substring(0, 260) + '…';
   const el = document.getElementById('propDesc');
-  el.innerHTML = '<p class="desc-text">' + (descExpanded ? full : short.replace(/\n\n/g,'</p><p class="desc-text">')) + '</p>';
-  document.getElementById('readMoreBtn').innerHTML = descExpanded ? 'Show less ▲' : 'Read more ▼';
-}
-
-function toggleDesc() {
-  descExpanded = !descExpanded;
-  if(currentProp) renderDesc(currentProp);
+  if(descExpanded) {
+    el.innerHTML = p.desc || '<p>' + (p.descShort||'') + '</p>';
+    document.getElementById('readMoreBtn').innerHTML = 'Show less ▲';
+  } else {
+    el.innerHTML = '<p>' + (p.descShort || (p.desc||'').substring(0,280) + '…') + '</p>';
+    document.getElementById('readMoreBtn').innerHTML = 'Read more ▼';
+  }
+  // Hide read more if desc is short
+  const btn = document.getElementById('readMoreBtn');
+  if(!p.desc || p.desc.length < 300) btn.style.display = 'none';
+  else btn.style.display = 'flex';
 }
 
 function renderAmenities(p) {
-  document.getElementById('amenGrid').innerHTML = p.amenities.map(a => `
-    <div class="amen-item"><span class="ai-ic">${a.split(' ')[0]}</span>${a.split(' ').slice(1).join(' ')}</div>`).join('');
+  const amens = p.amenities || [];
+  document.getElementById('amenGrid').innerHTML = amens.map(a => {
+    const parts = a.split(' ');
+    const ic = parts[0];
+    const txt = parts.slice(1).join(' ');
+    return `<div class="amen-item"><span class="amen-ic">${ic}</span><span>${txt}</span></div>`;
+  }).join('');
 }
 
-function renderReviews() {
-  document.getElementById('reviewList').innerHTML = REVIEWS.map(r => `
+function renderReviews(p) {
+  const list = document.getElementById('reviewList');
+  list.innerHTML = REVIEWS.map(r => `
     <div class="review-card">
       <div class="rc-top">
         <div class="rc-av" style="background:${r.col}">${r.av}</div>
-        <div class="rc-info">
+        <div>
           <div class="rc-name">${r.name}</div>
-          <div class="rc-meta"><span class="rc-stars">${'★'.repeat(r.rating)}</span><span>${r.date}</span><span>Verified Tenant</span></div>
+          <div class="rc-meta">
+            <span class="rc-stars">${'★'.repeat(r.rating)}</span>
+            <span>${r.date}</span>
+            <span>Verified Tenant</span>
+          </div>
         </div>
       </div>
       <div class="rc-text">${r.text}</div>
-      <div class="rc-helpful">
-        <button class="rch-btn" onclick="showToast('👍 Marked as helpful!')">👍 Helpful (${Math.floor(Math.random()*20+5)})</button>
+      <div class="rc-foot">
+        <button class="rch-btn" onclick="showToast('👍 Marked as helpful!')">👍 Helpful</button>
         <button class="rch-btn" onclick="showToast('🚩 Report submitted')">🚩 Report</button>
       </div>
     </div>`).join('');
 }
 
-function renderSimilar() {
-  document.getElementById('simGrid').innerHTML = SIMILAR.map(s => `
-    <div class="sim-card" onclick="window.location='property-detail.html?id=${s.id}'">
-      <div class="sim-img" style="background:${s.bg}">
-        <div style="font-size:52px;position:relative;z-index:1">${s.emoji}</div>
+function renderSimilar(current) {
+  // Get 4 similar properties (different from current, same type preferred)
+  const others = PROPS.filter(p => p.id !== current.id);
+  const sameType = others.filter(p => p.type === current.type);
+  const diff = others.filter(p => p.type !== current.type);
+  const similar = [...sameType, ...diff].slice(0, 4);
+
+  document.getElementById('simGrid').innerHTML = similar.map(s => `
+    <div class="sim-card" onclick="window.location='property-detail.html?id=${s.id}&type=${s.type}'">
+      <div class="sim-img" style="background:${s.bgColors?.[0]||'linear-gradient(145deg,#e8ede4,#d4dcc8)'}">
+        <div>${s.emojis?.[0]||s.emoji||'🏠'}</div>
         <div class="sim-img-ov"></div>
       </div>
       <div class="sim-body">
         <div class="sim-name">${s.title}</div>
-        <div class="sim-loc">📍 ${s.loc}</div>
+        <div class="sim-loc">📍 ${s.area}, ${s.city}</div>
         <div class="sim-price">₹${s.price.toLocaleString('en-IN')} <span>/month</span></div>
       </div>
     </div>`).join('');
 }
 
-/* ══ LIGHTBOX ══ */
-function openLightbox(idx) {
-  lbIdx = idx;
-  const imgs = GALLERY_EMOJIS[currentProp?.id] || GALLERY_EMOJIS[1];
-  const bgs = GALLERY_BG[currentProp?.id] || GALLERY_BG[1];
-  document.getElementById('lbMainImg').style.background = bgs[lbIdx];
-  document.getElementById('lbMainImg').textContent = imgs[lbIdx];
-  document.getElementById('lbCounter').textContent = (lbIdx+1) + ' / ' + imgs.length;
-  document.getElementById('lbThumbs').innerHTML = imgs.map((em,i) => `
-    <div class="lb-thumb ${i===lbIdx?'on':''}" style="background:${bgs[i]}" onclick="lbGoTo(${i})">${em}</div>`).join('');
-  document.getElementById('lightbox').classList.add('show');
-  document.body.style.overflow = 'hidden';
+/* ══ DESC TOGGLE ══ */
+function toggleDesc() {
+  descExpanded = !descExpanded;
+  if(currentProp) renderDesc(currentProp);
 }
 
-function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); document.body.style.overflow = ''; }
-function closeLightboxOnBg(e) { if(e.target === document.getElementById('lightbox')) closeLightbox(); }
-
-function lbPrev() {
-  const n = (GALLERY_EMOJIS[currentProp?.id]||GALLERY_EMOJIS[1]).length;
-  lbIdx = (lbIdx - 1 + n) % n;
-  updateLightbox();
-}
-function lbNext() {
-  const n = (GALLERY_EMOJIS[currentProp?.id]||GALLERY_EMOJIS[1]).length;
-  lbIdx = (lbIdx + 1) % n;
-  updateLightbox();
-}
-function lbGoTo(i) { lbIdx = i; updateLightbox(); }
-
-function updateLightbox() {
-  const imgs = GALLERY_EMOJIS[currentProp?.id] || GALLERY_EMOJIS[1];
-  const bgs = GALLERY_BG[currentProp?.id] || GALLERY_BG[1];
-  document.getElementById('lbMainImg').style.background = bgs[lbIdx];
-  document.getElementById('lbMainImg').textContent = imgs[lbIdx];
-  document.getElementById('lbCounter').textContent = (lbIdx+1) + ' / ' + imgs.length;
-  document.querySelectorAll('.lb-thumb').forEach((t,i) => t.classList.toggle('on', i === lbIdx));
-}
-
-document.addEventListener('keydown', e => {
-  if(e.key === 'ArrowRight') lbNext();
-  else if(e.key === 'ArrowLeft') lbPrev();
-  else if(e.key === 'Escape') { closeLightbox(); closeEnquiry(); }
-});
-
-/* ══ SAVE / WISHLIST ══ */
+/* ══ SAVE ══ */
 function toggleSave() {
   savedState = !savedState;
   const btn = document.getElementById('galSave');
@@ -890,49 +962,92 @@ function toggleSave() {
 function fpTab(el, type) {
   document.querySelectorAll('.fp-tab').forEach(t => t.classList.remove('on'));
   el.classList.add('on');
-  const fp = document.getElementById('fpBody');
-  const labels = {
-    '2d': 'Standard 2D layout view',
-    '3d': '3D perspective view — coming soon',
-    'furnished': 'Furnished layout with furniture placement'
-  };
-  showToast('🗺️ ' + labels[type]);
+  const msgs = {'2d':'📐 Showing standard 2D layout','furnished':'🛋️ Showing furnished layout view','3d':'🏗️ 3D view coming soon!'};
+  showToast(msgs[type] || '');
 }
 
+/* ══ LIGHTBOX ══ */
+function openLb(idx) {
+  if(!currentProp) return;
+  lbIdx = idx;
+  updateLb();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLb() {
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function closeLbOnBg(e) { if(e.target === document.getElementById('lightbox')) closeLb(); }
+
+function updateLb() {
+  if(!currentProp) return;
+  const emojis = currentProp.emojis || ['🏠','🛋️','🍳','🛁','🌅','🏙️'];
+  const bgs = currentProp.bgColors || ['linear-gradient(145deg,#e8ede4,#d4dcc8)'];
+  const n = emojis.length;
+  lbIdx = ((lbIdx % n) + n) % n;
+  const main = document.getElementById('lbMain');
+  main.style.background = bgs[lbIdx] || bgs[0];
+  main.textContent = emojis[lbIdx];
+  document.getElementById('lbCounter').textContent = (lbIdx+1) + ' / ' + n;
+  document.getElementById('lbThumbs').innerHTML = emojis.map((em,i) => `
+    <div class="lb-thumb ${i===lbIdx?'on':''}" style="background:${bgs[i]||bgs[0]}" onclick="lbGoTo(${i})">${em}</div>`).join('');
+}
+
+function lbPrev() { lbIdx--; updateLb(); }
+function lbNext() { lbIdx++; updateLb(); }
+function lbGoTo(i) { lbIdx = i; updateLb(); }
+
 /* ══ ENQUIRY MODAL ══ */
-function openEnquiry(type = 'enquiry') {
-  enquiryType = type;
-  const titles = { enquiry: '⚡ Send Enquiry', visit: '📅 Schedule Site Visit', message: '✉️ Message Owner' };
+function openMo(type = 'enquiry') {
+  const titles = {enquiry:'⚡ Send Enquiry', visit:'📅 Schedule Site Visit', message:'✉️ Message Owner'};
   document.getElementById('modalTitle').textContent = titles[type] || '⚡ Send Enquiry';
-  document.getElementById('modalForm').style.display = 'block';
-  document.getElementById('modalSuccess').classList.remove('show');
+  document.getElementById('moForm').style.display = 'block';
+  document.getElementById('moSuccess').classList.remove('show');
   document.getElementById('eqDate').min = new Date().toISOString().split('T')[0];
+  if(type === 'visit') document.getElementById('eqPurpose').value = 'Schedule a site visit';
   document.getElementById('modalBg').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
 
-function closeEnquiry() { document.getElementById('modalBg').classList.remove('show'); document.body.style.overflow = ''; }
-function closeEnquiryOnBg(e) { if(e.target === document.getElementById('modalBg')) closeEnquiry(); }
+function closeMo() {
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
 
-function submitEnquiry() {
+function closeMoBg(e) { if(e.target === document.getElementById('modalBg')) closeMo(); }
+
+function submitEnq() {
   const name = document.getElementById('eqName').value.trim();
   const phone = document.getElementById('eqPhone').value.trim();
-  if(!name) { showToast('⚠️ Please enter your name'); return; }
-  if(!phone || phone.replace(/\D/g,'').length < 10) { showToast('⚠️ Please enter a valid phone number'); return; }
+  if(!name) { showToast('⚠️ Please enter your full name'); return; }
+  if(!phone || phone.replace(/\D/g,'').length < 10) { showToast('⚠️ Please enter a valid 10-digit phone number'); return; }
   const refId = 'SR-' + Math.floor(100000 + Math.random() * 900000);
-  document.getElementById('refId').textContent = refId;
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').classList.add('show');
+  document.getElementById('refId').textContent = 'REF: ' + refId;
+  document.getElementById('moForm').style.display = 'none';
+  document.getElementById('moSuccess').classList.add('show');
+  showToast('✅ Enquiry sent! Owner will contact you within 2 hours.');
 }
 
 /* ══ MOBILE SHARE BAR ══ */
-function showShareBar() {
+function setupShareBar() {
   const bar = document.getElementById('shareBar');
-  if(window.innerWidth <= 1100) bar.style.display = 'flex';
-  window.addEventListener('resize', () => { bar.style.display = window.innerWidth <= 1100 ? 'flex' : 'none'; });
+  const check = () => { bar.style.display = window.innerWidth <= 1100 ? 'flex' : 'none'; };
+  check();
+  window.addEventListener('resize', check);
 }
 
-/* ══ NAVBAR / PROGRESS ══ */
+/* ══ MOBILE MENU ══ */
+function toggleMob() {
+  const d = document.getElementById('mobDrawer');
+  const b = document.getElementById('mobBtn');
+  const open = d.classList.toggle('open');
+  b.textContent = open ? '✕' : '☰';
+}
+
+/* ══ NAVBAR SCROLL ══ */
 function initNavScroll() {
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('solid', scrollY > 80);
@@ -950,6 +1065,13 @@ function initScrollReveal() {
   document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 }
 
+/* ══ KEYBOARD ══ */
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') { closeLb(); closeMo(); }
+  if(e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('show')) lbNext();
+  if(e.key === 'ArrowLeft' && document.getElementById('lightbox').classList.contains('show')) lbPrev();
+});
+
 /* ══ TOAST ══ */
 let _tT;
 function showToast(msg) {
@@ -961,11 +1083,11 @@ function showToast(msg) {
 }
 
 /* EXPOSE */
-window.openLightbox=openLightbox;window.closeLightbox=closeLightbox;window.closeLightboxOnBg=closeLightboxOnBg;
+window.toggleDesc=toggleDesc;window.toggleSave=toggleSave;window.fpTab=fpTab;
+window.openLb=openLb;window.closeLb=closeLb;window.closeLbOnBg=closeLbOnBg;
 window.lbPrev=lbPrev;window.lbNext=lbNext;window.lbGoTo=lbGoTo;
-window.toggleSave=toggleSave;window.fpTab=fpTab;
-window.openEnquiry=openEnquiry;window.closeEnquiry=closeEnquiry;window.closeEnquiryOnBg=closeEnquiryOnBg;window.submitEnquiry=submitEnquiry;
-window.toggleDesc=toggleDesc;window.showToast=showToast;
+window.openMo=openMo;window.closeMo=closeMo;window.closeMoBg=closeMoBg;window.submitEnq=submitEnq;
+window.toggleMob=toggleMob;window.showToast=showToast;
 </script>
 </body>
 </html>

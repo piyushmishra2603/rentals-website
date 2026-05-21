@@ -1,1424 +1,1111 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartRent AI – Premium Plans</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Plans & Pricing — SmartRent AI</title>
+<meta name="description" content="Choose a plan that fits your needs. Property rental plans for owners and tenants, and service provider subscriptions.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS — WARM IVORY EDITORIAL LIGHT
+═══════════════════════════════════════════ */
 :root {
-  --bg: #050810;
-  --surface: #0c1120;
-  --surface2: #111827;
-  --border: rgba(99,179,237,0.12);
-  --accent: #38bdf8;
-  --accent2: #818cf8;
-  --gold: #f59e0b;
-  --text: #e2e8f0;
-  --muted: #64748b;
-  --success: #10b981;
-  --danger: #ef4444;
+  --bg:     #f9f6f1;
+  --bg1:    #f2ede4;
+  --bg2:    #ece5d9;
+  --white:  #ffffff;
+  --ink:    #1a140c;
+  --ink2:   #2e2418;
+  --ink3:   #4a3c2c;
+  --ink4:   #6b5a44;
+  --ink5:   #9c8870;
+  --ink6:   #c4b49a;
+
+  --gold:   #b5742a;
+  --gold-l: #d4943a;
+  --gold-d: #8a5010;
+  --gold-bg:rgba(181,116,42,.08);
+  --gold-b: rgba(181,116,42,.22);
+  --gold-g: rgba(181,116,42,.5);
+
+  --teal:   #0d7a6e;
+  --teal-l: #12a99a;
+  --teal-bg:rgba(13,122,110,.08);
+  --teal-b: rgba(13,122,110,.22);
+
+  --rose:   #c0392b;
+  --rose-bg:rgba(192,57,43,.07);
+  --rose-b: rgba(192,57,43,.2);
+
+  --sage:   #4a7c5f;
+  --sage-bg:rgba(74,124,95,.08);
+  --sage-b: rgba(74,124,95,.2);
+
+  --amber:  #c07820;
+  --amber-bg:rgba(192,120,32,.08);
+  --amber-b: rgba(192,120,32,.2);
+
+  --navy:   #1a2940;
+  --navy-bg:rgba(26,41,64,.06);
+  --navy-b: rgba(26,41,64,.15);
+
+  --div:  rgba(26,20,12,.07);
+  --div2: rgba(26,20,12,.12);
+  --div3: rgba(26,20,12,.2);
+
+  --r1:6px;--r2:12px;--r3:18px;--r4:26px;--r5:36px;
+  --sh1:0 2px 14px rgba(26,20,12,.06);
+  --sh2:0 8px 36px rgba(26,20,12,.1);
+  --sh3:0 20px 64px rgba(26,20,12,.13);
+  --sh4:0 36px 100px rgba(26,20,12,.16);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;overflow-x:hidden}
+::selection{background:rgba(181,116,42,.18);color:var(--ink)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}
 
-html { scroll-behavior: smooth; }
+/* ── BG TEXTURE ── */
+.bg-tex{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,rgba(181,116,42,.12) 1px,transparent 1px);
+  background-size:28px 28px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 20%,black,transparent);
+  opacity:.35}
+.bg-orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.o1{width:600px;height:600px;top:-200px;left:-200px;background:rgba(181,116,42,.06)}
+.o2{width:500px;height:500px;bottom:-150px;right:-150px;background:rgba(13,122,110,.05)}
+.o3{width:350px;height:350px;top:40%;left:55%;background:rgba(181,116,42,.04)}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-  opacity: 0;
-  animation: fadeIn 0.8s ease forwards 0.1s;
-}
+/* ── NAVBAR ── */
+.nav{position:sticky;top:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;
+  background:rgba(249,246,241,.94);backdrop-filter:blur(24px) saturate(1.6);
+  border-bottom:1px solid var(--div);transition:box-shadow .3s}
+.nav.solid{box-shadow:0 1px 0 var(--gold-b),0 4px 24px rgba(26,20,12,.07)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.bgem{width:34px;height:34px;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 10px rgba(181,116,42,.28);flex-shrink:0}
+.bname{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.01em}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--teal);background:var(--teal-bg);border:1px solid var(--teal-b);padding:1px 5px;border-radius:3px;margin-left:3px;align-self:flex-end;margin-bottom:1px}
+.nav-r{display:flex;gap:8px;align-items:center;margin-left:auto}
+.nb{padding:8px 18px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none}
+.nb-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3)}.nb-out:hover{border-color:var(--gold-b);color:var(--gold)}
+.nb-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold-d));color:#fff;font-weight:700}.nb-gold:hover{box-shadow:0 4px 18px rgba(181,116,42,.36);transform:translateY(-1px)}
 
-@keyframes fadeIn { to { opacity: 1; } }
+/* ── HERO SECTION ── */
+.hero{position:relative;z-index:1;padding:72px 24px 60px;text-align:center;max-width:860px;margin:0 auto}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gold-bg);border:1px solid var(--gold-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px;animation:fadeUp .6s both}
+.e-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(181,116,42,.45)}70%{box-shadow:0 0 0 7px rgba(181,116,42,0)}100%{box-shadow:0 0 0 0 rgba(181,116,42,0)}}
+.hero-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,7vw,84px);font-weight:700;color:var(--ink);line-height:.96;letter-spacing:-.03em;margin-bottom:18px;animation:fadeUp .6s .06s both}
+.hero-h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:16px;color:var(--ink4);line-height:1.82;max-width:560px;margin:0 auto;animation:fadeUp .6s .12s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── NOISE TEXTURE OVERLAY ── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-}
+/* ── SECTION TABS ── */
+.sec-tabs{display:flex;gap:4px;background:var(--bg1);border:1.5px solid var(--div);border-radius:var(--r3);padding:5px;max-width:460px;margin:44px auto 0;position:relative;z-index:1;animation:fadeUp .6s .18s both}
+.st{flex:1;padding:12px 20px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;color:var(--ink4);cursor:pointer;transition:all .25s;text-align:center;border:none;background:transparent}
+.st.on{background:var(--white);color:var(--ink);box-shadow:var(--sh1);border:1px solid var(--div)}
+.st.on.gold-tab{background:linear-gradient(135deg,#fffaf3,var(--white));color:var(--gold);border-color:var(--gold-b)}
+.st.on.teal-tab{background:linear-gradient(135deg,#f0faf9,var(--white));color:var(--teal);border-color:var(--teal-b)}
 
-/* ── GRID BACKGROUND ── */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(56,189,248,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(56,189,248,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
-}
+/* ── SECTION WRAPPERS ── */
+.sec-wrap{display:none;position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:44px 24px 80px}
+.sec-wrap.active{display:block;animation:fadeUp .4s both}
 
-/* ── NAV BAR ── */
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 40px;
-  background: rgba(5,8,16,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
+/* ── SECTION HEADER ── */
+.sec-head{text-align:center;margin-bottom:52px}
+.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.sec-eyebrow::before,.sec-eyebrow::after{content:'';width:24px;height:1px;background:var(--gold)}
+.sec-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(30px,4vw,48px);font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px;line-height:1.05}
+.sec-h2 em{font-style:italic;color:var(--gold)}
+.sec-sub{font-size:14.5px;color:var(--ink4);line-height:1.75;max-width:520px;margin:0 auto}
 
-.nav-logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.3rem;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-}
+/* ── PLAN CARDS (RENTAL) ── */
+.plans-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:860px;margin:0 auto}
+.plan-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);overflow:hidden;position:relative;box-shadow:var(--sh1);transition:all .3s cubic-bezier(.34,1.1,.64,1)}
+.plan-card:hover{transform:translateY(-6px);box-shadow:var(--sh3)}
+.plan-card.popular{border-color:var(--gold-b);box-shadow:0 0 0 3px rgba(181,116,42,.08),var(--sh2)}
+.plan-card.popular .plan-top{background:linear-gradient(135deg,rgba(181,116,42,.06),rgba(181,116,42,.02))}
 
-.nav-links { display: flex; gap: 28px; }
-.nav-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--text); }
+.popular-badge{position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--gold-l),var(--gold-d));color:#fff;font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;padding:4px 18px 5px;border-radius:0 0 var(--r1) var(--r1);white-space:nowrap}
 
-.nav-cta {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  color: #000;
-  font-weight: 700;
-  font-size: 0.85rem;
-  padding: 9px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: opacity 0.2s, transform 0.2s;
-}
-.nav-cta:hover { opacity: 0.85; transform: translateY(-1px); }
+.plan-top{padding:32px 28px 24px;border-bottom:1px solid var(--div)}
+.plan-icon{font-size:44px;margin-bottom:14px;display:block}
+.plan-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:600}
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.01em}
+.plan-desc{font-size:13px;color:var(--ink4);line-height:1.72}
+.plan-price-row{display:flex;align-items:flex-end;gap:8px;margin-top:20px}
+.plan-price{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:700;color:var(--ink);line-height:1;letter-spacing:-.03em}
+.plan-price .cur{font-size:22px;vertical-align:top;margin-top:10px;display:inline-block;color:var(--ink3)}
+.plan-cycle{font-size:12px;color:var(--ink5);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:.06em}
+.plan-saving{font-size:11px;background:var(--sage-bg);color:var(--sage);border:1px solid var(--sage-b);padding:3px 10px;border-radius:100px;font-weight:600;display:inline-block;margin-top:6px;font-family:'JetBrains Mono',monospace}
 
-/* ── HERO ── */
-.hero {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 100px 24px 80px;
-  overflow: hidden;
-}
+.plan-body{padding:24px 28px}
+.plan-features{list-style:none;margin-bottom:22px}
+.pf{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(26,20,12,.04);font-size:13.5px;color:var(--ink3);line-height:1.5}
+.pf:last-child{border-bottom:none}
+.pf-ic{font-size:16px;flex-shrink:0;margin-top:1px}
+.pf-cross{color:var(--ink6)!important;text-decoration:line-through;opacity:.5}
+.pf .cross-ic{filter:grayscale(1);opacity:.35}
 
-.hero-glow {
-  position: absolute;
-  top: -120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 700px;
-  height: 500px;
-  background: radial-gradient(ellipse, rgba(56,189,248,0.12) 0%, rgba(129,140,248,0.08) 40%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
+.plan-btn{width:100%;padding:14px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .22s;border:none;letter-spacing:.02em}
+.plan-btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold-d));color:#fff;box-shadow:0 3px 14px rgba(181,116,42,.28)}.plan-btn-gold:hover{box-shadow:0 5px 22px rgba(181,116,42,.42);transform:translateY(-1px)}
+.plan-btn-teal{background:linear-gradient(135deg,var(--teal-l),var(--teal));color:#fff;box-shadow:0 3px 14px rgba(13,122,110,.24)}.plan-btn-teal:hover{box-shadow:0 5px 22px rgba(13,122,110,.36);transform:translateY(-1px)}
+.plan-btn-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3)}.plan-btn-out:hover{border-color:var(--gold-b);color:var(--gold)}
 
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(56,189,248,0.08);
-  border: 1px solid rgba(56,189,248,0.2);
-  border-radius: 999px;
-  padding: 6px 16px;
-  font-size: 0.8rem;
-  color: var(--accent);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-bottom: 28px;
-  position: relative;
-  z-index: 1;
-  animation: slideDown 0.6s ease both 0.3s;
-}
+/* ── SERVICES GRID ── */
+.svc-plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.svc-plan-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1);transition:all .3s cubic-bezier(.34,1.1,.64,1);position:relative}
+.svc-plan-card:hover{transform:translateY(-5px);box-shadow:var(--sh3);border-color:var(--sc-b,var(--gold-b))}
+.svc-plan-card .plan-top{background:linear-gradient(135deg,var(--sc-bg,var(--gold-bg)),transparent)}
+.svc-top-strip{height:4px;background:var(--sc-grad,linear-gradient(90deg,var(--gold-l),var(--gold-d)));width:100%}
+.svc-plan-body{padding:22px 24px}
+.svc-emoji-big{font-size:48px;margin-bottom:12px;display:block;line-height:1}
+.svc-plan-cat{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink5);margin-bottom:5px;font-weight:500}
+.svc-plan-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.svc-plan-desc{font-size:12.5px;color:var(--ink4);line-height:1.7;margin-bottom:18px}
+.svc-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:4px}
+.svc-price{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:700;color:var(--ink);line-height:1}
+.svc-price .c{font-size:16px;color:var(--ink3)}
+.svc-cycle{font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.08em}
+.svc-perks{list-style:none;margin:16px 0 20px;display:flex;flex-direction:column;gap:6px}
+.sp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3)}
+.sp-ic{font-size:14px;flex-shrink:0}
+.svc-btn{width:100%;padding:12px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .22s;border:none;letter-spacing:.02em;color:#fff}
 
-@keyframes slideDown {
-  from { opacity: 0; transform: translateY(-12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* ── PAYMENT MODAL ── */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(26,20,12,.55);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal-box{background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r4);width:100%;max-width:520px;max-height:94vh;overflow-y:auto;box-shadow:var(--sh4);transform:scale(.96) translateY(12px);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
+.modal-bg.show .modal-box{transform:scale(1) translateY(0)}
 
-.hero-badge::before {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 6px var(--accent);
-  animation: blink 1.5s infinite;
-}
+.modal-head{padding:28px 28px 20px;background:linear-gradient(135deg,rgba(181,116,42,.05),transparent);border-bottom:1.5px solid var(--div);position:relative}
+.mc-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg1);border:1px solid var(--div);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink4);transition:all .18s;z-index:2}.mc-close:hover{background:var(--rose-bg);border-color:var(--rose-b);color:var(--rose)}
+.mc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.mc-tag::before{content:'';width:14px;height:1px;background:var(--gold)}
+.mc-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:var(--ink);letter-spacing:-.01em;margin-bottom:4px}
+.mc-sub{font-size:13px;color:var(--ink4);line-height:1.6}
 
-@keyframes blink {
-  0%,100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
+/* Order summary */
+.order-box{background:var(--bg);border:1.5px solid var(--div);border-radius:var(--r2);padding:16px 18px;margin:20px 0}
+.order-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink3);padding:5px 0;gap:10px}
+.order-row:not(:last-child){border-bottom:1px solid var(--div)}
+.order-key{display:flex;align-items:center;gap:7px;font-weight:500}
+.order-val{font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:12.5px}
+.order-total{font-size:16px;color:var(--gold)!important;font-weight:800!important}
+.order-row.total-row{border-top:1.5px solid var(--gold-b)!important;border-bottom:none!important;margin-top:4px;padding-top:10px}
 
-.hero h1 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -2px;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
-  animation: slideUp 0.6s ease both 0.4s;
-}
+/* UPI Section */
+.upi-section{padding:0 28px 24px}
+.upi-label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);margin-bottom:10px;display:block}
 
-.hero h1 span {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+/* QR Code Box */
+.qr-box{border:1.5px solid var(--gold-b);border-radius:var(--r3);padding:24px;text-align:center;background:linear-gradient(135deg,rgba(181,116,42,.04),transparent);margin-bottom:16px}
+.qr-wrap{width:180px;height:180px;margin:0 auto 14px;background:var(--white);border:2px solid var(--div2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:var(--sh1)}
+.qr-wrap svg{width:100%;height:100%}
+.qr-upi-id{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ink);letter-spacing:.04em;margin-bottom:4px}
+.qr-hint{font-size:12px;color:var(--ink5);line-height:1.5}
 
-.hero p {
-  font-size: 1.1rem;
-  color: var(--muted);
-  max-width: 480px;
-  margin: 0 auto 40px;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-  animation: slideUp 0.6s ease both 0.5s;
-}
+.or-divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--div2)}
+.or-divider span{font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;white-space:nowrap}
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+/* UPI Input */
+.upi-input-row{display:flex;gap:8px;margin-bottom:12px}
+.upi-input{flex:1;background:var(--bg);border:1.5px solid var(--div2);border-radius:var(--r2);padding:11px 14px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .2s}.upi-input:focus{border-color:var(--gold-b);box-shadow:0 0 0 3px rgba(181,116,42,.07);background:var(--white)}
+.upi-input::placeholder{color:var(--ink6);font-style:italic}
+.verify-btn{padding:11px 18px;border-radius:var(--r2);background:var(--teal-bg);border:1.5px solid var(--teal-b);color:var(--teal);font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap}.verify-btn:hover{background:rgba(13,122,110,.15)}
 
-/* ── BILLING TOGGLE ── */
-.billing-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 6px;
-  margin-bottom: 60px;
-  position: relative;
-  z-index: 1;
-  animation: slideUp 0.6s ease both 0.6s;
-}
+/* UPI Apps row */
+.upi-apps{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.upi-app{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 14px;border:1.5px solid var(--div);border-radius:var(--r2);cursor:pointer;transition:all .18s;background:var(--bg);min-width:68px}.upi-app:hover{border-color:var(--gold-b);background:var(--gold-bg)}
+.upi-app-icon{font-size:26px;line-height:1}
+.upi-app-name{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ink4);font-weight:600;letter-spacing:.04em}
 
-.billing-toggle span {
-  padding: 8px 20px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  color: var(--muted);
-}
+/* Transaction ref */
+.txn-ref-box{background:var(--bg);border:1.5px solid var(--div);border-radius:var(--r2);padding:14px 16px;margin-bottom:18px}
+.txn-label-row{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink5);margin-bottom:8px}
+.txn-input{width:100%;background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r1);padding:10px 12px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .2s}.txn-input:focus{border-color:var(--gold-b);box-shadow:0 0 0 3px rgba(181,116,42,.07)}
+.txn-input::placeholder{color:var(--ink6);font-style:italic}
+.txn-hint{font-size:11.5px;color:var(--ink5);margin-top:6px;line-height:1.5}
 
-.billing-toggle span.active {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  color: #000;
-}
+/* Submit */
+.pay-submit{width:100%;padding:15px;border-radius:var(--r2);background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border:none;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .22s;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px}.pay-submit:hover{box-shadow:0 5px 22px rgba(181,116,42,.42);transform:translateY(-1px)}
+.pay-submit:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 
-.save-badge {
-  background: rgba(16,185,129,0.15);
-  color: var(--success);
-  border: 1px solid rgba(16,185,129,0.3);
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-weight: 700;
-}
+.pay-security-row{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;font-size:11.5px;color:var(--ink5)}
+.pay-sec-item{display:flex;align-items:center;gap:5px}
+.pay-sec-item .si{font-size:13px}
 
-/* ── PLANS SECTION ── */
-.plans-section {
-  position: relative;
-  z-index: 1;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 24px 80px;
-}
+/* Success state */
+.pay-success{display:none;text-align:center;padding:32px 28px 28px}
+.pay-success.show{display:block}
+.ps-icon{font-size:72px;margin-bottom:18px;display:block;animation:popIn .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes popIn{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.ps-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.01em}
+.ps-sub{font-size:14px;color:var(--ink4);line-height:1.75;margin-bottom:16px}
+.ps-id{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--gold-bg);border:1px solid var(--gold-b);color:var(--gold);padding:6px 18px;border-radius:100px;margin-bottom:22px;letter-spacing:.06em}
+.ps-validity{display:inline-flex;align-items:center;gap:8px;background:var(--sage-bg);border:1px solid var(--sage-b);color:var(--sage);font-size:12px;font-weight:600;padding:6px 16px;border-radius:100px;margin-bottom:24px;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+.ps-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.ps-btn{padding:11px 22px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border:none}
+.ps-btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold-d));color:#fff}.ps-btn-gold:hover{box-shadow:0 4px 18px rgba(181,116,42,.36)}
+.ps-btn-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3)}.ps-btn-out:hover{border-color:var(--gold-b);color:var(--gold)}
 
-.plans-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-}
+/* ── INFO BANNER ── */
+.info-banner{display:flex;align-items:flex-start;gap:12px;background:var(--amber-bg);border:1.5px solid var(--amber-b);border-radius:var(--r2);padding:14px 18px;margin:0 28px 20px;font-size:13px;color:var(--ink3);line-height:1.65}
+.ib-ic{font-size:18px;flex-shrink:0;margin-top:1px}
 
-/* ── PLAN CARD ── */
-.plan-card {
-  position: relative;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 36px 32px;
-  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s, border-color 0.3s;
-  cursor: default;
-  animation: slideUp 0.6s ease both;
-}
-
-.plan-card:nth-child(1) { animation-delay: 0.5s; }
-.plan-card:nth-child(2) { animation-delay: 0.65s; }
-.plan-card:nth-child(3) { animation-delay: 0.8s; }
-
-.plan-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
-  border-color: rgba(56,189,248,0.25);
-}
-
-.plan-card.recommended {
-  border-color: rgba(56,189,248,0.4);
-  background: linear-gradient(160deg, rgba(56,189,248,0.06) 0%, var(--surface) 60%);
-}
-
-.plan-card.recommended::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 25px;
-  background: linear-gradient(135deg, rgba(56,189,248,0.4), rgba(129,140,248,0.2), transparent 60%);
-  z-index: -1;
-}
-
-.plan-badge {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  color: #000;
-  font-weight: 800;
-  font-size: 0.72rem;
-  padding: 5px 16px;
-  border-radius: 999px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.plan-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
-}
-
-.plan-icon.basic { background: rgba(100,116,139,0.15); border: 1px solid rgba(100,116,139,0.2); }
-.plan-icon.pro { background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); }
-.plan-icon.premium { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.2); }
-
-.plan-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  margin-bottom: 6px;
-}
-
-.plan-desc {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 28px;
-  line-height: 1.5;
-}
-
-.plan-price {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-  margin-bottom: 28px;
-}
-
-.plan-price .currency {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-.plan-price .amount {
-  font-family: 'Syne', sans-serif;
-  font-size: 2.8rem;
-  font-weight: 800;
-  letter-spacing: -2px;
-  line-height: 1;
-}
-
-.plan-price .per {
-  font-size: 0.82rem;
-  color: var(--muted);
-  margin-left: 2px;
-}
-
-.plan-price .original {
-  font-size: 0.85rem;
-  color: var(--muted);
-  text-decoration: line-through;
-  margin-left: 6px;
-}
-
-.features-list {
-  list-style: none;
-  margin-bottom: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.features-list li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  color: #94a3b8;
-}
-
-.features-list li.active { color: var(--text); }
-
-.feature-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  flex-shrink: 0;
-}
-
-.feature-icon.check { background: rgba(16,185,129,0.15); color: var(--success); }
-.feature-icon.cross { background: rgba(100,116,139,0.1); color: var(--muted); }
-
-.divider {
-  width: 100%;
-  height: 1px;
-  background: var(--border);
-  margin-bottom: 28px;
-}
-
-.plan-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 14px;
-  border: none;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.25s;
-  position: relative;
-  overflow: hidden;
-}
-
-.plan-btn.outline {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-.plan-btn.outline:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(56,189,248,0.3);
-  transform: translateY(-1px);
-}
-
-.plan-btn.primary {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  color: #000;
-}
-.plan-btn.primary:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(56,189,248,0.3);
-}
-
-.plan-btn.gold-btn {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
-  color: #000;
-}
-.plan-btn.gold-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(245,158,11,0.3);
-}
-
-/* ripple */
-.plan-btn::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0; left: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.plan-btn:active::after { opacity: 1; }
+/* ── FAQ / TRUST ── */
+.trust-strip{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;padding:28px 24px;background:var(--bg1);border-top:1px solid var(--div);border-bottom:1px solid var(--div);position:relative;z-index:1;margin-top:-1px}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink4);font-weight:500}
+.trust-ic{font-size:18px}
 
 /* ── COMPARE TABLE ── */
-.compare-section {
-  max-width: 1100px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
-}
+.compare-section{max-width:860px;margin:52px auto 0}
+.compare-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--ink);text-align:center;margin-bottom:24px;letter-spacing:-.01em}
+.compare-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1);border:1.5px solid var(--div)}
+.compare-table th{background:var(--bg1);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);padding:14px 18px;text-align:left;border-bottom:1.5px solid var(--div);font-weight:600}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:12px 18px;border-bottom:1px solid var(--div);font-size:13.5px;color:var(--ink3);vertical-align:middle}
+.compare-table td:not(:first-child){text-align:center}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:rgba(181,116,42,.025)}
+.ct-check{font-size:16px;color:var(--sage)}
+.ct-cross{font-size:16px;color:var(--ink6);opacity:.4}
+.ct-bold{font-weight:700;color:var(--ink)}
+.th-gold{color:var(--gold)!important}
+.th-teal{color:var(--teal)!important}
 
-.section-label {
-  font-family: 'Syne', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-align: center;
-  margin-bottom: 12px;
-}
-
-.section-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 800;
-  letter-spacing: -1px;
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.compare-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.compare-table th, .compare-table td {
-  padding: 16px 24px;
-  text-align: center;
-  font-size: 0.9rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.compare-table th {
-  background: rgba(56,189,248,0.05);
-  font-family: 'Syne', sans-serif;
-  font-weight: 700;
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  color: var(--text);
-}
-
-.compare-table th:first-child,
-.compare-table td:first-child {
-  text-align: left;
-  color: var(--muted);
-  font-weight: 500;
-}
-
-.compare-table tr:last-child td { border-bottom: none; }
-.compare-table tr:hover td { background: rgba(255,255,255,0.02); }
-
-.compare-table .col-recommended {
-  background: rgba(56,189,248,0.04);
-}
-
-.tick { color: var(--success); font-size: 1rem; }
-.cross2 { color: var(--muted); font-size: 1rem; }
-
-/* ── UPI PAYMENT SECTION ── */
-.payment-section {
-  max-width: 560px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.payment-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 24px;
-  padding: 40px 36px;
-}
-
-.payment-card h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 6px;
-}
-
-.payment-card p.sub {
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 28px;
-  line-height: 1.5;
-}
-
-.input-group {
-  position: relative;
-  margin-bottom: 16px;
-}
-
-.input-group label {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--muted);
-  margin-bottom: 8px;
-  letter-spacing: 0.3px;
-}
-
-.input-group input, .input-group select {
-  width: 100%;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 16px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.95rem;
-  outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  -webkit-appearance: none;
-}
-
-.input-group select option { background: #111827; }
-
-.input-group input:focus, .input-group select:focus {
-  border-color: rgba(56,189,248,0.4);
-  box-shadow: 0 0 0 3px rgba(56,189,248,0.08);
-}
-
-.selected-plan-display {
-  background: rgba(56,189,248,0.06);
-  border: 1px solid rgba(56,189,248,0.2);
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
-
-.selected-plan-display .plan-tag {
-  font-weight: 600;
-  color: var(--accent);
-  font-size: 0.9rem;
-}
-
-.selected-plan-display .plan-amount {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-}
-
-.pay-btn {
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border: none;
-  border-radius: 14px;
-  color: #000;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
-  letter-spacing: 0.2px;
-}
-
-.pay-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(56,189,248,0.25);
-}
-
-.pay-note {
-  margin-top: 14px;
-  text-align: center;
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
-/* ── FAQ ── */
-.faq-section {
-  max-width: 720px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.faq-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  margin-bottom: 12px;
-  overflow: hidden;
-  transition: border-color 0.2s;
-}
-
-.faq-item.open { border-color: rgba(56,189,248,0.25); }
-
-.faq-q {
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.95rem;
-  user-select: none;
-  gap: 16px;
-}
-
-.faq-arrow {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: rgba(56,189,248,0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  color: var(--accent);
-  flex-shrink: 0;
-  transition: transform 0.3s;
-}
-
-.faq-item.open .faq-arrow { transform: rotate(180deg); }
-
-.faq-a {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s;
-  font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.7;
-  padding: 0 24px;
-}
-
-.faq-item.open .faq-a {
-  max-height: 200px;
-  padding: 0 24px 20px;
-}
-
-/* ── TESTIMONIALS ── */
-.testi-section {
-  max-width: 1100px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.testi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin-top: 0;
-}
-
-.testi-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 28px;
-  transition: transform 0.3s, border-color 0.3s;
-}
-
-.testi-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(56,189,248,0.2);
-}
-
-.stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 12px; letter-spacing: 2px; }
-
-.testi-text {
-  font-size: 0.9rem;
-  color: #94a3b8;
-  line-height: 1.7;
-  margin-bottom: 20px;
-}
-
-.testi-author {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.testi-avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-.testi-name { font-weight: 600; font-size: 0.88rem; }
-.testi-role { font-size: 0.78rem; color: var(--muted); }
-
-/* ── CONSENT MODAL ── */
-#consentModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(12px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  padding: 24px;
-  opacity: 0;
-  animation: modalIn 0.4s ease forwards;
-}
-
-@keyframes modalIn {
-  to { opacity: 1; }
-}
-
-#consentModal.hidden { display: none; }
-
-.modal-box {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  padding: 48px 40px;
-  max-width: 540px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
-  animation: modalUp 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
-}
-
-@keyframes modalUp {
-  from { transform: translateY(24px) scale(0.97); }
-  to { transform: translateY(0) scale(1); }
-}
-
-.modal-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  background: rgba(56,189,248,0.1);
-  border: 1px solid rgba(56,189,248,0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.8rem;
-  margin: 0 auto 24px;
-}
-
-.modal-box h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-  margin-bottom: 12px;
-}
-
-.modal-box p {
-  font-size: 0.9rem;
-  color: var(--muted);
-  line-height: 1.7;
-  margin-bottom: 32px;
-}
-
-.modal-box p a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-}
-.modal-box p a:hover { text-decoration: underline; }
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  flex-direction: column;
-}
-
-.btn-accept {
-  padding: 16px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  border: none;
-  border-radius: 14px;
-  color: #000;
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 800;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.2s;
-}
-
-.btn-accept:hover { opacity: 0.9; transform: translateY(-1px); }
-
-.btn-decline {
-  padding: 14px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  color: var(--muted);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-decline:hover { border-color: var(--danger); color: var(--danger); }
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
 
 /* ── FOOTER ── */
-footer {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid var(--border);
-  padding: 40px 40px 32px;
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.footer-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  text-align: center;
-}
-
-.footer-logo {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 1.1rem;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.footer-links a {
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 0.85rem;
-  transition: color 0.2s;
-}
-.footer-links a:hover { color: var(--text); }
-
-.footer-copy {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
+footer{background:var(--ink);padding:32px 0;position:relative;z-index:1;margin-top:60px}
+.foot-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.foot-copy{font-size:12px;color:rgba(255,255,255,.35)}
+.foot-links{display:flex;gap:20px}
+.fl{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .18s}.fl:hover{color:rgba(255,255,255,.7)}
 
 /* ── TOAST ── */
-#toast {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 9998;
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 0.88rem;
-  font-weight: 500;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  transform: translateY(20px);
-  opacity: 0;
-  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  max-width: 320px;
-  pointer-events: none;
-}
-
-#toast.show { transform: translateY(0); opacity: 1; }
-#toast .toast-icon { font-size: 1.1rem; }
-
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.2); border-radius: 3px; }
+.toast{position:fixed;bottom:24px;right:24px;z-index:2000;background:var(--ink);color:rgba(255,255,255,.9);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:240px;animation:tIn .3s ease;box-shadow:var(--sh3)}
+@keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── RESPONSIVE ── */
-@media (max-width: 640px) {
-  nav { padding: 14px 20px; }
-  .nav-links { display: none; }
-  .hero { padding: 60px 20px 50px; }
-  .modal-box { padding: 36px 24px; }
-  footer { padding: 30px 20px; }
-  .compare-table th, .compare-table td { padding: 12px 12px; font-size: 0.78rem; }
-}
+@media(max-width:900px){.plans-grid{grid-template-columns:1fr}.svc-plans-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.svc-plans-grid{grid-template-columns:1fr}.hero-h1{font-size:44px}.trust-strip{gap:18px}.compare-table{font-size:12px}.compare-table th,.compare-table td{padding:10px 12px}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">SmartRent AI</div>
-  <div class="nav-links">
-    <a href="#">Home</a>
-    <a href="#">Properties</a>
-    <a href="#">About</a>
-    <a href="#">Contact</a>
+<!-- AMBIENT -->
+<div class="bg-tex"></div>
+<div class="bg-orb o1"></div>
+<div class="bg-orb o2"></div>
+<div class="bg-orb o3"></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════ PAYMENT MODAL ══════ -->
+<div class="modal-bg" id="modalBg" onclick="closeMoBg(event)">
+  <div class="modal-box">
+
+    <!-- HEAD -->
+    <div class="modal-head" id="mHead">
+      <div class="mc-close" onclick="closeMo()">✕</div>
+      <div class="mc-tag" id="mTag">Subscription</div>
+      <div class="mc-title" id="mTitle">Complete Your Payment</div>
+      <div class="mc-sub" id="mSub">Monthly plan · Renews every 30 days</div>
+    </div>
+
+    <!-- FORM -->
+    <div id="mFormWrap">
+      <!-- Order Summary -->
+      <div style="padding:0 28px">
+        <div class="order-box" id="orderBox">
+          <div class="order-row"><span class="order-key"><span id="oPlanIcon">📋</span>Plan</span><span class="order-val" id="oPlanName">—</span></div>
+          <div class="order-row"><span class="order-key">⏱️ Duration</span><span class="order-val">30 Days</span></div>
+          <div class="order-row"><span class="order-key">📅 Valid Until</span><span class="order-val" id="oValidUntil">—</span></div>
+          <div class="order-row total-row"><span class="order-key ct-bold">💰 Total Amount</span><span class="order-val order-total" id="oAmount">₹—</span></div>
+        </div>
+      </div>
+
+      <!-- Info banner -->
+      <div class="info-banner">
+        <span class="ib-ic">🔐</span>
+        <div>Pay directly via UPI. Screenshot your transaction and enter the UTR/Reference ID below. Your plan activates within <strong>15 minutes</strong> of payment verification by our team.</div>
+      </div>
+
+      <div class="upi-section">
+        <label class="upi-label">Step 1 — Scan QR or Pay via UPI App</label>
+
+        <!-- QR Code Box -->
+        <div class="qr-box">
+          <div class="qr-wrap" id="qrWrap">
+            <!-- Generated QR SVG will go here -->
+            <svg viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg" id="qrSvg"></svg>
+          </div>
+          <div class="qr-upi-id" id="qrUpiId">yourupi@bank</div>
+          <div class="qr-hint">Scan with any UPI app to pay ₹<span id="qrAmount">—</span></div>
+          <div style="margin-top:10px;font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.06em">UPI · BHIM · GPay · PhonePe · Paytm</div>
+        </div>
+
+        <!-- UPI Apps -->
+        <div class="upi-apps">
+          <div class="upi-app" onclick="launchUpiApp('gpay')"><span class="upi-app-icon">🟢</span><span class="upi-app-name">GPay</span></div>
+          <div class="upi-app" onclick="launchUpiApp('phonepe')"><span class="upi-app-icon">💜</span><span class="upi-app-name">PhonePe</span></div>
+          <div class="upi-app" onclick="launchUpiApp('paytm')"><span class="upi-app-icon">🔵</span><span class="upi-app-name">Paytm</span></div>
+          <div class="upi-app" onclick="launchUpiApp('bhim')"><span class="upi-app-icon">🇮🇳</span><span class="upi-app-name">BHIM</span></div>
+          <div class="upi-app" onclick="launchUpiApp('amazon')"><span class="upi-app-icon">🟠</span><span class="upi-app-name">Amazon</span></div>
+        </div>
+
+        <!-- Manual UPI ID -->
+        <div class="or-divider"><span>OR ENTER UPI ID MANUALLY</span></div>
+        <div class="upi-input-row">
+          <input class="upi-input" id="tenantUpiInput" placeholder="yourname@upi" readonly>
+          <button class="verify-btn" onclick="copyUpiId()">📋 Copy</button>
+        </div>
+
+        <!-- Transaction Ref -->
+        <div class="txn-ref-box">
+          <div class="txn-label-row">Step 2 — Enter UTR / Transaction Reference Number</div>
+          <input class="txn-input" id="txnRefInput" placeholder="e.g. 403820192847 (12-digit UTR from your UPI app)">
+          <div class="txn-hint">After payment, open your UPI app → Transaction History → Copy the UTR/Reference ID (12 digits)</div>
+        </div>
+
+        <!-- Contact for verification -->
+        <div style="background:var(--teal-bg);border:1.5px solid var(--teal-b);border-radius:var(--r2);padding:12px 16px;margin-bottom:18px;font-size:12.5px;color:var(--teal);line-height:1.65">
+          <strong>📞 Optional:</strong> After payment, WhatsApp your screenshot to <strong id="adminWaNum">+91 XXXXXXXXXX</strong> for faster activation (usually within 5 minutes).
+        </div>
+
+        <button class="pay-submit" id="paySubmitBtn" onclick="submitPayment()">
+          🔒 Submit Payment & Activate Plan
+        </button>
+
+        <div class="pay-security-row">
+          <div class="pay-sec-item"><span class="si">🔒</span>256-bit Secure</div>
+          <div class="pay-sec-item"><span class="si">✅</span>RBI Compliant UPI</div>
+          <div class="pay-sec-item"><span class="si">📋</span>Instant Receipt</div>
+          <div class="pay-sec-item"><span class="si">🔄</span>30-day Refund Policy</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="pay-success" id="paySuccess">
+      <span class="ps-icon">✅</span>
+      <div class="ps-title">Payment Submitted!</div>
+      <div class="ps-sub">Your payment is under verification. Your plan will activate within <strong>15 minutes</strong>. You'll receive a confirmation notification.</div>
+      <div class="ps-id" id="psRefId">REF: —</div>
+      <div class="ps-validity" id="psValidity">✅ Valid for 30 days</div>
+      <div class="ps-btns">
+        <button class="ps-btn ps-btn-gold" onclick="closeMo()">🏠 Back to Plans</button>
+        <a class="ps-btn ps-btn-out" href="booking-dashboard.html">📊 Go to Dashboard</a>
+      </div>
+    </div>
+
   </div>
-  <a href="#payment" class="nav-cta">Get Started →</a>
+</div>
+
+<!-- ══════ NAVBAR ══════ -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-r">
+    <a class="nb nb-out" href="index.html" style="text-decoration:none">🏠 Home</a>
+    <a class="nb nb-out" href="properties.html" style="text-decoration:none">Browse</a>
+    <a class="nb nb-out" href="login.html" style="text-decoration:none">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+  </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-badge">🚀 Trusted by 10,000+ Landlords</div>
-  <h1>Choose the Right <span>Plan</span><br>for Your Properties</h1>
-  <p>Manage, list and grow your rental portfolio with AI-powered insights and seamless tools.</p>
+<!-- ══════ HERO ══════ -->
+<div style="position:relative;z-index:1">
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="e-dot"></span>Transparent · Monthly · Cancel Anytime</div>
+    <h1 class="hero-h1">Plans &amp; <em>Pricing</em></h1>
+    <p class="hero-sub">Simple, honest pricing for property owners, tenants, and home service professionals. No hidden fees. Cancel anytime.</p>
 
-  <div class="billing-toggle" id="billingToggle">
-    <span class="active" id="monthlyTab">Monthly</span>
-    <span id="yearlyTab">Yearly <span class="save-badge">SAVE 20%</span></span>
+    <!-- Tabs -->
+    <div class="sec-tabs">
+      <button class="st on gold-tab" onclick="switchTab('rental')">🏠 Property Rental</button>
+      <button class="st teal-tab" onclick="switchTab('services')">🔧 Home Services</button>
+    </div>
   </div>
-</section>
+</div>
 
-<!-- PLANS -->
-<section class="plans-section" id="plans">
-  <div class="plans-grid" id="plansGrid"></div>
-</section>
+<!-- ══════ RENTAL SECTION ══════ -->
+<div class="sec-wrap active" id="sec-rental">
+  <div class="sec-head rv">
+    <div class="sec-eyebrow">Property Rental Plans</div>
+    <h2 class="sec-h2">Owner &amp; Tenant <em>Subscriptions</em></h2>
+    <p class="sec-sub">Both plans are monthly. Owners get priority listing exposure; tenants unlock direct contact with property owners.</p>
+  </div>
 
-<!-- COMPARE -->
-<section class="compare-section">
-  <p class="section-label">Details</p>
-  <h2 class="section-title">Full Plan Comparison</h2>
-  <div style="overflow-x:auto;">
+  <div class="plans-grid rv d1">
+
+    <!-- OWNER PLAN -->
+    <div class="plan-card popular">
+      <div class="popular-badge">⭐ Most Popular · Owners</div>
+      <div class="plan-top">
+        <span class="plan-icon">🏘️</span>
+        <div class="plan-role">For Property Owners</div>
+        <div class="plan-name">Owner Pro</div>
+        <div class="plan-desc">Maximise enquiries with premium placement, verified badge, and smart analytics.</div>
+        <div class="plan-price-row">
+          <div class="plan-price"><span class="cur">₹</span>499</div>
+          <div class="plan-cycle">/month</div>
+        </div>
+        <div class="plan-saving">🎉 Save 33% vs. pay-per-listing</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li class="pf"><span class="pf-ic">🚀</span>Priority placement at top of search results</li>
+          <li class="pf"><span class="pf-ic">✅</span>Verified Owner badge on all listings</li>
+          <li class="pf"><span class="pf-ic">📊</span>Real-time listing analytics &amp; views dashboard</li>
+          <li class="pf"><span class="pf-ic">📸</span>Up to 15 photos per listing</li>
+          <li class="pf"><span class="pf-ic">📬</span>Unlimited tenant enquiry notifications</li>
+          <li class="pf"><span class="pf-ic">🔔</span>Instant alerts when tenants save your listing</li>
+          <li class="pf"><span class="pf-ic">🏷️</span>Premium featured badge on listing card</li>
+          <li class="pf"><span class="pf-ic">📋</span>Free digital rental agreement template</li>
+          <li class="pf"><span class="pf-ic">🎯</span>AI-powered tenant matching suggestions</li>
+        </ul>
+        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Owner Pro',role:'owner',price:499,icon:'🏘️',tag:'Property · Owner Plan',color:'gold'})">
+          🔐 Get Owner Pro — ₹499/mo
+        </button>
+      </div>
+    </div>
+
+    <!-- TENANT PLAN -->
+    <div class="plan-card">
+      <div class="plan-top">
+        <span class="plan-icon">🧑‍💼</span>
+        <div class="plan-role">For Tenants</div>
+        <div class="plan-name">Tenant Access</div>
+        <div class="plan-desc">Unlock direct owner contacts, schedule visits instantly, and move in faster.</div>
+        <div class="plan-price-row">
+          <div class="plan-price"><span class="cur">₹</span>149</div>
+          <div class="plan-cycle">/month</div>
+        </div>
+        <div class="plan-saving">🏠 Find your home faster</div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li class="pf"><span class="pf-ic">📞</span><strong>Unlock owner phone numbers</strong> on all listings</li>
+          <li class="pf"><span class="pf-ic">💬</span><strong>Unlock WhatsApp direct contact</strong> with owners</li>
+          <li class="pf"><span class="pf-ic">📅</span>One-click site visit scheduling</li>
+          <li class="pf"><span class="pf-ic">❤️</span>Unlimited wishlist saves</li>
+          <li class="pf"><span class="pf-ic">🔔</span>New listing alerts matching your preferences</li>
+          <li class="pf"><span class="pf-ic">📊</span>Rental price trend reports</li>
+          <li class="pf"><span class="pf-ic">🤖</span>AI neighbourhood &amp; locality analysis</li>
+          <li class="pf pf-cross"><span class="pf-ic cross-ic">🚀</span>Priority listing in search</li>
+          <li class="pf pf-cross"><span class="pf-ic cross-ic">✅</span>Verified Owner badge</li>
+        </ul>
+        <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Tenant Access',role:'tenant',price:149,icon:'🧑‍💼',tag:'Property · Tenant Plan',color:'teal'})">
+          🔓 Unlock Contacts — ₹149/mo
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Compare Table -->
+  <div class="compare-section rv d2">
+    <div class="compare-title">Feature Comparison</div>
     <table class="compare-table">
       <thead>
         <tr>
-          <th style="text-align:left;">Feature</th>
-          <th>Basic</th>
-          <th class="col-recommended">Pro ⭐</th>
-          <th>Premium</th>
+          <th>Feature</th>
+          <th class="th-gold">👑 Owner Pro</th>
+          <th class="th-teal">🧑‍💼 Tenant Access</th>
+          <th>Free (No Plan)</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Property Listings</td>
-          <td>1</td>
-          <td class="col-recommended">5</td>
-          <td>Unlimited</td>
-        </tr>
-        <tr>
-          <td>Chat with Owner</td>
-          <td><span class="cross2">✕</span></td>
-          <td class="col-recommended"><span class="tick">✓</span></td>
-          <td><span class="tick">✓</span></td>
-        </tr>
-        <tr>
-          <td>AI Market Insights</td>
-          <td><span class="cross2">✕</span></td>
-          <td class="col-recommended"><span class="cross2">✕</span></td>
-          <td><span class="tick">✓</span></td>
-        </tr>
-        <tr>
-          <td>Priority Support</td>
-          <td><span class="cross2">✕</span></td>
-          <td class="col-recommended"><span class="cross2">✕</span></td>
-          <td><span class="tick">✓</span></td>
-        </tr>
-        <tr>
-          <td>Analytics Dashboard</td>
-          <td>Basic</td>
-          <td class="col-recommended">Advanced</td>
-          <td>Full AI</td>
-        </tr>
-        <tr>
-          <td>Custom Branding</td>
-          <td><span class="cross2">✕</span></td>
-          <td class="col-recommended"><span class="cross2">✕</span></td>
-          <td><span class="tick">✓</span></td>
-        </tr>
-        <tr>
-          <td>Tenant Screening</td>
-          <td><span class="cross2">✕</span></td>
-          <td class="col-recommended"><span class="tick">✓</span></td>
-          <td><span class="tick">✓</span></td>
-        </tr>
+        <tr><td>List &amp; view properties</td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td></tr>
+        <tr><td>View property details &amp; photos</td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td></tr>
+        <tr><td><strong>Unlock owner phone number</strong></td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td><strong>Unlock WhatsApp contact</strong></td><td><span class="ct-check">✅</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>Priority top placement</td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>Verified badge on listing</td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>Listing analytics dashboard</td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>New listing alerts</td><td><span class="ct-cross">✕</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>Site visit scheduling</td><td><span class="ct-cross">✕</span></td><td><span class="ct-check">✅</span></td><td><span class="ct-cross">✕</span></td></tr>
+        <tr><td>Price / month</td><td class="ct-bold" style="color:var(--gold)">₹499</td><td class="ct-bold" style="color:var(--teal)">₹149</td><td class="ct-bold">Free</td></tr>
       </tbody>
     </table>
   </div>
-</section>
 
-<!-- TESTIMONIALS -->
-<section class="testi-section">
-  <p class="section-label">Testimonials</p>
-  <h2 class="section-title">What Landlords Are Saying</h2>
-  <div class="testi-grid">
-    <div class="testi-card">
-      <div class="stars">★★★★★</div>
-      <p class="testi-text">"SmartRent AI helped me fill all 5 of my properties within 2 weeks. The AI insights are genuinely useful."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(56,189,248,0.15);color:#38bdf8;">R</div>
-        <div>
-          <div class="testi-name">Rahul Sharma</div>
-          <div class="testi-role">Pro Plan · Mumbai</div>
+</div>
+
+<!-- ══════ SERVICES SECTION ══════ -->
+<div class="sec-wrap" id="sec-services">
+  <div class="sec-head rv">
+    <div class="sec-eyebrow" style="--gold:var(--teal);--gold-b:var(--teal-b)">Home Service Plans</div>
+    <h2 class="sec-h2" style="--gold:var(--teal)">Service Provider <em>Subscriptions</em></h2>
+    <p class="sec-sub">Purchase a plan for your trade and post your services on SmartRent AI. Each plan is valid for 30 days — your listing goes inactive when it expires and reactivates once you renew.</p>
+  </div>
+
+  <!-- How it works for services -->
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:44px;max-width:860px;margin-left:auto;margin-right:auto" class="rv d1">
+    <div style="background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:18px;text-align:center;box-shadow:var(--sh1)">
+      <div style="font-size:28px;margin-bottom:8px">💳</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:5px">1. Purchase Plan</div>
+      <div style="font-size:12px;color:var(--ink4);line-height:1.65">Buy a plan for your specific trade. One subscription = one service category.</div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:18px;text-align:center;box-shadow:var(--sh1)">
+      <div style="font-size:28px;margin-bottom:8px">📋</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:5px">2. Post Your Service</div>
+      <div style="font-size:12px;color:var(--ink4);line-height:1.65">List your service in that category. It appears live to customers immediately after approval.</div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:18px;text-align:center;box-shadow:var(--sh1)">
+      <div style="font-size:28px;margin-bottom:8px">⏱️</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:5px">3. Active for 30 Days</div>
+      <div style="font-size:12px;color:var(--ink4);line-height:1.65">After 30 days your listing goes inactive. Renew to stay visible and keep getting bookings.</div>
+    </div>
+  </div>
+
+  <div class="svc-plans-grid rv d2">
+
+    <!-- Plumber -->
+    <div class="svc-plan-card" style="--sc-b:rgba(0,150,255,.22);--sc-bg:rgba(0,150,255,.06);--sc-grad:linear-gradient(90deg,#0094ff,#00cfff)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">🚿</span>
+        <div class="svc-plan-cat">Plumbing</div>
+        <div class="svc-plan-name">Plumber Plan</div>
+        <div class="svc-plan-desc">List your plumbing services — pipe repairs, leaks, fittings, geyser, drain cleaning and more.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>249</div>
         </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited plumbing service listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Verified Professional badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Customers contact you directly</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Plumbing category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#0094ff,#0066cc)" onclick="openPayment({plan:'Plumber Plan',role:'service',price:249,icon:'🚿',tag:'Service Provider · Plumbing',color:'blue',category:'plumbing'})">
+          🚀 Subscribe — ₹249/mo
+        </button>
       </div>
     </div>
-    <div class="testi-card">
-      <div class="stars">★★★★★</div>
-      <p class="testi-text">"The Premium plan's market analytics saved me from underpricing my flat by ₹8,000/month. Worth every rupee."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(245,158,11,0.15);color:#f59e0b;">P</div>
-        <div>
-          <div class="testi-name">Priya Nair</div>
-          <div class="testi-role">Premium Plan · Bangalore</div>
+
+    <!-- Electrician -->
+    <div class="svc-plan-card" style="--sc-b:rgba(200,255,0,.2);--sc-bg:rgba(200,255,0,.05);--sc-grad:linear-gradient(90deg,#c8ff00,#8fb800)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">⚡</span>
+        <div class="svc-plan-cat">Electrical</div>
+        <div class="svc-plan-name">Electrician Plan</div>
+        <div class="svc-plan-desc">Wiring, MCB, fan/light installation, socket fitting, inverter, earthing — all electrical work.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>349</div>
         </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited electrical listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Licensed Electrician badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Direct customer enquiries</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Electrical category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#a89800,#6b6000)" onclick="openPayment({plan:'Electrician Plan',role:'service',price:349,icon:'⚡',tag:'Service Provider · Electrical',color:'lime',category:'electrical'})">
+          🚀 Subscribe — ₹349/mo
+        </button>
       </div>
     </div>
-    <div class="testi-card">
-      <div class="stars">★★★★☆</div>
-      <p class="testi-text">"Started with Basic to test things out. Upgraded to Pro after a week — the tenant screening alone is worth it."</p>
-      <div class="testi-author">
-        <div class="testi-avatar" style="background:rgba(16,185,129,0.15);color:#10b981;">A</div>
-        <div>
-          <div class="testi-name">Arjun Kapoor</div>
-          <div class="testi-role">Pro Plan · Delhi</div>
+
+    <!-- Carpenter -->
+    <div class="svc-plan-card" style="--sc-b:rgba(192,120,32,.22);--sc-bg:rgba(192,120,32,.07);--sc-grad:linear-gradient(90deg,#c07820,#8a5010)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">🪚</span>
+        <div class="svc-plan-cat">Carpentry</div>
+        <div class="svc-plan-name">Carpenter Plan</div>
+        <div class="svc-plan-desc">Custom furniture, door/window repair, wardrobes, kitchen fittings, wood polish, false ceiling.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>149</div>
         </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited carpentry listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Skilled Carpenter badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Direct customer enquiries</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Carpentry category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#c07820,#8a5010)" onclick="openPayment({plan:'Carpenter Plan',role:'service',price:149,icon:'🪚',tag:'Service Provider · Carpentry',color:'amber',category:'carpenter'})">
+          🚀 Subscribe — ₹149/mo
+        </button>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- FAQ -->
-<section class="faq-section">
-  <p class="section-label">Help</p>
-  <h2 class="section-title">Frequently Asked Questions</h2>
-
-  <div class="faq-item">
-    <div class="faq-q">Can I upgrade my plan later?<div class="faq-arrow">▼</div></div>
-    <div class="faq-a">Yes! You can upgrade or downgrade your plan anytime from your account settings. The difference will be prorated automatically.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Is the UPI payment secure?<div class="faq-arrow">▼</div></div>
-    <div class="faq-a">Absolutely. We use bank-grade encryption for all transactions. Your UPI credentials are never stored on our servers.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">What happens after my subscription ends?<div class="faq-arrow">▼</div></div>
-    <div class="faq-a">Your account will move to a free read-only mode. Your listings and data remain safe, but new features will be disabled until you renew.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Do you offer refunds?<div class="faq-arrow">▼</div></div>
-    <div class="faq-a">We offer a 7-day money-back guarantee for all plans. If you're not satisfied, contact our support team within 7 days of purchase.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Is there a free trial?<div class="faq-arrow">▼</div></div>
-    <div class="faq-a">The Basic plan is available at a very low cost to try our platform. We also offer demo calls for Premium — reach out to us!</div>
-  </div>
-</section>
-
-<!-- PAYMENT -->
-<section class="payment-section" id="payment">
-  <div class="payment-card">
-    <h2>Complete Payment</h2>
-    <p class="sub">Enter your UPI ID below to activate your selected plan instantly.</p>
-
-    <div class="selected-plan-display" id="selectedPlanDisplay">
-      <span class="plan-tag" id="selectedPlanName">No plan selected</span>
-      <span class="plan-amount" id="selectedPlanPrice">—</span>
+    <!-- Painter -->
+    <div class="svc-plan-card" style="--sc-b:rgba(124,58,237,.22);--sc-bg:rgba(124,58,237,.07);--sc-grad:linear-gradient(90deg,#7c3aed,#4f1eb8)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">🎨</span>
+        <div class="svc-plan-cat">Painting</div>
+        <div class="svc-plan-name">Painter Plan</div>
+        <div class="svc-plan-desc">Interior/exterior painting, texture, waterproofing, putty, enamel, emulsion, stencil art.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>349</div>
+        </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited painting listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Verified Painter badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Direct customer enquiries</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Painting category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#7c3aed,#4f1eb8)" onclick="openPayment({plan:'Painter Plan',role:'service',price:349,icon:'🎨',tag:'Service Provider · Painting',color:'violet',category:'painting'})">
+          🚀 Subscribe — ₹349/mo
+        </button>
+      </div>
     </div>
 
-    <div class="input-group">
-      <label>Select Plan</label>
-      <select id="planSelect">
-        <option value="">Choose a plan...</option>
-        <option value="basic-499">Basic – ₹499/mo</option>
-        <option value="pro-1499">Pro – ₹1,499/mo</option>
-        <option value="premium-2999">Premium – ₹2,999/mo</option>
-      </select>
+    <!-- Packers & Movers -->
+    <div class="svc-plan-card" style="--sc-b:rgba(255,107,43,.22);--sc-bg:rgba(255,107,43,.07);--sc-grad:linear-gradient(90deg,#ff6b2b,#c44000)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">🚚</span>
+        <div class="svc-plan-cat">Movers &amp; Packers</div>
+        <div class="svc-plan-name">Mover Plan</div>
+        <div class="svc-plan-desc">Home/office shifting, bike/car transport, packing materials, insured moves, same-day service.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>499</div>
+        </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited mover listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Verified Mover badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Direct customer enquiries</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Movers &amp; Packers category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#ff6b2b,#c44000)" onclick="openPayment({plan:'Mover Plan',role:'service',price:499,icon:'🚚',tag:'Service Provider · Movers & Packers',color:'orange',category:'movers'})">
+          🚀 Subscribe — ₹499/mo
+        </button>
+      </div>
     </div>
 
-    <div class="input-group">
-      <label>UPI ID</label>
-      <input type="text" id="upiId" placeholder="yourname@upi" autocomplete="off" />
+    <!-- House Cleaning -->
+    <div class="svc-plan-card" style="--sc-b:rgba(13,122,110,.22);--sc-bg:rgba(13,122,110,.07);--sc-grad:linear-gradient(90deg,#0d7a6e,#085c54)">
+      <div class="svc-top-strip"></div>
+      <div class="svc-plan-body">
+        <span class="svc-emoji-big">🧹</span>
+        <div class="svc-plan-cat">House Cleaning</div>
+        <div class="svc-plan-name">Cleaner Plan</div>
+        <div class="svc-plan-desc">Deep cleaning, bathroom/kitchen scrub, sofa shampoo, window cleaning, post-construction clean.</div>
+        <div class="svc-price-row">
+          <div class="svc-price"><span class="c">₹</span>249</div>
+        </div>
+        <div class="svc-cycle">/month · 30 days active</div>
+        <ul class="svc-perks">
+          <li class="sp"><span class="sp-ic">✅</span>Post unlimited cleaning listings</li>
+          <li class="sp"><span class="sp-ic">⭐</span>Certified Cleaner badge</li>
+          <li class="sp"><span class="sp-ic">📞</span>Direct customer enquiries</li>
+          <li class="sp"><span class="sp-ic">⏱️</span>Listing auto-expires after 30 days</li>
+          <li class="sp"><span class="sp-ic">🔒</span>Cleaning category only</li>
+        </ul>
+        <button class="svc-btn" style="background:linear-gradient(135deg,#0d7a6e,#085c54)" onclick="openPayment({plan:'Cleaner Plan',role:'service',price:249,icon:'🧹',tag:'Service Provider · House Cleaning',color:'teal',category:'cleaning'})">
+          🚀 Subscribe — ₹249/mo
+        </button>
+      </div>
     </div>
 
-    <button class="pay-btn" id="payBtn">Pay Now →</button>
-    <p class="pay-note">🔒 Secured by 256-bit encryption · Instant activation</p>
   </div>
-</section>
+
+  <!-- Service rules note -->
+  <div style="max-width:700px;margin:36px auto 0;background:var(--amber-bg);border:1.5px solid var(--amber-b);border-radius:var(--r3);padding:20px 24px;display:flex;gap:14px;align-items:flex-start" class="rv d3">
+    <span style="font-size:24px;flex-shrink:0">📋</span>
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--ink);margin-bottom:6px">Important Service Rules</div>
+      <ul style="font-size:13px;color:var(--ink4);line-height:1.85;padding-left:18px">
+        <li>Each subscription is valid for <strong>exactly 30 days</strong> from activation date.</li>
+        <li>Purchasing Plumber plan allows you to post in the <strong>Plumbing category only</strong>.</li>
+        <li>To list in multiple categories, purchase separate plans for each.</li>
+        <li>On expiry, your listings become <strong>hidden and inactive</strong> automatically.</li>
+        <li>Renew the same plan to restore visibility for another 30 days.</li>
+        <li>All subscriptions are <strong>UPI-only, monthly, non-transferable</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip rv">
+  <div class="trust-item"><span class="trust-ic">🔒</span>UPI Secured Payments</div>
+  <div class="trust-item"><span class="trust-ic">📋</span>Full Payment Records</div>
+  <div class="trust-item"><span class="trust-ic">⚡</span>Activates in 15 Minutes</div>
+  <div class="trust-item"><span class="trust-ic">🔄</span>Cancel Anytime</div>
+  <div class="trust-item"><span class="trust-ic">🛡️</span>30-Day Refund Policy</div>
+  <div class="trust-item"><span class="trust-ic">📞</span>24/7 Support</div>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-logo">SmartRent AI</div>
-    <div class="footer-links">
-      <a href="#">Home</a>
-      <a href="#">Properties</a>
-      <a href="privacy.html">Privacy Policy</a>
-      <a href="terms.html">Terms & Conditions</a>
-      <a href="#">Contact</a>
+  <div class="foot-inner">
+    <div class="foot-copy">© 2025–2026 SmartRent AI · All rights reserved</div>
+    <div class="foot-links">
+      <a class="fl" href="index.html">Home</a>
+      <a class="fl" href="properties.html">Browse</a>
+      <a class="fl" href="services.html">Services</a>
+      <a class="fl" href="privacy-policy.html">Privacy</a>
     </div>
-    <p class="footer-copy">© 2026 SmartRent AI. All rights reserved. Built with ❤️ for smart landlords.</p>
   </div>
 </footer>
 
-<!-- CONSENT MODAL -->
-<div id="consentModal" class="hidden">
-  <div class="modal-box">
-    <div class="modal-icon">📋</div>
-    <h2>Before You Continue</h2>
-    <p>Please read and accept our <a href="privacy.html" target="_blank">Privacy Policy</a> and <a href="terms.html" target="_blank">Terms & Conditions</a> to proceed with your purchase on SmartRent AI.</p>
-    <div class="modal-actions">
-      <button class="btn-accept" id="acceptBtn">✓ Accept & Continue</button>
-      <button class="btn-decline" id="declineBtn">Decline</button>
-    </div>
-  </div>
-</div>
+<script type="module">
+import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<!-- TOAST -->
-<div id="toast">
-  <span class="toast-icon" id="toastIcon">✓</span>
-  <span id="toastMsg">Message here</span>
-</div>
+const firebaseConfig = {
+  apiKey:        "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain:    "smart-property-portal.firebaseapp.com",
+  projectId:     "smart-property-portal",
+  storageBucket: "smart-property-portal.firebasestorage.app"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+window._auth = auth;
+window._db = db;
+window._addDoc = addDoc;
+window._collection = collection;
+window._serverTimestamp = serverTimestamp;
+
+onAuthStateChanged(auth, user => {
+  window._currentUser = user || null;
+});
+</script>
 
 <script>
-// ── DATA ──
-const plansData = [
-  {
-    id: 'basic',
-    name: 'Basic',
-    icon: '🏠',
-    iconClass: 'basic',
-    desc: 'Perfect for individual landlords just getting started.',
-    monthlyPrice: 499,
-    yearlyPrice: 399,
-    recommended: false,
-    btnClass: 'outline',
-    features: [
-      { text: '1 Property Listing', active: true },
-      { text: 'Basic Analytics', active: true },
-      { text: 'Email Support', active: true },
-      { text: 'Chat with Owner', active: false },
-      { text: 'AI Market Insights', active: false },
-      { text: 'Tenant Screening', active: false },
-    ]
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    icon: '⚡',
-    iconClass: 'pro',
-    desc: 'For growing landlords who need more power and tools.',
-    monthlyPrice: 1499,
-    yearlyPrice: 1199,
-    recommended: true,
-    btnClass: 'primary',
-    features: [
-      { text: '5 Property Listings', active: true },
-      { text: 'Advanced Analytics', active: true },
-      { text: 'Priority Email Support', active: true },
-      { text: 'Chat with Owner', active: true },
-      { text: 'Tenant Screening', active: true },
-      { text: 'AI Market Insights', active: false },
-    ]
-  },
-  {
-    id: 'premium',
-    name: 'Premium',
-    icon: '👑',
-    iconClass: 'premium',
-    desc: 'Full power for serious property managers and agencies.',
-    monthlyPrice: 2999,
-    yearlyPrice: 2399,
-    recommended: false,
-    btnClass: 'gold-btn',
-    features: [
-      { text: 'Unlimited Listings', active: true },
-      { text: 'Full AI Analytics', active: true },
-      { text: '24/7 Priority Support', active: true },
-      { text: 'Chat with Owner', active: true },
-      { text: 'Tenant Screening', active: true },
-      { text: 'AI Market Insights', active: true },
-    ]
+/* ════════════════════════════════════════════════
+   CONFIGURATION — SET YOUR UPI ID & ADMIN NUMBER
+════════════════════════════════════════════════ */
+const CONFIG = {
+  // 🔴 REPLACE with your actual UPI ID:
+  UPI_ID: 'yourupiid@upi',
+  UPI_NAME: 'SmartRent AI',
+  // 🔴 REPLACE with your WhatsApp number for manual verification:
+  ADMIN_WA: '+91 98765 43210',
+};
+
+/* ════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════ */
+let currentPlan = null;
+
+/* ════════════════════════════════════════════════
+   QR CODE GENERATOR (Pure JS — no library needed)
+   Generates a simple UPI deep-link QR pattern
+   For production use a proper QR library
+════════════════════════════════════════════════ */
+function generateQRPattern(svg) {
+  // Simplified visual QR-like pattern for display
+  // In production: use qrcode.js or similar
+  const SIZE = 180;
+  const MODULES = 21;
+  const MOD = SIZE / MODULES;
+
+  svg.setAttribute('viewBox', `0 0 ${SIZE} ${SIZE}`);
+  svg.innerHTML = '';
+
+  // Background
+  const bg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  bg.setAttribute('width',SIZE);bg.setAttribute('height',SIZE);
+  bg.setAttribute('fill','white');svg.appendChild(bg);
+
+  // Deterministic "QR-like" pattern based on UPI ID hash
+  const upi = CONFIG.UPI_ID;
+  let seed = 0;
+  for(let i=0;i<upi.length;i++) seed = (seed*31+upi.charCodeAt(i))&0xFFFFFF;
+
+  function pseudoRand(x,y){
+    let v=(seed^(x*7919+y*6271))&0xFFFF;
+    return (v%100)<45;
   }
-];
 
-let isYearly = false;
-let selectedPlan = null;
+  // Draw finder patterns (corners)
+  function drawFinder(ox,oy){
+    const fp = document.createElementNS('http://www.w3.org/2000/svg','g');
+    // Outer square
+    const r1=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r1.setAttribute('x',ox*MOD);r1.setAttribute('y',oy*MOD);
+    r1.setAttribute('width',7*MOD);r1.setAttribute('height',7*MOD);
+    r1.setAttribute('fill','#1a140c');fp.appendChild(r1);
+    const r2=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r2.setAttribute('x',(ox+1)*MOD);r2.setAttribute('y',(oy+1)*MOD);
+    r2.setAttribute('width',5*MOD);r2.setAttribute('height',5*MOD);
+    r2.setAttribute('fill','white');fp.appendChild(r2);
+    const r3=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r3.setAttribute('x',(ox+2)*MOD);r3.setAttribute('y',(oy+2)*MOD);
+    r3.setAttribute('width',3*MOD);r3.setAttribute('height',3*MOD);
+    r3.setAttribute('fill','#1a140c');fp.appendChild(r3);
+    svg.appendChild(fp);
+  }
+  drawFinder(0,0);drawFinder(MODULES-7,0);drawFinder(0,MODULES-7);
 
-// ── RENDER PLANS ──
-function renderPlans() {
-  const grid = document.getElementById('plansGrid');
-  grid.innerHTML = '';
+  // Data modules
+  for(let y=0;y<MODULES;y++){
+    for(let x=0;x<MODULES;x++){
+      // Skip finder pattern areas
+      if((x<8&&y<8)||(x>MODULES-9&&y<8)||(x<8&&y>MODULES-9)) continue;
+      if(pseudoRand(x,y)){
+        const r=document.createElementNS('http://www.w3.org/2000/svg','rect');
+        r.setAttribute('x',x*MOD);r.setAttribute('y',y*MOD);
+        r.setAttribute('width',MOD-.5);r.setAttribute('height',MOD-.5);
+        r.setAttribute('fill','#1a140c');
+        svg.appendChild(r);
+      }
+    }
+  }
 
-  plansData.forEach(plan => {
-    const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
-    const original = isYearly ? plan.monthlyPrice : null;
+  // UPI Logo in center
+  const circ=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  circ.setAttribute('cx',SIZE/2);circ.setAttribute('cy',SIZE/2);
+  circ.setAttribute('r',14);circ.setAttribute('fill','white');
+  circ.setAttribute('stroke','#1a140c');circ.setAttribute('stroke-width','1.5');
+  svg.appendChild(circ);
+  const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',SIZE/2);txt.setAttribute('y',SIZE/2+4);
+  txt.setAttribute('text-anchor','middle');txt.setAttribute('fill','#b5742a');
+  txt.setAttribute('font-size','10');txt.setAttribute('font-weight','bold');
+  txt.setAttribute('font-family','sans-serif');
+  txt.textContent='UPI';svg.appendChild(txt);
+}
 
-    const card = document.createElement('div');
-    card.className = 'plan-card' + (plan.recommended ? ' recommended' : '');
-    card.innerHTML = `
-      ${plan.recommended ? '<div class="plan-badge">⭐ Most Popular</div>' : ''}
-      <div class="plan-icon ${plan.iconClass}">${plan.icon}</div>
-      <div class="plan-name">${plan.name}</div>
-      <p class="plan-desc">${plan.desc}</p>
-      <div class="plan-price">
-        <span class="currency">₹</span>
-        <span class="amount" id="price-${plan.id}">${price.toLocaleString()}</span>
-        <span class="per">/mo</span>
-        ${original ? `<span class="original">₹${original.toLocaleString()}</span>` : ''}
-      </div>
-      <div class="divider"></div>
-      <ul class="features-list">
-        ${plan.features.map(f => `
-          <li class="${f.active ? 'active' : ''}">
-            <div class="feature-icon ${f.active ? 'check' : 'cross'}">${f.active ? '✓' : '✕'}</div>
-            ${f.text}
-          </li>
-        `).join('')}
-      </ul>
-      <button class="plan-btn ${plan.btnClass}" onclick="selectPlan('${plan.id}', ${price})">
-        ${plan.recommended ? 'Get Pro Now' : `Choose ${plan.name}`}
-      </button>
-    `;
-    grid.appendChild(card);
+/* ════════════════════════════════════════════════
+   SECTION TABS
+════════════════════════════════════════════════ */
+function switchTab(tab) {
+  document.querySelectorAll('.st').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.sec-wrap').forEach(s=>s.classList.remove('active'));
+  const btn = document.querySelector(`.st:nth-child(${tab==='rental'?1:2})`);
+  if(btn) btn.classList.add('on');
+  document.getElementById('sec-'+tab).classList.add('active');
+  initReveal();
+}
+
+/* ════════════════════════════════════════════════
+   PAYMENT MODAL
+════════════════════════════════════════════════ */
+function openPayment(plan) {
+  currentPlan = plan;
+
+  // Head
+  document.getElementById('mTag').textContent = plan.tag;
+  document.getElementById('mTitle').textContent = plan.plan;
+  document.getElementById('mSub').textContent = 'Monthly subscription · Valid 30 days from activation';
+
+  // Order summary
+  document.getElementById('oPlanIcon').textContent = plan.icon;
+  document.getElementById('oPlanName').textContent = plan.plan;
+  document.getElementById('oAmount').textContent = '₹'+plan.price;
+  const expiry = new Date(Date.now()+30*24*60*60*1000);
+  document.getElementById('oValidUntil').textContent = expiry.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+
+  // QR
+  document.getElementById('qrUpiId').textContent = CONFIG.UPI_ID;
+  document.getElementById('qrAmount').textContent = plan.price;
+  document.getElementById('tenantUpiInput').value = CONFIG.UPI_ID;
+  document.getElementById('adminWaNum').textContent = CONFIG.ADMIN_WA;
+
+  // Generate QR
+  generateQRPattern(document.getElementById('qrSvg'));
+
+  // Reset
+  document.getElementById('txnRefInput').value = '';
+  document.getElementById('mFormWrap').style.display = 'block';
+  document.getElementById('paySuccess').classList.remove('show');
+  document.getElementById('paySubmitBtn').disabled = false;
+  document.getElementById('paySubmitBtn').innerHTML = '🔒 Submit Payment & Activate Plan';
+
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+window.openPayment = openPayment;
+
+function closeMo() {
+  document.getElementById('modalBg').classList.remove('show');
+  document.body.style.overflow = '';
+}
+window.closeMo = closeMo;
+function closeMoBg(e){ if(e.target===document.getElementById('modalBg')) closeMo(); }
+window.closeMoBg = closeMoBg;
+
+/* Copy UPI ID */
+function copyUpiId() {
+  navigator.clipboard.writeText(CONFIG.UPI_ID).then(()=>{
+    showToast('📋 UPI ID copied: '+CONFIG.UPI_ID);
+  }).catch(()=>{
+    showToast('UPI ID: '+CONFIG.UPI_ID);
   });
 }
+window.copyUpiId = copyUpiId;
 
-// ── SELECT PLAN ──
-function selectPlan(planId, price) {
-  if (localStorage.getItem('consentGiven') !== 'true') {
-    document.getElementById('consentModal').classList.remove('hidden');
+/* UPI App deeplink launch */
+function launchUpiApp(app) {
+  if (!currentPlan) return;
+  const note = encodeURIComponent('SmartRent AI - '+currentPlan.plan);
+  const upiLink = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${currentPlan.price}&cu=INR&tn=${note}`;
+  window.location.href = upiLink;
+  showToast('Opening UPI app… Complete payment then enter the UTR below.');
+}
+window.launchUpiApp = launchUpiApp;
+
+/* ════════════════════════════════════════════════
+   SUBMIT PAYMENT
+════════════════════════════════════════════════ */
+async function submitPayment() {
+  const txnRef = document.getElementById('txnRefInput').value.trim();
+  if (!txnRef || txnRef.replace(/\D/g,'').length < 8) {
+    showToast('⚠️ Please enter your UTR/Transaction Reference Number.');
     return;
   }
-  selectedPlan = { id: planId, price };
-  const plan = plansData.find(p => p.id === planId);
-  document.getElementById('selectedPlanName').textContent = `${plan.name} Plan`;
-  document.getElementById('selectedPlanPrice').textContent = `₹${price.toLocaleString()}/mo`;
 
-  // update select
-  const sel = document.getElementById('planSelect');
-  for (let opt of sel.options) {
-    if (opt.value.startsWith(planId)) { sel.value = opt.value; break; }
+  const btn = document.getElementById('paySubmitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Submitting…';
+
+  const user = window._currentUser;
+  const now = new Date();
+  const expiresAt = new Date(now.getTime()+30*24*60*60*1000);
+
+  const paymentRecord = {
+    // Plan details
+    planName:    currentPlan.plan,
+    planRole:    currentPlan.role,
+    planPrice:   currentPlan.price,
+    category:    currentPlan.category || null,
+
+    // Payment
+    txnRef:      txnRef,
+    upiId:       CONFIG.UPI_ID,
+    amount:      currentPlan.price,
+    currency:    'INR',
+    paymentMode: 'UPI',
+
+    // User
+    userId:      user ? user.uid : 'guest',
+    userEmail:   user ? (user.email || '') : '',
+    userName:    user ? (user.displayName || '') : '',
+
+    // Timing
+    submittedAt: window._serverTimestamp ? window._serverTimestamp() : now.toISOString(),
+    expiresAt:   expiresAt.toISOString(),
+    activeDays:  30,
+
+    // Status — admin will verify and set to 'active'
+    status:      'pending_verification',
+    approved:    false,
+    approvedAt:  null,
+    approvedBy:  null,
+  };
+
+  try {
+    if (window._db && window._addDoc && window._collection) {
+      const docRef = await window._addDoc(
+        window._collection(window._db, 'payments'),
+        paymentRecord
+      );
+      showPaymentSuccess(docRef.id, expiresAt);
+    } else {
+      // Offline fallback — store in localStorage for admin
+      const stored = JSON.parse(localStorage.getItem('sr_payments')||'[]');
+      const localId = 'LOCAL-'+Date.now();
+      stored.push({...paymentRecord, id: localId});
+      localStorage.setItem('sr_payments', JSON.stringify(stored));
+      showPaymentSuccess(localId, expiresAt);
+    }
+  } catch(err) {
+    console.error('Payment submission error:', err);
+    // Still save to localStorage as backup
+    const stored = JSON.parse(localStorage.getItem('sr_payments')||'[]');
+    const localId = 'BACKUP-'+Date.now();
+    stored.push({...paymentRecord, id: localId, error: err.message});
+    localStorage.setItem('sr_payments', JSON.stringify(stored));
+    showPaymentSuccess(localId, expiresAt);
   }
+}
+window.submitPayment = submitPayment;
 
-  document.getElementById('payment').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  showToast('✓', `${plan.name} plan selected!`);
+function showPaymentSuccess(docId, expiresAt) {
+  document.getElementById('mFormWrap').style.display = 'none';
+  const ss = document.getElementById('paySuccess');
+  ss.classList.add('show');
+  document.getElementById('psRefId').textContent = 'REF: '+docId.slice(0,16).toUpperCase();
+  document.getElementById('psValidity').textContent =
+    '✅ Valid until '+expiresAt.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  showToast('🎉 Payment submitted! Activating within 15 minutes.');
 }
 
-// ── BILLING TOGGLE ──
-const monthlyTab = document.getElementById('monthlyTab');
-const yearlyTab = document.getElementById('yearlyTab');
-
-monthlyTab.addEventListener('click', () => {
-  isYearly = false;
-  monthlyTab.classList.add('active');
-  yearlyTab.classList.remove('active');
-  renderPlans();
-});
-
-yearlyTab.addEventListener('click', () => {
-  isYearly = true;
-  yearlyTab.classList.add('active');
-  monthlyTab.classList.remove('active');
-  renderPlans();
-});
-
-// ── PLAN SELECT DROPDOWN ──
-document.getElementById('planSelect').addEventListener('change', function () {
-  const val = this.value;
-  if (!val) return;
-  const [id, price] = val.split('-');
-  const plan = plansData.find(p => p.id === id);
-  selectedPlan = { id, price: parseInt(price) };
-  document.getElementById('selectedPlanName').textContent = `${plan.name} Plan`;
-  document.getElementById('selectedPlanPrice').textContent = `₹${parseInt(price).toLocaleString()}/mo`;
-});
-
-// ── PAY BUTTON ──
-document.getElementById('payBtn').addEventListener('click', () => {
-  if (localStorage.getItem('consentGiven') !== 'true') {
-    document.getElementById('consentModal').classList.remove('hidden');
-    return;
-  }
-  const upi = document.getElementById('upiId').value.trim();
-  if (!selectedPlan && !document.getElementById('planSelect').value) {
-    showToast('⚠', 'Please select a plan first.'); return;
-  }
-  if (!upi) {
-    showToast('⚠', 'Please enter your UPI ID.'); return;
-  }
-  if (!upi.includes('@')) {
-    showToast('⚠', 'Enter a valid UPI ID (e.g., name@upi).'); return;
-  }
-  showToast('🎉', `Payment initiated! Check your UPI app.`);
-  // TODO: Integrate actual UPI gateway here
-});
-
-// ── CONSENT MODAL ──
-if (localStorage.getItem('consentGiven') !== 'true') {
-  document.getElementById('consentModal').classList.remove('hidden');
+/* ════════════════════════════════════════════════
+   SCROLL REVEAL & NAV
+════════════════════════════════════════════════ */
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});
+  },{threshold:.08});
+  document.querySelectorAll('.rv:not(.in)').forEach(el=>obs.observe(el));
 }
+initReveal();
 
-document.getElementById('acceptBtn').addEventListener('click', () => {
-  localStorage.setItem('consentGiven', 'true');
-  document.getElementById('consentModal').classList.add('hidden');
-  showToast('✓', 'Welcome to SmartRent AI!');
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('solid',scrollY>20);
 });
 
-document.getElementById('declineBtn').addEventListener('click', () => {
-  window.location.href = 'index.html';
-});
-
-// ── FAQ ACCORDION ──
-document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    const item = q.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
-
-// ── TOAST ──
-let toastTimer;
-function showToast(icon, msg) {
-  const toast = document.getElementById('toast');
-  document.getElementById('toastIcon').textContent = icon;
-  document.getElementById('toastMsg').textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+/* ════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════ */
+let _tT;
+function showToast(msg){
+  const el=document.getElementById('toast');
+  el.innerHTML=msg;el.style.display='block';
+  clearTimeout(_tT);
+  _tT=setTimeout(()=>{el.style.display='none';},4000);
 }
+window.showToast=showToast;
 
-// ── INIT ──
-renderPlans();
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMo();});
 </script>
+
+<!-- ══════════════════════════════════════════════════
+     PROPERTY-DETAILS.HTML INTEGRATION INSTRUCTIONS
+     
+     In property-detail.html, wrap the WhatsApp and
+     Call buttons inside a subscription gate check:
+     
+     Replace the btn-wa-contact and btn-call-owner 
+     buttons with this logic:
+     
+     function checkSubscription() {
+       // Check Firestore 'payments' collection for:
+       // userId == currentUser.uid &&
+       // planRole == 'tenant' &&
+       // status == 'active' &&
+       // expiresAt > now
+       // If found → show buttons
+       // Else → show "Subscribe to unlock" banner
+     }
+     
+     The locked state shows a blurred overlay with:
+     "🔒 Subscribe to Tenant Access (₹149/mo) to
+      unlock owner contacts"
+     
+     → links to plans.html
+══════════════════════════════════════════════════ -->
 </body>
-</html>
+</html>       

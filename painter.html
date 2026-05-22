@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painter Services — SmartRent AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf8f3;--bg1:#f7efe4;--bg2:#f0e4d0;--white:#ffffff;
+  --ink:#1c1008;--ink2:#2d1e0f;--ink3:#4a3520;--ink4:#6b5438;--ink5:#9c7c5a;--ink6:#c4a882;
+  --acc:#c45c00;--acc-l:#e87820;--acc-d:#8a3e00;
+  --acc-bg:rgba(196,92,0,.08);--acc-b:rgba(196,92,0,.22);--acc-g:rgba(196,92,0,.12);
+  --sage:#3d7a5c;--sage-bg:rgba(61,122,92,.08);--sage-b:rgba(61,122,92,.22);
+  --rose:#b03030;--rose-bg:rgba(176,48,48,.07);--rose-b:rgba(176,48,48,.2);
+  --div:rgba(28,16,8,.07);--div2:rgba(28,16,8,.12);--div3:rgba(28,16,8,.2);
+  --r1:6px;--r2:12px;--r3:18px;--r4:26px;
+  --sh1:0 2px 14px rgba(28,16,8,.06);--sh2:0 8px 36px rgba(28,16,8,.1);--sh3:0 20px 64px rgba(28,16,8,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;line-height:1.7}
+::selection{background:rgba(196,92,0,.15);color:var(--ink)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:var(--acc-b);border-radius:2px}
+
+/* ── AMBIENT ── */
+.amb-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb-orb{position:absolute;border-radius:50%;filter:blur(100px)}
+.a1{width:700px;height:700px;top:-250px;left:-200px;background:radial-gradient(circle,rgba(196,92,0,.07) 0%,transparent 65%)}
+.a2{width:500px;height:500px;bottom:-180px;right:-150px;background:radial-gradient(circle,rgba(232,120,32,.05) 0%,transparent 65%)}
+.paint-strokes{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.04;background-image:
+  repeating-linear-gradient(12deg,rgba(196,92,0,1) 0px,rgba(196,92,0,1) 1px,transparent 1px,transparent 60px),
+  repeating-linear-gradient(-8deg,rgba(232,120,32,1) 0px,rgba(232,120,32,1) 1px,transparent 1px,transparent 80px)}
+
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(253,248,243,.94);backdrop-filter:blur(22px);border-bottom:1px solid var(--div);transition:box-shadow .3s}
+.nav.sol{box-shadow:0 1px 0 var(--acc-b),0 4px 24px rgba(28,16,8,.07)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.bgem{width:34px;height:34px;background:linear-gradient(135deg,var(--acc-l),var(--acc-d));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 10px rgba(196,92,0,.3);flex-shrink:0}
+.bname{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--ink)}
+.bai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--sage);background:var(--sage-bg);border:1px solid var(--sage-b);padding:1px 5px;border-radius:3px;margin-left:3px;align-self:flex-end;margin-bottom:1px}
+.nav-links{display:flex;gap:4px;margin-left:auto}
+.nl{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:600;color:var(--ink4);text-decoration:none;transition:all .18s}.nl:hover{color:var(--acc);background:var(--acc-bg)}
+.nb{padding:8px 18px;border-radius:var(--r1);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border:none}
+.nb-acc{background:linear-gradient(135deg,var(--acc-l),var(--acc-d));color:#fff;margin-left:8px}.nb-acc:hover{box-shadow:0 4px 18px rgba(196,92,0,.36);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;padding:72px 24px 56px;max-width:1200px;margin:0 auto}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
+.hero-left{animation:fadeUp .7s both}
+.h-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--acc-bg);border:1px solid var(--acc-b);border-radius:100px;padding:5px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--acc);letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px}
+.e-dot{width:6px;height:6px;border-radius:50%;background:var(--acc);animation:pulse 2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(196,92,0,.45)}70%{box-shadow:0 0 0 7px transparent}100%{box-shadow:0 0 0 0 transparent}}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(44px,6vw,72px);font-weight:800;line-height:.95;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px}
+.hero-h1 em{font-style:italic;color:var(--acc)}
+.hero-sub{font-size:15px;color:var(--ink4);line-height:1.8;margin-bottom:28px;max-width:460px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+.hs{text-align:left}
+.hs-v{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--acc);line-height:1;margin-bottom:3px}
+.hs-l{font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase}
+
+/* Hero right — paint palette visual */
+.hero-right{animation:fadeUp .7s .1s both;position:relative}
+.palette-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);padding:28px;box-shadow:var(--sh2)}
+.palette-swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.swatch{height:54px;border-radius:var(--r2);position:relative;overflow:hidden;transition:transform .2s}.swatch:hover{transform:scale(1.05)}
+.swatch::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(0,0,0,.15))}
+.sw1{background:linear-gradient(135deg,#e87820,#c45c00)}
+.sw2{background:linear-gradient(135deg,#f5d0a9,#e0a870)}
+.sw3{background:linear-gradient(135deg,#3d7a5c,#246044)}
+.sw4{background:linear-gradient(135deg,#1c3a5c,#0d2240)}
+.sw5{background:linear-gradient(135deg,#c45060,#8a1e30)}
+.sw6{background:linear-gradient(135deg,#e8e0d0,#c8b89a)}
+.sw7{background:linear-gradient(135deg,#4a3520,#2d1e0f)}
+.sw8{background:linear-gradient(135deg,#f9f6f1,#ece0cc)}
+.palette-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.palette-sub{font-size:12.5px;color:var(--ink4);line-height:1.6}
+.palette-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.ptag{font-size:10.5px;background:var(--acc-bg);border:1px solid var(--acc-b);color:var(--acc);padding:3px 10px;border-radius:100px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FILTERS ── */
+.filters-bar{position:sticky;top:64px;z-index:200;background:rgba(253,248,243,.96);border-bottom:1px solid var(--div);backdrop-filter:blur(18px)}
+.filters-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filter-label{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink5);flex-shrink:0;margin-right:4px}
+.filter-sel{background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r2);padding:8px 14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;color:var(--ink3);outline:none;cursor:pointer;transition:all .2s;-webkit-appearance:none;appearance:none;min-width:140px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath stroke='%236b5438' stroke-width='1.5' stroke-linecap='round' d='M1 1l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.filter-sel:focus{border-color:var(--acc-b);box-shadow:0 0 0 3px var(--acc-g)}
+.filter-input{background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r2);padding:8px 14px 8px 36px;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--ink3);outline:none;transition:all .2s;flex:1;min-width:180px;position:relative}
+.filter-input:focus{border-color:var(--acc-b);box-shadow:0 0 0 3px var(--acc-g)}
+.filter-input::placeholder{color:var(--ink6)}
+.search-wrap{position:relative;flex:1;min-width:180px}
+.search-ic{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+.filter-count{margin-left:auto;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--ink5);letter-spacing:.06em;white-space:nowrap;padding:6px 14px;background:var(--acc-bg);border:1px solid var(--acc-b);border-radius:100px;color:var(--acc);font-weight:600}
+
+/* ── MAIN GRID ── */
+.main{max-width:1200px;margin:0 auto;padding:32px 24px 80px;position:relative;z-index:1}
+.empty-state{text-align:center;padding:80px 24px;display:none}
+.empty-state.show{display:block}
+.es-icon{font-size:64px;margin-bottom:16px;display:block}
+.es-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.es-sub{font-size:14px;color:var(--ink4);line-height:1.72}
+.es-sub a{color:var(--acc);text-decoration:none;font-weight:600}
+
+.providers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+
+/* ── PROVIDER CARD ── */
+.prov-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);overflow:hidden;transition:all .32s cubic-bezier(.34,1.1,.64,1);position:relative;box-shadow:var(--sh1)}
+.prov-card:hover{transform:translateY(-6px);box-shadow:var(--sh3);border-color:var(--acc-b)}
+.prov-card.featured{border-color:var(--acc-b);box-shadow:0 0 0 3px var(--acc-g),var(--sh2)}
+
+.pc-top{height:7px;background:linear-gradient(90deg,var(--acc-l),var(--acc-d))}
+.pc-top.verified-top{background:linear-gradient(90deg,#2d9e6b,#1a7a4a)}
+.pc-top.pending-top{background:linear-gradient(90deg,#c8943a,#8a6010)}
+
+.pc-body{padding:20px}
+.pc-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.pc-avatar{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--acc-l),var(--acc-d));display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;border:2px solid var(--acc-b);position:relative;box-shadow:0 3px 12px rgba(196,92,0,.2)}
+.pc-verified-badge{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:var(--sage);border:2px solid var(--white);display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff}
+.pc-info{flex:1;min-width:0}
+.pc-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--ink);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-trade{font-size:11px;color:var(--acc);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:5px}
+.pc-loc{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--ink4);font-weight:500}
+.pc-rating{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.pr-stars{color:#d4890a;font-size:13px;letter-spacing:1px}
+.pr-num{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink)}
+.pr-ct{font-size:11.5px;color:var(--ink5)}
+.pr-new{font-size:10px;background:var(--sage-bg);border:1px solid var(--sage-b);color:var(--sage);padding:2px 9px;border-radius:100px;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+.pc-desc{font-size:13px;color:var(--ink4);line-height:1.72;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.pctag{font-size:10.5px;background:var(--bg1);border:1px solid var(--div2);color:var(--ink4);padding:3px 9px;border-radius:100px;font-weight:600}
+
+.pc-price-row{display:flex;align-items:center;justify-content:space-between;padding-top:13px;border-top:1px solid var(--div);gap:10px}
+.pc-price{display:flex;flex-direction:column}
+.pc-price-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--ink);line-height:1}
+.pc-price-note{font-size:10.5px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.04em;margin-top:2px}
+.pc-btns{display:flex;gap:7px}
+.pc-btn-book{padding:9px 18px;border-radius:var(--r2);background:linear-gradient(135deg,var(--acc-l),var(--acc-d));border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.01em;white-space:nowrap}.pc-btn-book:hover{box-shadow:0 4px 18px rgba(196,92,0,.38);transform:translateY(-1px)}
+.pc-btn-call{padding:9px 12px;border-radius:var(--r2);background:transparent;border:1.5px solid var(--div2);color:var(--ink4);font-size:13px;cursor:pointer;transition:all .2s}.pc-btn-call:hover{border-color:var(--acc-b);color:var(--acc)}
+
+/* Subscription tag on card */
+.sub-badge{position:absolute;top:18px;right:16px;font-size:9px;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;background:var(--sage-bg);border:1px solid var(--sage-b);color:var(--sage)}
+
+/* ── BOOKING MODAL ── */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(28,16,8,.55);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.modal-bg.show{opacity:1;pointer-events:all}
+.modal-box{background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r4);width:100%;max-width:520px;max-height:93vh;overflow-y:auto;box-shadow:var(--sh3);transform:scale(.96) translateY(12px);transition:transform .3s cubic-bezier(.34,1.2,.64,1)}
+.modal-bg.show .modal-box{transform:scale(1) translateY(0)}
+.mh{padding:26px 26px 18px;background:linear-gradient(135deg,var(--acc-bg),transparent);border-bottom:1.5px solid var(--div);position:relative}
+.mh-close{position:absolute;top:15px;right:15px;width:30px;height:30px;border-radius:50%;background:var(--bg1);border:1px solid var(--div);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--ink4);transition:all .18s}.mh-close:hover{background:var(--rose-bg);border-color:var(--rose-b);color:var(--rose)}
+.mh-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--acc);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.mh-tag::before{content:'';width:12px;height:1px;background:var(--acc)}
+.mh-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.mh-sub{font-size:12.5px;color:var(--ink4);line-height:1.6}
+.mb{padding:20px 26px 26px}
+.ml{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--ink5);display:block;margin-bottom:7px}
+.mi,.ms,.mta{width:100%;background:var(--bg);border:1.5px solid var(--div2);border-radius:var(--r2);padding:10px 13px;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:all .2s;margin-bottom:14px}
+.mi:focus,.ms:focus,.mta:focus{border-color:var(--acc-b);box-shadow:0 0 0 3px var(--acc-g);background:var(--white)}
+.mi::placeholder,.mta::placeholder{color:var(--ink6);font-style:italic}
+.ms{cursor:pointer}.ms option{background:white}.mta{resize:vertical;min-height:80px}
+.m2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.msubmit{width:100%;padding:13px;border-radius:var(--r2);background:linear-gradient(135deg,var(--acc-l),var(--acc-d));border:none;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .22s;letter-spacing:.01em;margin-top:4px}.msubmit:hover{box-shadow:0 4px 20px rgba(196,92,0,.4);transform:translateY(-1px)}
+.msuccess{display:none;text-align:center;padding:28px 0}
+.msuccess.show{display:block}
+.ms-ic{font-size:60px;margin-bottom:14px;display:block;animation:pop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+.ms-t{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:7px}
+.ms-d{font-size:13.5px;color:var(--ink4);line-height:1.72;margin-bottom:16px}
+.ms-ref{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--acc-bg);border:1px solid var(--acc-b);color:var(--acc);padding:5px 16px;border-radius:100px;margin-bottom:18px}
+
+/* ── TOAST & REVEAL ── */
+.toast{position:fixed;bottom:22px;right:22px;z-index:2000;background:var(--ink);color:rgba(255,255,255,.9);border-left:3px solid var(--acc);border-radius:var(--r1);padding:11px 16px;font-size:13px;display:none;min-width:230px;animation:tIn .3s ease;box-shadow:var(--sh3)}
+@keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rv{opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.06s}.rv.d2{transition-delay:.12s}.rv.d3{transition-delay:.18s}
+
+/* Loading skeleton */
+.skeleton{background:linear-gradient(90deg,var(--bg1) 25%,var(--bg2) 50%,var(--bg1) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);overflow:hidden;box-shadow:var(--sh1)}
+.skel-line{border-radius:4px;height:14px;margin-bottom:8px}
+.skel-avatar{width:58px;height:58px;border-radius:50%}
+
+/* Responsive */
+@media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-right{display:none}}
+@media(max-width:600px){.nav-links{display:none}.providers-grid{grid-template-columns:1fr}.m2{grid-template-columns:1fr}.filters-inner{gap:7px}}
+</style>
+</head>
+<body>
+<div class="amb-bg"><div class="amb-orb a1"></div><div class="amb-orb a2"></div></div>
+<div class="paint-strokes"></div>
+<div class="toast" id="toast"></div>
+
+<!-- BOOKING MODAL -->
+<div class="modal-bg" id="modalBg" onclick="closeMoBg(event)">
+  <div class="modal-box">
+    <div class="mh">
+      <div class="mh-close" onclick="closeMo()">✕</div>
+      <div class="mh-tag">Book Painter</div>
+      <div class="mh-title" id="mTitle">Book Painting Service</div>
+      <div class="mh-sub" id="mSub">Fill in your details — the painter will contact you within 2 hours.</div>
+    </div>
+    <div id="mFormWrap">
+      <div class="mb">
+        <div class="m2">
+          <div><label class="ml">Your Name *</label><input class="mi" id="bName" placeholder="Full name"></div>
+          <div><label class="ml">Mobile *</label><input class="mi" id="bPhone" type="tel" placeholder="10-digit number"></div>
+        </div>
+        <label class="ml">Service Address *</label>
+        <input class="mi" id="bAddr" placeholder="Flat / building / locality / city">
+        <div class="m2">
+          <div><label class="ml">Preferred Date</label><input class="mi" id="bDate" type="date"></div>
+          <div><label class="ml">Type of Work</label>
+            <select class="ms" id="bWork">
+              <option>Interior Painting</option><option>Exterior Painting</option>
+              <option>Texture / Design</option><option>Waterproofing</option>
+              <option>Wood Polish</option><option>Putty Application</option><option>Full Home</option>
+            </select>
+          </div>
+        </div>
+        <label class="ml">Area (sq.ft) or Description</label>
+        <textarea class="mta" id="bDesc" placeholder="Describe your painting requirement — number of rooms, current condition, preferred finish…"></textarea>
+        <div style="background:var(--bg);border:1.5px solid var(--div);border-radius:var(--r2);padding:12px 15px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <div><div style="font-size:10px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">Painting at</div><div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--acc)" id="mPainterName">—</div></div>
+          <div style="font-size:12px;color:var(--ink4);text-align:right">Starting from <span style="font-weight:700;color:var(--ink)" id="mPrice">₹—</span></div>
+        </div>
+        <button class="msubmit" onclick="submitBooking()">🎨 Confirm Booking Request</button>
+      </div>
+    </div>
+    <div class="msuccess" id="mSuccess">
+      <span class="ms-ic">✅</span>
+      <div class="ms-t">Booking Request Sent!</div>
+      <div class="ms-d">The painter will call you within <strong>2 hours</strong> to confirm your booking and visit schedule.</div>
+      <div class="ms-ref" id="mRef">REF: —</div>
+      <button style="padding:10px 24px;border-radius:var(--r2);background:linear-gradient(135deg,var(--acc-l),var(--acc-d));border:none;color:#fff;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" onclick="closeMo()">Done ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="navbar">
+  <a href="index.html" class="brand">
+    <div class="bgem">💎</div>
+    <span class="bname">SmartRent<span class="bai">AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a class="nl" href="index.html">Home</a>
+    <a class="nl" href="services.html">All Services</a>
+    <a class="nl" href="plumber.html">Plumber</a>
+    <a class="nl" href="electrician.html">Electrician</a>
+    <a class="nl" style="color:var(--acc);font-weight:700" href="painter.html">Painter</a>
+    <a class="nl" href="carpenter.html">Carpenter</a>
+    <a class="nl" href="cleaner.html">Cleaner</a>
+    <a class="nl" href="movers.html">Movers</a>
+  </div>
+  <a class="nb nb-acc" href="plans.html" style="text-decoration:none;margin-left:auto">🎨 List Your Service</a>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative;z-index:1">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="h-eyebrow"><span class="e-dot"></span>Verified Painters · Instant Booking</div>
+        <h1 class="hero-h1">Expert<br><em>Painters</em><br>Near You</h1>
+        <p class="hero-sub">Interior, exterior, texture, waterproofing and more. Verified professionals with transparent pricing — booked in seconds, completed with care.</p>
+        <div class="hero-stats">
+          <div class="hs"><div class="hs-v" id="statCount">0</div><div class="hs-l">Listed Painters</div></div>
+          <div class="hs"><div class="hs-v">30min</div><div class="hs-l">Response Time</div></div>
+          <div class="hs"><div class="hs-v">₹0</div><div class="hs-l">Hidden Fees</div></div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="palette-card rv d1">
+          <div class="palette-swatches">
+            <div class="swatch sw1"></div><div class="swatch sw2"></div>
+            <div class="swatch sw3"></div><div class="swatch sw4"></div>
+            <div class="swatch sw5"></div><div class="swatch sw6"></div>
+            <div class="swatch sw7"></div><div class="swatch sw8"></div>
+          </div>
+          <div class="palette-title">500+ Colour Options</div>
+          <div class="palette-sub">Our registered painters work with all major brands — Asian Paints, Berger, Nerolac, Dulux, Indigo. Any shade, any finish.</div>
+          <div class="palette-tags">
+            <span class="ptag">Asian Paints</span><span class="ptag">Berger</span>
+            <span class="ptag">Dulux</span><span class="ptag">Nerolac</span><span class="ptag">Indigo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <div class="filters-inner">
+    <span class="filter-label">Filter:</span>
+    <div class="search-wrap">
+      <span class="search-ic">🔍</span>
+      <input class="filter-input" id="searchInput" placeholder="Search by name or locality…" oninput="applyFilters()">
+    </div>
+    <select class="filter-sel" id="cityFilter" onchange="applyFilters()">
+      <option value="">All Cities</option>
+      <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
+      <option>Delhi</option><option>Pune</option><option>Chennai</option>
+      <option>Kolkata</option><option>Noida</option><option>Gurgaon</option>
+    </select>
+    <select class="filter-sel" id="sortFilter" onchange="applyFilters()">
+      <option value="newest">Newest First</option>
+      <option value="price_asc">Price: Low to High</option>
+      <option value="price_desc">Price: High to Low</option>
+      <option value="rating">Top Rated</option>
+    </select>
+    <select class="filter-sel" id="workFilter" onchange="applyFilters()">
+      <option value="">All Work Types</option>
+      <option>Interior</option><option>Exterior</option>
+      <option>Texture</option><option>Waterproofing</option><option>Wood Polish</option>
+    </select>
+    <div class="filter-count" id="filterCount">0 painters</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+  <!-- Skeleton loaders -->
+  <div class="providers-grid" id="skeletonGrid">
+    <div class="skel-card rv" style="padding:20px"><div style="display:flex;gap:14px;margin-bottom:14px"><div class="skel-avatar skeleton"></div><div style="flex:1"><div class="skel-line skeleton" style="width:60%"></div><div class="skel-line skeleton" style="width:40%;height:10px"></div><div class="skel-line skeleton" style="width:50%;height:10px"></div></div></div><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:80%"></div><div class="skel-line skeleton" style="width:60%"></div></div>
+    <div class="skel-card rv d1" style="padding:20px"><div style="display:flex;gap:14px;margin-bottom:14px"><div class="skel-avatar skeleton"></div><div style="flex:1"><div class="skel-line skeleton" style="width:55%"></div><div class="skel-line skeleton" style="width:40%;height:10px"></div><div class="skel-line skeleton" style="width:45%;height:10px"></div></div></div><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:75%"></div><div class="skel-line skeleton" style="width:50%"></div></div>
+    <div class="skel-card rv d2" style="padding:20px"><div style="display:flex;gap:14px;margin-bottom:14px"><div class="skel-avatar skeleton"></div><div style="flex:1"><div class="skel-line skeleton" style="width:65%"></div><div class="skel-line skeleton" style="width:35%;height:10px"></div><div class="skel-line skeleton" style="width:55%;height:10px"></div></div></div><div class="skel-line skeleton"></div><div class="skel-line skeleton" style="width:70%"></div><div class="skel-line skeleton" style="width:45%"></div></div>
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    <span class="es-icon">🎨</span>
+    <div class="es-title">No Painters Found</div>
+    <div class="es-sub">No painters match your filter. Try adjusting the city or work type filters.<br>Are you a painter? <a href="plans.html">Register here →</a></div>
+  </div>
+
+  <div class="providers-grid" id="providersGrid" style="display:none"></div>
+</main>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import{getFirestore,collection,query,where,orderBy,onSnapshot,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal"};
+const app=initializeApp(cfg);
+const db=getFirestore(app);
+const auth=getAuth(app);
+window._db=db;window._addDoc=addDoc;window._collection=collection;window._serverTimestamp=serverTimestamp;
+onAuthStateChanged(auth,u=>{window._user=u||null});
+
+// Listen for active painter subscriptions in real time
+// Data structure: payments collection where category='painting' AND status='active' AND approved=true
+// Service provider profile data stored in 'service_providers' collection
+const q=query(
+  collection(db,'service_providers'),
+  where('category','==','painting'),
+  where('active','==',true)
+);
+
+onSnapshot(q,(snap)=>{
+  const providers=[];
+  snap.forEach(doc=>providers.push({id:doc.id,...doc.data()}));
+  window._allProviders=providers;
+  document.getElementById('skeletonGrid').style.display='none';
+  document.getElementById('providersGrid').style.display='grid';
+  document.getElementById('statCount').textContent=providers.length;
+  applyFilters();
+},(err)=>{
+  console.log('Firestore listener error (possibly no data yet):',err.message);
+  window._allProviders=[];
+  document.getElementById('skeletonGrid').style.display='none';
+  document.getElementById('providersGrid').style.display='grid';
+  document.getElementById('statCount').textContent='0';
+  applyFilters();
+});
+</script>
+
+<script>
+window._allProviders=window._allProviders||[];
+
+function applyFilters(){
+  const q=(document.getElementById('searchInput').value||'').toLowerCase().trim();
+  const city=document.getElementById('cityFilter').value;
+  const sort=document.getElementById('sortFilter').value;
+  const work=document.getElementById('workFilter').value;
+  const all=window._allProviders||[];
+
+  let filtered=all.filter(p=>{
+    const matchQ=!q||(p.name||'').toLowerCase().includes(q)||(p.locality||'').toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q);
+    const matchCity=!city||(p.city||'')=== city;
+    const matchWork=!work||((p.services||[]).some(s=>s.toLowerCase().includes(work.toLowerCase()))||(p.description||'').toLowerCase().includes(work.toLowerCase()));
+    return matchQ&&matchCity&&matchWork;
+  });
+
+  if(sort==='price_asc') filtered.sort((a,b)=>(a.priceFrom||0)-(b.priceFrom||0));
+  else if(sort==='price_desc') filtered.sort((a,b)=>(b.priceFrom||0)-(a.priceFrom||0));
+  else if(sort==='rating') filtered.sort((a,b)=>(b.rating||0)-(a.rating||0));
+  else filtered.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+
+  document.getElementById('filterCount').textContent=filtered.length+' painter'+(filtered.length!==1?'s':'');
+  renderProviders(filtered);
+}
+window.applyFilters=applyFilters;
+
+function renderProviders(list){
+  const grid=document.getElementById('providersGrid');
+  const empty=document.getElementById('emptyState');
+  if(list.length===0){grid.style.display='none';empty.classList.add('show');return;}
+  empty.classList.remove('show');grid.style.display='grid';
+  grid.innerHTML=list.map(p=>providerCard(p)).join('');
+  initReveal();
+}
+
+function providerCard(p){
+  const rating=p.rating?Number(p.rating).toFixed(1):'New';
+  const stars=p.rating?'★'.repeat(Math.round(p.rating))+'☆'.repeat(5-Math.round(p.rating)):'';
+  const services=(p.services||[]).slice(0,4);
+  const topClass=p.verified?'verified-top':'pc-top';
+  const price=p.priceFrom?'₹'+Number(p.priceFrom).toLocaleString('en-IN')+'+':'Contact';
+  const avatar=p.avatarEmoji||'🎨';
+  const exp=p.experience?p.experience+' exp.':'';
+  const tags=[...(p.services||[]).slice(0,3),...(exp?[exp]:[])];
+
+  return`<div class="prov-card rv" data-id="${p.id}">
+    <div class="${topClass}" style="height:5px;background:linear-gradient(90deg,${p.verified?'#2d9e6b,#1a7a4a':'#e87820,#c45c00'})"></div>
+    ${p.verified?'<div class="sub-badge">✓ ACTIVE</div>':''}
+    <div class="pc-body">
+      <div class="pc-head">
+        <div class="pc-avatar">${avatar}${p.verified?'<div class="pc-verified-badge">✓</div>':''}
+        </div>
+        <div class="pc-info">
+          <div class="pc-name">${p.name||'Service Provider'}</div>
+          <div class="pc-trade">Painter · ${p.city||'India'}</div>
+          <div class="pc-loc">📍 ${[p.locality,p.city].filter(Boolean).join(', ')||'—'}</div>
+        </div>
+      </div>
+      <div class="pc-rating">
+        ${p.rating?`<span class="pr-stars">${stars}</span><span class="pr-num">${rating}</span><span class="pr-ct">(${p.reviewCount||0} reviews)</span>`:'<span class="pr-new">✨ New</span>'}
+      </div>
+      <div class="pc-desc">${p.description||'Professional painting services available. Contact for details and quotation.'}</div>
+      ${tags.length?`<div class="pc-tags">${tags.map(t=>`<span class="pctag">${t}</span>`).join('')}</div>`:''}
+      <div class="pc-price-row">
+        <div class="pc-price">
+          <div class="pc-price-val">${price}</div>
+          <div class="pc-price-note">per visit · negotiable</div>
+        </div>
+        <div class="pc-btns">
+          ${p.phone?`<button class="pc-btn-call" onclick="callProvider('${p.phone}')">📞</button>`:''}
+          <button class="pc-btn-book" onclick='openBooking(${JSON.stringify({id:p.id,name:p.name||"Painter",price:p.priceFrom||0,phone:p.phone||""})})'>Book Now →</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+let currentPro=null;
+function openBooking(pro){
+  currentPro=pro;
+  document.getElementById('mTitle').textContent='Book '+pro.name;
+  document.getElementById('mSub').textContent='Painting service by '+pro.name+' · Responds within 2 hours.';
+  document.getElementById('mPainterName').textContent=pro.name;
+  document.getElementById('mPrice').textContent=pro.price?'₹'+Number(pro.price).toLocaleString('en-IN'):
+'Contact';
+  document.getElementById('bDate').min=new Date().toISOString().split('T')[0];
+  document.getElementById('mFormWrap').style.display='block';
+  document.getElementById('mSuccess').classList.remove('show');
+  document.getElementById('modalBg').classList.add('show');
+  document.body.style.overflow='hidden';
+}
+window.openBooking=openBooking;
+
+async function submitBooking(){
+  const name=document.getElementById('bName').value.trim();
+  const phone=document.getElementById('bPhone').value.trim();
+  const addr=document.getElementById('bAddr').value.trim();
+  if(!name){showToast('⚠️ Please enter your name');return;}
+  if(!phone||phone.replace(/\D/g,'').length<10){showToast('⚠️ Please enter a valid phone number');return;}
+  if(!addr){showToast('⚠️ Please enter your address');return;}
+  const ref='SR-'+Math.floor(100000+Math.random()*900000);
+
+  const booking={
+    category:'painting',providerId:currentPro?.id||'',providerName:currentPro?.name||'',
+    customerName:name,customerPhone:phone,address:addr,
+    date:document.getElementById('bDate').value||'',
+    workType:document.getElementById('bWork').value,
+    description:document.getElementById('bDesc').value,
+    status:'pending',ref,
+    createdAt:window._serverTimestamp?window._serverTimestamp():new Date().toISOString()
+  };
+
+  try{
+    if(window._db&&window._addDoc&&window._collection){
+      await window._addDoc(window._collection(window._db,'bookings'),booking);
+    }else{
+      const b=JSON.parse(localStorage.getItem('sr_bookings')||'[]');
+      b.push(booking);localStorage.setItem('sr_bookings',JSON.stringify(b));
+    }
+  }catch(e){
+    const b=JSON.parse(localStorage.getItem('sr_bookings')||'[]');
+    b.push(booking);localStorage.setItem('sr_bookings',JSON.stringify(b));
+  }
+
+  document.getElementById('mRef').textContent='REF: '+ref;
+  document.getElementById('mFormWrap').style.display='none';
+  document.getElementById('mSuccess').classList.add('show');
+  showToast('✅ Booking submitted! The painter will call you within 2 hours.');
+}
+window.submitBooking=submitBooking;
+
+function callProvider(phone){showToast('📞 Calling: '+phone);window.location.href='tel:'+phone.replace(/\s/g,'');}
+window.callProvider=callProvider;
+
+function closeMo(){document.getElementById('modalBg').classList.remove('show');document.body.style.overflow='';}
+function closeMoBg(e){if(e.target===document.getElementById('modalBg'))closeMo();}
+window.closeMo=closeMo;window.closeMoBg=closeMoBg;
+
+function initReveal(){
+  const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.classList.add('in');obs.unobserve(el.target);}});},{threshold:.08});
+  document.querySelectorAll('.rv:not(.in)').forEach(el=>obs.observe(el));
+}
+initReveal();
+
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('sol',scrollY>40));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMo();});
+
+let _tT;function showToast(m){const el=document.getElementById('toast');el.innerHTML=m;el.style.display='block';clearTimeout(_tT);_tT=setTimeout(()=>{el.style.display='none';},3800);}
+window.showToast=showToast;
+</script>
+</body>
+</html>

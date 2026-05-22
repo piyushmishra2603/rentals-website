@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Services — SmartRent AI</title>
-<meta name="description" content="Book verified plumbers, electricians, carpenters, painters and more. Trusted home service professionals across India.">
+<meta name="description" content="Book verified plumbers, electricians, carpenters, painters, movers and cleaners. Trusted home service professionals across India.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -114,17 +114,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t0);overf
 
 @keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── CATEGORY QUICK PICKS ── */
-.qpick-sec{padding:72px 0 0;position:relative;z-index:1}
-.qpick-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px;justify-content:center}
-.qp{padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid rgba(26,22,18,.1);background:#fff;color:var(--t1);transition:all .2s;letter-spacing:.01em;box-shadow:var(--sh-sm);text-decoration:none;display:inline-flex;align-items:center;gap:7px}
-.qp:hover,.qp.on{background:var(--teal-d);border-color:var(--teal-b);color:var(--teal)}
-
 /* ── SERVICES GRID ── */
 .svc-main{padding:56px 0 88px;position:relative;z-index:1}
 .svc-main-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 
-.scard{background:#fff;border:1.5px solid rgba(26,22,18,.07);border-radius:var(--r3);overflow:hidden;transition:all .3s cubic-bezier(.34,1.1,.64,1);cursor:pointer;box-shadow:var(--sh-sm);position:relative}
+.scard{background:#fff;border:1.5px solid rgba(26,22,18,.07);border-radius:var(--r3);overflow:hidden;transition:all .3s cubic-bezier(.34,1.1,.64,1);cursor:pointer;box-shadow:var(--sh-sm);position:relative;text-decoration:none;display:block;color:inherit}
 .scard:hover{border-color:var(--teal-b);transform:translateY(-8px);box-shadow:0 22px 52px rgba(26,22,18,.12)}
 
 .scard-top{padding:28px 26px 20px;background:var(--sc-bg,var(--bg3));border-bottom:1px solid rgba(26,22,18,.06);position:relative;overflow:hidden}
@@ -138,9 +132,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t0);overf
 .scard-services{display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
 .scard-svc{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t1)}
 .scard-svc::before{content:'✓';color:var(--teal);font-weight:700;font-size:11px;flex-shrink:0}
-.scard-ft{display:flex;align-items:center;gap:8px}
-.book-btn{flex:1;padding:10px;border-radius:var(--r1);background:linear-gradient(135deg,var(--teal),#0a7a70);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(13,148,136,.22)}.book-btn:hover{box-shadow:0 5px 18px rgba(13,148,136,.38);transform:translateY(-1px)}
-.call-btn{padding:10px 14px;border-radius:var(--r1);border:1.5px solid rgba(26,22,18,.1);background:transparent;color:var(--t2);font-size:13px;cursor:pointer;transition:all .2s}.call-btn:hover{border-color:var(--gold-b);color:var(--gold)}
+.scard-cta{padding:11px 18px;border-radius:var(--r1);background:linear-gradient(135deg,var(--teal),#0a7a70);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px rgba(13,148,136,.22);width:100%}.scard-cta:hover{box-shadow:0 5px 18px rgba(13,148,136,.38);transform:translateY(-1px)}
 
 /* ── HOW IT WORKS ── */
 .how-sec{padding:0 0 88px;position:relative;z-index:1}
@@ -152,16 +144,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t0);overf
 .hs-t{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--t0);margin-bottom:8px}
 .hs-d{font-size:12px;color:var(--t2);line-height:1.72}
 
-/* ── POPULAR SERVICES ROW ── */
-.popular-sec{padding:0 0 88px;position:relative;z-index:1}
-.pop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:32px}
-.pc-mini{background:#fff;border:1.5px solid rgba(26,22,18,.07);border-radius:var(--r2);padding:20px 16px;text-align:center;cursor:pointer;text-decoration:none;display:block;transition:all .3s;box-shadow:var(--sh-sm);position:relative;overflow:hidden}
-.pc-mini::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .3s}
-.pc-mini:hover{border-color:var(--gold-b);transform:translateY(-5px);box-shadow:0 14px 38px rgba(26,22,18,.1)}.pc-mini:hover::after{transform:scaleX(1)}
-.pc-mini-icon{font-size:32px;margin-bottom:9px;display:block;transition:transform .3s}.pc-mini:hover .pc-mini-icon{transform:scale(1.15)}
-.pc-mini-name{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--t0);margin-bottom:4px}
-.pc-mini-p{font-size:11px;color:var(--teal);font-family:'JetBrains Mono',monospace}
-
 /* ── GUARANTEE STRIP ── */
 .guar-sec{padding:0 0 88px;position:relative;z-index:1}
 .guar-strip{background:var(--t0);border-radius:var(--r3);padding:48px 56px;display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
@@ -169,21 +151,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t0);overf
 .gg-icon{font-size:36px;margin-bottom:12px;display:block}
 .gg-t{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:#fff;margin-bottom:7px}
 .gg-d{font-size:12px;color:rgba(255,255,255,.5);line-height:1.72}
-
-/* ── BOOKING MODAL ── */
-.modal-ov{position:fixed;inset:0;z-index:1000;background:rgba(26,22,18,.55);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
-.modal-ov.open{display:flex}
-.modal-box{background:#fff;border-radius:var(--r4);padding:40px;max-width:500px;width:100%;box-shadow:0 40px 80px rgba(26,22,18,.2);animation:mIn .4s cubic-bezier(.34,1.2,.64,1)}
-@keyframes mIn{from{opacity:0;transform:scale(.92) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
-.modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--t0)}
-.modal-close{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line2);background:transparent;cursor:pointer;font-size:16px;color:var(--t2);display:flex;align-items:center;justify-content:center;transition:all .2s}.modal-close:hover{border-color:var(--rose);color:var(--rose)}
-.form-row{margin-bottom:16px}
-.form-label{font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-bottom:6px;display:block}
-.form-input{width:100%;background:var(--bg3);border:1.5px solid rgba(26,22,18,.1);border-radius:var(--r1);padding:11px 14px;color:var(--t0);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:all .2s}.form-input:focus{border-color:var(--teal-b);box-shadow:0 0 0 3px rgba(13,148,136,.08)}
-.form-select{appearance:none;background:var(--bg3) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23a89a88' d='M1 1l5 5 5-5'/%3E%3C/svg%3E") right 14px center no-repeat;padding-right:36px}
-.form-btn{width:100%;padding:13px;border-radius:var(--r1);background:linear-gradient(135deg,var(--teal),#0a7a70);border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:8px;transition:all .2s;box-shadow:0 4px 14px rgba(13,148,136,.25);letter-spacing:.02em}.form-btn:hover{box-shadow:0 6px 22px rgba(13,148,136,.38);transform:translateY(-1px)}
-.form-note{font-size:11px;color:var(--t3);text-align:center;margin-top:12px}
 
 /* Toast */
 .toast{position:fixed;bottom:26px;right:26px;z-index:1100;background:#fff;border:1.5px solid var(--teal-b);border-left:3px solid var(--teal);border-radius:var(--r1);padding:12px 18px;font-size:13px;color:var(--t0);display:none;box-shadow:0 8px 28px rgba(26,22,18,.1);min-width:240px;animation:ti .3s ease}
@@ -202,50 +169,14 @@ footer{padding:56px 0 28px;background:var(--t0)}
 .foot-badges{display:flex;gap:6px}
 .fbdg{font-size:9px;font-family:'JetBrains Mono',monospace;padding:3px 8px;border-radius:3px;letter-spacing:.1em;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.35)}
 
-@media(max-width:900px){.svc-main-grid{grid-template-columns:repeat(2,1fr)}.pop-grid{grid-template-columns:repeat(2,1fr)}.how-steps{grid-template-columns:repeat(2,1fr);gap:24px}.hs:not(:last-child)::after{display:none}.guar-strip{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr 1fr}}
-@media(max-width:600px){.nav-links{display:none}.mob-btn{display:flex}.svc-main-grid{grid-template-columns:1fr}.pop-grid{grid-template-columns:repeat(2,1fr)}.how-steps{grid-template-columns:1fr}.guar-strip{grid-template-columns:1fr;padding:36px 28px}.how-inner{padding:36px 24px}.fg{grid-template-columns:1fr}.svc-search{flex-direction:column}}
+@media(max-width:900px){.svc-main-grid{grid-template-columns:repeat(2,1fr)}.how-steps{grid-template-columns:repeat(2,1fr);gap:24px}.hs:not(:last-child)::after{display:none}.guar-strip{grid-template-columns:repeat(2,1fr)}.fg{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.nav-links{display:none}.mob-btn{display:flex}.svc-main-grid{grid-template-columns:1fr}.how-steps{grid-template-columns:1fr}.guar-strip{grid-template-columns:1fr;padding:36px 28px}.how-inner{padding:36px 24px}.fg{grid-template-columns:1fr}.svc-search{flex-direction:column}}
 </style>
 </head>
 <body>
 
 <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
 <div class="toast" id="toast"></div>
-
-<!-- Booking Modal -->
-<div class="modal-ov" id="modalOv">
-  <div class="modal-box">
-    <div class="modal-h">
-      <div class="modal-title" id="modalTitle">Book a Service</div>
-      <button class="modal-close" onclick="closeModal()">✕</button>
-    </div>
-    <div class="form-row">
-      <label class="form-label">Your Name</label>
-      <input class="form-input" type="text" id="bkName" placeholder="e.g. Rahul Sharma">
-    </div>
-    <div class="form-row">
-      <label class="form-label">Phone Number</label>
-      <input class="form-input" type="tel" id="bkPhone" placeholder="e.g. 98765 43210">
-    </div>
-    <div class="form-row">
-      <label class="form-label">Your City</label>
-      <select class="form-input form-select" id="bkCity">
-        <option value="">Select city…</option>
-        <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
-        <option>Delhi/NCR</option><option>Chennai</option><option>Pune</option>
-      </select>
-    </div>
-    <div class="form-row">
-      <label class="form-label">Preferred Date</label>
-      <input class="form-input" type="date" id="bkDate">
-    </div>
-    <div class="form-row">
-      <label class="form-label">Describe the Issue (optional)</label>
-      <textarea class="form-input" id="bkDesc" rows="2" placeholder="E.g. leaking tap in bathroom…" style="resize:vertical"></textarea>
-    </div>
-    <button class="form-btn" onclick="submitBooking()">🔧 Confirm Booking</button>
-    <div class="form-note">We'll confirm your booking via SMS within 15 minutes</div>
-  </div>
-</div>
 
 <!-- MOBILE MENU -->
 <div class="mob-menu" id="mobMenu">
@@ -280,7 +211,7 @@ footer{padding:56px 0 28px;background:var(--t0)}
   </div>
   <div class="nav-right">
     <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
-    <a class="nb nb-gold" href="#" onclick="openModal('Home Service')" style="text-decoration:none">🔧 Book Now</a>
+    <a class="nb nb-gold" href="post-service.html" style="text-decoration:none">➕ Post Service</a>
     <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
   </div>
 </nav>
@@ -291,7 +222,7 @@ footer{padding:56px 0 28px;background:var(--t0)}
     <div class="hero-eye"><span class="pulse-dot"></span>500+ Verified Professionals · 15 Cities</div>
     <h1 class="hero-t">Home Services<br><em>You Can Trust</em></h1>
     <div class="hero-sub">Expert professionals, at your door.</div>
-    <p class="hero-p">Verified, background-checked professionals for all your home needs — plumbing, electrical, carpentry, AC service and more. Book in minutes, pay after service.</p>
+    <p class="hero-p">Verified, background-checked professionals for all your home needs — plumbing, electrical, carpentry, painting, moving and cleaning. Book in minutes, pay after service.</p>
 
     <div class="svc-search">
       <div class="sf">
@@ -313,31 +244,13 @@ footer{padding:56px 0 28px;background:var(--t0)}
   </div>
 </section>
 
-<!-- QUICK FILTER -->
-<section class="qpick-sec">
-  <div class="wrap" style="text-align:center">
-    <div class="qpick-grid" id="qpicks">
-      <a class="qp on" href="#all" onclick="filterCards('all',this)">🔍 All Services</a>
-      <a class="qp" href="#plumbing" onclick="filterCards('plumbing',this)">🔧 Plumbing</a>
-      <a class="qp" href="#electrical" onclick="filterCards('electrical',this)">⚡ Electrical</a>
-      <a class="qp" href="#carpentry" onclick="filterCards('carpentry',this)">🪚 Carpentry</a>
-      <a class="qp" href="#painting" onclick="filterCards('painting',this)">🖌️ Painting</a>
-      <a class="qp" href="#ac" onclick="filterCards('ac',this)">❄️ AC Service</a>
-      <a class="qp" href="#cleaning" onclick="filterCards('cleaning',this)">🧹 Cleaning</a>
-      <a class="qp" href="#locksmith" onclick="filterCards('locksmith',this)">🔒 Locksmith</a>
-      <a class="qp" href="#pest" onclick="filterCards('pest',this)">🪴 Pest Control</a>
-      <a class="qp" href="#appliance" onclick="filterCards('appliance',this)">📺 Appliances</a>
-    </div>
-  </div>
-</section>
-
 <!-- MAIN SERVICES GRID -->
 <section class="svc-main">
   <div class="wrap">
     <div class="rv"><div class="eyebrow">All Services</div><h2 class="sh2">What Do You<br><em>Need Fixed Today?</em></h2></div>
     <div class="svc-main-grid rv d1" id="svcGrid">
 
-      <div class="scard" data-cat="plumbing">
+      <a href="service-details.html?service=plumber" class="scard" data-cat="plumbing">
         <div class="scard-top" style="--sc-bg:#fdf5ea;--sc-dot:rgba(192,124,42,.08)">
           <span class="scard-icon">🔧</span>
           <div class="scard-name">Plumber</div>
@@ -350,16 +263,12 @@ footer{padding:56px 0 28px;background:var(--t0)}
             <div class="scard-svc">Bathroom fitting & installation</div>
             <div class="scard-svc">Drainage blockage removal</div>
             <div class="scard-svc">Geyser installation & repair</div>
-            <div class="scard-svc">Water tank cleaning</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Plumber')">Book Plumber</button>
-            <button class="call-btn" onclick="showToast('📞 Calling nearest plumber…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="electrical">
+      <a href="service-details.html?service=electrician" class="scard" data-cat="electrical">
         <div class="scard-top" style="--sc-bg:#eef6f5;--sc-dot:rgba(13,148,136,.07)">
           <span class="scard-icon">⚡</span>
           <div class="scard-name">Electrician</div>
@@ -372,16 +281,12 @@ footer{padding:56px 0 28px;background:var(--t0)}
             <div class="scard-svc">Fan & light installation</div>
             <div class="scard-svc">Switchboard repair & upgrade</div>
             <div class="scard-svc">Short circuit diagnosis</div>
-            <div class="scard-svc">MCB & fuse box work</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Electrician')">Book Electrician</button>
-            <button class="call-btn" onclick="showToast('📞 Calling nearest electrician…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="carpentry">
+      <a href="service-details.html?service=carpenter" class="scard" data-cat="carpentry">
         <div class="scard-top" style="--sc-bg:#fdf8f0;--sc-dot:rgba(192,124,42,.06)">
           <span class="scard-icon">🪚</span>
           <div class="scard-name">Carpenter</div>
@@ -394,16 +299,12 @@ footer{padding:56px 0 28px;background:var(--t0)}
             <div class="scard-svc">Door & window repairs</div>
             <div class="scard-svc">Wardrobe & cabinet work</div>
             <div class="scard-svc">False ceiling & partition</div>
-            <div class="scard-svc">Custom woodwork & polish</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Carpenter')">Book Carpenter</button>
-            <button class="call-btn" onclick="showToast('📞 Calling nearest carpenter…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="painting">
+      <a href="service-details.html?service=painter" class="scard" data-cat="painting">
         <div class="scard-top" style="--sc-bg:#f9f6f1;--sc-dot:rgba(224,154,74,.08)">
           <span class="scard-icon">🖌️</span>
           <div class="scard-name">Painter</div>
@@ -416,41 +317,33 @@ footer{padding:56px 0 28px;background:var(--t0)}
             <div class="scard-svc">Exterior & terrace painting</div>
             <div class="scard-svc">Waterproofing treatment</div>
             <div class="scard-svc">Texture & pattern finishes</div>
-            <div class="scard-svc">Touch-up & spot painting</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Painter')">Book Painter</button>
-            <button class="call-btn" onclick="showToast('📞 Calling nearest painter…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="ac">
+      <a href="service-details.html?service=mover" class="scard" data-cat="movers">
         <div class="scard-top" style="--sc-bg:#eef6f5;--sc-dot:rgba(13,148,136,.08)">
-          <span class="scard-icon">❄️</span>
-          <div class="scard-name">AC Service</div>
-          <span class="scard-price">Starting ₹399</span>
+          <span class="scard-icon">📦</span>
+          <div class="scard-name">Movers</div>
+          <span class="scard-price">Starting ₹999</span>
         </div>
         <div class="scard-body">
-          <div class="scard-desc">Keep cool all year with expert AC servicing, installation and emergency repair.</div>
+          <div class="scard-desc">Professional moving services for a smooth relocation — local or long-distance with full care.</div>
           <div class="scard-services">
-            <div class="scard-svc">AC installation & uninstall</div>
-            <div class="scard-svc">Deep cleaning & gas refill</div>
-            <div class="scard-svc">Cooling problem diagnosis</div>
-            <div class="scard-svc">Compressor & PCB repair</div>
-            <div class="scard-svc">Annual maintenance contract</div>
+            <div class="scard-svc">Local shifting & relocation</div>
+            <div class="scard-svc">Packing & unpacking</div>
+            <div class="scard-svc">Fragile item handling</div>
+            <div class="scard-svc">Storage facility access</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('AC Service')">Book AC Service</button>
-            <button class="call-btn" onclick="showToast('📞 Calling nearest AC technician…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="cleaning">
+      <a href="service-details.html?service=cleaner" class="scard" data-cat="cleaning">
         <div class="scard-top" style="--sc-bg:#fdf9f4;--sc-dot:rgba(192,124,42,.06)">
           <span class="scard-icon">🧹</span>
-          <div class="scard-name">Deep Cleaning</div>
+          <div class="scard-name">Cleaner</div>
           <span class="scard-price">Starting ₹999</span>
         </div>
         <div class="scard-body">
@@ -460,98 +353,11 @@ footer{padding:56px 0 28px;background:var(--t0)}
             <div class="scard-svc">Sofa & carpet cleaning</div>
             <div class="scard-svc">Bathroom & kitchen scrub</div>
             <div class="scard-svc">Move-in / move-out clean</div>
-            <div class="scard-svc">Water tank cleaning</div>
           </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Deep Cleaning')">Book Cleaning</button>
-            <button class="call-btn" onclick="showToast('📞 Calling cleaning team…')">📞</button>
-          </div>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(26,22,18,.06);text-align:center;font-size:13px;color:var(--teal);font-weight:600">View Providers →</div>
         </div>
-      </div>
+      </a>
 
-      <div class="scard" data-cat="locksmith">
-        <div class="scard-top" style="--sc-bg:#f5f1eb;--sc-dot:rgba(192,124,42,.07)">
-          <span class="scard-icon">🔒</span>
-          <div class="scard-name">Locksmith</div>
-          <span class="scard-price">Starting ₹249</span>
-        </div>
-        <div class="scard-body">
-          <div class="scard-desc">Emergency lockouts, lock upgrades and smart lock installation — fast response guaranteed.</div>
-          <div class="scard-services">
-            <div class="scard-svc">Emergency lockout service</div>
-            <div class="scard-svc">Lock change & installation</div>
-            <div class="scard-svc">Digital lock setup</div>
-            <div class="scard-svc">Key duplication</div>
-            <div class="scard-svc">Grille & gate lock repair</div>
-          </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Locksmith')">Book Locksmith</button>
-            <button class="call-btn" onclick="showToast('📞 Emergency locksmith calling…')">📞</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="scard" data-cat="pest">
-        <div class="scard-top" style="--sc-bg:#eef6f5;--sc-dot:rgba(13,148,136,.06)">
-          <span class="scard-icon">🪴</span>
-          <div class="scard-name">Pest Control</div>
-          <span class="scard-price">Starting ₹799</span>
-        </div>
-        <div class="scard-body">
-          <div class="scard-desc">Safe, effective pest control for a healthier home. Family and pet-friendly treatments available.</div>
-          <div class="scard-services">
-            <div class="scard-svc">Cockroach & ant treatment</div>
-            <div class="scard-svc">Termite (white ant) control</div>
-            <div class="scard-svc">Bed bug treatment</div>
-            <div class="scard-svc">Mosquito fogging</div>
-            <div class="scard-svc">Rodent control</div>
-          </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Pest Control')">Book Pest Control</button>
-            <button class="call-btn" onclick="showToast('📞 Calling pest control team…')">📞</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="scard" data-cat="appliance">
-        <div class="scard-top" style="--sc-bg:#fdf8f0;--sc-dot:rgba(224,154,74,.07)">
-          <span class="scard-icon">📺</span>
-          <div class="scard-name">Appliance Repair</div>
-          <span class="scard-price">Starting ₹299</span>
-        </div>
-        <div class="scard-body">
-          <div class="scard-desc">Quick, affordable repair for all major home appliances — washing machine, fridge, TV and more.</div>
-          <div class="scard-services">
-            <div class="scard-svc">Washing machine repair</div>
-            <div class="scard-svc">Refrigerator & fridge repair</div>
-            <div class="scard-svc">TV & LED repair</div>
-            <div class="scard-svc">Microwave oven repair</div>
-            <div class="scard-svc">Water purifier service</div>
-          </div>
-          <div class="scard-ft">
-            <button class="book-btn" onclick="openModal('Appliance Repair')">Book Technician</button>
-            <button class="call-btn" onclick="showToast('📞 Calling appliance technician…')">📞</button>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- POPULAR QUICK SERVICES -->
-<section class="popular-sec">
-  <div class="wrap">
-    <div class="rv"><div class="eyebrow">Most Booked</div><h2 class="sh2">Popular <em>Right Now</em></h2></div>
-    <div class="pop-grid rv d1">
-      <a class="pc-mini" href="#" onclick="openModal('Geyser Repair')"><span class="pc-mini-icon">🚿</span><div class="pc-mini-name">Geyser Repair</div><div class="pc-mini-p">From ₹249</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Sofa Cleaning')"><span class="pc-mini-icon">🛋️</span><div class="pc-mini-name">Sofa Cleaning</div><div class="pc-mini-p">From ₹499</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Ceiling Fan Install')"><span class="pc-mini-icon">💨</span><div class="pc-mini-name">Fan Install</div><div class="pc-mini-p">From ₹199</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Wall Painting')"><span class="pc-mini-icon">🏠</span><div class="pc-mini-name">Wall Painting</div><div class="pc-mini-p">From ₹5/sq ft</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('RO Water Purifier')"><span class="pc-mini-icon">💧</span><div class="pc-mini-name">RO Service</div><div class="pc-mini-p">From ₹299</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Door Lock Change')"><span class="pc-mini-icon">🚪</span><div class="pc-mini-name">Lock Change</div><div class="pc-mini-p">From ₹299</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Cockroach Treatment')"><span class="pc-mini-icon">🦟</span><div class="pc-mini-name">Cockroach Kill</div><div class="pc-mini-p">From ₹799</div></a>
-      <a class="pc-mini" href="#" onclick="openModal('Move In Cleaning')"><span class="pc-mini-icon">📦</span><div class="pc-mini-name">Move-In Clean</div><div class="pc-mini-p">From ₹1,499</div></a>
     </div>
   </div>
 </section>
@@ -569,17 +375,17 @@ footer{padding:56px 0 28px;background:var(--t0)}
           <div class="hs">
             <div class="hs-n">1</div>
             <div class="hs-t">Choose Service</div>
-            <div class="hs-d">Pick from plumbing, electrical, carpentry or any of our 20+ categories.</div>
+            <div class="hs-d">Pick from plumbing, electrical, carpentry or any of our core services.</div>
           </div>
           <div class="hs">
             <div class="hs-n">2</div>
-            <div class="hs-t">Book Instantly</div>
-            <div class="hs-d">Fill in your details and preferred date. Booking takes under 2 minutes.</div>
+            <div class="hs-t">Find a Pro</div>
+            <div class="hs-d">Browse verified professionals with ratings and choose your preferred provider.</div>
           </div>
           <div class="hs">
             <div class="hs-n">3</div>
-            <div class="hs-t">Pro Arrives</div>
-            <div class="hs-d">A verified, background-checked professional reaches your door on time.</div>
+            <div class="hs-t">Contact & Book</div>
+            <div class="hs-d">Connect directly with the professional and schedule your service date.</div>
           </div>
           <div class="hs">
             <div class="hs-n">4</div>
@@ -639,12 +445,12 @@ footer{padding:56px 0 28px;background:var(--t0)}
       </div>
       <div>
         <div class="ffc-t">Top Services</div>
-        <a class="fl" href="#">→ Plumber</a>
-        <a class="fl" href="#">→ Electrician</a>
-        <a class="fl" href="#">→ Carpenter</a>
-        <a class="fl" href="#">→ AC Service</a>
-        <a class="fl" href="#">→ Deep Cleaning</a>
-        <a class="fl" href="#">→ Pest Control</a>
+        <a class="fl" href="service-details.html?service=plumber">→ Plumber</a>
+        <a class="fl" href="service-details.html?service=electrician">→ Electrician</a>
+        <a class="fl" href="service-details.html?service=carpenter">→ Carpenter</a>
+        <a class="fl" href="service-details.html?service=painter">→ Painter</a>
+        <a class="fl" href="service-details.html?service=mover">→ Movers</a>
+        <a class="fl" href="service-details.html?service=cleaner">→ Cleaner</a>
       </div>
       <div>
         <div class="ffc-t">For Tenants</div>
@@ -657,7 +463,7 @@ footer{padding:56px 0 28px;background:var(--t0)}
       <div>
         <div class="ffc-t">Company</div>
         <a class="fl" href="about-us.html">→ About Us</a>
-        <a class="fl" href="post-property.html">→ List Property Free</a>
+        <a class="fl" href="post-service.html">→ Post Your Service</a>
         <a class="fl" href="plans.html">→ Pricing</a>
         <a class="fl" href="privacy.html">→ Privacy Policy</a>
         <a class="fl" href="#">→ Contact Us</a>
@@ -680,53 +486,21 @@ function toggleMob(){
   const o=m.classList.toggle('open');b.textContent=o?'✕':'☰';
 }
 
-// Filter cards
-function filterCards(cat,el){
-  event.preventDefault();
-  document.querySelectorAll('.qp').forEach(q=>q.classList.remove('on'));
-  el.classList.add('on');
-  document.querySelectorAll('.scard').forEach(c=>{
-    c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
-  });
-}
-
 // Search
 function searchSvc(){
   const q=document.getElementById('svcQ').value.toLowerCase().trim();
   if(!q)return;
-  const map={plumb:'plumbing',electric:'electrical',carpenter:'carpentry',paint:'painting','ac ':'ac','air cond':'ac',clean:'cleaning',lock:'locksmith',pest:'pest',applian:'appliance',wash:'appliance',fridge:'appliance'};
+  const map={plumb:'plumbing',electric:'electrical',carpenter:'carpentry',paint:'painting','mover':'movers','clean':'cleaning'};
   let found=null;
   for(const k in map){if(q.includes(k)){found=map[k];break;}}
   if(found){
-    document.querySelectorAll('.scard').forEach(c=>{c.style.display=c.dataset.cat===found?'':'none';});
     showToast('🔍 Showing results for: '+found);
+    setTimeout(()=>{
+      window.location.href='service-details.html?service='+found.slice(0,-1);
+    },400);
   }else{
-    document.querySelectorAll('.scard').forEach(c=>{c.style.display='';});
-    showToast('💡 Showing all services');
+    showToast('💡 Service not found. Try: plumber, electrician, carpenter, painter, mover, cleaner');
   }
-}
-
-// Modal
-let currentService='';
-function openModal(svc){
-  event.preventDefault();
-  currentService=svc;
-  document.getElementById('modalTitle').textContent='Book '+svc;
-  document.getElementById('modalOv').classList.add('open');
-  document.getElementById('bkDate').min=new Date().toISOString().split('T')[0];
-}
-function closeModal(){document.getElementById('modalOv').classList.remove('open');}
-document.getElementById('modalOv').addEventListener('click',function(e){if(e.target===this)closeModal();});
-
-function submitBooking(){
-  const name=document.getElementById('bkName').value.trim();
-  const phone=document.getElementById('bkPhone').value.trim();
-  const city=document.getElementById('bkCity').value;
-  if(!name){showToast('⚠️ Please enter your name');return;}
-  if(!phone||phone.length<10){showToast('⚠️ Enter a valid phone number');return;}
-  if(!city){showToast('⚠️ Please select your city');return;}
-  closeModal();
-  showToast('🎉 Booking confirmed! Our '+currentService+' will call you shortly.');
 }
 
 // Toast
@@ -737,8 +511,7 @@ function showToast(msg){const el=document.getElementById('toast');el.innerHTML=m
 const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.08});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
-window.openModal=openModal;window.closeModal=closeModal;window.submitBooking=submitBooking;
-window.filterCards=filterCards;window.searchSvc=searchSvc;window.showToast=showToast;window.toggleMob=toggleMob;
+window.toggleMob=toggleMob;window.searchSvc=searchSvc;window.showToast=showToast;
 </script>
 </body>
 </html>

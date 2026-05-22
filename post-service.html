@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Your Service | ProServ</title>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+  // ── REPLACE with your Firebase config ──
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+  const storage = getStorage(app);
+
+  window.__fb = { auth, db, storage, setDoc, updateDoc, doc, collection, serverTimestamp, ref, uploadBytes, getDownloadURL, onAuthStateChanged };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:       #0d0f14;
+  --surface:  #161a23;
+  --card:     #1e2330;
+  --border:   #2a3045;
+  --accent:   #f5a623;
+  --accent2:  #e05c2a;
+  --text:     #eef0f6;
+  --muted:    #7a8099;
+  --success:  #3dd68c;
+  --error:    #f45b5b;
+  --radius:   14px;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Noise texture overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: .4;
+}
+
+/* ── Header ── */
+header {
+  padding: 22px 40px;
+  display: flex; align-items: center; gap: 14px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0;
+  background: rgba(13,15,20,.85);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.logo-mark {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: grid; place-items: center;
+  font-family: var(--font-head); font-weight: 800; font-size: 17px;
+}
+header h1 { font-family: var(--font-head); font-size: 20px; font-weight: 700; letter-spacing: -.3px; }
+.user-badge {
+  margin-left: auto; display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--muted);
+}
+.user-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+
+/* ── Main layout ── */
+main { max-width: 960px; margin: 0 auto; padding: 48px 24px 80px; position: relative; z-index: 1; }
+
+/* ── Page title ── */
+.page-title { margin-bottom: 40px; }
+.page-title span {
+  font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); display: block; margin-bottom: 10px;
+}
+.page-title h2 {
+  font-family: var(--font-head); font-size: clamp(28px, 5vw, 44px); font-weight: 800;
+  line-height: 1.1; letter-spacing: -.5px;
+}
+.page-title p { color: var(--muted); margin-top: 10px; font-size: 15px; max-width: 460px; }
+
+/* ── Step indicator ── */
+.steps {
+  display: flex; gap: 0; margin-bottom: 44px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.step {
+  flex: 1; padding: 14px 12px; text-align: center;
+  font-size: 12px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase;
+  color: var(--muted); cursor: default; position: relative;
+  transition: background .25s, color .25s;
+}
+.step.active { background: rgba(245,166,35,.12); color: var(--accent); }
+.step.done   { background: rgba(61,214,140,.08); color: var(--success); }
+.step::after {
+  content: ''; position: absolute; right: -1px; top: 20%; height: 60%;
+  width: 1px; background: var(--border);
+}
+.step:last-child::after { display: none; }
+.step-num {
+  display: inline-block; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--border); font-size: 11px; line-height: 20px;
+  margin-right: 6px; transition: background .25s;
+}
+.step.active .step-num { background: var(--accent); color: #000; }
+.step.done   .step-num { background: var(--success); color: #000; }
+
+/* ── Panels ── */
+.panel { display: none; animation: fadeUp .35s ease; }
+.panel.visible { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Service selector ── */
+.service-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 14px;
+}
+.service-card {
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: var(--radius); padding: 24px 16px;
+  text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s, transform .15s;
+  user-select: none;
+}
+.service-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.service-card.selected {
+  border-color: var(--accent);
+  background: rgba(245,166,35,.1);
+  box-shadow: 0 0 0 4px rgba(245,166,35,.12);
+}
+.service-icon { font-size: 34px; display: block; margin-bottom: 12px; }
+.service-name { font-family: var(--font-head); font-weight: 700; font-size: 14px; }
+.service-price {
+  margin-top: 6px; font-size: 12px; color: var(--accent); font-weight: 600;
+}
+
+/* ── Section label ── */
+.sec-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px; margin-top: 36px;
+  display: flex; align-items: center; gap: 10px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── Form fields ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media(max-width:600px){ .form-grid { grid-template-columns: 1fr; } }
+.form-full { grid-column: 1/-1; }
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field label { font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--muted); text-transform: uppercase; }
+.field input,
+.field select,
+.field textarea {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 10px; color: var(--text); font-family: var(--font-body);
+  font-size: 14px; padding: 12px 14px; outline: none;
+  transition: border-color .2s;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus { border-color: var(--accent); }
+.field select { appearance: none; cursor: pointer; }
+.field textarea { resize: vertical; min-height: 90px; }
+
+/* ── Photo upload ── */
+.photo-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 30px; text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s; position: relative;
+}
+.photo-zone:hover, .photo-zone.drag-over {
+  border-color: var(--accent); background: rgba(245,166,35,.05);
+}
+.photo-zone input[type=file] { display: none; }
+.photo-zone .zone-icon { font-size: 28px; margin-bottom: 10px; }
+.photo-zone p { color: var(--muted); font-size: 13px; }
+.photo-zone strong { color: var(--accent); }
+.photo-previews {
+  display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px;
+}
+.photo-thumb {
+  width: 80px; height: 80px; border-radius: 10px; object-fit: cover;
+  border: 2px solid var(--border); position: relative;
+}
+.photo-thumb-wrap { position: relative; }
+.remove-photo {
+  position: absolute; top: -6px; right: -6px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--error); border: none; cursor: pointer;
+  color: #fff; font-size: 12px; display: flex; align-items: center; justify-content: center;
+}
+
+/* ── Availability tags ── */
+.tag-group { display: flex; flex-wrap: wrap; gap: 8px; }
+.day-tag {
+  padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border); cursor: pointer; transition: all .15s;
+  user-select: none;
+}
+.day-tag.on { background: var(--accent); border-color: var(--accent); color: #000; }
+
+/* ── Buttons ── */
+.btn {
+  padding: 14px 28px; border-radius: 10px; font-family: var(--font-head);
+  font-size: 14px; font-weight: 700; letter-spacing: .3px; cursor: pointer;
+  border: none; transition: opacity .2s, transform .1s;
+}
+.btn:hover { opacity: .88; }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #000; }
+.btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+.btn-success { background: var(--success); color: #000; }
+.btn-row { display: flex; gap: 12px; margin-top: 32px; justify-content: flex-end; }
+
+/* ── Payment card ── */
+.pay-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+}
+.pay-summary {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; border-bottom: 1px solid var(--border);
+}
+.pay-summary:last-of-type { border-bottom: none; }
+.pay-label { color: var(--muted); font-size: 14px; }
+.pay-value { font-weight: 600; font-size: 15px; }
+.pay-total { color: var(--accent); font-family: var(--font-head); font-size: 22px; font-weight: 800; }
+
+.plan-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; background: rgba(245,166,35,.15);
+  border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--accent);
+  margin-bottom: 20px;
+}
+
+/* Payment input row */
+.pay-input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+@media(max-width:500px){ .pay-input-grid { grid-template-columns: 1fr; } }
+
+/* ── Success screen ── */
+.success-screen { text-align: center; padding: 60px 20px; }
+.success-screen .big-check {
+  font-size: 72px; animation: pop .5s cubic-bezier(.17,.67,.58,1.4);
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.success-screen h3 { font-family: var(--font-head); font-size: 28px; font-weight: 800; margin: 18px 0 10px; }
+.success-screen p  { color: var(--muted); max-width: 380px; margin: 0 auto; font-size: 14px; line-height: 1.7; }
+.activation-pill {
+  display: inline-block; margin-top: 22px; padding: 10px 22px;
+  background: rgba(61,214,140,.12); border: 1px solid var(--success);
+  border-radius: 20px; font-size: 13px; font-weight: 600; color: var(--success);
+}
+
+/* ── Toast ── */
+#toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 20px;
+  font-size: 13px; font-weight: 500; z-index: 999;
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s; pointer-events: none;
+  max-width: 320px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.ok   { border-color: var(--success); color: var(--success); }
+#toast.err  { border-color: var(--error);   color: var(--error); }
+
+/* ── Spinner ── */
+.spinner {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,.2);
+  border-top-color: #000; border-radius: 50%;
+  animation: spin .7s linear infinite; display: inline-block; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">P</div>
+  <h1>ProServ</h1>
+  <div class="user-badge">
+    <div class="user-dot"></div>
+    <span id="header-user">Loading...</span>
+  </div>
+</header>
+
+<main>
+  <div class="page-title">
+    <span>Professional Dashboard</span>
+    <h2>List Your Service</h2>
+    <p>Complete all three steps to activate your listing for 30 days.</p>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps">
+    <div class="step active" id="step1-indicator"><span class="step-num">1</span>Choose Service</div>
+    <div class="step"        id="step2-indicator"><span class="step-num">2</span>Fill Details</div>
+    <div class="step"        id="step3-indicator"><span class="step-num">3</span>Payment</div>
+  </div>
+
+  <!-- ── PANEL 1: Choose Service ── -->
+  <div class="panel visible" id="panel-1">
+    <div class="service-grid" id="service-grid">
+      <!-- populated by JS -->
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btn-to-2" onclick="goToStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── PANEL 2: Service Details ── -->
+  <div class="panel" id="panel-2">
+
+    <div class="sec-label">Personal Information</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="f-name" placeholder="John Doe">
+      </div>
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" id="f-phone" placeholder="+91 98765 43210">
+      </div>
+      <div class="field">
+        <label>City / Area</label>
+        <input type="text" id="f-city" placeholder="Pune, Maharashtra">
+      </div>
+      <div class="field">
+        <label>Years of Experience</label>
+        <input type="number" id="f-exp" min="0" max="50" placeholder="5">
+      </div>
+      <div class="field form-full">
+        <label>Address / Service Area Description</label>
+        <input type="text" id="f-address" placeholder="Kothrud, Pune – covering 10 km radius">
+      </div>
+    </div>
+
+    <div class="sec-label">Service Details</div>
+    <div class="form-grid">
+      <div class="field">
+        <label>Service Title</label>
+        <input type="text" id="f-title" placeholder="e.g. Expert Home Plumber">
+      </div>
+      <div class="field">
+        <label>Your Rate (₹ / hour)</label>
+        <input type="number" id="f-rate" placeholder="350">
+      </div>
+      <div class="field form-full">
+        <label>About / Description</label>
+        <textarea id="f-desc" placeholder="Describe your expertise, tools you carry, specializations..."></textarea>
+      </div>
+    </div>
+
+    <div class="sec-label">Availability</div>
+    <div class="tag-group" id="day-tags">
+      <!-- JS fills days -->
+    </div>
+    <div class="form-grid" style="margin-top:16px">
+      <div class="field">
+        <label>From Time</label>
+        <input type="time" id="f-time-from" value="08:00">
+      </div>
+      <div class="field">
+        <label>To Time</label>
+        <input type="time" id="f-time-to" value="20:00">
+      </div>
+    </div>
+
+    <div class="sec-label">Photos (up to 5)</div>
+    <div class="photo-zone" id="photo-zone" onclick="document.getElementById('photo-input').click()"
+         ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFiles(event)">
+      <input type="file" id="photo-input" accept="image/*" multiple onchange="handlePhotos(this.files)">
+      <div class="zone-icon">📸</div>
+      <p>Drag & drop or <strong>click to browse</strong></p>
+      <p style="margin-top:4px;font-size:12px">JPG / PNG · max 5 images · 5 MB each</p>
+    </div>
+    <div class="photo-previews" id="photo-previews"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goToStep(1)">← Back</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">Review & Pay →</button>
+    </div>
+  </div>
+
+  <!-- ── PANEL 3: Payment ── -->
+  <div class="panel" id="panel-3">
+
+    <div class="pay-card">
+      <div class="plan-badge">⚡ 30-Day Activation</div>
+      <div class="pay-summary">
+        <span class="pay-label">Service Type</span>
+        <span class="pay-value" id="pay-service">—</span>
+      </div>
+      <div class="pay-summary">
+        <span class="pay-label">Plan Duration</span>
+        <span class="pay-value">30 Days</span>
+      </div>
+      <div class="pay-summary">
+        <span class="pay-label">Listing Amount</span>
+        <span class="pay-value pay-total" id="pay-amount">₹0</span>
+      </div>
+    </div>
+
+    <div class="sec-label">Payment Details</div>
+    <div class="pay-card">
+      <div class="pay-input-grid">
+        <div class="field form-full">
+          <label>Card Number</label>
+          <input type="text" id="pay-card-num" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)">
+        </div>
+        <div class="field">
+          <label>Expiry</label>
+          <input type="text" id="pay-expiry" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)">
+        </div>
+        <div class="field">
+          <label>CVV</label>
+          <input type="password" id="pay-cvv" placeholder="•••" maxlength="4">
+        </div>
+        <div class="field form-full">
+          <label>Name on Card</label>
+          <input type="text" id="pay-card-name" placeholder="John Doe">
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goToStep(2)">← Back</button>
+      <button class="btn btn-primary" id="pay-btn" onclick="processPayment()">
+        Pay & Activate Listing
+      </button>
+    </div>
+  </div>
+
+  <!-- ── PANEL 4: Success ── -->
+  <div class="panel" id="panel-4">
+    <div class="success-screen">
+      <div class="big-check">🎉</div>
+      <h3>Service Listed Successfully!</h3>
+      <p>Your listing is now live for <strong>30 days</strong>. Customers in your area can discover and contact you.</p>
+      <div class="activation-pill" id="activation-dates">Active: — → —</div>
+      <div style="margin-top:32px">
+        <button class="btn btn-success" onclick="goToServices()">View My Service Card →</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+/* ── Service catalogue (prices must match your plans page) ── */
+const SERVICES = [
+  { id:'plumber',      name:'Plumber',      icon:'🔧', price: 499  },
+  { id:'electrician',  name:'Electrician',  icon:'⚡', price: 599  },
+  { id:'painter',      name:'Painter',      icon:'🎨', price: 449  },
+  { id:'movers',       name:'Movers',       icon:'📦', price: 799  },
+  { id:'carpenter',    name:'Carpenter',    icon:'🪚', price: 549  },
+  { id:'cleaner',      name:'Cleaner',      icon:'🧹', price: 399  },
+];
+
+const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+let selectedService = null;
+let selectedDays    = new Set(['Mon','Tue','Wed','Thu','Fri']);
+let photoFiles      = [];
+let currentUser     = null;
+let currentStep     = 1;
+
+/* ── Build service grid ── */
+const grid = document.getElementById('service-grid');
+SERVICES.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'service-card';
+  card.dataset.id = s.id;
+  card.innerHTML = `
+    <span class="service-icon">${s.icon}</span>
+    <div class="service-name">${s.name}</div>
+    <div class="service-price">₹${s.price} / listing</div>`;
+  card.onclick = () => selectService(s);
+  grid.appendChild(card);
+});
+
+/* ── Build day tags ── */
+const tagGroup = document.getElementById('day-tags');
+DAYS.forEach(d => {
+  const tag = document.createElement('div');
+  tag.className = 'day-tag' + (selectedDays.has(d) ? ' on' : '');
+  tag.textContent = d;
+  tag.onclick = () => {
+    selectedDays.has(d) ? selectedDays.delete(d) : selectedDays.add(d);
+    tag.classList.toggle('on');
+  };
+  tagGroup.appendChild(tag);
+});
+
+/* ── Auth state ── */
+window.addEventListener('load', () => {
+  const { auth, onAuthStateChanged } = window.__fb || {};
+  if (!auth) { document.getElementById('header-user').textContent = 'Not connected'; return; }
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      currentUser = user;
+      document.getElementById('header-user').textContent = user.email || user.displayName || 'Professional';
+      prefillName(user);
+    } else {
+      document.getElementById('header-user').textContent = 'Not signed in';
+      toast('Please sign in to post a service', 'err');
+    }
+  });
+});
+
+function prefillName(user) {
+  if (user.displayName && !document.getElementById('f-name').value)
+    document.getElementById('f-name').value = user.displayName;
+  if (user.email && !document.getElementById('pay-card-name').value)
+    document.getElementById('pay-card-name').value = user.displayName || '';
+}
+
+/* ── Step navigation ── */
+function goToStep(n) {
+  if (n === 2 && !selectedService) { toast('Please select a service first', 'err'); return; }
+  if (n === 3 && !validateStep2()) return;
+
+  currentStep = n;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+  document.getElementById('panel-'+n).classList.add('visible');
+
+  document.querySelectorAll('.step').forEach((s,i) => {
+    s.classList.remove('active','done');
+    if (i+1 < n)  s.classList.add('done');
+    if (i+1 === n) s.classList.add('active');
+  });
+
+  if (n === 3) updatePaySummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectService(s) {
+  selectedService = s;
+  document.querySelectorAll('.service-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.id === s.id);
+  });
+}
+
+/* ── Step 2 validation ── */
+function validateStep2() {
+  const req = ['f-name','f-phone','f-city','f-title','f-desc'];
+  for (const id of req) {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) {
+      el.focus();
+      toast('Please fill in all required fields', 'err');
+      return false;
+    }
+  }
+  if (selectedDays.size === 0) { toast('Select at least one available day', 'err'); return false; }
+  return true;
+}
+
+/* ── Payment summary ── */
+function updatePaySummary() {
+  if (!selectedService) return;
+  document.getElementById('pay-service').textContent = selectedService.name;
+  document.getElementById('pay-amount').textContent  = `₹${selectedService.price}`;
+}
+
+/* ── Photo handling ── */
+function handlePhotos(files) {
+  Array.from(files).forEach(f => {
+    if (photoFiles.length >= 5) { toast('Max 5 photos allowed', 'err'); return; }
+    if (f.size > 5 * 1024 * 1024) { toast(`${f.name} exceeds 5 MB`, 'err'); return; }
+    photoFiles.push(f);
+  });
+  renderPreviews();
+}
+
+function renderPreviews() {
+  const wrap = document.getElementById('photo-previews');
+  wrap.innerHTML = '';
+  photoFiles.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    const w = document.createElement('div');
+    w.className = 'photo-thumb-wrap';
+    w.innerHTML = `<img src="${url}" class="photo-thumb">
+      <button class="remove-photo" onclick="removePhoto(${i})">✕</button>`;
+    wrap.appendChild(w);
+  });
+}
+
+function removePhoto(i) { photoFiles.splice(i,1); renderPreviews(); }
+
+function dragOver(e)  { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function dropFiles(e) {
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+  handlePhotos(e.dataTransfer.files);
+}
+
+/* ── Card input formatters ── */
+function fmtCard(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,16);
+  el.value = v.replace(/(.{4})/g,'$1 ').trim();
+}
+function fmtExpiry(el) {
+  let v = el.value.replace(/\D/g,'').substring(0,4);
+  if (v.length >= 3) v = v.substring(0,2)+' / '+v.substring(2);
+  el.value = v;
+}
+
+/* ── Process payment + save to Firebase ── */
+async function processPayment() {
+  const cardNum  = document.getElementById('pay-card-num').value.replace(/\s/g,'');
+  const expiry   = document.getElementById('pay-expiry').value;
+  const cvv      = document.getElementById('pay-cvv').value;
+  const cardName = document.getElementById('pay-card-name').value.trim();
+
+  if (cardNum.length < 16) { toast('Enter a valid card number', 'err'); return; }
+  if (!expiry || expiry.length < 4) { toast('Enter card expiry', 'err'); return; }
+  if (cvv.length < 3) { toast('Enter CVV', 'err'); return; }
+  if (!cardName) { toast('Enter name on card', 'err'); return; }
+
+  const btn = document.getElementById('pay-btn');
+  btn.innerHTML = '<span class="spinner"></span> Processing…';
+  btn.disabled  = true;
+
+  try {
+    // Simulate payment gateway delay
+    await new Promise(r => setTimeout(r, 2000));
+
+    // Upload photos if any
+    const photoUrls = await uploadPhotos();
+
+    // Build the listing object
+    const now   = new Date();
+    const exp   = new Date(now); exp.setDate(exp.getDate() + 30);
+    const uid   = currentUser?.uid || 'demo-uid';
+
+    const listing = {
+      uid,
+      serviceType:   selectedService.id,
+      serviceName:   selectedService.name,
+      serviceIcon:   selectedService.icon,
+      title:         document.getElementById('f-title').value.trim(),
+      ownerName:     document.getElementById('f-name').value.trim(),
+      phone:         document.getElementById('f-phone').value.trim(),
+      city:          document.getElementById('f-city').value.trim(),
+      address:       document.getElementById('f-address').value.trim(),
+      experience:    Number(document.getElementById('f-exp').value) || 0,
+      hourlyRate:    Number(document.getElementById('f-rate').value) || 0,
+      description:   document.getElementById('f-desc').value.trim(),
+      availability: {
+        days:      [...selectedDays],
+        timeFrom:  document.getElementById('f-time-from').value,
+        timeTo:    document.getElementById('f-time-to').value,
+      },
+      photos:        photoUrls,
+      // Payment meta
+      planAmount:    selectedService.price,
+      planPaidAt:    now.toISOString(),
+      planExpiresAt: exp.toISOString(),
+      active:        true,
+      // owner.uid for Firestore rules
+      owner: { uid },
+      createdAt:     now.toISOString(),
+    };
+
+    // Save to /properties/{listingId}  (matches Firestore rules: owner.uid == auth.uid)
+    await saveToFirestore(listing, uid, exp);
+
+    // Show success
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
+    document.getElementById('panel-4').classList.add('visible');
+
+    const fmt = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    document.getElementById('activation-dates').textContent =
+      `Active: ${fmt(now)} → ${fmt(exp)}`;
+
+    document.querySelectorAll('.step').forEach(s => s.classList.add('done'));
+    toast('🎉 Service listed successfully!', 'ok');
+
+  } catch (err) {
+    console.error(err);
+    toast('Payment failed. Please try again.', 'err');
+    btn.innerHTML = 'Pay & Activate Listing';
+    btn.disabled  = false;
+  }
+}
+
+/* ── Upload photos to Firebase Storage ── */
+async function uploadPhotos() {
+  if (!window.__fb || photoFiles.length === 0) return [];
+  const { storage, ref, uploadBytes, getDownloadURL } = window.__fb;
+  const uid = currentUser?.uid || 'demo';
+  const urls = [];
+  for (const file of photoFiles) {
+    const path = `service-photos/${uid}/${Date.now()}-${file.name}`;
+    const storageRef = ref(storage, path);
+    const snap = await uploadBytes(storageRef, file);
+    const url  = await getDownloadURL(snap.ref);
+    urls.push(url);
+  }
+  return urls;
+}
+
+/* ── Save listing to Firestore ── */
+async function saveToFirestore(listing, uid, expiryDate) {
+  if (!window.__fb) {
+    // Demo mode – just log
+    console.log('Firebase not connected – listing data:', listing);
+    return;
+  }
+  const { db, doc, setDoc, collection, serverTimestamp } = window.__fb;
+
+  // 1. Write to /properties/{uid_timestamp}  — visible on the common service card
+  const propId  = `${uid}_${Date.now()}`;
+  const propRef = doc(db, 'properties', propId);
+  await setDoc(propRef, { ...listing, createdAt: serverTimestamp() });
+
+  // 2. Mirror into /users/{uid}/listings/{propId} for the user's own profile
+  const userListingRef = doc(db, 'users', uid, 'listings', propId);
+  await setDoc(userListingRef, {
+    listingId:   propId,
+    serviceType: listing.serviceType,
+    title:       listing.title,
+    active:      true,
+    expiresAt:   expiryDate.toISOString(),
+    createdAt:   serverTimestamp(),
+  });
+}
+
+function goToServices() {
+  // Redirect to your services/home page
+  window.location.href = 'services.html';
+}
+
+/* ── Toast helper ── */
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className   = `show ${type}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+</script>
+</body>
+</html>

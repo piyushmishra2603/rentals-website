@@ -7,61 +7,21 @@
 <meta name="description" content="Choose a plan that fits your needs. Property rental plans for owners and tenants, and service provider subscriptions.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════
-   PREMIUM DESIGN TOKENS — LUXURY EDITION
-═══════════════════════════════════════════ */
 :root {
-  --bg:     #fafaf8;
-  --bg1:    #f3f1ed;
-  --bg2:    #ece5d9;
-  --white:  #ffffff;
-  --ink:    #1a140c;
-  --ink2:   #2e2418;
-  --ink3:   #4a3c2c;
-  --ink4:   #6b5a44;
-  --ink5:   #9c8870;
-  --ink6:   #c4b49a;
-
-  --gold:   #b5742a;
-  --gold-l: #d4943a;
-  --gold-d: #8a5010;
-  --gold-bg:rgba(181,116,42,.08);
-  --gold-b: rgba(181,116,42,.22);
-  --gold-g: rgba(181,116,42,.5);
-
-  --teal:   #0d7a6e;
-  --teal-l: #12a99a;
-  --teal-bg:rgba(13,122,110,.08);
-  --teal-b: rgba(13,122,110,.22);
-
-  --rose:   #c0392b;
-  --rose-bg:rgba(192,57,43,.07);
-  --rose-b: rgba(192,57,43,.2);
-
-  --sage:   #4a7c5f;
-  --sage-bg:rgba(74,124,95,.08);
-  --sage-b: rgba(74,124,95,.2);
-
-  --amber:  #c07820;
-  --amber-bg:rgba(192,120,32,.08);
-  --amber-b: rgba(192,120,32,.2);
-
-  --navy:   #1a2940;
-  --navy-bg:rgba(26,41,64,.06);
-  --navy-b: rgba(26,41,64,.15);
-
-  --div:  rgba(26,20,12,.07);
-  --div2: rgba(26,20,12,.12);
-  --div3: rgba(26,20,12,.2);
-
+  --bg:#fafaf8;--bg1:#f3f1ed;--bg2:#ece5d9;--white:#ffffff;
+  --ink:#1a140c;--ink2:#2e2418;--ink3:#4a3c2c;--ink4:#6b5a44;--ink5:#9c8870;--ink6:#c4b49a;
+  --gold:#b5742a;--gold-l:#d4943a;--gold-d:#8a5010;--gold-bg:rgba(181,116,42,.08);--gold-b:rgba(181,116,42,.22);--gold-g:rgba(181,116,42,.5);
+  --teal:#0d7a6e;--teal-l:#12a99a;--teal-bg:rgba(13,122,110,.08);--teal-b:rgba(13,122,110,.22);
+  --rose:#c0392b;--rose-bg:rgba(192,57,43,.07);--rose-b:rgba(192,57,43,.2);
+  --sage:#4a7c5f;--sage-bg:rgba(74,124,95,.08);--sage-b:rgba(74,124,95,.2);
+  --amber:#c07820;--amber-bg:rgba(192,120,32,.08);--amber-b:rgba(192,120,32,.2);
+  --navy:#1a2940;--navy-bg:rgba(26,41,64,.06);--navy-b:rgba(26,41,64,.15);
+  --violet:#6d44b8;--violet-bg:rgba(109,68,184,.08);--violet-b:rgba(109,68,184,.22);
+  --div:rgba(26,20,12,.07);--div2:rgba(26,20,12,.12);--div3:rgba(26,20,12,.2);
   --r1:6px;--r2:12px;--r3:18px;--r4:26px;--r5:36px;
-  --sh1:0 2px 14px rgba(26,20,12,.06);
-  --sh2:0 8px 36px rgba(26,20,12,.1);
-  --sh3:0 20px 64px rgba(26,20,12,.13);
-  --sh4:0 36px 100px rgba(26,20,12,.16);
+  --sh1:0 2px 14px rgba(26,20,12,.06);--sh2:0 8px 36px rgba(26,20,12,.1);--sh3:0 20px 64px rgba(26,20,12,.13);--sh4:0 36px 100px rgba(26,20,12,.16);
   --sh-premium:0 25px 80px rgba(181,116,42,.15);
 }
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;overflow-x:hidden}
@@ -76,7 +36,6 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(20px)}100%{transform:translateY(0)}}
 
 .nav{position:sticky;top:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(250,250,248,.96);backdrop-filter:blur(32px) saturate(1.8);border-bottom:1px solid rgba(181,116,42,.1);box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.nav.solid{box-shadow:0 1px 0 var(--gold-b),0 8px 32px rgba(26,20,12,.1)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .bgem{width:38px;height:38px;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(181,116,42,.3);transition:all .3s}
 .bgem:hover{transform:scale(1.08);box-shadow:0 6px 24px rgba(181,116,42,.4)}
@@ -112,17 +71,43 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 .sec-h2 em{font-style:italic;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .sec-sub{font-size:15.5px;color:var(--ink4);line-height:1.8;max-width:540px;margin:0 auto;animation:fadeUp .7s .14s both;font-weight:500}
 
+/* ── PLAN CARDS ── */
 .plans-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;max-width:920px;margin:0 auto}
 .plans-grid.three-col{grid-template-columns:repeat(3,1fr);max-width:1140px}
-.plan-card{background:var(--white);border:2px solid var(--div);border-radius:var(--r4);overflow:hidden;position:relative;box-shadow:var(--sh1);transition:all .4s cubic-bezier(.34,1.1,.64,1);background:linear-gradient(135deg,var(--white) 0%,rgba(255,255,255,.95) 100%)}
-.plan-card:hover{transform:translateY(-12px);box-shadow:var(--sh-premium);border-color:var(--gold-b)}
-.plan-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(181,116,42,.05),transparent);opacity:0;transition:opacity .4s;pointer-events:none;z-index:1}
+
+.plan-card{
+  background:var(--white);
+  border:2px solid var(--div);
+  border-radius:var(--r4);
+  overflow:hidden;
+  position:relative;
+  box-shadow:var(--sh1);
+  transition:all .4s cubic-bezier(.34,1.1,.64,1);
+  cursor:default;
+}
+.plan-card:hover{transform:translateY(-14px);box-shadow:var(--sh-premium);border-color:var(--gold-b)}
+.plan-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(181,116,42,.05),transparent);opacity:0;transition:opacity .4s;pointer-events:none;z-index:0}
 .plan-card:hover::before{opacity:1}
+
+/* per-card accent colors on hover */
+.plan-card.accent-teal:hover{border-color:var(--teal-b);box-shadow:0 25px 80px rgba(13,122,110,.15)}
+.plan-card.accent-teal::before{background:linear-gradient(135deg,rgba(13,122,110,.05),transparent)}
+.plan-card.accent-rose:hover{border-color:var(--rose-b);box-shadow:0 25px 80px rgba(192,57,43,.12)}
+.plan-card.accent-rose::before{background:linear-gradient(135deg,rgba(192,57,43,.05),transparent)}
+.plan-card.accent-sage:hover{border-color:var(--sage-b);box-shadow:0 25px 80px rgba(74,124,95,.12)}
+.plan-card.accent-sage::before{background:linear-gradient(135deg,rgba(74,124,95,.05),transparent)}
+.plan-card.accent-amber:hover{border-color:var(--amber-b);box-shadow:0 25px 80px rgba(192,120,32,.12)}
+.plan-card.accent-amber::before{background:linear-gradient(135deg,rgba(192,120,32,.05),transparent)}
+.plan-card.accent-violet:hover{border-color:var(--violet-b);box-shadow:0 25px 80px rgba(109,68,184,.12)}
+.plan-card.accent-violet::before{background:linear-gradient(135deg,rgba(109,68,184,.05),transparent)}
+
 .plan-card.popular{border-color:var(--gold-l);box-shadow:0 0 0 4px rgba(181,116,42,.12),var(--sh-premium)}
 .plan-card.popular .plan-top{background:linear-gradient(135deg,rgba(181,116,42,.08),rgba(181,116,42,.03))}
+
 .popular-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--gold-l),var(--gold-d));color:#fff;font-size:11px;font-weight:800;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;padding:6px 16px;border-radius:0 0 8px 8px;box-shadow:0 4px 16px rgba(181,116,42,.3);z-index:2}
-.plan-top{padding:36px 32px 28px;border-bottom:1.5px solid var(--div);background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(255,255,255,.4))}
-.plan-icon{font-size:52px;margin-bottom:16px;display:block;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 8px rgba(0,0,0,.1))}
+
+.plan-top{padding:36px 32px 28px;border-bottom:1.5px solid var(--div);background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(255,255,255,.4));position:relative;z-index:1}
+.plan-icon{font-size:54px;margin-bottom:18px;display:block;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(0,0,0,.1))}
 .plan-role{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:700}
 .plan-name{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--ink);margin-bottom:10px;letter-spacing:-.02em}
 .plan-desc{font-size:14px;color:var(--ink4);line-height:1.75;font-weight:500}
@@ -131,14 +116,14 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 .plan-price .cur{font-size:24px;vertical-align:top;margin-top:12px;display:inline-block;color:var(--gold);font-weight:700}
 .plan-cycle{font-size:13px;color:var(--ink5);font-family:'JetBrains Mono',monospace;margin-bottom:8px;letter-spacing:.06em;font-weight:600}
 .plan-saving{font-size:11px;background:linear-gradient(135deg,var(--sage-bg),rgba(74,124,95,.04));color:var(--sage);border:1px solid var(--sage-b);padding:4px 12px;border-radius:100px;font-weight:700;display:inline-block;margin-top:8px;font-family:'JetBrains Mono',monospace}
-.plan-body{padding:28px 32px}
+
+.plan-body{padding:28px 32px;position:relative;z-index:1}
 .plan-features{list-style:none;margin-bottom:26px}
 .pf{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid rgba(26,20,12,.05);font-size:14px;color:var(--ink3);line-height:1.6;font-weight:500}
 .pf:last-child{border-bottom:none}
-.pf-ic{font-size:18px;flex-shrink:0;margin-top:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.08))}
-.pf-cross{color:var(--ink6)!important;text-decoration:line-through;opacity:.5}
-.pf .cross-ic{filter:grayscale(1);opacity:.35}
-.plan-btn{width:100%;padding:16px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s cubic-bezier(.34,1.1,.64,1);border:none;letter-spacing:.02em;text-transform:uppercase;position:relative;overflow:hidden}
+.pf-ic{font-size:18px;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.08))}
+
+.plan-btn{width:100%;padding:17px;border-radius:var(--r2);font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .3s cubic-bezier(.34,1.1,.64,1);border:none;letter-spacing:.02em;text-transform:uppercase;position:relative;overflow:hidden}
 .plan-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);transform:translateX(-100%);transition:transform .6s}
 .plan-btn:hover::before{transform:translateX(100%)}
 .plan-btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold-d));color:#fff;box-shadow:0 6px 20px rgba(181,116,42,.3)}.plan-btn-gold:hover{box-shadow:0 10px 36px rgba(181,116,42,.45);transform:translateY(-2px)}
@@ -146,8 +131,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 .plan-btn-rose{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;box-shadow:0 6px 20px rgba(192,57,43,.3)}.plan-btn-rose:hover{box-shadow:0 10px 36px rgba(192,57,43,.45);transform:translateY(-2px)}
 .plan-btn-sage{background:linear-gradient(135deg,#6aa87a,#4a7c5f);color:#fff;box-shadow:0 6px 20px rgba(74,124,95,.3)}.plan-btn-sage:hover{box-shadow:0 10px 36px rgba(74,124,95,.45);transform:translateY(-2px)}
 .plan-btn-amber{background:linear-gradient(135deg,#d9971f,#c07820);color:#fff;box-shadow:0 6px 20px rgba(192,120,32,.3)}.plan-btn-amber:hover{box-shadow:0 10px 36px rgba(192,120,32,.45);transform:translateY(-2px)}
-.plan-btn-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3);font-weight:600}.plan-btn-out:hover{border-color:var(--gold-b);color:var(--gold);background:var(--gold-bg)}
+.plan-btn-violet{background:linear-gradient(135deg,#9b6ee0,#6d44b8);color:#fff;box-shadow:0 6px 20px rgba(109,68,184,.3)}.plan-btn-violet:hover{box-shadow:0 10px 36px rgba(109,68,184,.45);transform:translateY(-2px)}
 
+/* ── MODAL ── */
 .modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(26,20,12,.62);backdrop-filter:blur(18px) saturate(1.5);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
 .modal-bg.show{opacity:1;pointer-events:all}
 .modal-box{background:linear-gradient(135deg,var(--white),#fefdfb);border:1.5px solid var(--div2);border-radius:var(--r4);width:100%;max-width:540px;max-height:94vh;overflow-y:auto;box-shadow:var(--sh4);transform:scale(.94) translateY(20px);transition:all .3s cubic-bezier(.34,1.1,.64,1)}
@@ -181,10 +167,9 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 .or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--div2),transparent)}
 .or-divider span{font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;white-space:nowrap;font-weight:700}
 
-.user-info-box{background:linear-gradient(135deg,var(--bg),rgba(181,116,42,.02));border:1.5px solid var(--div2);border-radius:var(--r2);padding:18px 20px;margin-bottom:18px;backdrop-filter:blur(10px)}
+.user-info-box{background:linear-gradient(135deg,var(--bg),rgba(181,116,42,.02));border:1.5px solid var(--div2);border-radius:var(--r2);padding:18px 20px;margin-bottom:18px;backdrop-filter:blur(10px);margin:0 32px 18px}
 .user-info-box h4{font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;font-weight:700}
 .form-row{display:flex;gap:12px;margin-bottom:12px}
-.form-row.full{flex-direction:column}
 .form-input{flex:1;background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r1);padding:12px 14px;color:var(--ink);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .3s;font-weight:500}
 .form-input::placeholder{color:var(--ink6);font-style:italic;font-weight:400}
 .form-input:focus{border-color:var(--gold-b);background:linear-gradient(135deg,rgba(181,116,42,.03),transparent);box-shadow:0 0 0 3px rgba(181,116,42,.08)}
@@ -233,11 +218,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);line-
 .ps-btn-out{background:transparent;border:1.5px solid var(--div2);color:var(--ink3);font-weight:600}.ps-btn-out:hover{border-color:var(--gold-b);color:var(--gold);background:var(--gold-bg)}
 
 .info-banner{display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,var(--amber-bg),rgba(192,120,32,.05));border:1.5px solid var(--amber-b);border-radius:var(--r2);padding:16px 20px;margin:0 32px 22px;font-size:14px;color:var(--amber);font-weight:500;backdrop-filter:blur(10px)}
-.ib-ic{font-size:20px;flex-shrink:0;margin-top:1px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+.ib-ic{font-size:20px;flex-shrink:0;margin-top:1px}
 
 .trust-strip{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;padding:32px 24px;background:linear-gradient(135deg,var(--bg1),var(--white));border-top:1.5px solid var(--div2);border-bottom:1.5px solid var(--div2);box-shadow:0 8px 24px rgba(0,0,0,.04)}
 .trust-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink4);font-weight:600}
-.trust-ic{font-size:20px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.08))}
+.trust-ic{font-size:20px}
 
 footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;position:relative;z-index:1;margin-top:80px;border-top:1px solid rgba(181,116,42,.2)}
 .foot-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
@@ -252,7 +237,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
 
 @media(max-width:900px){.plans-grid{grid-template-columns:1fr;gap:24px}.plans-grid.three-col{grid-template-columns:repeat(2,1fr)}.trust-strip{gap:24px}}
-@media(max-width:600px){.hero-h1{font-size:48px}.hero-sub{font-size:15px}.trust-strip{gap:16px;padding:24px 16px}.form-row{flex-direction:column!important}.form-input{width:100%}.plans-grid.three-col{grid-template-columns:1fr}.plan-card{padding:24px}.sec-wrap{padding:36px 16px 60px}.modal-box{max-width:95vw}.upi-section{padding:0 20px 20px}.info-banner{margin:0 20px 18px}}
+@media(max-width:600px){.hero-h1{font-size:48px}.hero-sub{font-size:15px}.trust-strip{gap:16px;padding:24px 16px}.form-row{flex-direction:column!important}.form-input{width:100%}.plans-grid.three-col{grid-template-columns:1fr}.plan-card{padding:24px}.sec-wrap{padding:36px 16px 60px}.modal-box{max-width:95vw}.upi-section{padding:0 20px 20px}.info-banner{margin:0 20px 18px}.user-info-box{margin:0 20px 18px}}
 </style>
 </head>
 <body>
@@ -268,7 +253,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
 <div class="modal-bg" id="modalBg" onclick="closeMoBg(event)">
   <div class="modal-box">
 
-    <!-- HEAD -->
     <div class="modal-head" id="mHead">
       <div class="mc-close" onclick="closeMo()">✕</div>
       <div class="mc-tag" id="mTag">Subscription</div>
@@ -276,19 +260,16 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       <div class="mc-sub" id="mSub">Monthly plan · Valid 30 days from activation</div>
     </div>
 
-    <!-- FORM -->
     <div id="mFormWrap">
-      <!-- Order Summary -->
       <div style="padding:0 32px">
         <div class="order-box" id="orderBox">
-          <div class="order-row"><span class="order-key"><span id="oPlanIcon">📋</span>Plan</span><span class="order-val" id="oPlanName">—</span></div>
+          <div class="order-row"><span class="order-key"><span id="oPlanIcon">📋</span>&nbsp;Plan</span><span class="order-val" id="oPlanName">—</span></div>
           <div class="order-row"><span class="order-key">⏱️ Duration</span><span class="order-val">30 Days</span></div>
           <div class="order-row"><span class="order-key">📅 Valid Until</span><span class="order-val" id="oValidUntil">—</span></div>
-          <div class="order-row total-row"><span class="order-key ct-bold">💰 Total Amount</span><span class="order-val order-total" id="oAmount">₹—</span></div>
+          <div class="order-row total-row"><span class="order-key">💰 Total Amount</span><span class="order-val order-total" id="oAmount">₹—</span></div>
         </div>
       </div>
 
-      <!-- User Information -->
       <div class="user-info-box">
         <h4>📋 Your Information</h4>
         <div class="form-row">
@@ -300,7 +281,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
         </div>
       </div>
 
-      <!-- Info banner -->
       <div class="info-banner">
         <span class="ib-ic">🔐</span>
         <div>Pay via UPI. Your payment will be verified within 15 minutes. Plan activates immediately upon successful verification.</div>
@@ -308,8 +288,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
 
       <div class="upi-section">
         <label class="upi-label">Step 1 — Scan QR or Pay via UPI App</label>
-
-        <!-- QR Code Box -->
         <div class="qr-box">
           <div class="qr-wrap" id="qrWrap">
             <img id="qrImage" src="" alt="UPI QR Code" style="display:none;width:100%;height:100%;object-fit:contain;">
@@ -320,7 +298,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
           <div style="margin-top:14px;font-size:12px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;font-weight:600">UPI · BHIM · GPay · PhonePe · Paytm</div>
         </div>
 
-        <!-- UPI Apps -->
         <div class="upi-apps">
           <div class="upi-app" onclick="launchUpiApp('gpay')"><span class="upi-app-icon">🟢</span><span class="upi-app-name">GPay</span></div>
           <div class="upi-app" onclick="launchUpiApp('phonepe')"><span class="upi-app-icon">💜</span><span class="upi-app-name">PhonePe</span></div>
@@ -329,22 +306,19 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
           <div class="upi-app" onclick="launchUpiApp('amazon')"><span class="upi-app-icon">🟠</span><span class="upi-app-name">Amazon</span></div>
         </div>
 
-        <!-- Manual UPI ID -->
         <div class="or-divider"><span>OR ENTER UPI ID MANUALLY</span></div>
         <div class="upi-input-row">
           <input class="upi-input" id="tenantUpiInput" placeholder="yourname@upi" readonly>
           <button class="verify-btn" onclick="copyUpiId()">📋 Copy</button>
         </div>
 
-        <!-- Transaction Ref -->
         <div class="txn-ref-box">
           <div class="txn-label-row">Step 2 — Enter UTR / Transaction Reference Number</div>
           <input class="txn-input" id="txnRefInput" placeholder="e.g. 403820192847">
           <div class="txn-hint">After payment, open your UPI app → Transaction History → Copy the UTR/Reference ID</div>
         </div>
 
-        <!-- Contact for verification -->
-        <div style="background:linear-gradient(135deg,var(--teal-bg),rgba(13,122,110,.05));border:1.5px solid var(--teal-b);border-radius:var(--r2);padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--teal);line-height:1.7;font-weight:500;backdrop-filter:blur(10px)">
+        <div style="background:linear-gradient(135deg,var(--teal-bg),rgba(13,122,110,.05));border:1.5px solid var(--teal-b);border-radius:var(--r2);padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--teal);line-height:1.7;font-weight:500">
           <strong>📞 Optional:</strong> WhatsApp your screenshot to <strong id="adminWaNum">+91 XXXXXXXXXX</strong> for faster verification.
         </div>
 
@@ -360,7 +334,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- SUCCESS STATE -->
     <div class="pay-success" id="paySuccess">
       <span class="ps-icon">✅</span>
       <div class="ps-title">Payment Submitted!</div>
@@ -383,10 +356,10 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
     <span class="bname">SmartRent<span class="bai">AI</span></span>
   </a>
   <div class="nav-r">
-    <a class="nb nb-out" href="index.html" style="text-decoration:none">🏠 Home</a>
-    <a class="nb nb-out" href="properties.html" style="text-decoration:none">Browse</a>
-    <a class="nb nb-out" href="login.html" style="text-decoration:none">Sign In</a>
-    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
+    <a class="nb nb-out" href="index.html">🏠 Home</a>
+    <a class="nb nb-out" href="properties.html">Browse</a>
+    <a class="nb nb-out" href="login.html">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html">+ List Property</a>
   </div>
 </nav>
 
@@ -396,8 +369,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
     <div class="hero-eyebrow"><span class="e-dot"></span>Transparent · Monthly · Cancel Anytime</div>
     <h1 class="hero-h1">Plans &amp; <em>Pricing</em></h1>
     <p class="hero-sub">Simple, honest pricing for property owners, tenants, and home service professionals. No hidden fees.</p>
-
-    <!-- Tabs -->
     <div class="sec-tabs">
       <button class="st on gold-tab" onclick="switchTab('rental')">🏠 Property Rental</button>
       <button class="st teal-tab" onclick="switchTab('services')">🔧 Home Services</button>
@@ -405,7 +376,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
   </div>
 </div>
 
-<!-- RENTAL SECTION -->
+<!-- ══════ RENTAL SECTION ══════ -->
 <div class="sec-wrap active" id="sec-rental">
   <div class="sec-head rv">
     <div class="sec-eyebrow">Property Rental Plans</div>
@@ -414,6 +385,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
   </div>
 
   <div class="plans-grid rv d1">
+
     <!-- OWNER PLAN -->
     <div class="plan-card popular">
       <div class="popular-badge">⭐ Most Popular</div>
@@ -421,19 +393,21 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
         <span class="plan-icon">🏘️</span>
         <div class="plan-role">For Property Owners</div>
         <div class="plan-name">Owner Pro</div>
-        <div class="plan-desc">Premium placement, verified badge, and analytics.</div>
+        <div class="plan-desc">Premium placement, verified badge, and powerful analytics to grow your listings faster.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>499</div>
           <div class="plan-cycle">/month</div>
         </div>
+        <div class="plan-saving">🎉 Save ₹1,489/yr vs weekly ads</div>
       </div>
       <div class="plan-body">
         <ul class="plan-features">
           <li class="pf"><span class="pf-ic">🚀</span>Priority search placement</li>
-          <li class="pf"><span class="pf-ic">✅</span>Verified badge</li>
-          <li class="pf"><span class="pf-ic">📊</span>Analytics dashboard</li>
-          <li class="pf"><span class="pf-ic">📸</span>Up to 15 photos</li>
-          <li class="pf"><span class="pf-ic">📬</span>Unlimited enquiries</li>
+          <li class="pf"><span class="pf-ic">✅</span>Verified owner badge</li>
+          <li class="pf"><span class="pf-ic">📊</span>Full analytics dashboard</li>
+          <li class="pf"><span class="pf-ic">📸</span>Up to 15 property photos</li>
+          <li class="pf"><span class="pf-ic">📬</span>Unlimited tenant enquiries</li>
+          <li class="pf"><span class="pf-ic">🔔</span>Instant enquiry alerts</li>
         </ul>
         <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Owner Pro',role:'owner',price:499,icon:'🏘️',tag:'Property · Owner',category:'rental'})">
           🔐 Get Owner Pro — ₹499/mo
@@ -442,34 +416,37 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
     </div>
 
     <!-- TENANT PLAN -->
-    <div class="plan-card">
+    <div class="plan-card accent-teal">
       <div class="plan-top">
         <span class="plan-icon">🧑‍💼</span>
         <div class="plan-role">For Tenants</div>
         <div class="plan-name">Tenant Access</div>
-        <div class="plan-desc">Unlock owner contacts and schedule visits.</div>
+        <div class="plan-desc">Unlock owner contacts directly and schedule property visits on your terms.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>149</div>
           <div class="plan-cycle">/month</div>
         </div>
+        <div class="plan-saving">🔓 Unlimited contact access</div>
       </div>
       <div class="plan-body">
         <ul class="plan-features">
-          <li class="pf"><span class="pf-ic">📞</span>Unlock phone numbers</li>
-          <li class="pf"><span class="pf-ic">💬</span>WhatsApp contact</li>
-          <li class="pf"><span class="pf-ic">📅</span>Visit scheduling</li>
-          <li class="pf"><span class="pf-ic">❤️</span>Wishlist saves</li>
-          <li class="pf"><span class="pf-ic">🔔</span>Listing alerts</li>
+          <li class="pf"><span class="pf-ic">📞</span>Unlock owner phone numbers</li>
+          <li class="pf"><span class="pf-ic">💬</span>Direct WhatsApp contact</li>
+          <li class="pf"><span class="pf-ic">📅</span>Visit scheduling tool</li>
+          <li class="pf"><span class="pf-ic">❤️</span>Unlimited wishlist saves</li>
+          <li class="pf"><span class="pf-ic">🔔</span>New listing alerts</li>
+          <li class="pf"><span class="pf-ic">🗺️</span>Neighbourhood insights</li>
         </ul>
         <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Tenant Access',role:'tenant',price:149,icon:'🧑‍💼',tag:'Property · Tenant',category:'rental'})">
-          🔓 Unlock — ₹149/mo
+          🔓 Unlock Tenant Access — ₹149/mo
         </button>
       </div>
     </div>
+
   </div>
 </div>
 
-<!-- HOME SERVICES SECTION -->
+<!-- ══════ HOME SERVICES SECTION ══════ -->
 <div class="sec-wrap" id="sec-services">
   <div class="sec-head rv">
     <div class="sec-eyebrow">Home Service Provider Plans</div>
@@ -478,13 +455,14 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
   </div>
 
   <div class="plans-grid three-col rv d1">
-    <!-- PLUMBER PLAN -->
+
+    <!-- PLUMBER -->
     <div class="plan-card">
       <div class="plan-top">
         <span class="plan-icon">🔧</span>
         <div class="plan-role">For Plumbers</div>
         <div class="plan-name">Plumber Plus</div>
-        <div class="plan-desc">Verified plumber profile and leads.</div>
+        <div class="plan-desc">Verified plumber profile with lead generation and review tools.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>299</div>
           <div class="plan-cycle">/month</div>
@@ -496,7 +474,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
           <li class="pf"><span class="pf-ic">📞</span>Customer lead access</li>
           <li class="pf"><span class="pf-ic">📍</span>Location-based visibility</li>
           <li class="pf"><span class="pf-ic">⭐</span>5-star review system</li>
-          <li class="pf"><span class="pf-ic">💳</span>Secure payments</li>
+          <li class="pf"><span class="pf-ic">💳</span>Secure payment collection</li>
         </ul>
         <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Plumber Plus',role:'plumber',price:299,icon:'🔧',tag:'Service · Plumber',category:'services'})">
           🔐 Get Plumber Plus — ₹299/mo
@@ -504,14 +482,14 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- ELECTRICIAN PLAN -->
-    <div class="plan-card popular">
+    <!-- ELECTRICIAN -->
+    <div class="plan-card popular accent-rose">
       <div class="popular-badge">⭐ Most Popular</div>
       <div class="plan-top">
         <span class="plan-icon">⚡</span>
         <div class="plan-role">For Electricians</div>
         <div class="plan-name">Electrician Pro</div>
-        <div class="plan-desc">Premium visibility and unlimited leads.</div>
+        <div class="plan-desc">Premium visibility, unlimited leads, and commission-free billing for serious electricians.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>399</div>
           <div class="plan-cycle">/month</div>
@@ -520,7 +498,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       <div class="plan-body">
         <ul class="plan-features">
           <li class="pf"><span class="pf-ic">⭐</span>Premium profile placement</li>
-          <li class="pf"><span class="pf-ic">📊</span>Unlimited leads monthly</li>
+          <li class="pf"><span class="pf-ic">📊</span>Unlimited monthly leads</li>
           <li class="pf"><span class="pf-ic">✅</span>Verified + Certified badge</li>
           <li class="pf"><span class="pf-ic">📅</span>Appointment scheduling</li>
           <li class="pf"><span class="pf-ic">💰</span>Commission-free billing</li>
@@ -531,13 +509,13 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- PAINTER PLAN -->
-    <div class="plan-card">
+    <!-- PAINTER -->
+    <div class="plan-card accent-sage">
       <div class="plan-top">
         <span class="plan-icon">🎨</span>
         <div class="plan-role">For Painters</div>
         <div class="plan-name">Painter Pro</div>
-        <div class="plan-desc">Showcase portfolio and get regular jobs.</div>
+        <div class="plan-desc">Showcase your portfolio and attract regular painting jobs from verified customers.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>249</div>
           <div class="plan-cycle">/month</div>
@@ -557,13 +535,39 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- CARPENTER PLAN -->
-    <div class="plan-card">
+    <!-- MOVERS -->
+    <div class="plan-card accent-violet">
+      <div class="plan-top">
+        <span class="plan-icon">🚚</span>
+        <div class="plan-role">For Movers & Packers</div>
+        <div class="plan-name">Movers Elite</div>
+        <div class="plan-desc">Get booked for relocation and packing jobs with real-time customer matching.</div>
+        <div class="plan-price-row">
+          <div class="plan-price"><span class="cur">₹</span>379</div>
+          <div class="plan-cycle">/month</div>
+        </div>
+      </div>
+      <div class="plan-body">
+        <ul class="plan-features">
+          <li class="pf"><span class="pf-ic">📦</span>Packing & moving job leads</li>
+          <li class="pf"><span class="pf-ic">🗺️</span>City-wide service radius</li>
+          <li class="pf"><span class="pf-ic">✅</span>Verified & insured badge</li>
+          <li class="pf"><span class="pf-ic">💬</span>In-app customer chat</li>
+          <li class="pf"><span class="pf-ic">📊</span>Booking analytics</li>
+        </ul>
+        <button class="plan-btn plan-btn-violet" onclick="openPayment({plan:'Movers Elite',role:'mover',price:379,icon:'🚚',tag:'Service · Movers',category:'services'})">
+          🔐 Get Movers Elite — ₹379/mo
+        </button>
+      </div>
+    </div>
+
+    <!-- CARPENTER -->
+    <div class="plan-card accent-amber">
       <div class="plan-top">
         <span class="plan-icon">🪵</span>
         <div class="plan-role">For Carpenters</div>
         <div class="plan-name">Carpenter Elite</div>
-        <div class="plan-desc">Specialized woodwork and furniture gigs.</div>
+        <div class="plan-desc">Specialized woodwork and furniture gig matching with premium visibility tier.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>349</div>
           <div class="plan-cycle">/month</div>
@@ -583,13 +587,13 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- CLEANING SERVICE PLAN -->
-    <div class="plan-card">
+    <!-- CLEANER -->
+    <div class="plan-card accent-teal">
       <div class="plan-top">
         <span class="plan-icon">🧹</span>
         <div class="plan-role">For Cleaners</div>
         <div class="plan-name">Cleaning Crew</div>
-        <div class="plan-desc">Regular clients and recurring contracts.</div>
+        <div class="plan-desc">Regular clients and recurring contracts for cleaning professionals.</div>
         <div class="plan-price-row">
           <div class="plan-price"><span class="cur">₹</span>199</div>
           <div class="plan-cycle">/month</div>
@@ -609,31 +613,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
       </div>
     </div>
 
-    <!-- HANDYMAN PLAN -->
-    <div class="plan-card">
-      <div class="plan-top">
-        <span class="plan-icon">🔨</span>
-        <div class="plan-role">For Handymen</div>
-        <div class="plan-name">Handyman Hub</div>
-        <div class="plan-desc">All-in-one solution for general repairs.</div>
-        <div class="plan-price-row">
-          <div class="plan-price"><span class="cur">₹</span>279</div>
-          <div class="plan-cycle">/month</div>
-        </div>
-      </div>
-      <div class="plan-body">
-        <ul class="plan-features">
-          <li class="pf"><span class="pf-ic">📋</span>Multi-service profile</li>
-          <li class="pf"><span class="pf-ic">📞</span>24/7 customer support</li>
-          <li class="pf"><span class="pf-ic">⭐</span>Reputation management</li>
-          <li class="pf"><span class="pf-ic">💼</span>Invoice & quote builder</li>
-          <li class="pf"><span class="pf-ic">🗓️</span>Calendar sync tools</li>
-        </ul>
-        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Handyman Hub',role:'handyman',price:279,icon:'🔨',tag:'Service · Handyman',category:'services'})">
-          🔐 Get Handyman Hub — ₹279/mo
-        </button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -643,6 +622,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0f0b07);padding:36px 0;posi
   <div class="trust-item"><span class="trust-ic">📋</span>Payment Records</div>
   <div class="trust-item"><span class="trust-ic">⚡</span>15 Min Activation</div>
   <div class="trust-item"><span class="trust-ic">🔄</span>Cancel Anytime</div>
+  <div class="trust-item"><span class="trust-ic">🛡️</span>RBI Compliant</div>
 </div>
 
 <!-- FOOTER -->
@@ -679,9 +659,7 @@ window._addDoc = addDoc;
 window._collection = collection;
 window._serverTimestamp = serverTimestamp;
 
-onAuthStateChanged(auth, user => {
-  window._currentUser = user || null;
-});
+onAuthStateChanged(auth, user => { window._currentUser = user || null; });
 </script>
 
 <script>
@@ -695,38 +673,35 @@ const CONFIG = {
 let currentPlan = null;
 
 function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 3000);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
 function switchTab(tab) {
-  document.querySelectorAll('.st').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.sec-wrap').forEach(s=>s.classList.remove('active'));
-  const btn = document.querySelector(`.st:nth-child(${tab==='rental'?1:2})`);
-  if(btn) btn.classList.add('on');
+  document.querySelectorAll('.st').forEach((t,i) => {
+    t.classList.remove('on');
+    if ((tab==='rental' && i===0)||(tab==='services' && i===1)) t.classList.add('on');
+  });
+  document.querySelectorAll('.sec-wrap').forEach(s => s.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
 }
 
 function openPayment(plan) {
   currentPlan = plan;
-  document.getElementById('userNameInput').value = '';
-  document.getElementById('userEmailInput').value = '';
-  document.getElementById('userPhoneInput').value = '';
-  document.getElementById('txnRefInput').value = '';
-  document.getElementById('mTag').textContent = plan.tag;
+  ['userNameInput','userEmailInput','userPhoneInput','txnRefInput'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('mTag').textContent   = plan.tag;
   document.getElementById('mTitle').textContent = plan.plan;
   document.getElementById('oPlanIcon').textContent = plan.icon;
   document.getElementById('oPlanName').textContent = plan.plan;
-  document.getElementById('oAmount').textContent = '₹'+plan.price;
+  document.getElementById('oAmount').textContent  = '₹'+plan.price;
   const expiry = new Date(Date.now()+30*24*60*60*1000);
   document.getElementById('oValidUntil').textContent = expiry.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
   const qrImg = document.getElementById('qrImage');
-  const qrPlaceholder = document.getElementById('qrPlaceholder');
   qrImg.src = CONFIG.QR_CODE_IMAGE_URL;
   qrImg.style.display = 'block';
-  qrPlaceholder.style.display = 'none';
+  document.getElementById('qrPlaceholder').style.display = 'none';
   document.getElementById('qrUpiId').textContent = CONFIG.UPI_ID;
   document.getElementById('qrAmount').textContent = plan.price;
   document.getElementById('tenantUpiInput').value = CONFIG.UPI_ID;
@@ -746,50 +721,32 @@ function closeMo() {
 }
 window.closeMo = closeMo;
 
-function closeMoBg(e){ 
-  if(e.target===document.getElementById('modalBg')) closeMo(); 
-}
+function closeMoBg(e) { if(e.target===document.getElementById('modalBg')) closeMo(); }
 window.closeMoBg = closeMoBg;
 
 function copyUpiId() {
-  navigator.clipboard.writeText(CONFIG.UPI_ID).then(()=>{
-    showToast('📋 UPI ID copied!');
-  }).catch(()=>{
-    showToast('UPI ID: '+CONFIG.UPI_ID);
-  });
+  navigator.clipboard.writeText(CONFIG.UPI_ID)
+    .then(() => showToast('📋 UPI ID copied!'))
+    .catch(() => showToast('UPI ID: '+CONFIG.UPI_ID));
 }
 window.copyUpiId = copyUpiId;
 
 function launchUpiApp(app) {
   if (!currentPlan) return;
   const note = encodeURIComponent('SmartRent AI - '+currentPlan.plan);
-  const upiLink = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${currentPlan.price}&cu=INR&tn=${note}`;
-  window.location.href = upiLink;
+  window.location.href = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${currentPlan.price}&cu=INR&tn=${note}`;
 }
 window.launchUpiApp = launchUpiApp;
 
 async function submitPayment() {
-  const userName = document.getElementById('userNameInput').value.trim();
-  const userEmail = document.getElementById('userEmailInput').value.trim();
-  const userPhone = document.getElementById('userPhoneInput').value.trim();
-  const txnRef = document.getElementById('txnRefInput').value.trim();
-
-  if (!userName) {
-    showToast('⚠️ Please enter your full name.');
-    return;
-  }
-  if (!userEmail || !userEmail.includes('@')) {
-    showToast('⚠️ Please enter a valid email.');
-    return;
-  }
-  if (!userPhone || userPhone.length < 10) {
-    showToast('⚠️ Please enter a valid phone number.');
-    return;
-  }
-  if (!txnRef || txnRef.replace(/\D/g,'').length < 8) {
-    showToast('⚠️ Please enter your UTR/Reference Number.');
-    return;
-  }
+  const name  = document.getElementById('userNameInput').value.trim();
+  const email = document.getElementById('userEmailInput').value.trim();
+  const phone = document.getElementById('userPhoneInput').value.trim();
+  const txn   = document.getElementById('txnRefInput').value.trim();
+  if (!name)                        { showToast('⚠️ Please enter your full name.'); return; }
+  if (!email || !email.includes('@')){ showToast('⚠️ Please enter a valid email.'); return; }
+  if (!phone || phone.length < 10)  { showToast('⚠️ Please enter a valid phone number.'); return; }
+  if (!txn || txn.replace(/\D/g,'').length < 8) { showToast('⚠️ Please enter your UTR/Reference Number.'); return; }
 
   const btn = document.getElementById('paySubmitBtn');
   btn.disabled = true;
@@ -798,48 +755,44 @@ async function submitPayment() {
   try {
     const now = new Date();
     const expiresAt = new Date(now.getTime()+30*24*60*60*1000);
-    const paymentRecord = {
-      userName: userName,
-      userEmail: userEmail,
-      userPhone: userPhone,
-      userId: window._currentUser?.uid || 'guest',
-      planName: currentPlan.plan,
-      planRole: currentPlan.role,
-      planCategory: currentPlan.category,
-      planPrice: currentPlan.price,
-      txnRefId: txnRef,
-      upiId: CONFIG.UPI_ID,
-      amount: currentPlan.price,
-      currency: 'INR',
-      paymentMode: 'UPI',
-      paymentStatus: 'pending',
-      createdAt: now.toISOString(),
-      expiresAt: expiresAt.toISOString(),
+    const record = {
+      userName:name, userEmail:email, userPhone:phone,
+      userId: window._currentUser?.uid||'guest',
+      planName:currentPlan.plan, planRole:currentPlan.role,
+      planCategory:currentPlan.category, planPrice:currentPlan.price,
+      txnRefId:txn, upiId:CONFIG.UPI_ID,
+      amount:currentPlan.price, currency:'INR', paymentMode:'UPI',
+      paymentStatus:'pending',
+      createdAt:now.toISOString(), expiresAt:expiresAt.toISOString(),
       timestamp: window._serverTimestamp ? window._serverTimestamp() : null,
-      ipAddress: 'auto-detected',
-      deviceInfo: navigator.userAgent.substring(0, 100),
+      deviceInfo: navigator.userAgent.substring(0,100),
     };
-
-    const docRef = await window._addDoc(
-      window._collection(window._db, 'payments'),
-      paymentRecord
-    );
-
+    const docRef = await window._addDoc(window._collection(window._db,'payments'), record);
     showToast('✅ Payment submitted successfully!');
     document.getElementById('mFormWrap').style.display = 'none';
     document.getElementById('paySuccess').classList.add('show');
-    document.getElementById('psRefId').textContent = 'REF: '+txnRef.toUpperCase();
-    console.log('Payment record saved:', {docId: docRef.id, ...paymentRecord});
-
-  } catch (error) {
-    console.error('Payment submission error:', error);
-    showToast('❌ Error submitting payment. Please try again.');
+    document.getElementById('psRefId').textContent = 'REF: '+txn.toUpperCase();
+    console.log('Payment saved:', {docId:docRef.id, ...record});
+  } catch(err) {
+    console.error(err);
+    showToast('❌ Error submitting. Please try again.');
     btn.disabled = false;
     btn.innerHTML = '🔒 Submit Payment & Activate Plan';
   }
 }
 window.submitPayment = submitPayment;
-</script>
 
+/* Scroll reveal */
+const rv = document.querySelectorAll('.rv');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold:.12 });
+rv.forEach(el => io.observe(el));
+
+/* Navbar shadow on scroll */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('solid', window.scrollY > 10);
+});
+</script>
 </body>
 </html>

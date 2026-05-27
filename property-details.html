@@ -132,7 +132,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .meta-divider{width:1px;height:14px;background:var(--div2)}
 .meta-item{font-size:12px;color:var(--ink3);display:flex;align-items:center;gap:4px}
 
-/* Spec pills */
 .spec-pills{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}
 .spec-pill{display:flex;align-items:center;gap:8px;background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:10px 16px;transition:all .2s;box-shadow:var(--sh1)}
 .spec-pill:hover{border-color:var(--terra-b);box-shadow:var(--sh2)}
@@ -140,32 +139,24 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .sp-val{font-size:15px;font-weight:800;color:var(--ink);line-height:1}
 .sp-lbl{font-size:10px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
 
-/* Section heading */
 .sec-h{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.2vw,24px);color:var(--ink);margin-bottom:16px;display:flex;align-items:center;gap:10px;letter-spacing:-.01em}
 .sec-h::before{content:'';width:4px;height:22px;background:var(--terra);border-radius:2px;flex-shrink:0}
 .sec-line{height:1.5px;background:linear-gradient(90deg,var(--div2),transparent);margin:28px 0}
 
-/* Description */
 .desc-text{font-size:14.5px;color:var(--ink3);line-height:1.92;white-space:pre-wrap}
 .read-more-btn{background:transparent;border:none;color:var(--terra);font-size:13px;font-weight:700;cursor:pointer;padding:8px 0;font-family:'Nunito',sans-serif;display:flex;align-items:center;gap:5px;transition:opacity .2s}.read-more-btn:hover{opacity:.7}
 
-/* Amenities */
 .amen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
 .amen-item{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:11px 14px;font-size:13px;font-weight:600;color:var(--ink2);transition:all .2s;box-shadow:var(--sh1)}
 .amen-item:hover{border-color:var(--terra-b);background:var(--terra-d);transform:translateY(-1px)}
 .amen-ic{font-size:20px;flex-shrink:0}
 
-/* Rules */
 .rules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .rule-item{display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--div);border-radius:var(--r2);padding:10px 14px;font-size:13px;font-weight:600;color:var(--ink2);box-shadow:var(--sh1)}
 .rule-ic{font-size:18px;flex-shrink:0}
 .rule-lbl{font-size:10px;color:var(--ink5);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.05em}
 .rule-val{font-size:13px;font-weight:700;color:var(--ink2)}
 
-/* Empty amenities */
-.empty-msg{font-size:13px;color:var(--ink5);font-style:italic;padding:12px 0}
-
-/* Map */
 .map-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh1)}
 .map-head{padding:16px 20px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
 .map-head-t{font-size:13px;font-weight:700;color:var(--ink)}
@@ -173,8 +164,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .map-iframe-wrap iframe{width:100%;height:100%;border:none;display:block}
 .map-loading{position:absolute;inset:0;background:var(--cream2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-size:13px;color:var(--ink4);pointer-events:none;transition:opacity .3s}
 .map-loading.hidden{opacity:0}
-.map-nearby{padding:14px 20px;display:flex;gap:7px;flex-wrap:wrap;border-top:1px solid var(--div);background:var(--cream)}
-.mn-item{display:flex;align-items:center;gap:5px;background:var(--white);border:1px solid var(--div);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--ink3)}
 
 /* ══ SIDEBAR ══ */
 .sidebar{display:flex;flex-direction:column;gap:16px;position:sticky;top:82px}
@@ -190,11 +179,26 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .btn-enquire{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;letter-spacing:.01em;margin-bottom:10px}.btn-enquire:hover{box-shadow:0 4px 20px rgba(196,92,60,.45);transform:translateY(-1px)}
 .btn-visit{width:100%;padding:13px;border-radius:var(--r1);background:var(--sage-d);border:1.5px solid var(--sage-b);color:var(--sage);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-bottom:10px}.btn-visit:hover{background:rgba(74,124,111,.18)}
 
-/* WhatsApp Contact Owner Button */
+/* ── WhatsApp / Call buttons (unlocked) ── */
 .btn-wa-contact{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:9px;text-decoration:none;margin-bottom:10px;letter-spacing:.01em}
 .btn-wa-contact:hover{box-shadow:0 4px 20px rgba(37,211,102,.45);transform:translateY(-1px)}
 .btn-wa-contact svg{flex-shrink:0}
 .btn-call-owner{width:100%;padding:11px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--ink3);font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}.btn-call-owner:hover{border-color:var(--terra-b);color:var(--terra)}
+
+/* ══ SUBSCRIPTION LOCK ══
+   These styles control the locked state of the contact buttons.
+   The lock overlay replaces the buttons when user has no active subscription.
+*/
+.contact-lock-wrap{width:100%;margin-bottom:10px}
+
+/* Lock overlay card */
+.contact-lock{background:linear-gradient(135deg,rgba(200,148,58,.08),rgba(196,92,60,.06));border:1.5px solid var(--gold-b);border-radius:var(--r2);padding:16px 18px;text-align:center}
+.lock-icon{font-size:28px;margin-bottom:6px;display:block}
+.lock-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--ink);margin-bottom:4px}
+.lock-sub{font-size:12px;color:var(--ink4);line-height:1.65;margin-bottom:12px}
+.lock-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.btn-subscribe{display:block;width:100%;padding:12px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),#a8722a);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .22s;text-align:center}.btn-subscribe:hover{box-shadow:0 4px 18px rgba(200,148,58,.45);transform:translateY(-1px)}
+.btn-login-lock{display:block;width:100%;padding:9px;margin-top:7px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--ink4);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;text-align:center;transition:all .2s}.btn-login-lock:hover{border-color:var(--terra-b);color:var(--terra)}
 
 .pc-perks{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--div)}
 .perk-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3)}
@@ -214,11 +218,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .oc-wa-btn{width:100%;padding:12px;border-radius:var(--r1);background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:8px}.oc-wa-btn:hover{box-shadow:0 3px 14px rgba(37,211,102,.4);transform:translateY(-1px)}
 .oc-call-btn{width:100%;padding:10px;border-radius:var(--r1);background:var(--terra-d);border:1.5px solid var(--terra-b);color:var(--terra);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}.oc-call-btn:hover{background:rgba(196,92,60,.18)}
 
-/* Preferred tenants */
+/* Blurred/locked owner phone row */
+.oc-row-locked{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3)}
+.oc-row-locked span{font-size:15px;flex-shrink:0}
+.blurred-val{filter:blur(5px);user-select:none;pointer-events:none;font-weight:700;color:var(--ink);letter-spacing:.05em}
+
 .tenant-chips{display:flex;flex-wrap:wrap;gap:7px}
 .tenant-chip{display:flex;align-items:center;gap:5px;background:var(--cream2);border:1px solid var(--div2);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--ink3)}
 
-/* Safety card */
 .safety-card{background:var(--cream2);border:1px solid var(--div);border-radius:var(--r2);padding:16px;font-size:13px;color:var(--ink3);line-height:1.7}
 .safety-t{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:7px}
 
@@ -260,21 +267,19 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .lb-thumbs{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap;max-width:600px;margin-left:auto;margin-right:auto}
 .lb-thumb{width:62px;height:46px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:2px solid transparent;transition:all .2s;overflow:hidden;background:var(--cream3)}.lb-thumb img{width:100%;height:100%;object-fit:cover}.lb-thumb.on{border-color:var(--terra);box-shadow:0 0 12px rgba(196,92,60,.35)}.lb-thumb:hover{border-color:var(--terra-b)}
 
-/* Toast */
 .toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--ink);color:var(--cream);border-left:3px solid var(--terra);border-radius:var(--r1);padding:12px 18px;font-size:13px;display:none;min-width:260px;animation:tIn .3s ease;box-shadow:0 8px 34px rgba(30,20,10,.25)}
 @keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* Mobile share bar */
 .share-bar{position:fixed;bottom:0;left:0;right:0;z-index:700;background:rgba(250,247,242,.97);border-top:2px solid var(--terra-b);backdrop-filter:blur(16px);padding:12px 20px;display:none;align-items:center;gap:10px;box-shadow:0 -4px 24px rgba(30,20,10,.1)}
 .sb-price{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);flex:1;line-height:1}
 .sb-price span{font-size:11px;font-weight:400;color:var(--ink5);font-family:'JetBrains Mono',monospace;display:block;margin-top:2px}
 .sb-btns{display:flex;gap:8px}
+/* Mobile share bar — locked state */
 .sb-wa{padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
+.sb-wa-locked{padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),#a8722a);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
 
-/* Reveal animation */
 .rv{opacity:0;transform:translateY(18px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
 
-/* Responsive */
 @media(max-width:1100px){.page-wrap{grid-template-columns:1fr}.sidebar{position:static}.share-bar{display:flex}}
 @media(max-width:760px){.gallery-grid{grid-template-columns:1fr;grid-template-rows:260px;height:260px}.gal-thumb{display:none}.page-wrap{padding:20px 16px 110px}.spec-pills{gap:7px}.amen-grid{grid-template-columns:1fr 1fr}.m-2col{grid-template-columns:1fr}.breadcrumb{display:none}.nav{padding:0 16px}}
 </style>
@@ -393,7 +398,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
   <!-- LEFT COLUMN -->
   <div class="left-col">
 
-    <!-- Header -->
     <div class="prop-header rv">
       <div class="type-avail-row">
         <span class="type-chip" id="propTypeChip">—</span>
@@ -413,11 +417,9 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
       </div>
     </div>
 
-    <!-- Spec pills -->
     <div class="spec-pills rv d1" id="specPills"></div>
     <div class="sec-line"></div>
 
-    <!-- Description -->
     <div class="rv d1" id="descSection" style="display:none">
       <div class="sec-h">About this Property</div>
       <div class="desc-text" id="propDesc"></div>
@@ -425,28 +427,24 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
       <div class="sec-line"></div>
     </div>
 
-    <!-- Amenities -->
     <div class="rv d2" id="amenSection" style="display:none">
       <div class="sec-h">Amenities &amp; Features</div>
       <div class="amen-grid" id="amenGrid"></div>
       <div class="sec-line"></div>
     </div>
 
-    <!-- Property Rules -->
     <div class="rv d1" id="rulesSection" style="display:none">
       <div class="sec-h">House Rules &amp; Policies</div>
       <div class="rules-grid" id="rulesGrid"></div>
       <div class="sec-line"></div>
     </div>
 
-    <!-- Preferred Tenants -->
     <div class="rv d2" id="tenantsSection" style="display:none">
       <div class="sec-h">Preferred Tenants</div>
       <div class="tenant-chips" id="tenantChips"></div>
       <div class="sec-line"></div>
     </div>
 
-    <!-- Map -->
     <div class="rv d2" id="mapSection">
       <div class="sec-h">Location</div>
       <div class="map-card">
@@ -481,14 +479,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
         <button class="btn-enquire" onclick="openMo('enquiry')">⚡ Send Enquiry</button>
         <button class="btn-visit" onclick="openMo('visit')">📅 Schedule Site Visit</button>
 
-        <!-- PRIMARY: WhatsApp Contact Owner -->
-        <a class="btn-wa-contact" id="btnWaMain" href="#" target="_blank" rel="noopener">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          Contact Owner on WhatsApp
-        </a>
-
-        <!-- Call button -->
-        <a class="btn-call-owner" id="btnCallMain" href="#">📞 Call Owner</a>
+        <!-- ══════════════════════════════════
+             CONTACT BUTTONS CONTAINER
+             Rendered dynamically based on
+             subscription status (see JS below)
+        ══════════════════════════════════ -->
+        <div id="contactButtonsWrap"></div>
 
         <div class="pc-perks">
           <div class="perk-row"><span class="perk-ic">✅</span>Zero brokerage · Direct owner</div>
@@ -507,15 +503,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
           <div class="oc-type">Property Owner</div>
         </div>
       </div>
+      <!-- Owner contact rows: locked or unlocked rendered by JS -->
       <div class="oc-detail" id="ownerDetail"></div>
-      <a class="oc-wa-btn" id="btnWaOwnerCard" href="#" target="_blank" rel="noopener">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp Owner
-      </a>
-      <a class="oc-call-btn" id="btnCallOwnerCard" href="#">📞 Call Owner</a>
+      <!-- Owner action buttons: locked or unlocked rendered by JS -->
+      <div id="ownerContactBtns"></div>
     </div>
 
-    <!-- Safety -->
     <div class="safety-card rv d2">
       <div class="safety-t">🛡️ Your Safety First</div>
       Never transfer money before visiting the property in person. SmartRent AI supports direct, secure communication — we never ask for payment outside the platform.
@@ -530,15 +523,16 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
     <div class="sb-price">₹<span id="sbPrice">—</span><span>/month</span></div>
   </div>
   <div class="sb-btns">
-    <a class="sb-wa" id="sbWaBtn" href="#" target="_blank" rel="noopener">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Contact Owner
-    </a>
+    <!-- Mobile contact button: locked or unlocked rendered by JS -->
+    <div id="sbContactBtn"></div>
     <button style="padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer" onclick="openMo('enquiry')">Enquire</button>
   </div>
 </div>
 
-<!-- FIREBASE MODULE -->
+<!-- ══════════════════════════════════════════════════════════
+     FIREBASE MODULE
+     Loads property data + checks tenant subscription status
+══════════════════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -555,26 +549,62 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-onAuthStateChanged(auth, u => { window._currentUser = u || null; });
+// ─── SUBSCRIPTION GATE ────────────────────────────────────────
+// Checks whether the currently logged-in user has an active
+// tenant subscription stored in Firestore.
+//
+// Document path:  users/{uid}
+// Field expected: subscriptionStatus  →  "active"
+//                 subscriptionPlan    →  "tenant_basic" | "tenant_premium" | etc.
+//
+// To adjust: change the collection name, document path, or
+// field names below to match your Firestore schema.
+// ─────────────────────────────────────────────────────────────
+async function checkSubscription(uid) {
+  if (!uid) return false;
+  try {
+    const snap = await getDoc(doc(db, 'users', uid));
+    if (!snap.exists()) return false;
+    const data = snap.data();
+    // ↓ Adjust these field names / values to match your schema
+    const isActive = data.subscriptionStatus === 'active';
+    const isTenantPlan = (data.subscriptionPlan || '').startsWith('tenant');
+    return isActive && isTenantPlan;
+  } catch (e) {
+    console.error('Subscription check failed:', e);
+    return false;
+  }
+}
 
-// Get property ID from URL
+// Wait for auth + property in parallel
 const urlId = new URLSearchParams(window.location.search).get('id');
 
 if (!urlId) {
   showNotFound();
 } else {
   try {
-    const snap = await getDoc(doc(db, 'properties', urlId));
-    if (snap.exists()) {
-      const data = { id: snap.id, ...snap.data() };
+    // Resolve auth state and property data simultaneously
+    const [userResult, propSnap] = await Promise.all([
+      new Promise(resolve => onAuthStateChanged(auth, u => resolve(u), () => resolve(null))),
+      getDoc(doc(db, 'properties', urlId))
+    ]);
+
+    window._currentUser = userResult || null;
+
+    if (!propSnap.exists()) {
+      showNotFound();
+    } else {
+      const data = { id: propSnap.id, ...propSnap.data() };
       window._propData = data;
 
       // Increment view count silently
       try { await updateDoc(doc(db, 'properties', urlId), { views: increment(1) }); } catch(e) {}
 
-      renderProperty(data);
-    } else {
-      showNotFound();
+      // Check subscription
+      const hasSubscription = await checkSubscription(window._currentUser?.uid);
+      window._hasSubscription = hasSubscription;
+
+      renderProperty(data, hasSubscription);
     }
   } catch(err) {
     console.error('Error loading property:', err);
@@ -582,10 +612,11 @@ if (!urlId) {
   }
 }
 
-/* ═══════════════════════════════════
-   RENDER PROPERTY FROM FIRESTORE DATA
-═══════════════════════════════════ */
-function renderProperty(p) {
+/* ═══════════════════════════════════════════════════════════════
+   RENDER PROPERTY
+   hasSubscription: boolean — controls contact info visibility
+═══════════════════════════════════════════════════════════════ */
+function renderProperty(p, hasSubscription) {
   const ls = document.getElementById('loadingScreen');
   ls.classList.add('hide');
   setTimeout(() => ls.style.display = 'none', 400);
@@ -623,11 +654,9 @@ function renderProperty(p) {
   document.getElementById('propTypeChip').textContent = p.type || 'Property';
   document.getElementById('propTitle').textContent = title;
 
-  // Location
   const locParts = [p.locality, p.city].filter(Boolean);
   document.getElementById('propLocTxt').textContent = locParts.join(', ') || '—';
 
-  // Meta
   document.getElementById('propViews').textContent = ((p.views || 1)).toLocaleString('en-IN');
   document.getElementById('propEnq').textContent = (p.enquiries || 0).toLocaleString('en-IN');
   if (p.createdAt) {
@@ -635,10 +664,8 @@ function renderProperty(p) {
     document.getElementById('propDateMeta').textContent = '📅 Listed ' + d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
   }
 
-  // Spec pills
   renderSpecs(p);
 
-  // Description
   if (p.description && p.description.trim()) {
     document.getElementById('descSection').style.display = 'block';
     const descEl = document.getElementById('propDesc');
@@ -659,7 +686,6 @@ function renderProperty(p) {
     }
   }
 
-  // Amenities
   const amenities = p.amenities || [];
   if (amenities.length > 0) {
     document.getElementById('amenSection').style.display = 'block';
@@ -671,13 +697,12 @@ function renderProperty(p) {
     }).join('');
   }
 
-  // House rules
   const rules = [];
-  if (p.cooking) rules.push({ ic:'🍳', lbl:'Cooking', val: p.cooking });
-  if (p.nonveg)  rules.push({ ic:'🍖', lbl:'Non-Veg', val: p.nonveg });
-  if (p.smoking) rules.push({ ic:'🚬', lbl:'Smoking', val: p.smoking });
-  if (p.drinking) rules.push({ ic:'🍷', lbl:'Drinking', val: p.drinking });
-  if (p.guests)  rules.push({ ic:'👥', lbl:'Visitors', val: p.guests });
+  if (p.cooking)     rules.push({ ic:'🍳', lbl:'Cooking',     val: p.cooking });
+  if (p.nonveg)      rules.push({ ic:'🍖', lbl:'Non-Veg',     val: p.nonveg });
+  if (p.smoking)     rules.push({ ic:'🚬', lbl:'Smoking',     val: p.smoking });
+  if (p.drinking)    rules.push({ ic:'🍷', lbl:'Drinking',    val: p.drinking });
+  if (p.guests)      rules.push({ ic:'👥', lbl:'Visitors',    val: p.guests });
   if (p.maintenance) rules.push({ ic:'🔧', lbl:'Maintenance', val: p.maintenance });
   if (rules.length > 0) {
     document.getElementById('rulesSection').style.display = 'block';
@@ -688,7 +713,6 @@ function renderProperty(p) {
       </div>`).join('');
   }
 
-  // Preferred tenants
   const tenants = p.preferredTenants || [];
   if (tenants.length > 0) {
     document.getElementById('tenantsSection').style.display = 'block';
@@ -697,26 +721,24 @@ function renderProperty(p) {
     ).join('');
   }
 
-  // Map - use locality + city for Google Maps embed
+  // Map
   const mapQuery = encodeURIComponent([p.locality, p.city, 'India'].filter(Boolean).join(', '));
   const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&output=embed&z=15`;
   document.getElementById('mapAddr').textContent = [p.locality, p.city].filter(Boolean).join(', ');
   document.getElementById('mapsLink').href = `https://www.google.com/maps/search/?api=1&query=${mapQuery}`;
-
-  // Load map iframe on scroll (lazy)
-  const mapIframe = document.getElementById('mapIframe');
+  const mapIframe  = document.getElementById('mapIframe');
   const mapLoading = document.getElementById('mapLoading');
-  const mapObserver = new IntersectionObserver(entries => {
+  const mapObs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting) {
       mapIframe.src = mapSrc;
       mapIframe.style.display = 'block';
       mapIframe.onload = () => mapLoading.classList.add('hidden');
-      mapObserver.disconnect();
+      mapObs.disconnect();
     }
   }, { threshold: 0.1 });
-  mapObserver.observe(document.getElementById('mapSection'));
+  mapObs.observe(document.getElementById('mapSection'));
 
-  // Sidebar price & deposit
+  // Price
   document.getElementById('sidePrice').textContent = (p.price || 0).toLocaleString('en-IN');
   document.getElementById('sbPrice').textContent   = (p.price || 0).toLocaleString('en-IN');
   if (p.deposit) {
@@ -725,22 +747,15 @@ function renderProperty(p) {
   }
 
   // Owner info
-  const owner = p.owner || {};
-  const ownerName = owner.name || p.ownerName || 'Property Owner';
-  const ownerPhone = owner.phone || p.ownerPhone || '';
-  const ownerWA = owner.whatsapp || ownerPhone || '';
-  const ownerEmail = owner.email || '';
+  const owner      = p.owner || {};
+  const ownerName  = owner.name     || p.ownerName  || 'Property Owner';
+  const ownerPhone = owner.phone    || p.ownerPhone || '';
+  const ownerWA    = owner.whatsapp || ownerPhone   || '';
+  const ownerEmail = owner.email    || '';
 
   document.getElementById('ownerNameEl').textContent = ownerName;
 
-  // Build owner detail rows
-  const detailHtml = [];
-  if (ownerPhone) detailHtml.push(`<div class="oc-row"><span>📞</span>${ownerPhone}</div>`);
-  if (ownerWA && ownerWA !== ownerPhone) detailHtml.push(`<div class="oc-row"><span>💬</span>${ownerWA} (WhatsApp)</div>`);
-  if (ownerEmail) detailHtml.push(`<div class="oc-row"><span>📧</span>${ownerEmail}</div>`);
-  document.getElementById('ownerDetail').innerHTML = detailHtml.join('');
-
-  // Build WhatsApp message
+  // Build WhatsApp href
   const propUrl = window.location.href;
   const waMsg = encodeURIComponent(
     `Hi ${ownerName}! I'm interested in your property "${title}" listed on SmartRent AI.\n` +
@@ -748,8 +763,6 @@ function renderProperty(p) {
     `💰 ₹${(p.price||0).toLocaleString('en-IN')}/month\n\n` +
     `Could you please share availability and more details?\n${propUrl}`
   );
-
-  // Sanitise phone number — digits only, add country code if needed
   function buildWaNum(raw) {
     if (!raw) return null;
     let digits = String(raw).replace(/\D/g,'');
@@ -757,32 +770,101 @@ function renderProperty(p) {
     else if (digits.startsWith('0')) digits = '91' + digits.slice(1);
     return digits || null;
   }
-
-  const waNum = buildWaNum(ownerWA) || buildWaNum(ownerPhone);
-  const waHref = waNum ? `https://wa.me/${waNum}?text=${waMsg}` : '#';
+  const waNum   = buildWaNum(ownerWA) || buildWaNum(ownerPhone);
+  const waHref  = waNum ? `https://wa.me/${waNum}?text=${waMsg}` : '#';
   const callHref = ownerPhone ? `tel:${ownerPhone.replace(/\s/g,'')}` : '#';
 
-  // Set all WhatsApp / call buttons
-  document.getElementById('btnWaMain').href     = waHref;
-  document.getElementById('btnWaOwnerCard').href = waHref;
-  document.getElementById('sbWaBtn').href        = waHref;
-  document.getElementById('btnCallMain').href    = callHref;
-  document.getElementById('btnCallOwnerCard').href = callHref;
+  // ══════════════════════════════════════════════════════
+  //  RENDER CONTACT SECTION BASED ON SUBSCRIPTION STATUS
+  // ══════════════════════════════════════════════════════
+  if (hasSubscription) {
+    // ── UNLOCKED: show real WhatsApp & Call buttons ──────
 
-  if (!waNum) {
-    document.getElementById('btnWaMain').style.display = 'none';
-    document.getElementById('btnWaOwnerCard').style.display = 'none';
-    document.getElementById('sbWaBtn').style.display = 'none';
-  }
-  if (!ownerPhone) {
-    document.getElementById('btnCallMain').style.display = 'none';
-    document.getElementById('btnCallOwnerCard').style.display = 'none';
+    // Owner detail rows (phone / email)
+    const detailHtml = [];
+    if (ownerPhone) detailHtml.push(`<div class="oc-row"><span>📞</span>${ownerPhone}</div>`);
+    if (ownerWA && ownerWA !== ownerPhone) detailHtml.push(`<div class="oc-row"><span>💬</span>${ownerWA} (WhatsApp)</div>`);
+    if (ownerEmail) detailHtml.push(`<div class="oc-row"><span>📧</span>${ownerEmail}</div>`);
+    document.getElementById('ownerDetail').innerHTML = detailHtml.join('');
+
+    // Price card contact buttons
+    const cbWrap = document.getElementById('contactButtonsWrap');
+    cbWrap.innerHTML = '';
+    if (waNum) {
+      const waBtn = document.createElement('a');
+      waBtn.className = 'btn-wa-contact';
+      waBtn.href = waHref;
+      waBtn.target = '_blank';
+      waBtn.rel = 'noopener';
+      waBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Contact Owner on WhatsApp`;
+      cbWrap.appendChild(waBtn);
+    }
+    if (ownerPhone) {
+      const callBtn = document.createElement('a');
+      callBtn.className = 'btn-call-owner';
+      callBtn.href = callHref;
+      callBtn.textContent = '📞 Call Owner';
+      cbWrap.appendChild(callBtn);
+    }
+
+    // Owner card buttons
+    const ocBtns = document.getElementById('ownerContactBtns');
+    ocBtns.innerHTML = '';
+    if (waNum) {
+      ocBtns.innerHTML += `
+        <a class="oc-wa-btn" href="${waHref}" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp Owner
+        </a>`;
+    }
+    if (ownerPhone) {
+      ocBtns.innerHTML += `<a class="oc-call-btn" href="${callHref}">📞 Call Owner</a>`;
+    }
+
+    // Mobile share bar
+    document.getElementById('sbContactBtn').innerHTML = waNum
+      ? `<a class="sb-wa" href="${waHref}" target="_blank" rel="noopener">
+           <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+           Contact Owner
+         </a>`
+      : '';
+
+  } else {
+    // ── LOCKED: show blurred info + upgrade prompt ────────
+
+    // Blurred phone / email in owner detail
+    const lockedDetailHtml = [];
+    if (ownerPhone) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📞</span><span class="blurred-val">+91 98765 43210</span></div>`);
+    if (ownerEmail) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📧</span><span class="blurred-val">owner@email.com</span></div>`);
+    document.getElementById('ownerDetail').innerHTML = lockedDetailHtml.join('');
+
+    // Lock overlay HTML (reused in both price card and owner card)
+    const isLoggedIn = !!window._currentUser;
+    const lockHTML = `
+      <div class="contact-lock">
+        <span class="lock-icon">🔒</span>
+        <div class="lock-title">Contact Info Locked</div>
+        <div class="lock-sub">Get direct access to the owner's WhatsApp &amp; phone number — no agents, no brokerage.</div>
+        <div class="lock-badge">✨ Tenant Subscription Required</div>
+        <a class="btn-subscribe" href="plans.html">View Plans &amp; Unlock</a>
+        ${!isLoggedIn ? `<a class="btn-login-lock" href="login.html?redirect=${encodeURIComponent(window.location.href)}">Already subscribed? Sign In</a>` : ''}
+      </div>`;
+
+    // Price card
+    document.getElementById('contactButtonsWrap').innerHTML = lockHTML;
+
+    // Owner card buttons
+    document.getElementById('ownerContactBtns').innerHTML = lockHTML;
+
+    // Mobile share bar — show upgrade button
+    document.getElementById('sbContactBtn').innerHTML = `
+      <a class="sb-wa-locked" href="plans.html">
+        🔒 Unlock Contact
+      </a>`;
   }
 
-  // Gallery
   renderGallery(p);
-
-  // Init scroll reveal & nav scroll
   initScrollReveal();
   initNavScroll();
   setupShareBar();
@@ -791,41 +873,29 @@ function renderProperty(p) {
 /* ── Gallery ── */
 function renderGallery(p) {
   const images = (p.images || []).filter(Boolean);
-  const hasImages = images.length > 0;
   const grid = document.getElementById('galleryGrid');
+  const pendingBadge = !p.approved ? '<div class="gal-pending-badge">⏳ PENDING REVIEW</div>' : '';
 
-  // Pending watermark if not approved
-  const pendingBadge = !p.approved
-    ? '<div class="gal-pending-badge">⏳ PENDING REVIEW</div>'
-    : '';
-
-  if (hasImages) {
-    const main = images[0];
-    const thumb1 = images[1] || images[0];
-    const thumb2 = images[2] || images[0];
+  if (images.length > 0) {
     const totalCount = images.length;
-
     grid.innerHTML = `
       <div class="gal-cell gal-main" onclick="openLb(0)">
-        <img class="gal-img" src="${main}" alt="Property main photo" loading="eager">
+        <img class="gal-img" src="${images[0]}" alt="Property main photo" loading="eager">
         <div class="gal-ov"></div>
         ${pendingBadge}
         <div class="gal-save" id="galSave" onclick="event.stopPropagation();toggleSave()">🤍</div>
         <div class="gal-count-btn" onclick="event.stopPropagation();openLb(0)">📷 ${totalCount} Photo${totalCount>1?'s':''}</div>
       </div>
       <div class="gal-cell gal-thumb" onclick="openLb(1)">
-        <img class="gal-img" src="${thumb1}" alt="Photo 2" loading="lazy">
+        <img class="gal-img" src="${images[1] || images[0]}" alt="Photo 2" loading="lazy">
         <div class="gal-ov"></div>
       </div>
       <div class="gal-cell gal-thumb" onclick="openLb(${Math.min(2,images.length-1)})">
-        <img class="gal-img" src="${thumb2}" alt="Photo 3" loading="lazy">
+        <img class="gal-img" src="${images[2] || images[0]}" alt="Photo 3" loading="lazy">
         <div class="gal-ov"></div>
       </div>`;
-
-    // Store images for lightbox
     window._propImages = images;
   } else {
-    // Emoji placeholder when no photos uploaded
     grid.innerHTML = `
       <div class="gal-cell gal-main" style="background:linear-gradient(145deg,#e8ede4,#d4dcc8)">
         <div class="gal-emoji-ph">🏠</div>
@@ -834,12 +904,10 @@ function renderGallery(p) {
         <div class="gal-save" id="galSave" onclick="toggleSave()">🤍</div>
       </div>
       <div class="gal-cell gal-thumb" style="background:linear-gradient(145deg,#e4e8ec,#c8d4dc)">
-        <div class="gal-emoji-ph">🛋️</div>
-        <div class="gal-ov"></div>
+        <div class="gal-emoji-ph">🛋️</div><div class="gal-ov"></div>
       </div>
       <div class="gal-cell gal-thumb" style="background:linear-gradient(145deg,#ece8e4,#d8d0c8)">
-        <div class="gal-emoji-ph">🏙️</div>
-        <div class="gal-ov"></div>
+        <div class="gal-emoji-ph">🏙️</div><div class="gal-ov"></div>
       </div>`;
     window._propImages = [];
   }
@@ -848,16 +916,15 @@ function renderGallery(p) {
 /* ── Spec pills ── */
 function renderSpecs(p) {
   const specs = [];
-  if (p.bhk)          specs.push({ic:'🛏️', val:p.bhk, lbl:'Configuration'});
-  if (p.area)         specs.push({ic:'📐', val:p.area+' sq.ft', lbl:'Carpet Area'});
-  if (p.floor)        specs.push({ic:'🏢', val:p.floor, lbl:'Floor'});
-  if (p.furnishing)   specs.push({ic:'🪑', val:p.furnishing, lbl:'Furnishing'});
-  if (p.availableFrom) specs.push({ic:'📅', val:p.availableFrom, lbl:'Available From'});
-  else                 specs.push({ic:'📅', val:'Immediate', lbl:'Available'});
-  if (p.deposit)      specs.push({ic:'🔐', val:'₹'+Number(p.deposit).toLocaleString('en-IN'), lbl:'Deposit'});
-  if (p.facing)       specs.push({ic:'🧭', val:p.facing, lbl:'Facing'});
-  if (p.propAge)      specs.push({ic:'🏗️', val:p.propAge, lbl:'Property Age'});
-
+  if (p.bhk)           specs.push({ic:'🛏️', val:p.bhk,                                    lbl:'Configuration'});
+  if (p.area)          specs.push({ic:'📐', val:p.area+' sq.ft',                           lbl:'Carpet Area'});
+  if (p.floor)         specs.push({ic:'🏢', val:p.floor,                                   lbl:'Floor'});
+  if (p.furnishing)    specs.push({ic:'🪑', val:p.furnishing,                              lbl:'Furnishing'});
+  if (p.availableFrom) specs.push({ic:'📅', val:p.availableFrom,                           lbl:'Available From'});
+  else                 specs.push({ic:'📅', val:'Immediate',                                lbl:'Available'});
+  if (p.deposit)       specs.push({ic:'🔐', val:'₹'+Number(p.deposit).toLocaleString('en-IN'), lbl:'Deposit'});
+  if (p.facing)        specs.push({ic:'🧭', val:p.facing,                                  lbl:'Facing'});
+  if (p.propAge)       specs.push({ic:'🏗️', val:p.propAge,                                lbl:'Property Age'});
   document.getElementById('specPills').innerHTML = specs.map(s => `
     <div class="spec-pill">
       <span class="sp-ic">${s.ic}</span>
@@ -900,16 +967,14 @@ function setupShareBar() {
 
 </script>
 
-<!-- PLAIN JS (no module needed for UI handlers) -->
+<!-- PLAIN JS — UI handlers only, no Firebase -->
 <script>
 /* ── Lightbox ── */
 let lbIdx = 0;
-
 function openLb(idx) {
   const images = window._propImages || [];
   if (!images.length) return;
-  lbIdx = idx;
-  updateLb();
+  lbIdx = idx; updateLb();
   document.getElementById('lightbox').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
@@ -918,19 +983,17 @@ function closeLb() {
   document.body.style.overflow = '';
 }
 function closeLbOnBg(e) { if(e.target === document.getElementById('lightbox')) closeLb(); }
-function lbPrev() { const n = (window._propImages||[]).length; lbIdx = ((lbIdx - 1) + n) % n; updateLb(); }
-function lbNext() { const n = (window._propImages||[]).length; lbIdx = (lbIdx + 1) % n; updateLb(); }
+function lbPrev() { const n = (window._propImages||[]).length; lbIdx = ((lbIdx-1)+n)%n; updateLb(); }
+function lbNext() { const n = (window._propImages||[]).length; lbIdx = (lbIdx+1)%n; updateLb(); }
 function lbGoTo(i) { lbIdx = i; updateLb(); }
-
 function updateLb() {
   const images = window._propImages || [];
   if (!images.length) return;
   const n = images.length;
-  lbIdx = ((lbIdx % n) + n) % n;
-  const main = document.getElementById('lbMain');
-  main.innerHTML = `<img src="${images[lbIdx]}" alt="Photo ${lbIdx+1}" style="width:100%;height:100%;object-fit:contain">`;
+  lbIdx = ((lbIdx%n)+n)%n;
+  document.getElementById('lbMain').innerHTML = `<img src="${images[lbIdx]}" alt="Photo ${lbIdx+1}" style="width:100%;height:100%;object-fit:contain">`;
   document.getElementById('lbCounter').textContent = (lbIdx+1) + ' / ' + n;
-  document.getElementById('lbThumbs').innerHTML = images.map((url, i) =>
+  document.getElementById('lbThumbs').innerHTML = images.map((url,i) =>
     `<div class="lb-thumb ${i===lbIdx?'on':''}" onclick="lbGoTo(${i})"><img src="${url}" alt="thumb"></div>`
   ).join('');
 }
@@ -990,7 +1053,7 @@ function showToast(msg) {
   _tT = setTimeout(() => { el.style.display = 'none'; }, 3600);
 }
 
-/* ── Keyboard nav ── */
+/* ── Keyboard ── */
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape') { closeLb(); closeMo(); }
   if(e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('show')) lbNext();

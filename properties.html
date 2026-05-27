@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,21 +13,18 @@
    Cream / Charcoal / Terracotta / Gold
 ═══════════════════════════════════════════════════════ */
 :root {
-  /* Base — warm cream */
   --cream:    #faf7f2;
   --cream2:   #f3ede4;
   --cream3:   #ede4d8;
   --cream4:   #e4d8c8;
   --white:    #ffffff;
 
-  /* Ink */
   --ink:      #1a1410;
   --ink2:     #2e2820;
   --ink3:     #4a4038;
   --ink4:     #6b5f55;
   --ink5:     #9c8e84;
 
-  /* Terracotta accent */
   --terra:    #c45c3c;
   --terra-lt: #d97a5c;
   --terra-dk: #8a3620;
@@ -35,30 +32,25 @@
   --terra-b:  rgba(196,92,60,.22);
   --terra-g:  rgba(196,92,60,.06);
 
-  /* Gold */
   --gold:     #c8943a;
   --gold-lt:  #e0b060;
   --gold-d:   rgba(200,148,58,.1);
   --gold-b:   rgba(200,148,58,.24);
 
-  /* Sage */
   --sage:     #4a7c6f;
   --sage-d:   rgba(74,124,111,.1);
   --sage-b:   rgba(74,124,111,.22);
 
-  /* WhatsApp */
   --wa:       #25D366;
   --wa-d:     rgba(37,211,102,.1);
   --wa-dk:    #128C7E;
 
-  /* Status */
   --avail:    #2d7a5a;
   --avail-d:  rgba(45,122,90,.1);
   --avail-b:  rgba(45,122,90,.2);
   --leased:   #b04040;
   --leased-d: rgba(176,64,64,.1);
 
-  /* Typography */
   --t0: var(--ink);
   --t1: var(--ink2);
   --t2: var(--ink3);
@@ -75,7 +67,6 @@
   --sh3: 0 24px 80px rgba(30,20,10,.14);
 }
 
-/* ═══ RESET ═══ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.7;font-size:15px}
@@ -83,15 +74,11 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--cream2)}
 ::-webkit-scrollbar-thumb{background:var(--terra-b);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--terra)}
 
-/* Progress bar */
 .pgbar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--terra),var(--gold));z-index:2000;transition:width .15s;pointer-events:none}
 
-/* ═══ BACKGROUND TEXTURE ═══ */
 .bg-texture{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.3;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")}
 
-/* ═══════════════════════════════════
-   NAVBAR
-═══════════════════════════════════ */
+/* ═══ NAVBAR ═══ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:900;height:66px;display:flex;align-items:center;padding:0 36px;background:rgba(250,247,242,.92);backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--div);transition:all .3s}
 .nav.solid{background:rgba(250,247,242,.99);box-shadow:0 2px 0 rgba(196,92,60,.12),0 6px 30px rgba(30,20,10,.08)}
 
@@ -114,9 +101,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .mob-drawer.open{display:flex}
 .mob-l{padding:12px 0;font-size:14px;font-weight:600;color:var(--ink2);text-decoration:none;border-bottom:1px solid var(--div);display:flex;align-items:center;gap:9px;transition:color .18s}.mob-l:hover{color:var(--terra)}.mob-l:last-of-type{border-bottom:none}
 
-/* ═══════════════════════════════════
-   PAGE HEADER
-═══════════════════════════════════ */
+/* ═══ PAGE HERO ═══ */
 .page-hero{position:relative;z-index:1;padding:100px 24px 0;background:linear-gradient(180deg,var(--cream) 0%,var(--cream2) 100%);border-bottom:1px solid var(--div)}
 
 .ph-inner{max-width:1320px;margin:0 auto}
@@ -151,9 +136,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .cat-tab.on .ct-count{background:rgba(255,255,255,.3)}
 .cat-tab:not(.on) .ct-count{color:var(--t4);background:var(--cream2)}
 
-/* ═══════════════════════════════════
-   MAIN LAYOUT — SIDEBAR + GRID
-═══════════════════════════════════ */
+/* ═══ MAIN LAYOUT ═══ */
 .main-layout{display:grid;grid-template-columns:288px 1fr;gap:28px;max-width:1320px;margin:0 auto;padding:28px 24px 100px;position:relative;z-index:1}
 
 /* ═══ FILTER SIDEBAR ═══ */
@@ -169,7 +152,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .filter-group{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .filter-group:last-child{margin-bottom:0}
 
-/* Checkbox filter */
 .fcheck{display:flex;align-items:center;gap:9px;cursor:pointer;padding:6px 8px;border-radius:var(--r1);transition:background .18s}
 .fcheck:hover{background:var(--cream2)}
 .fcheck-box{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--div2);background:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s}
@@ -177,14 +159,12 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .fcheck-lbl{font-size:13px;font-weight:500;color:var(--ink2)}
 .fcheck-count{font-size:11px;color:var(--t4);margin-left:auto;font-family:'JetBrains Mono',monospace}
 
-/* Range slider */
 .range-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-size:12px;color:var(--t2);font-family:'JetBrains Mono',monospace}
 .range-val{color:var(--terra);font-weight:600}
 .frange{width:100%;appearance:none;height:4px;border-radius:2px;outline:none;cursor:pointer;margin-bottom:14px;background:linear-gradient(to right,var(--terra) var(--range-pct,40%),var(--cream3) var(--range-pct,40%))}
 .frange::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--terra);box-shadow:0 2px 8px rgba(196,92,60,.35);cursor:pointer;border:2px solid white;transition:transform .15s}
 .frange::-webkit-slider-thumb:hover{transform:scale(1.2)}
 
-/* Toggle switch */
 .ftoggle{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--div)}
 .ftoggle:last-child{border-bottom:none;padding-bottom:0}
 .ftoggle-lbl{font-size:13px;font-weight:500;color:var(--ink2)}
@@ -193,7 +173,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .ftoggle.on .ftoggle-sw{background:var(--terra);border-color:var(--terra)}
 .ftoggle.on .ftoggle-sw::after{left:20px}
 
-/* Sort */
+/* ═══ SORT BAR ═══ */
 .sort-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
 .sort-count{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink)}
 .sort-count em{font-style:italic;color:var(--terra)}
@@ -210,17 +190,37 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
 .cards-grid.list-view{grid-template-columns:1fr}
 
-/* THE CARD */
 .pcard{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);overflow:hidden;cursor:pointer;transition:all .35s cubic-bezier(.34,1.1,.64,1);display:flex;flex-direction:column;box-shadow:var(--sh1);position:relative}
 .pcard:hover{border-color:var(--terra-b);transform:translateY(-6px) scale(1.005);box-shadow:var(--sh3)}
 .list-view .pcard{flex-direction:row;max-height:none}
 
-/* Card image */
-.pcard-img{height:210px;position:relative;overflow:hidden;flex-shrink:0;background:var(--cream2);display:flex;align-items:center;justify-content:center}
+/* ═══ CARD IMAGE — now uses real cover photo ═══ */
+.pcard-img{height:210px;position:relative;overflow:hidden;flex-shrink:0;background:var(--cream2)}
 .list-view .pcard-img{width:280px;height:auto;min-height:200px}
-.pcard-emoji{font-size:72px;transition:transform .45s cubic-bezier(.34,1.3,.64,1);position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(30,20,10,.15))}
-.pcard:hover .pcard-emoji{transform:scale(1.12) translateY(-4px)}
-.pcard-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(26,20,16,.52))}
+
+/* The actual cover photo */
+.pcard-cover{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .45s cubic-bezier(.34,1.3,.64,1);
+}
+.pcard:hover .pcard-cover{transform:scale(1.06);}
+
+/* Emoji fallback shown only when no photo */
+.pcard-fallback{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:72px;
+  background:var(--pcard-bg, var(--cream2));
+  transition:transform .45s cubic-bezier(.34,1.3,.64,1);
+}
+.pcard:hover .pcard-fallback{transform:scale(1.12) translateY(-4px);}
+/* Hide fallback when real image loads successfully */
+.pcard-cover.loaded + .pcard-fallback,
+.pcard-cover.loaded ~ .pcard-fallback{display:none;}
+
+.pcard-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(26,20,16,.52));pointer-events:none}
 .list-view .pcard-img-ov{background:linear-gradient(to right,transparent 50%,rgba(26,20,16,.38))}
 
 /* Badges */
@@ -258,16 +258,14 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 
 .pcard-loc{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);font-weight:500;margin-bottom:13px}
 
-/* Spec chips */
 .pcard-specs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:13px}
 .pspec{display:flex;align-items:center;gap:5px;background:var(--cream2);border-radius:6px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--ink3)}
 .pspec-ic{font-size:13px}
 
-/* Amenity tags */
 .pcard-amens{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:13px}
 .pa{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);background:transparent;border:1px solid var(--div2);padding:2px 7px;border-radius:4px;letter-spacing:.04em}
 
-/* Footer */
+/* Card footer */
 .pcard-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1.5px solid var(--div);margin-top:auto;gap:10px;flex-wrap:wrap}
 .pcard-price{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);letter-spacing:-.01em;line-height:1}
 .pcard-price .cur{font-size:14px;font-weight:400;color:var(--t2)}
@@ -275,15 +273,28 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 
 .pcard-actions{display:flex;gap:7px;align-items:center}
 
-/* WhatsApp button — THE HERO ELEMENT */
-.btn-wa{display:flex;align-items:center;gap:7px;padding:9px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--wa),var(--wa-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:800;cursor:pointer;transition:all .22s;text-decoration:none;letter-spacing:.01em;box-shadow:0 3px 12px rgba(37,211,102,.3)}
-.btn-wa:hover{box-shadow:0 6px 22px rgba(37,211,102,.5);transform:translateY(-2px)}
-.btn-wa svg{width:15px;height:15px;flex-shrink:0}
+/* View Details button — primary CTA now */
+.btn-view{
+  display:flex;align-items:center;gap:6px;
+  padding:10px 22px;
+  border-radius:var(--r1);
+  background:linear-gradient(135deg,var(--terra),var(--terra-dk));
+  border:none;
+  color:#fff;
+  font-family:'Nunito',sans-serif;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+  transition:all .22s;
+  text-decoration:none;
+  letter-spacing:.01em;
+  box-shadow:0 3px 12px rgba(196,92,60,.28);
+}
+.btn-view:hover{box-shadow:0 6px 22px rgba(196,92,60,.48);transform:translateY(-2px);}
 
-.btn-view{display:flex;align-items:center;gap:5px;padding:9px 15px;border-radius:var(--r1);background:var(--terra-d);border:1.5px solid var(--terra-b);color:var(--terra);font-family:'Nunito',sans-serif;font-size:12.5px;font-weight:800;cursor:pointer;transition:all .2s;text-decoration:none}.btn-view:hover{background:var(--terra);color:#fff}
 .btn-call{padding:9px 10px;border-radius:var(--r1);background:var(--cream2);border:1.5px solid var(--div2);color:var(--ink3);font-size:14px;cursor:pointer;transition:all .2s}.btn-call:hover{border-color:var(--terra-b);color:var(--terra)}
 
-/* ═══ FEATURED CARD (wide) ═══ */
+/* ═══ FEATURED CARD ═══ */
 .pcard.featured{grid-column:span 2;flex-direction:row}
 .pcard.featured .pcard-img{width:380px;height:auto;min-height:240px;flex-shrink:0}
 .pcard.featured .pcard-title{font-size:24px}
@@ -295,11 +306,11 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .es-t{font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink);margin-bottom:8px}
 .es-d{font-size:15px;color:var(--t2)}
 
-/* ═══ SKELETON LOADER ═══ */
+/* ═══ SKELETON ═══ */
 .skeleton{background:linear-gradient(90deg,var(--cream2) 25%,var(--cream3) 50%,var(--cream2) 75%);background-size:200% 100%;animation:shimmer 1.6s infinite;border-radius:var(--r2)}
 @keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 
-/* ═══ MAP VIEW TOGGLE ═══ */
+/* ═══ MAP VIEW BANNER ═══ */
 .map-view-banner{background:linear-gradient(135deg,var(--sage-d),var(--sage-b));border:1.5px solid var(--sage-b);border-radius:var(--r2);padding:14px 18px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .mvb-t{font-size:14px;font-weight:700;color:var(--sage)}
 .mvb-btn{padding:8px 18px;border-radius:var(--r1);background:var(--sage);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}.mvb-btn:hover{box-shadow:0 4px 14px rgba(74,124,111,.35)}
@@ -317,19 +328,25 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--ink);border-left:3px solid var(--terra);border-radius:var(--r1);padding:13px 18px;font-size:13px;display:none;min-width:260px;color:var(--cream);animation:tIn .3s ease;box-shadow:0 8px 34px rgba(30,20,10,.25)}
 @keyframes tIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ═══ WHATSAPP FLOAT ═══ */
-.wa-float{position:fixed;bottom:90px;right:28px;z-index:600;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--wa),var(--wa-dk));display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);cursor:pointer;transition:all .22s;animation:wapulse 3s ease-in-out infinite}
-@keyframes wapulse{0%,100%{box-shadow:0 4px 20px rgba(37,211,102,.4)}50%{box-shadow:0 4px 32px rgba(37,211,102,.65),0 0 0 8px rgba(37,211,102,.1)}}.wa-float:hover{transform:scale(1.1);animation:none}
-
 /* Reveal */
 .rv{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}.rv.in{opacity:1;transform:translateY(0)}
 .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
 
-/* ═══════════════════════
-   RESPONSIVE
-═══════════════════════ */
+/* ═══ RESPONSIVE ═══ */
 @media(max-width:1100px){.main-layout{grid-template-columns:1fr}.filter-sidebar{display:none}.nav-links{display:none}.mob-btn{display:flex}}
-@media(max-width:768px){.ph-title{font-size:clamp(30px,8vw,48px)}.cards-grid{grid-template-columns:1fr}.pcard.featured{grid-column:span 1;flex-direction:column}.pcard.featured .pcard-img{width:100%;height:200px}.search-bar{flex-direction:column}.sf-sep{display:none}.list-view .pcard{flex-direction:column;max-height:none}.list-view .pcard-img{width:100%;height:200px}.ph-stats-row{gap:16px}.pcard-footer{flex-direction:column;align-items:stretch}.pcard-actions{justify-content:stretch}.btn-wa,.btn-view{flex:1;justify-content:center}}
+@media(max-width:768px){
+  .ph-title{font-size:clamp(30px,8vw,48px)}
+  .cards-grid{grid-template-columns:1fr}
+  .pcard.featured{grid-column:span 1;flex-direction:column}
+  .pcard.featured .pcard-img{width:100%;height:200px}
+  .search-bar{flex-direction:column}.sf-sep{display:none}
+  .list-view .pcard{flex-direction:column;max-height:none}
+  .list-view .pcard-img{width:100%;height:200px}
+  .ph-stats-row{gap:16px}
+  .pcard-footer{flex-direction:column;align-items:stretch}
+  .pcard-actions{justify-content:stretch}
+  .btn-view{flex:1;justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -337,11 +354,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 <div class="bg-texture"></div>
 <div class="pgbar" id="pgBar"></div>
 <div class="toast" id="toast"></div>
-
-<!-- WhatsApp floating button -->
-<div class="wa-float" onclick="showToast('💬 Opening WhatsApp support…')" title="Chat on WhatsApp">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</div>
 
 <!-- Compare bar -->
 <div class="compare-bar" id="compareBar">
@@ -460,21 +472,18 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
   <aside class="filter-sidebar">
     <div class="filter-sticky">
 
-      <!-- Filters card -->
       <div class="filter-card rv">
         <div class="fc-head">
           <div class="fc-title">Filters</div>
           <button class="fc-reset" onclick="resetFilters()">Reset All</button>
         </div>
 
-        <!-- Budget range -->
         <div class="filter-group">
           <div class="filter-label">Monthly Budget</div>
           <div class="range-row"><span>₹2,000</span><span class="range-val" id="budgetLabel">₹50,000</span></div>
           <input type="range" class="frange" id="budgetRange" min="2000" max="200000" value="50000" step="1000" oninput="updateBudget(this.value)">
         </div>
 
-        <!-- Property Type -->
         <div class="filter-group">
           <div class="filter-label">Property Type</div>
           <div class="fcheck on" onclick="toggleCheck(this,'type-flat')" data-filter="type-flat"><div class="fcheck-box">✓</div><span class="fcheck-lbl">Flat / Apartment</span><span class="fcheck-count">8</span></div>
@@ -484,7 +493,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
           <div class="fcheck" onclick="toggleCheck(this,'type-commercial')" data-filter="type-commercial"><div class="fcheck-box"></div><span class="fcheck-lbl">Commercial</span><span class="fcheck-count">3</span></div>
         </div>
 
-        <!-- BHK -->
         <div class="filter-group">
           <div class="filter-label">BHK / Rooms</div>
           <div class="fcheck" onclick="toggleCheck(this,'bhk-1')" data-filter="bhk-1"><div class="fcheck-box"></div><span class="fcheck-lbl">1 BHK / 1 Room</span><span class="fcheck-count">7</span></div>
@@ -493,7 +501,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
           <div class="fcheck" onclick="toggleCheck(this,'bhk-studio')" data-filter="bhk-studio"><div class="fcheck-box"></div><span class="fcheck-lbl">Studio / Bachelor</span><span class="fcheck-count">3</span></div>
         </div>
 
-        <!-- Furnishing -->
         <div class="filter-group">
           <div class="filter-label">Furnishing</div>
           <div class="fcheck" onclick="toggleCheck(this,'furn-full')" data-filter="furn-full"><div class="fcheck-box"></div><span class="fcheck-lbl">Fully Furnished</span><span class="fcheck-count">11</span></div>
@@ -501,7 +508,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
           <div class="fcheck" onclick="toggleCheck(this,'furn-bare')" data-filter="furn-bare"><div class="fcheck-box"></div><span class="fcheck-lbl">Unfurnished</span><span class="fcheck-count">4</span></div>
         </div>
 
-        <!-- Gender preference -->
         <div class="filter-group">
           <div class="filter-label">Gender Preference</div>
           <div class="fcheck" onclick="toggleCheck(this,'gen-any')" data-filter="gen-any"><div class="fcheck-box"></div><span class="fcheck-lbl">Any / Family</span></div>
@@ -510,7 +516,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
         </div>
       </div>
 
-      <!-- Amenities toggles -->
       <div class="filter-card rv d1">
         <div class="fc-head"><div class="fc-title">Must-Have Amenities</div></div>
         <div class="ftoggle" id="ft-wifi" onclick="toggleSwitch(this)"><span class="ftoggle-lbl">📶 WiFi Included</span><div class="ftoggle-sw"></div></div>
@@ -523,7 +528,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
         <div class="ftoggle" id="ft-power" onclick="toggleSwitch(this)"><span class="ftoggle-lbl">⚡ Power Backup</span><div class="ftoggle-sw"></div></div>
       </div>
 
-      <!-- Verified only -->
       <div class="filter-card rv d2" style="background:linear-gradient(135deg,rgba(196,92,60,.06),rgba(196,92,60,.02))">
         <div class="fc-head"><div class="fc-title">Quality Filters</div></div>
         <div class="ftoggle on" id="ft-verified" onclick="toggleSwitch(this)"><span class="ftoggle-lbl">✅ Verified Properties Only</span><div class="ftoggle-sw"></div></div>
@@ -537,7 +541,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
   <!-- RIGHT: RESULTS -->
   <div>
 
-    <!-- Map view banner -->
     <div class="map-view-banner rv">
       <div>
         <div class="mvb-t">🗺️ Looking for properties by location?</div>
@@ -546,7 +549,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
       <button class="mvb-btn" onclick="window.location='maps.html'">Open Map View ↗</button>
     </div>
 
-    <!-- Sort / result bar -->
     <div class="sort-bar rv d1">
       <div class="sort-count"><em id="resultCount">24</em> properties found</div>
       <div class="sort-controls">
@@ -565,12 +567,11 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
       </div>
     </div>
 
-    <!-- Cards -->
     <div class="cards-grid rv d2" id="cardsGrid"></div>
 
   </div>
 
-</div><!-- /main-layout -->
+</div>
 
 <!-- ════════════════ FIREBASE ════════════════ -->
 <script type="module">
@@ -588,7 +589,12 @@ try{
 
 <!-- ════════════════ APP ════════════════ -->
 <script>
-/* ═══ PROPERTY DATA ═══════════════════════════════════════════════ */
+/* ═══ PROPERTY DATA ═══════════════════════════════════════════════
+   Each property can have a `coverPhoto` field with a URL to the
+   image uploaded by the owner during listing.
+   If `coverPhoto` is absent/empty, the card falls back to the
+   type-specific emoji and gradient background.
+═══════════════════════════════════════════════════════════════════ */
 const PROP_TYPES = {
   flat:'🏡',pg:'🛏️',hostel:'🏠',coliving:'🤝',commercial:'🏢',villa:'🏰'
 };
@@ -602,46 +608,84 @@ const TYPE_BG = {
   villa:'linear-gradient(145deg,#e8ece4,#d4dcc8)',
 };
 
+/*
+  HOW TO ADD COVER PHOTOS:
+  Set the `coverPhoto` field on any property object to a URL string.
+  Example:  coverPhoto: 'https://your-storage.com/photo.jpg'
+  When uploading via Firebase Storage, store the download URL in
+  Firestore under the `coverPhoto` field — it will be picked up
+  automatically when data loads from Firestore.
+*/
+
 window._PROPS = [
   /* ── FLATS ─────────────────────────────── */
-  {id:1,type:'flat',title:'Spacious 2BHK with Modular Kitchen & Balcony',city:'Hyderabad',area:'Kondapur',price:18500,deposit:37000,rating:4.8,reviews:142,furnish:'Semi-Furnished',bhk:'2BHK',floor:'4th Floor',size:950,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['WiFi','AC','Parking','Power Backup'],whatsapp:'+919876543210',available:true,isNew:false,views:'1.2K',phone:'+91 98765 43210',owner:'Rajesh Kumar',enq:18,featured:true},
-  {id:2,type:'flat',title:'3BHK Luxury Flat | Gated Society with Pool',city:'Bangalore',area:'Whitefield',price:38000,deposit:76000,rating:4.9,reviews:88,furnish:'Fully Furnished',bhk:'3BHK',floor:'8th Floor',size:1450,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Pool','Gym','WiFi','Parking','Security'],whatsapp:'+919876543211',available:true,isNew:false,views:'3.1K',phone:'+91 98765 43211',owner:'Anita Sharma',enq:34},
-  {id:3,type:'flat',title:'Cozy 1BHK Near Metro Station | Ready to Move',city:'Hyderabad',area:'Madhapur',price:13000,deposit:26000,rating:4.6,reviews:56,furnish:'Semi-Furnished',bhk:'1BHK',floor:'2nd Floor',size:620,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Metro 0.3km','WiFi','Security'],whatsapp:'+919876543212',available:true,isNew:true,views:'890',phone:'+91 98765 43212',owner:'Suresh Nair',enq:9},
-  {id:4,type:'flat',title:'2BHK Villa-Style Flat | Jubilee Hills',city:'Hyderabad',area:'Jubilee Hills',price:32000,deposit:64000,rating:4.7,reviews:73,furnish:'Fully Furnished',bhk:'2BHK',floor:'Ground Floor',size:1200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Garden','Parking','AC','Security'],whatsapp:'+919876543213',available:true,isNew:false,views:'2.4K',phone:'+91 98765 43213',owner:'Priya Reddy',enq:22},
-  {id:5,type:'flat',title:'Budget 1BHK | Ideal for Bachelor Working Professionals',city:'Pune',area:'Baner',price:10500,deposit:21000,rating:4.4,reviews:38,furnish:'Semi-Furnished',bhk:'1BHK',floor:'3rd Floor',size:540,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Power Backup'],whatsapp:'+919876543214',available:true,isNew:false,views:'640',phone:'+91 98765 43214',owner:'Mohan Kulkarni',enq:7},
-  {id:6,type:'flat',title:'4BHK Duplex | Premium Gated Community',city:'Mumbai',area:'Andheri West',price:82000,deposit:164000,rating:4.9,reviews:121,furnish:'Fully Furnished',bhk:'4BHK',floor:'14th Floor',size:2200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Pool','Gym','Concierge','Parking','Security'],whatsapp:'+919876543215',available:true,isNew:false,views:'4.8K',phone:'+91 98765 43215',owner:'Ramesh Properties',enq:51},
-  {id:7,type:'flat',title:'3BHK Semi-Furnished Near School & Hospital',city:'Chennai',area:'Anna Nagar',price:28000,deposit:56000,rating:4.5,reviews:62,furnish:'Semi-Furnished',bhk:'3BHK',floor:'5th Floor',size:1350,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['Parking','Security','Power Backup'],whatsapp:'+919876543216',available:false,isNew:false,views:'1.1K',phone:'+91 98765 43216',owner:'Kavya Iyer',enq:12},
-  {id:8,type:'flat',title:'Studio Apartment | Fully Furnished | IT Park Walk',city:'Hyderabad',area:'Gachibowli',price:15000,deposit:30000,rating:4.7,reviews:94,furnish:'Fully Furnished',bhk:'Studio',floor:'6th Floor',size:380,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['WiFi','AC','Gym','Metro 0.6km'],whatsapp:'+919876543217',available:true,isNew:false,views:'2.2K',phone:'+91 98765 43217',owner:'Arun Singh',enq:29},
+  {id:1,type:'flat',title:'Spacious 2BHK with Modular Kitchen & Balcony',city:'Hyderabad',area:'Kondapur',price:18500,deposit:37000,rating:4.8,reviews:142,furnish:'Semi-Furnished',bhk:'2BHK',floor:'4th Floor',size:950,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['WiFi','AC','Parking','Power Backup'],available:true,isNew:false,views:'1.2K',phone:'+91 98765 43210',owner:'Rajesh Kumar',enq:18,featured:true,
+    coverPhoto:''},
+  {id:2,type:'flat',title:'3BHK Luxury Flat | Gated Society with Pool',city:'Bangalore',area:'Whitefield',price:38000,deposit:76000,rating:4.9,reviews:88,furnish:'Fully Furnished',bhk:'3BHK',floor:'8th Floor',size:1450,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Pool','Gym','WiFi','Parking','Security'],available:true,isNew:false,views:'3.1K',phone:'+91 98765 43211',owner:'Anita Sharma',enq:34,
+    coverPhoto:''},
+  {id:3,type:'flat',title:'Cozy 1BHK Near Metro Station | Ready to Move',city:'Hyderabad',area:'Madhapur',price:13000,deposit:26000,rating:4.6,reviews:56,furnish:'Semi-Furnished',bhk:'1BHK',floor:'2nd Floor',size:620,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Metro 0.3km','WiFi','Security'],available:true,isNew:true,views:'890',phone:'+91 98765 43212',owner:'Suresh Nair',enq:9,
+    coverPhoto:''},
+  {id:4,type:'flat',title:'2BHK Villa-Style Flat | Jubilee Hills',city:'Hyderabad',area:'Jubilee Hills',price:32000,deposit:64000,rating:4.7,reviews:73,furnish:'Fully Furnished',bhk:'2BHK',floor:'Ground Floor',size:1200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Garden','Parking','AC','Security'],available:true,isNew:false,views:'2.4K',phone:'+91 98765 43213',owner:'Priya Reddy',enq:22,
+    coverPhoto:''},
+  {id:5,type:'flat',title:'Budget 1BHK | Ideal for Bachelor Working Professionals',city:'Pune',area:'Baner',price:10500,deposit:21000,rating:4.4,reviews:38,furnish:'Semi-Furnished',bhk:'1BHK',floor:'3rd Floor',size:540,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Power Backup'],available:true,isNew:false,views:'640',phone:'+91 98765 43214',owner:'Mohan Kulkarni',enq:7,
+    coverPhoto:''},
+  {id:6,type:'flat',title:'4BHK Duplex | Premium Gated Community',city:'Mumbai',area:'Andheri West',price:82000,deposit:164000,rating:4.9,reviews:121,furnish:'Fully Furnished',bhk:'4BHK',floor:'14th Floor',size:2200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Pool','Gym','Concierge','Parking','Security'],available:true,isNew:false,views:'4.8K',phone:'+91 98765 43215',owner:'Ramesh Properties',enq:51,
+    coverPhoto:''},
+  {id:7,type:'flat',title:'3BHK Semi-Furnished Near School & Hospital',city:'Chennai',area:'Anna Nagar',price:28000,deposit:56000,rating:4.5,reviews:62,furnish:'Semi-Furnished',bhk:'3BHK',floor:'5th Floor',size:1350,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['Parking','Security','Power Backup'],available:false,isNew:false,views:'1.1K',phone:'+91 98765 43216',owner:'Kavya Iyer',enq:12,
+    coverPhoto:''},
+  {id:8,type:'flat',title:'Studio Apartment | Fully Furnished | IT Park Walk',city:'Hyderabad',area:'Gachibowli',price:15000,deposit:30000,rating:4.7,reviews:94,furnish:'Fully Furnished',bhk:'Studio',floor:'6th Floor',size:380,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['WiFi','AC','Gym','Metro 0.6km'],available:true,isNew:false,views:'2.2K',phone:'+91 98765 43217',owner:'Arun Singh',enq:29,
+    coverPhoto:''},
   /* ── PGs ────────────────────────────────── */
-  {id:9,type:'pg',title:'Premium PG for Working Men | AC Rooms, Meals',city:'Hyderabad',area:'HITEC City',price:8500,deposit:17000,rating:4.6,reviews:89,furnish:'Fully Furnished',bhk:'Single Room',floor:'2nd Floor',size:180,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Meals','WiFi','AC','Laundry','Power Backup'],whatsapp:'+919876543218',available:true,isNew:false,views:'820',phone:'+91 98765 43218',owner:'PG Universe'},
-  {id:10,type:'pg',title:'Girls Only PG | Premium Rooms | 24/7 Security',city:'Bangalore',area:'Koramangala',price:11000,deposit:22000,rating:4.8,reviews:134,furnish:'Fully Furnished',bhk:'Double Sharing',floor:'All Floors',size:200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'},{c:'pb-f',l:'👩 Girls Only'}],amenities:['Meals','WiFi','AC','Security','Lounge'],whatsapp:'+919876543219',available:true,isNew:false,views:'3.2K',phone:'+91 98765 43219',owner:'She Stays'},
-  {id:11,type:'pg',title:'Budget PG | Single Rooms | Excellent Location',city:'Delhi NCR',area:'Sector 62, Noida',price:5500,deposit:11000,rating:4.3,reviews:47,furnish:'Furnished',bhk:'Single Room',floor:'Ground + 1st',size:150,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Security','Common Kitchen'],whatsapp:'+919876543220',available:true,isNew:false,views:'490',phone:'+91 98765 43220',owner:'Kiran Homes'},
-  {id:12,type:'pg',title:'Executive PG | Private Rooms | IT Professionals',city:'Pune',area:'Hinjewadi',price:9500,deposit:19000,rating:4.7,reviews:78,furnish:'Fully Furnished',bhk:'Private Room',floor:'3rd Floor',size:220,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Meals','WiFi','AC','Parking','Netflix'],whatsapp:'+919876543221',available:true,isNew:true,views:'780',phone:'+91 98765 43221',owner:'Elite PG'},
-  {id:13,type:'pg',title:'Co-ed PG | Near Metro | Modern Amenities',city:'Mumbai',area:'Andheri East',price:12000,deposit:24000,rating:4.5,reviews:55,furnish:'Fully Furnished',bhk:'Various',floor:'Multiple',size:180,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['Meals','WiFi','AC','Security'],whatsapp:'+919876543222',available:false,isNew:false,views:'560',phone:'+91 98765 43222',owner:'Mumbai PG Network'},
-  {id:14,type:'pg',title:'Triple Sharing PG | Budget Friendly | Clean Rooms',city:'Hyderabad',area:'Ameerpet',price:4500,deposit:9000,rating:4.2,reviews:33,furnish:'Furnished',bhk:'Triple Sharing',floor:'1st Floor',size:300,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Security','Common Bath'],whatsapp:'+919876543223',available:true,isNew:false,views:'310',phone:'+91 98765 43223',owner:'Budget PG Hub'},
+  {id:9,type:'pg',title:'Premium PG for Working Men | AC Rooms, Meals',city:'Hyderabad',area:'HITEC City',price:8500,deposit:17000,rating:4.6,reviews:89,furnish:'Fully Furnished',bhk:'Single Room',floor:'2nd Floor',size:180,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Meals','WiFi','AC','Laundry','Power Backup'],available:true,isNew:false,views:'820',phone:'+91 98765 43218',owner:'PG Universe',
+    coverPhoto:''},
+  {id:10,type:'pg',title:'Girls Only PG | Premium Rooms | 24/7 Security',city:'Bangalore',area:'Koramangala',price:11000,deposit:22000,rating:4.8,reviews:134,furnish:'Fully Furnished',bhk:'Double Sharing',floor:'All Floors',size:200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'},{c:'pb-f',l:'👩 Girls Only'}],amenities:['Meals','WiFi','AC','Security','Lounge'],available:true,isNew:false,views:'3.2K',phone:'+91 98765 43219',owner:'She Stays',
+    coverPhoto:''},
+  {id:11,type:'pg',title:'Budget PG | Single Rooms | Excellent Location',city:'Delhi NCR',area:'Sector 62, Noida',price:5500,deposit:11000,rating:4.3,reviews:47,furnish:'Furnished',bhk:'Single Room',floor:'Ground + 1st',size:150,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Security','Common Kitchen'],available:true,isNew:false,views:'490',phone:'+91 98765 43220',owner:'Kiran Homes',
+    coverPhoto:''},
+  {id:12,type:'pg',title:'Executive PG | Private Rooms | IT Professionals',city:'Pune',area:'Hinjewadi',price:9500,deposit:19000,rating:4.7,reviews:78,furnish:'Fully Furnished',bhk:'Private Room',floor:'3rd Floor',size:220,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Meals','WiFi','AC','Parking','Netflix'],available:true,isNew:true,views:'780',phone:'+91 98765 43221',owner:'Elite PG',
+    coverPhoto:''},
+  {id:13,type:'pg',title:'Co-ed PG | Near Metro | Modern Amenities',city:'Mumbai',area:'Andheri East',price:12000,deposit:24000,rating:4.5,reviews:55,furnish:'Fully Furnished',bhk:'Various',floor:'Multiple',size:180,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['Meals','WiFi','AC','Security'],available:false,isNew:false,views:'560',phone:'+91 98765 43222',owner:'Mumbai PG Network',
+    coverPhoto:''},
+  {id:14,type:'pg',title:'Triple Sharing PG | Budget Friendly | Clean Rooms',city:'Hyderabad',area:'Ameerpet',price:4500,deposit:9000,rating:4.2,reviews:33,furnish:'Furnished',bhk:'Triple Sharing',floor:'1st Floor',size:300,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Security','Common Bath'],available:true,isNew:false,views:'310',phone:'+91 98765 43223',owner:'Budget PG Hub',
+    coverPhoto:''},
   /* ── HOSTELS ────────────────────────────── */
-  {id:15,type:'hostel',title:'Modern Hostel | Dormitory Rooms | Student Friendly',city:'Hyderabad',area:'Begumpet',price:5000,deposit:10000,rating:4.5,reviews:212,furnish:'Furnished',bhk:'4-Bed Dorm',floor:'All Floors',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 POPULAR'}],amenities:['WiFi','Lounge','AC','Security','Rooftop'],whatsapp:'+919876543224',available:true,isNew:false,views:'1.9K',phone:'+91 98765 43224',owner:'StayEasy Hostels'},
-  {id:16,type:'hostel',title:'Backpacker Hostel | Private & Dorm | City Centre',city:'Bangalore',area:'MG Road',price:3500,deposit:7000,rating:4.6,reviews:389,furnish:'Furnished',bhk:'6-Bed Dorm',floor:'2nd Floor',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['WiFi','Common Kitchen','Lounge','Events'],whatsapp:'+919876543225',available:true,isNew:true,views:'4.5K',phone:'+91 98765 43225',owner:'Urban Stay'},
-  {id:17,type:'hostel',title:'Premium Student Hostel | Near University Campus',city:'Mumbai',area:'Powai',price:6500,deposit:13000,rating:4.7,reviews:156,furnish:'Fully Furnished',bhk:'Private + Dorm',floor:'Multiple',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Meals','WiFi','Study Room','Gym','AC'],whatsapp:'+919876543226',available:true,isNew:false,views:'2.1K',phone:'+91 98765 43226',owner:'Campus Stays'},
-  {id:18,type:'hostel',title:'Working Professionals Hostel | Clean & Safe',city:'Delhi NCR',area:'Gurgaon Sector 29',price:7000,deposit:14000,rating:4.4,reviews:92,furnish:'Furnished',bhk:'2-4 Bed Dorm',floor:'All Floors',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Power Backup','Security','Kitchen'],whatsapp:'+919876543227',available:false,isNew:false,views:'680',phone:'+91 98765 43227',owner:'ProStay'},
+  {id:15,type:'hostel',title:'Modern Hostel | Dormitory Rooms | Student Friendly',city:'Hyderabad',area:'Begumpet',price:5000,deposit:10000,rating:4.5,reviews:212,furnish:'Furnished',bhk:'4-Bed Dorm',floor:'All Floors',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 POPULAR'}],amenities:['WiFi','Lounge','AC','Security','Rooftop'],available:true,isNew:false,views:'1.9K',phone:'+91 98765 43224',owner:'StayEasy Hostels',
+    coverPhoto:''},
+  {id:16,type:'hostel',title:'Backpacker Hostel | Private & Dorm | City Centre',city:'Bangalore',area:'MG Road',price:3500,deposit:7000,rating:4.6,reviews:389,furnish:'Furnished',bhk:'6-Bed Dorm',floor:'2nd Floor',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['WiFi','Common Kitchen','Lounge','Events'],available:true,isNew:true,views:'4.5K',phone:'+91 98765 43225',owner:'Urban Stay',
+    coverPhoto:''},
+  {id:17,type:'hostel',title:'Premium Student Hostel | Near University Campus',city:'Mumbai',area:'Powai',price:6500,deposit:13000,rating:4.7,reviews:156,furnish:'Fully Furnished',bhk:'Private + Dorm',floor:'Multiple',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['Meals','WiFi','Study Room','Gym','AC'],available:true,isNew:false,views:'2.1K',phone:'+91 98765 43226',owner:'Campus Stays',
+    coverPhoto:''},
+  {id:18,type:'hostel',title:'Working Professionals Hostel | Clean & Safe',city:'Delhi NCR',area:'Gurgaon Sector 29',price:7000,deposit:14000,rating:4.4,reviews:92,furnish:'Furnished',bhk:'2-4 Bed Dorm',floor:'All Floors',size:null,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Power Backup','Security','Kitchen'],available:false,isNew:false,views:'680',phone:'+91 98765 43227',owner:'ProStay',
+    coverPhoto:''},
   /* ── CO-LIVING ──────────────────────────── */
-  {id:19,type:'coliving',title:'Luxury Co-living | Private Rooms | Community Events',city:'Bangalore',area:'Indiranagar',price:22000,deposit:44000,rating:4.9,reviews:201,furnish:'Fully Furnished',bhk:'Private Studio',floor:'Various',size:320,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['WiFi','Gym','Coworking','Events','Café','Pool'],whatsapp:'+919876543228',available:true,isNew:false,views:'5.6K',phone:'+91 98765 43228',owner:'Colive India'},
-  {id:20,type:'coliving',title:'Smart Co-living | IoT Enabled | Young Professionals',city:'Hyderabad',area:'Banjara Hills',price:19000,deposit:38000,rating:4.8,reviews:88,furnish:'Fully Furnished',bhk:'Private Room',floor:'3rd–8th Floor',size:280,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Smart WiFi','Coworking','Rooftop','EV Parking'],whatsapp:'+919876543229',available:true,isNew:true,views:'3.4K',phone:'+91 98765 43229',owner:'SmartNest'},
-  {id:21,type:'coliving',title:'Budget Co-living | Shared Rooms | Great Community',city:'Pune',area:'Viman Nagar',price:12000,deposit:24000,rating:4.5,reviews:67,furnish:'Semi-Furnished',bhk:'Shared Room',floor:'2nd Floor',size:220,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Community Kitchen','Events','Lounge'],whatsapp:'+919876543230',available:true,isNew:false,views:'1.1K',phone:'+91 98765 43230',owner:'Casa Coliv'},
+  {id:19,type:'coliving',title:'Luxury Co-living | Private Rooms | Community Events',city:'Bangalore',area:'Indiranagar',price:22000,deposit:44000,rating:4.9,reviews:201,furnish:'Fully Furnished',bhk:'Private Studio',floor:'Various',size:320,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['WiFi','Gym','Coworking','Events','Café','Pool'],available:true,isNew:false,views:'5.6K',phone:'+91 98765 43228',owner:'Colive India',
+    coverPhoto:''},
+  {id:20,type:'coliving',title:'Smart Co-living | IoT Enabled | Young Professionals',city:'Hyderabad',area:'Banjara Hills',price:19000,deposit:38000,rating:4.8,reviews:88,furnish:'Fully Furnished',bhk:'Private Room',floor:'3rd–8th Floor',size:280,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-n',l:'✨ NEW'}],amenities:['Smart WiFi','Coworking','Rooftop','EV Parking'],available:true,isNew:true,views:'3.4K',phone:'+91 98765 43229',owner:'SmartNest',
+    coverPhoto:''},
+  {id:21,type:'coliving',title:'Budget Co-living | Shared Rooms | Great Community',city:'Pune',area:'Viman Nagar',price:12000,deposit:24000,rating:4.5,reviews:67,furnish:'Semi-Furnished',bhk:'Shared Room',floor:'2nd Floor',size:220,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['WiFi','Community Kitchen','Events','Lounge'],available:true,isNew:false,views:'1.1K',phone:'+91 98765 43230',owner:'Casa Coliv',
+    coverPhoto:''},
   /* ── COMMERCIAL ─────────────────────────── */
-  {id:22,type:'commercial',title:'Grade-A Office Space | Plug & Play | IT Park',city:'Hyderabad',area:'Gachibowli',price:290000,deposit:870000,rating:4.8,reviews:42,furnish:'Plug & Play',bhk:'4,800 sqft',floor:'12th Floor',size:4800,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['100% Power Backup','Fibre','Parking ×40','Cafeteria','CCTV'],whatsapp:'+919040234567',available:true,isNew:false,views:'640',phone:'+91 90402 34567',owner:'Skyline Properties'},
-  {id:23,type:'commercial',title:'Prime Retail Shop | High Footfall | Jubilee Hills',city:'Hyderabad',area:'Jubilee Hills',price:145000,deposit:435000,rating:4.5,reviews:28,furnish:'Bare Shell',bhk:'2,200 sqft',floor:'Ground Floor',size:2200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Street Parking','3-Phase Power','Signage Rights'],whatsapp:'+919040234568',available:true,isNew:false,views:'890',phone:'+91 90402 34568',owner:'Nexus Realty'},
-  {id:24,type:'commercial',title:'Modern Co-working Space | Flexible Desks | Madhapur',city:'Hyderabad',area:'Madhapur',price:12000,deposit:24000,rating:4.7,reviews:156,furnish:'Fully Fitted',bhk:'Per Seat',floor:'4th & 5th Floor',size:200,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['10Gbps WiFi','Meeting Rooms','Coffee Bar','Printing'],whatsapp:'+919040234569',available:true,isNew:false,views:'2.1K',phone:'+91 90402 34569',owner:'The Collective'},
+  {id:22,type:'commercial',title:'Grade-A Office Space | Plug & Play | IT Park',city:'Hyderabad',area:'Gachibowli',price:290000,deposit:870000,rating:4.8,reviews:42,furnish:'Plug & Play',bhk:'4,800 sqft',floor:'12th Floor',size:4800,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-p',l:'★ PREMIUM'}],amenities:['100% Power Backup','Fibre','Parking ×40','Cafeteria','CCTV'],available:true,isNew:false,views:'640',phone:'+91 90402 34567',owner:'Skyline Properties',
+    coverPhoto:''},
+  {id:23,type:'commercial',title:'Prime Retail Shop | High Footfall | Jubilee Hills',city:'Hyderabad',area:'Jubilee Hills',price:145000,deposit:435000,rating:4.5,reviews:28,furnish:'Bare Shell',bhk:'2,200 sqft',floor:'Ground Floor',size:2200,badges:[{c:'pb-v',l:'✓ VERIFIED'},{c:'pb-h',l:'🔥 HOT'}],amenities:['Street Parking','3-Phase Power','Signage Rights'],available:true,isNew:false,views:'890',phone:'+91 90402 34568',owner:'Nexus Realty',
+    coverPhoto:''},
+  {id:24,type:'commercial',title:'Modern Co-working Space | Flexible Desks | Madhapur',city:'Hyderabad',area:'Madhapur',price:12000,deposit:24000,rating:4.7,reviews:156,furnish:'Fully Fitted',bhk:'Per Seat',floor:'4th & 5th Floor',size:200,badges:[{c:'pb-v',l:'✓ VERIFIED'}],amenities:['10Gbps WiFi','Meeting Rooms','Coffee Bar','Printing'],available:true,isNew:false,views:'2.1K',phone:'+91 90402 34569',owner:'The Collective',
+    coverPhoto:''},
 ];
 
 /* ═══ STATE ══════════════════════════════════════════════════════ */
 let activeCategory = 'all';
-let currentView = 'grid';
-let budgetMax = 50000;
-let savedIds = new Set();
-let compareIds = new Set();
+let currentView    = 'grid';
+let budgetMax      = 50000;
+let savedIds       = new Set();
+let compareIds     = new Set();
 
-/* ═══ RENDER CARDS ════════════════════════════════════════════════ */
+/* ═══ RENDER CARDS ════════════════════════════════════════════════
+   Cover photo logic:
+   - If p.coverPhoto is a non-empty string → render <img> as cover.
+   - On image error (broken URL) → img is hidden, fallback emoji shows.
+   - If p.coverPhoto is empty / undefined → skip img, show emoji only.
+════════════════════════════════════════════════════════════════════ */
 function renderCards(data) {
   const grid = document.getElementById('cardsGrid');
   document.getElementById('resultCount').textContent = data.length;
@@ -652,67 +696,108 @@ function renderCards(data) {
   }
 
   grid.innerHTML = data.map((p, i) => {
-    const emoji = PROP_TYPES[p.type] || '🏠';
-    const bg = TYPE_BG[p.type] || TYPE_BG.flat;
+    const emoji   = PROP_TYPES[p.type] || '🏠';
+    const bg      = TYPE_BG[p.type] || TYPE_BG.flat;
     const isSaved = savedIds.has(p.id);
     const isCompare = compareIds.has(p.id);
-    const avail = p.available !== false;
+    const avail   = p.available !== false;
     const isFeatured = p.featured && currentView === 'grid';
 
-    const waLink = `https://wa.me/${(p.whatsapp||'+919999999999').replace(/[^\d]/g,'')}?text=${encodeURIComponent(`Hi! I'm interested in your property: ${p.title} listed on SmartRent AI. Could you please share more details?`)}`;
+    /* Cover photo markup — img is rendered only when URL exists */
+    const coverImgHtml = p.coverPhoto
+      ? `<img
+           class="pcard-cover"
+           src="${p.coverPhoto}"
+           alt="${p.title}"
+           loading="lazy"
+           onload="this.classList.add('loaded')"
+           onerror="this.style.display='none'"
+         />`
+      : '';
 
     return `
-    <div class="pcard ${isFeatured ? 'featured' : ''}" style="animation-delay:${i * 0.05}s" onclick="goToDetail(${p.id})">
-      <!-- Image -->
-      <div class="pcard-img" style="background:${bg}">
-        <div class="pcard-emoji">${emoji}</div>
+    <div class="pcard ${isFeatured ? 'featured' : ''}"
+         style="animation-delay:${i * 0.05}s"
+         onclick="goToDetail(${p.id})">
+
+      <!-- ── Image area ── -->
+      <div class="pcard-img" style="--pcard-bg:${bg}">
+        ${coverImgHtml}
+        <!-- Emoji fallback: visible when no photo or photo fails -->
+        <div class="pcard-fallback" style="background:${bg}">
+          ${emoji}
+        </div>
         <div class="pcard-img-ov"></div>
+
         <!-- Badges -->
-        <div class="pcard-badges">${(p.badges||[]).map(b=>`<span class="pbdg ${b.c}">${b.l}</span>`).join('')}</div>
+        <div class="pcard-badges">
+          ${(p.badges||[]).map(b=>`<span class="pbdg ${b.c}">${b.l}</span>`).join('')}
+        </div>
+
         <!-- Save button -->
-        <div class="pcard-save ${isSaved ? 'saved' : ''}" onclick="event.stopPropagation();toggleSave(this,${p.id})" title="Save to wishlist">${isSaved ? '❤️' : '🤍'}</div>
-        <!-- Image footer -->
+        <div class="pcard-save ${isSaved ? 'saved' : ''}"
+             onclick="event.stopPropagation();toggleSave(this,${p.id})"
+             title="Save to wishlist">
+          ${isSaved ? '❤️' : '🤍'}
+        </div>
+
+        <!-- Rating & views -->
         <div class="pcard-img-foot">
           <div class="pif-rat">⭐ ${p.rating} <span style="opacity:.6;font-size:10px">(${p.reviews})</span></div>
           <div class="pif-views">👁 ${p.views} views</div>
         </div>
       </div>
 
-      <!-- Body -->
+      <!-- ── Card body ── -->
       <div class="pcard-body">
         <div class="pcard-type-row">
           <span class="pcard-type">${TYPE_LABELS[p.type] || p.type}</span>
           <span class="pcard-avail ${avail ? '' : 'leased'}">${avail ? 'Available' : 'Leased'}</span>
         </div>
+
         <div class="pcard-title">${p.title}</div>
+
         <div class="pcard-loc">
-          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
           ${p.area}, ${p.city}
         </div>
-        <div class="pcard-specs">
-          ${p.bhk ? `<div class="pspec"><span class="pspec-ic">🛏️</span>${p.bhk}</div>` : ''}
-          ${p.size ? `<div class="pspec"><span class="pspec-ic">📐</span>${p.size} sqft</div>` : ''}
-          ${p.floor ? `<div class="pspec"><span class="pspec-ic">🏢</span>${p.floor}</div>` : ''}
-          ${p.furnish ? `<div class="pspec"><span class="pspec-ic">🪑</span>${p.furnish}</div>` : ''}
-        </div>
-        <div class="pcard-amens">${(p.amenities||[]).slice(0,5).map(a=>`<span class="pa">${a}</span>`).join('')}</div>
 
-        <!-- Footer -->
+        <div class="pcard-specs">
+          ${p.bhk    ? `<div class="pspec"><span class="pspec-ic">🛏️</span>${p.bhk}</div>`    : ''}
+          ${p.size   ? `<div class="pspec"><span class="pspec-ic">📐</span>${p.size} sqft</div>` : ''}
+          ${p.floor  ? `<div class="pspec"><span class="pspec-ic">🏢</span>${p.floor}</div>`   : ''}
+          ${p.furnish? `<div class="pspec"><span class="pspec-ic">🪑</span>${p.furnish}</div>` : ''}
+        </div>
+
+        <div class="pcard-amens">
+          ${(p.amenities||[]).slice(0,5).map(a=>`<span class="pa">${a}</span>`).join('')}
+        </div>
+
+        <!-- ── Footer ── -->
         <div class="pcard-footer">
           <div class="pcard-price">
             <span class="cur">₹</span>${p.price.toLocaleString('en-IN')}
             <span class="per">/ ${p.type === 'commercial' ? 'month (negotiable)' : 'month'}</span>
           </div>
+
           <div class="pcard-actions">
             <!-- Compare toggle -->
-            <button class="btn-call ${isCompare ? 'active-compare' : ''}" title="Compare" onclick="event.stopPropagation();toggleCompare(this,${p.id},'${p.title.substring(0,28)}…')" style="${isCompare ? 'background:var(--terra-d);border-color:var(--terra-b);color:var(--terra)' : ''}">⊞</button>
-            <!-- WhatsApp CTA -->
-            <a class="btn-wa" href="${waLink}" target="_blank" rel="noopener" onclick="event.stopPropagation();trackWA(${p.id})">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              WhatsApp
+            <button class="btn-call ${isCompare ? 'active-compare' : ''}"
+                    title="Compare"
+                    onclick="event.stopPropagation();toggleCompare(this,${p.id},'${p.title.substring(0,28)}…')"
+                    style="${isCompare ? 'background:var(--terra-d);border-color:var(--terra-b);color:var(--terra)' : ''}">⊞</button>
+
+            <!-- View Details — sole CTA -->
+            <a class="btn-view"
+               href="property-detail.html?id=${p.id}&type=${p.type}"
+               onclick="event.stopPropagation()">
+              View Details →
             </a>
-            <!-- View detail -->
-            <a class="btn-view" href="property-details.html?id=${p.id}&type=${p.type}" onclick="event.stopPropagation()">View →</a>
           </div>
         </div>
       </div>
@@ -720,7 +805,7 @@ function renderCards(data) {
   }).join('');
 }
 
-/* ═══ FILTERS ═══════════════════════════════════════════════════ */
+/* ═══ FILTERS ════════════════════════════════════════════════════ */
 function setCat(el, cat) {
   document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('on'));
   el.classList.add('on');
@@ -730,33 +815,24 @@ function setCat(el, cat) {
 
 function applyAllFilters() {
   let data = [...window._PROPS];
-  const q = document.getElementById('searchQ').value.trim().toLowerCase();
+  const q    = document.getElementById('searchQ').value.trim().toLowerCase();
   const city = document.getElementById('searchCity').value;
   const type = document.getElementById('searchType').value;
   const sort = document.getElementById('sortSel').value;
 
-  // Category tab filter
   if (activeCategory !== 'all') data = data.filter(p => p.type === activeCategory);
-
-  // Search query
-  if (q) data = data.filter(p =>
+  if (q)    data = data.filter(p =>
     p.title.toLowerCase().includes(q) ||
-    p.area.toLowerCase().includes(q) ||
-    p.city.toLowerCase().includes(q) ||
+    p.area.toLowerCase().includes(q)  ||
+    p.city.toLowerCase().includes(q)  ||
     p.type.toLowerCase().includes(q)
   );
-
-  // City filter
   if (city) data = data.filter(p => p.city === city);
-
-  // Type filter (from search dropdown)
   if (type) data = data.filter(p => p.type === type);
 
-  // Budget range
   data = data.filter(p => p.price <= budgetMax);
 
-  // Sort
-  if (sort === 'price_asc') data.sort((a,b) => a.price - b.price);
+  if (sort === 'price_asc')  data.sort((a,b) => a.price - b.price);
   else if (sort === 'price_desc') data.sort((a,b) => b.price - a.price);
   else if (sort === 'newest') data.sort((a,b) => (b.isNew?1:0)-(a.isNew?1:0));
   else if (sort === 'rating') data.sort((a,b) => b.rating - a.rating);
@@ -768,10 +844,10 @@ function applyAllFilters() {
 function liveSearch(q) { applyAllFilters(); }
 
 function resetFilters() {
-  document.getElementById('searchQ').value = '';
+  document.getElementById('searchQ').value    = '';
   document.getElementById('searchCity').value = '';
   document.getElementById('searchType').value = '';
-  document.getElementById('sortSel').value = '';
+  document.getElementById('sortSel').value    = '';
   budgetMax = 50000;
   updateBudget(50000);
   document.querySelectorAll('.fcheck').forEach(c => { c.classList.remove('on'); c.querySelector('.fcheck-box').textContent = ''; });
@@ -804,7 +880,7 @@ function updateBudget(val) {
   applyAllFilters();
 }
 
-/* ═══ VIEW ══════════════════════════════════════════════════════ */
+/* ═══ VIEW ═══════════════════════════════════════════════════════ */
 function setView(v) {
   currentView = v;
   document.getElementById('cardsGrid').classList.toggle('list-view', v === 'list');
@@ -813,32 +889,34 @@ function setView(v) {
   applyAllFilters();
 }
 
-/* ═══ SAVE ══════════════════════════════════════════════════════ */
+/* ═══ SAVE ═══════════════════════════════════════════════════════ */
 function toggleSave(btn, id) {
-  if (savedIds.has(id)) { savedIds.delete(id); btn.textContent = '🤍'; btn.classList.remove('saved'); showToast('💔 Removed from wishlist'); }
-  else { savedIds.add(id); btn.textContent = '❤️'; btn.classList.add('saved'); showToast('❤️ Saved to wishlist!'); }
+  if (savedIds.has(id)) {
+    savedIds.delete(id); btn.textContent = '🤍'; btn.classList.remove('saved');
+    showToast('💔 Removed from wishlist');
+  } else {
+    savedIds.add(id); btn.textContent = '❤️'; btn.classList.add('saved');
+    showToast('❤️ Saved to wishlist!');
+  }
 }
 
-/* ═══ COMPARE ══════════════════════════════════════════════════ */
+/* ═══ COMPARE ════════════════════════════════════════════════════ */
 function toggleCompare(btn, id, name) {
   if (compareIds.has(id)) {
-    compareIds.delete(id);
-    btn.style = '';
-    updateCompareBar();
+    compareIds.delete(id); btn.style = ''; updateCompareBar();
     showToast('⊟ Removed from compare');
   } else {
     if (compareIds.size >= 3) { showToast('⚠️ Max 3 properties can be compared'); return; }
     compareIds.add(id);
     btn.style.cssText = 'background:var(--terra-d);border-color:var(--terra-b);color:var(--terra)';
-    updateCompareBar();
-    showToast('⊞ Added to compare!');
+    updateCompareBar(); showToast('⊞ Added to compare!');
   }
 }
 
 function updateCompareBar() {
-  const bar = document.getElementById('compareBar');
+  const bar   = document.getElementById('compareBar');
   const slots = ['cs1','cs2','cs3'];
-  const ids = [...compareIds];
+  const ids   = [...compareIds];
   slots.forEach((slotId, i) => {
     const el = document.getElementById(slotId);
     if (ids[i]) {
@@ -850,16 +928,17 @@ function updateCompareBar() {
   bar.classList.toggle('show', compareIds.size > 0);
 }
 
-function doCompare() { showToast('📊 Property comparison launching soon! We\'re building something great.'); }
-function clearCompare() { compareIds.clear(); document.querySelectorAll('.btn-call').forEach(b => { b.style = ''; }); updateCompareBar(); }
+function doCompare()    { showToast('📊 Property comparison launching soon! We\'re building something great.'); }
+function clearCompare() {
+  compareIds.clear();
+  document.querySelectorAll('.btn-call').forEach(b => { b.style = ''; });
+  updateCompareBar();
+}
 
-/* ═══ WHATSAPP TRACKING ════════════════════════════════════════ */
-function trackWA(id) { showToast('💬 Opening WhatsApp chat with owner…'); }
-
-/* ═══ DETAIL PAGE ═══════════════════════════════════════════════ */
+/* ═══ DETAIL PAGE ════════════════════════════════════════════════ */
 function goToDetail(id) { window.location = 'property-detail.html?id=' + id; }
 
-/* ═══ STAT COUNTERS ════════════════════════════════════════════ */
+/* ═══ STAT COUNTERS ══════════════════════════════════════════════ */
 function updateCounts(n) {
   animCount('stat-listings', n || 8800, 0);
   animCount('stat-cities', 15, 0, 300);
@@ -871,19 +950,21 @@ function animCount(id, target, decimals, delay=0) {
   if (!el) return;
   setTimeout(() => {
     const dur = 1800, start = performance.now();
-    const fmt = v => target >= 1000 ? (v >= 1000 ? (v/1000).toFixed(1) + 'K+' : Math.floor(v) + '') : (decimals ? v.toFixed(decimals) : Math.floor(v));
+    const fmt = v => target >= 1000
+      ? (v >= 1000 ? (v/1000).toFixed(1) + 'K+' : Math.floor(v) + '')
+      : (decimals ? v.toFixed(decimals) : Math.floor(v));
     const tick = now => {
       const p = Math.min((now - start)/dur, 1);
       const ease = 1 - Math.pow(1 - p, 4);
       el.textContent = fmt(ease * target);
-      if(p < 1) requestAnimationFrame(tick);
+      if (p < 1) requestAnimationFrame(tick);
       else el.textContent = fmt(target);
     };
     requestAnimationFrame(tick);
   }, delay);
 }
 
-/* ═══ NAVBAR & SCROLL ══════════════════════════════════════════ */
+/* ═══ NAVBAR & SCROLL ════════════════════════════════════════════ */
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').classList.toggle('solid', scrollY > 40);
   const t = document.documentElement;
@@ -891,7 +972,7 @@ window.addEventListener('scroll', () => {
   document.getElementById('pgBar').style.width = Math.min(pct, 100) + '%';
 });
 
-/* ═══ MOBILE MENU ══════════════════════════════════════════════ */
+/* ═══ MOBILE MENU ════════════════════════════════════════════════ */
 function toggleMob() {
   const d = document.getElementById('mobDrawer');
   const b = document.getElementById('mobBtn');
@@ -899,7 +980,7 @@ function toggleMob() {
   b.textContent = open ? '✕' : '☰';
 }
 
-/* ═══ TOAST ════════════════════════════════════════════════════ */
+/* ═══ TOAST ══════════════════════════════════════════════════════ */
 let _tT;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -909,13 +990,13 @@ function showToast(msg) {
   _tT = setTimeout(() => { el.style.display = 'none'; }, 3500);
 }
 
-/* ═══ SCROLL REVEAL ════════════════════════════════════════════ */
+/* ═══ SCROLL REVEAL ══════════════════════════════════════════════ */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
 }, { threshold: 0.08 });
 document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 
-/* ═══ INIT ═════════════════════════════════════════════════════ */
+/* ═══ INIT ═══════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   renderCards(window._PROPS);
   updateCounts(window._PROPS.length);
@@ -927,7 +1008,7 @@ window.setCat=setCat;window.applyAllFilters=applyAllFilters;window.liveSearch=li
 window.resetFilters=resetFilters;window.toggleCheck=toggleCheck;window.toggleSwitch=toggleSwitch;
 window.updateBudget=updateBudget;window.setView=setView;window.toggleSave=toggleSave;
 window.toggleCompare=toggleCompare;window.doCompare=doCompare;window.clearCompare=clearCompare;
-window.trackWA=trackWA;window.goToDetail=goToDetail;window.showToast=showToast;window.toggleMob=toggleMob;
+window.goToDetail=goToDetail;window.showToast=showToast;window.toggleMob=toggleMob;
 </script>
 </body>
 </html>

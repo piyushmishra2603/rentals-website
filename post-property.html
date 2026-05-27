@@ -413,6 +413,144 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 }
 .success-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
+/* ═══════════════════════════════════════════════
+   SUBSCRIPTION GATE — Step 3 paywall UI
+═══════════════════════════════════════════════ */
+
+/* Submit button area wrapper */
+.submit-area { position: relative; }
+
+/* Checking skeleton */
+.sub-checking {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 20px; border-radius: var(--r2);
+  background: var(--bg3); border: 1.5px solid var(--line2);
+  font-size: 13px; color: var(--t3); font-weight: 500;
+  animation: fadeUp .3s both;
+}
+.sub-checking .spin {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2.5px solid var(--line3); border-top-color: var(--gold);
+  animation: spin .7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Active subscription badge */
+.sub-active-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  background: var(--emerald-d); border: 1px solid var(--emerald-b);
+  font-size: 12px; font-weight: 600; color: var(--emerald);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: .05em;
+  animation: fadeUp .4s both;
+}
+.sub-active-badge .sub-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--emerald); animation: blink 2s infinite;
+}
+.sub-active-badge .sub-plan-name {
+  background: rgba(26,122,74,.14); padding: 2px 8px; border-radius: 100px;
+  margin-left: 4px; font-size: 10px; letter-spacing: .08em;
+}
+
+/* ── PAYWALL GATE CARD ────────────────────── */
+.sub-gate {
+  border-radius: var(--r3); overflow: hidden;
+  border: 1.5px solid rgba(184,134,60,.25);
+  box-shadow: var(--sh-lg), 0 0 0 4px rgba(184,134,60,.04);
+  animation: fadeUp .45s cubic-bezier(.22,1,.36,1) both;
+}
+
+/* Top decorative banner */
+.sg-banner {
+  background: linear-gradient(120deg, #1c1409 0%, #3a2714 40%, #2a1e08 100%);
+  padding: 28px 32px 26px;
+  position: relative; overflow: hidden;
+}
+.sg-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(184,134,60,.18), transparent);
+}
+.sg-banner::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,134,60,.4), transparent);
+}
+.sg-banner-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
+.sg-lock-circle {
+  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(184,134,60,.25), rgba(184,134,60,.1));
+  border: 1.5px solid rgba(184,134,60,.3);
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+  box-shadow: 0 0 24px rgba(184,134,60,.2);
+}
+.sg-banner-text { flex: 1; }
+.sg-banner-title {
+  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+  color: #fff; margin-bottom: 4px; letter-spacing: -.01em;
+}
+.sg-banner-sub { font-size: 13px; color: rgba(255,255,255,.55); line-height: 1.55; }
+.sg-plan-chip {
+  flex-shrink: 0; padding: 6px 14px; border-radius: 100px;
+  background: rgba(184,134,60,.15); border: 1px solid rgba(184,134,60,.3);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: .12em;
+  color: var(--gold-lt); font-weight: 700; white-space: nowrap;
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+@keyframes subtlePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(184,134,60,0); }
+  50%      { box-shadow: 0 0 0 5px rgba(184,134,60,.12); }
+}
+
+/* Body of gate */
+.sg-body { background: #fff; padding: 26px 32px 28px; }
+
+/* Benefits grid */
+.sg-benefits {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px;
+}
+.sg-benefit {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: var(--r2);
+  background: var(--bg3); border: 1px solid var(--line2);
+  transition: all .2s;
+}
+.sg-benefit:hover { border-color: rgba(184,134,60,.2); background: var(--gold-d); }
+.sg-benefit-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.sg-benefit-text { flex: 1; }
+.sg-benefit-title { font-size: 12.5px; font-weight: 600; color: var(--t0); margin-bottom: 2px; }
+.sg-benefit-desc  { font-size: 11.5px; color: var(--t3); line-height: 1.5; }
+
+/* CTA row */
+.sg-cta-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; border-radius: var(--r2);
+  background: linear-gradient(120deg, var(--gold-d), rgba(14,122,112,.05));
+  border: 1.5px solid rgba(184,134,60,.18);
+  flex-wrap: wrap;
+}
+.sg-cta-text { flex: 1; min-width: 200px; }
+.sg-cta-title { font-size: 14.5px; font-weight: 700; color: var(--t0); margin-bottom: 3px; }
+.sg-cta-sub { font-size: 12px; color: var(--t2); line-height: 1.55; }
+.sg-cta-btns { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+
+/* Locked submit button visual */
+.btn-locked {
+  background: var(--bg4) !important;
+  color: var(--t3) !important;
+  border: 1.5px solid var(--line3) !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: relative;
+  gap: 8px;
+}
+.btn-locked::after {
+  content: '🔒';
+  font-size: 14px;
+}
+
 /* ── RESPONSIVE ───────────────────────────── */
 @media(max-width:680px) {
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
@@ -426,6 +564,11 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
   .btn-row { flex-direction: column-reverse; gap: 8px; }
   .btn-row .btn { width: 100%; }
   .s1-prog { text-align: center; }
+  .sg-benefits { grid-template-columns: 1fr; }
+  .sg-banner { padding: 22px 22px 20px; }
+  .sg-body { padding: 20px 22px 24px; }
+  .sg-plan-chip { display: none; }
+  .sg-cta-row { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 </style>
 </head>
@@ -753,7 +896,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 
         <div class="sec-divider"><span>Owner &amp; Contact Details</span></div>
 
-        <!-- FIX: ownerName / ownerPhone are required for Firestore owner object -->
         <div class="grid-2">
           <div class="field" id="f-ownerName">
             <label>Owner / Contact Name <span class="req">*</span></label>
@@ -851,7 +993,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
           <div class="sec-sub">Verify all details. You can edit anytime from your Owner Dashboard.</div>
         </div>
 
-        <!-- FIX: Approval notice — listing starts as pending, not auto-approved -->
         <div class="info-row notice">
           <span class="ii">⏳</span>
           <div>Your listing will be <strong>reviewed within 24 hours</strong> and go live after approval. You'll receive an email notification.</div>
@@ -862,13 +1003,21 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
         </div>
       </div>
 
-      <div class="btn-row">
+      <!-- ══ SUBMIT AREA — subscription-gated ══ -->
+      <div class="btn-row" id="step3BtnRow">
         <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
-        <button class="btn btn-success btn-lg" id="submitBtn" onclick="submitProperty()">
-          🚀 Upload &amp; Submit for Review
-        </button>
+
+        <!-- This whole right side is replaced by JS based on subscription state -->
+        <div id="submitArea" class="submit-area">
+          <!-- State 1: checking subscription -->
+          <div id="subChecking" class="sub-checking">
+            <div class="spin"></div>
+            Checking your subscription…
+          </div>
+        </div>
       </div>
-    </div>
+
+    </div><!-- /panel3 -->
 
     <!-- SUCCESS SCREEN -->
     <div class="success-screen" id="successScreen">
@@ -897,7 +1046,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 <script type="module">
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, addDoc, getDoc, doc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* ── Firebase Config ───────────────────────── */
 const firebaseConfig = {
@@ -912,9 +1062,188 @@ const auth = getAuth(app);
 const db   = getFirestore(app);
 
 /* ── Cloudinary Config ─────────────────────── */
-const CLOUD_NAME    = "dq3hko9hn";
-const UPLOAD_PRESET = "dl6dnzau";
+const CLOUD_NAME     = "dq3hko9hn";
+const UPLOAD_PRESET  = "dl6dnzau";
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+/* ══════════════════════════════════════════════
+   SUBSCRIPTION CHECK
+   ──────────────────────────────────────────────
+   Reads the user's Firestore profile doc at:
+     users/{uid}
+   and checks for an "ownerSubscription" object with:
+     { plan: "owner" | "owner_pro" | …, status: "active", expiresAt: Timestamp }
+
+   Alternatively, a top-level boolean field  ownerPlan: true  also grants access.
+   Adjust the field names below to match your Firestore schema.
+══════════════════════════════════════════════ */
+
+/**
+ * Returns { hasAccess: bool, planName: string|null }
+ */
+async function checkOwnerSubscription(uid) {
+  try {
+    const snap = await getDoc(doc(db, "users", uid));
+    if (!snap.exists()) return { hasAccess: false, planName: null };
+
+    const data = snap.data();
+
+    /* ── Strategy A: nested ownerSubscription object ── */
+    const sub = data.ownerSubscription || data.subscription || null;
+    if (sub) {
+      const isOwnerPlan = sub.plan && (
+        String(sub.plan).toLowerCase().includes("owner") ||
+        String(sub.plan).toLowerCase().includes("landlord") ||
+        String(sub.plan).toLowerCase().includes("pro")
+      );
+      const isActive = sub.status === "active" || sub.active === true;
+      // Check expiry if present
+      let notExpired = true;
+      if (sub.expiresAt) {
+        const exp = sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt);
+        notExpired = exp > new Date();
+      }
+      if (isOwnerPlan && isActive && notExpired) {
+        return { hasAccess: true, planName: sub.plan || "Owner Plan" };
+      }
+    }
+
+    /* ── Strategy B: top-level boolean flags ── */
+    if (data.ownerPlan === true || data.isOwner === true || data.canPostProperty === true) {
+      const planName = data.planName || data.subscriptionPlan || "Owner Plan";
+      return { hasAccess: true, planName };
+    }
+
+    /* ── Strategy C: role array ── */
+    const roles = data.roles || data.role || [];
+    const roleArr = Array.isArray(roles) ? roles : [roles];
+    if (roleArr.some(r => ["owner","landlord","pro","premium"].includes(String(r).toLowerCase()))) {
+      return { hasAccess: true, planName: data.planName || "Owner Plan" };
+    }
+
+    return { hasAccess: false, planName: null };
+
+  } catch (err) {
+    console.error("Subscription check error:", err);
+    // On Firestore read error, fail closed (no access)
+    return { hasAccess: false, planName: null, error: err.message };
+  }
+}
+
+/* ── Render the submit area based on subscription ── */
+function renderSubmitArea(hasAccess, planName) {
+  const area = document.getElementById("submitArea");
+  if (!area) return;
+
+  if (hasAccess) {
+    /* ─ Unlocked: show active badge + submit button ─ */
+    area.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+        <div class="sub-active-badge">
+          <div class="sub-dot"></div>
+          OWNER PLAN ACTIVE
+          <span class="sub-plan-name">${escHtml(planName || "Owner")}</span>
+        </div>
+        <button class="btn btn-success btn-lg" id="submitBtn" onclick="submitProperty()">
+          🚀 Upload &amp; Submit for Review
+        </button>
+      </div>`;
+  } else {
+    /* ─ Locked: show paywall gate ─ */
+    area.innerHTML = `
+      <div style="width:100%;">
+        <!-- Locked submit button (visual only, always disabled) -->
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-success btn-lg btn-locked" disabled title="Owner Subscription required">
+            Upload &amp; Submit for Review
+          </button>
+        </div>
+
+        <!-- Paywall card -->
+        <div class="sub-gate">
+          <div class="sg-banner">
+            <div class="sg-banner-inner">
+              <div class="sg-lock-circle">🔒</div>
+              <div class="sg-banner-text">
+                <div class="sg-banner-title">Owner Subscription Required</div>
+                <div class="sg-banner-sub">Unlock property listings with an Owner plan — post unlimited properties and reach verified tenants instantly.</div>
+              </div>
+              <div class="sg-plan-chip">OWNER PLAN</div>
+            </div>
+          </div>
+          <div class="sg-body">
+            <div class="sg-benefits">
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">🏘️</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Post Unlimited Properties</div>
+                  <div class="sg-benefit-desc">List as many properties as you own — no caps.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">⚡</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Priority Listing Boost</div>
+                  <div class="sg-benefit-desc">Your properties rank higher in search results.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">📊</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Owner Analytics Dashboard</div>
+                  <div class="sg-benefit-desc">Track views, enquiries, and lead conversion.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">✅</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Verified Owner Badge</div>
+                  <div class="sg-benefit-desc">Build trust with a verified checkmark on listings.</div>
+                </div>
+              </div>
+            </div>
+            <div class="sg-cta-row">
+              <div class="sg-cta-text">
+                <div class="sg-cta-title">Get Owner Plan to start listing</div>
+                <div class="sg-cta-sub">Already subscribed? <a href="javascript:void(0)" onclick="recheckSubscription()" style="color:var(--teal);font-weight:600;text-decoration:underline;">Refresh subscription status</a></div>
+              </div>
+              <div class="sg-cta-btns">
+                <a href="plans.html" class="btn btn-primary btn-lg">View Plans →</a>
+                <a href="plans.html#owner" class="btn btn-teal">Get Owner Plan</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── Exposed to inline handler ── */
+window.recheckSubscription = async () => {
+  const user = window._currentUser;
+  if (!user) return;
+  renderSubChecking();
+  const { hasAccess, planName } = await checkOwnerSubscription(user.uid);
+  renderSubmitArea(hasAccess, planName);
+  if (hasAccess) {
+    showToast("✅ Subscription confirmed! You can now submit.", "success");
+  } else {
+    showToast("No active Owner subscription found.", "warn");
+  }
+};
+
+function renderSubChecking() {
+  const area = document.getElementById("submitArea");
+  if (area) area.innerHTML = `
+    <div class="sub-checking">
+      <div class="spin"></div>
+      Checking your subscription…
+    </div>`;
+}
 
 /* ── Auth State ────────────────────────────── */
 const setFbPill = (state) => {
@@ -926,7 +1255,7 @@ const setFbPill = (state) => {
 };
 setFbPill('connecting');
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   window._currentUser = user;
   setFbPill('connected');
 
@@ -934,17 +1263,26 @@ onAuthStateChanged(auth, (user) => {
   const mainForm = document.getElementById('mainForm');
 
   if (user) {
-    // User is logged in — show the form
     gate.style.display     = 'none';
     mainForm.style.display = 'block';
 
-    // Pre-fill owner fields from Firebase Auth
+    // Pre-fill owner fields
     const emailEl = document.getElementById('ownerEmail');
     const nameEl  = document.getElementById('ownerName');
     if (emailEl && !emailEl.value && user.email)       emailEl.value = user.email;
     if (nameEl  && !nameEl.value  && user.displayName) nameEl.value  = user.displayName;
+
+    // ── Check subscription immediately (don't wait for user to reach step 3) ──
+    const { hasAccess, planName, error } = await checkOwnerSubscription(user.uid);
+    window._ownerSubStatus = { hasAccess, planName, checked: true };
+
+    // If user is already on step 3, render the submit area now
+    if (currentStep === 3) {
+      renderSubmitArea(hasAccess, planName);
+    }
+    // (if not on step 3 yet, renderSubmitArea is called when entering step 3)
+
   } else {
-    // Not logged in — show auth gate
     gate.style.display     = 'block';
     mainForm.style.display = 'none';
     setFbPill('error');
@@ -957,7 +1295,7 @@ onAuthStateChanged(auth, (user) => {
 ══════════════════════════════════════════════ */
 let selectedType    = "Apartment";
 let selectedFurnish = "Unfurnished";
-let uploadedFiles   = [];   // {file, previewUrl, cloudinaryUrl, status}
+let uploadedFiles   = [];
 let coverIdx        = 0;
 let currentStep     = 1;
 
@@ -965,7 +1303,6 @@ let currentStep     = 1;
    STEP NAVIGATION
 ══════════════════════════════════════════════ */
 window.goStep = (n) => {
-  // Allow navigating back to any previous step, but not forward beyond current
   if (n > currentStep) return;
   setStep(n);
 };
@@ -981,10 +1318,36 @@ function setStep(n) {
     else             { st.className = "step";        sc.textContent = String(i); }
     if (i < 3) document.getElementById(`sl${i}`).classList.toggle("done", i < n);
   });
-  // Update top progress bar
   const pct = ((n - 1) / 2) * 100;
   document.getElementById('formProgressBar').style.width = pct + '%';
+
+  // ── When entering step 3, resolve subscription state ──
+  if (n === 3) {
+    resolveSubmitArea();
+  }
+
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/**
+ * Called whenever step 3 becomes visible.
+ * Uses cached result if already fetched, otherwise re-fetches.
+ */
+async function resolveSubmitArea() {
+  const status = window._ownerSubStatus;
+  if (status && status.checked) {
+    // Already fetched during auth — use cached result
+    renderSubmitArea(status.hasAccess, status.planName);
+  } else if (window._currentUser) {
+    // Auth resolved but sub not checked yet (rare race) — fetch now
+    renderSubChecking();
+    const { hasAccess, planName } = await checkOwnerSubscription(window._currentUser.uid);
+    window._ownerSubStatus = { hasAccess, planName, checked: true };
+    renderSubmitArea(hasAccess, planName);
+  } else {
+    // Not logged in — keep checking indicator (auth state will update soon)
+    renderSubChecking();
+  }
 }
 
 window.nextStep = (from) => {
@@ -996,41 +1359,35 @@ window.nextStep = (from) => {
 
 /* ══════════════════════════════════════════════
    VALIDATION
-   FIX: matches Firestore rules field names exactly
 ══════════════════════════════════════════════ */
 function validateStep1() {
   let ok = true;
   const errs = [];
 
-  // Title — min 10 chars
   const title = document.getElementById('title');
   const titleF = document.getElementById('f-title');
   if (!title.value.trim() || title.value.trim().length < 10) {
     title.classList.add('err'); titleF.classList.add('error'); ok = false; errs.push(title);
   } else { title.classList.remove('err'); titleF.classList.remove('error'); }
 
-  // Price — must be a number >= 1000
   const price = document.getElementById('price');
   const priceF = document.getElementById('f-price');
   if (!price.value || isNaN(price.value) || Number(price.value) < 1000) {
     price.classList.add('err'); priceF.classList.add('error'); ok = false; if(!errs.length) errs.push(price);
   } else { price.classList.remove('err'); priceF.classList.remove('error'); }
 
-  // BHK
   const bhk = document.getElementById('bhk');
   const bhkF = document.getElementById('f-bhk');
   if (!bhk.value) {
     bhk.classList.add('err'); bhkF.classList.add('error'); ok = false; if(!errs.length) errs.push(bhk);
   } else { bhk.classList.remove('err'); bhkF.classList.remove('error'); }
 
-  // City
   const city = document.getElementById('city');
   const cityF = document.getElementById('f-city');
   if (!city.value) {
     city.classList.add('err'); cityF.classList.add('error'); ok = false; if(!errs.length) errs.push(city);
   } else { city.classList.remove('err'); cityF.classList.remove('error'); }
 
-  // Locality
   const loc = document.getElementById('locality');
   const locF = document.getElementById('f-locality');
   if (!loc.value.trim()) {
@@ -1047,7 +1404,6 @@ function validateStep1() {
 function validateStep2() {
   let ok = true;
 
-  // Description — min 50 chars
   const desc = document.getElementById('description');
   const descF = document.getElementById('f-desc');
   if (!desc.value.trim() || desc.value.trim().length < 50) {
@@ -1055,7 +1411,6 @@ function validateStep2() {
     desc.scrollIntoView({ behavior: "smooth", block: "center" });
   } else { desc.classList.remove('err'); descF.classList.remove('error'); }
 
-  // Owner name
   const ownerName = document.getElementById('ownerName');
   const ownerNameF = document.getElementById('f-ownerName');
   if (!ownerName.value.trim()) {
@@ -1063,7 +1418,6 @@ function validateStep2() {
     if (ok === false && !desc.classList.contains('err')) ownerName.scrollIntoView({ behavior: "smooth", block: "center" });
   } else { ownerName.classList.remove('err'); ownerNameF.classList.remove('error'); }
 
-  // Owner phone — must be at least 10 digits
   const ownerPhone = document.getElementById('ownerPhone');
   const ownerPhoneF = document.getElementById('f-ownerPhone');
   const digits = ownerPhone.value.replace(/\D/g,'');
@@ -1078,17 +1432,9 @@ function validateStep2() {
 /* ══════════════════════════════════════════════
    UI SELECTORS
 ══════════════════════════════════════════════ */
-window.selectType = (el) => {
-  document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected"));
-  el.classList.add("selected");
-  selectedType = el.dataset.type;
-};
-window.selectFurnish = (el) => {
-  document.querySelectorAll(".furnish-card").forEach(c => c.classList.remove("selected"));
-  el.classList.add("selected");
-  selectedFurnish = el.dataset.f;
-};
-window.toggleChip = (el) => el.classList.toggle("selected");
+window.selectType    = (el) => { document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected")); el.classList.add("selected"); selectedType = el.dataset.type; };
+window.selectFurnish = (el) => { document.querySelectorAll(".furnish-card").forEach(c => c.classList.remove("selected")); el.classList.add("selected"); selectedFurnish = el.dataset.f; };
+window.toggleChip    = (el) => el.classList.toggle("selected");
 
 /* ══════════════════════════════════════════════
    STEP 1 PROGRESS COUNTER
@@ -1111,26 +1457,18 @@ const dropZone  = document.getElementById("dropZone");
 const fileInput = document.getElementById("imageInput");
 const imgGrid   = document.getElementById("imgGrid");
 
-dropZone.addEventListener("click", (e) => {
-  if (e.target !== fileInput) fileInput.click();
-});
-["dragover","dragenter"].forEach(ev => dropZone.addEventListener(ev, e => {
-  e.preventDefault(); dropZone.classList.add("drag-over");
-}));
-["dragleave","dragend","drop"].forEach(ev => dropZone.addEventListener(ev, () => {
-  dropZone.classList.remove("drag-over");
-}));
-dropZone.addEventListener("drop", e => {
-  e.preventDefault(); addFiles([...e.dataTransfer.files]);
-});
+dropZone.addEventListener("click", (e) => { if (e.target !== fileInput) fileInput.click(); });
+["dragover","dragenter"].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add("drag-over"); }));
+["dragleave","dragend","drop"].forEach(ev => dropZone.addEventListener(ev, () => { dropZone.classList.remove("drag-over"); }));
+dropZone.addEventListener("drop", e => { e.preventDefault(); addFiles([...e.dataTransfer.files]); });
 fileInput.addEventListener("change", () => { addFiles([...fileInput.files]); fileInput.value = ''; });
 
 function addFiles(newFiles) {
-  const MAX_SIZE = 5 * 1024 * 1024;
+  const MAX_SIZE   = 5 * 1024 * 1024;
   const VALID_TYPES = ["image/jpeg","image/png","image/webp"];
-  const tooLarge  = newFiles.filter(f => f.size > MAX_SIZE);
-  const wrongType = newFiles.filter(f => !VALID_TYPES.includes(f.type));
-  const valid     = newFiles.filter(f => VALID_TYPES.includes(f.type) && f.size <= MAX_SIZE);
+  const tooLarge   = newFiles.filter(f => f.size > MAX_SIZE);
+  const wrongType  = newFiles.filter(f => !VALID_TYPES.includes(f.type));
+  const valid      = newFiles.filter(f => VALID_TYPES.includes(f.type) && f.size <= MAX_SIZE);
 
   if (tooLarge.length)  showToast(`${tooLarge.length} file(s) skipped — must be under 5 MB.`, "warn");
   if (wrongType.length) showToast(`${wrongType.length} file(s) skipped — JPG, PNG, WEBP only.`, "warn");
@@ -1138,9 +1476,7 @@ function addFiles(newFiles) {
   const remaining = 15 - uploadedFiles.length;
   if (valid.length > remaining) showToast(`Only ${remaining} more photo(s) allowed (max 15).`, "warn");
   const toAdd = valid.slice(0, remaining);
-  toAdd.forEach(file => {
-    uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" });
-  });
+  toAdd.forEach(file => { uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" }); });
   renderPreviews();
   updatePhotoCount();
 }
@@ -1163,21 +1499,9 @@ function renderPreviews() {
   });
 }
 
-window.setCover = (i) => {
-  // Move chosen photo to front
-  const cover = uploadedFiles.splice(i, 1)[0];
-  uploadedFiles.unshift(cover);
-  coverIdx = 0;
-  renderPreviews();
-  showToast("Cover photo updated!", "success");
-};
-window.removeImg = (i) => {
-  URL.revokeObjectURL(uploadedFiles[i].previewUrl);
-  uploadedFiles.splice(i, 1);
-  if (coverIdx >= uploadedFiles.length) coverIdx = 0;
-  renderPreviews();
-  updatePhotoCount();
-};
+window.setCover  = (i) => { const cover = uploadedFiles.splice(i, 1)[0]; uploadedFiles.unshift(cover); coverIdx = 0; renderPreviews(); showToast("Cover photo updated!", "success"); };
+window.removeImg = (i) => { URL.revokeObjectURL(uploadedFiles[i].previewUrl); uploadedFiles.splice(i, 1); if (coverIdx >= uploadedFiles.length) coverIdx = 0; renderPreviews(); updatePhotoCount(); };
+
 function updatePhotoCount() {
   const b = document.getElementById("photoCountBadge");
   if (b) b.textContent = `${uploadedFiles.length} / 15`;
@@ -1195,8 +1519,7 @@ async function uploadAllToCloudinary() {
     const fsize = (item.file.size / 1024).toFixed(0) + " KB";
 
     const row = document.createElement("div");
-    row.className = "upload-item";
-    row.id = `ui-row-${i}`;
+    row.className = "upload-item"; row.id = `ui-row-${i}`;
     row.innerHTML = `
       <span class="ui-icon">🖼️</span>
       <div style="flex:1;min-width:0">
@@ -1212,10 +1535,8 @@ async function uploadAllToCloudinary() {
     try {
       const url = await uploadSingleImage(item.file, i);
       urls.push(url);
-      uploadedFiles[i].cloudinaryUrl = url;
-      uploadedFiles[i].status = "done";
-      const bar = document.getElementById(`ui-bar-${i}`);
-      const st  = document.getElementById(`ui-st-${i}`);
+      uploadedFiles[i].cloudinaryUrl = url; uploadedFiles[i].status = "done";
+      const bar = document.getElementById(`ui-bar-${i}`); const st = document.getElementById(`ui-st-${i}`);
       if (bar) bar.style.width = "100%";
       if (st)  { st.textContent = "✓ Done"; st.style.color = "var(--emerald)"; }
       row.classList.add("done");
@@ -1233,11 +1554,8 @@ async function uploadAllToCloudinary() {
 function uploadSingleImage(file, idx) {
   return new Promise((resolve, reject) => {
     const fd = new FormData();
-    fd.append("file", file);
-    fd.append("upload_preset", UPLOAD_PRESET);
-    fd.append("cloud_name", CLOUD_NAME);
-    fd.append("folder", "smartrent/properties");
-
+    fd.append("file", file); fd.append("upload_preset", UPLOAD_PRESET);
+    fd.append("cloud_name", CLOUD_NAME); fd.append("folder", "smartrent/properties");
     const xhr = new XMLHttpRequest();
     xhr.open("POST", CLOUDINARY_URL, true);
     xhr.upload.onprogress = (e) => {
@@ -1250,12 +1568,8 @@ function uploadSingleImage(file, idx) {
     xhr.onload = () => {
       if (xhr.status === 200) {
         const data = JSON.parse(xhr.responseText);
-        // Optimise delivery: auto format + quality
-        const url = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto:good/');
-        resolve(url);
-      } else {
-        reject(new Error(`Cloudinary HTTP ${xhr.status}: ${xhr.responseText}`));
-      }
+        resolve(data.secure_url.replace('/upload/', '/upload/f_auto,q_auto:good/'));
+      } else { reject(new Error(`Cloudinary HTTP ${xhr.status}`)); }
     };
     xhr.onerror = () => reject(new Error("Network error during Cloudinary upload"));
     xhr.send(fd);
@@ -1269,184 +1583,111 @@ function buildSummary() {
   const gv = (id) => document.getElementById(id)?.value?.trim() || "";
   const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
   const tenants   = [...document.querySelectorAll("#tenantWrap .chip.selected")].map(c => c.textContent.trim());
-  const price     = Number(gv("price"));
-  const deposit   = Number(gv("deposit"));
+  const price = Number(gv("price")), deposit = Number(gv("deposit"));
 
   const rows = [
-    ["TYPE",        selectedType],
-    ["TITLE",       gv("title")],
-    ["RENT",        `₹${price.toLocaleString("en-IN")} / month`],
-    ["DEPOSIT",     deposit ? `₹${deposit.toLocaleString("en-IN")}` : "Not specified"],
-    ["CONFIG",      gv("bhk") || "—"],
-    ["CITY",        gv("city")],
-    ["LOCALITY",    gv("locality")],
-    ["AREA",        gv("area") ? gv("area") + " sq.ft" : "—"],
-    ["FLOOR",       gv("floor") || "—"],
-    ["FACING",      gv("facing") || "—"],
-    ["AGE",         gv("propAge") || "—"],
-    ["FURNISHING",  selectedFurnish],
-    ["AVAILABLE",   gv("availableFrom") || "Immediately"],
-    ["AMENITIES",   amenities.length ? amenities.slice(0,7).join(", ") + (amenities.length>7?` +${amenities.length-7} more`:"") : "None selected"],
-    ["TENANTS",     tenants.length ? tenants.join(", ") : "Anyone"],
-    ["SMOKING",     gv("smoking") || "—"],
-    ["GUESTS",      gv("guests") || "—"],
-    ["MAINTENANCE", gv("maintenance") || "—"],
-    ["OWNER",       gv("ownerName")],
-    ["PHONE",       gv("ownerPhone")],
-    ["PHOTOS",      `${uploadedFiles.length} selected (uploaded on submit)`],
+    ["TYPE", selectedType], ["TITLE", gv("title")],
+    ["RENT", `₹${price.toLocaleString("en-IN")} / month`],
+    ["DEPOSIT", deposit ? `₹${deposit.toLocaleString("en-IN")}` : "Not specified"],
+    ["CONFIG", gv("bhk") || "—"], ["CITY", gv("city")], ["LOCALITY", gv("locality")],
+    ["AREA", gv("area") ? gv("area") + " sq.ft" : "—"], ["FLOOR", gv("floor") || "—"],
+    ["FACING", gv("facing") || "—"], ["AGE", gv("propAge") || "—"],
+    ["FURNISHING", selectedFurnish], ["AVAILABLE", gv("availableFrom") || "Immediately"],
+    ["AMENITIES", amenities.length ? amenities.slice(0,7).join(", ") + (amenities.length>7?` +${amenities.length-7} more`:"") : "None selected"],
+    ["TENANTS", tenants.length ? tenants.join(", ") : "Anyone"],
+    ["SMOKING", gv("smoking") || "—"], ["GUESTS", gv("guests") || "—"],
+    ["MAINTENANCE", gv("maintenance") || "—"], ["OWNER", gv("ownerName")], ["PHONE", gv("ownerPhone")],
+    ["PHOTOS", `${uploadedFiles.length} selected (uploaded on submit)`],
   ];
 
-  let html = rows.map(([k,v]) => `
-    <div class="summary-row">
-      <span class="summary-key">${k}</span>
-      <span class="summary-val${k==='RENT'?' price':''}">${v}</span>
-    </div>`).join("");
+  let html = rows.map(([k,v]) => `<div class="summary-row"><span class="summary-key">${k}</span><span class="summary-val${k==='RENT'?' price':''}">${v}</span></div>`).join("");
 
-  // Photo previews
   if (uploadedFiles.length > 0) {
-    html += `<div class="summary-row" style="align-items:flex-start">
-      <span class="summary-key">PHOTOS</span>
-      <div class="summary-imgs">`;
+    html += `<div class="summary-row" style="align-items:flex-start"><span class="summary-key">PHOTOS</span><div class="summary-imgs">`;
     uploadedFiles.slice(0,6).forEach((item, i) => {
-      html += `<img src="${item.previewUrl}" class="summary-img" alt="Photo ${i+1}" title="${i===0?'Cover':'Photo '+(i+1)}">`;
+      html += `<img src="${item.previewUrl}" class="summary-img" alt="Photo ${i+1}">`;
     });
     if (uploadedFiles.length > 6) html += `<div style="width:46px;height:46px;border-radius:9px;background:var(--bg4);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--t3)">+${uploadedFiles.length-6}</div>`;
     html += `</div></div>`;
   }
-
   document.getElementById("summaryCard").innerHTML = html;
 }
 
 /* ══════════════════════════════════════════════
    SUBMIT
-   FIXES:
-   1. Auth check before submission
-   2. ownerUid = user.uid (top-level, matches Firestore rules)
-   3. owner.uid inside owner object (matches post-property rules owner.uid check)
-   4. approved: false  (Firestore rule requires new listings to be unapproved)
-   5. status: 'pending' instead of 'active'
-   6. At least 1 photo required
+   — Double-checks subscription server-side before writing to Firestore
 ══════════════════════════════════════════════ */
 window.submitProperty = async () => {
-  // Auth guard — must be logged in
-  if (!window._currentUser) {
-    showToast("You must be signed in to post a property.", "error");
+  const user = window._currentUser;
+
+  if (!user) { showToast("You must be signed in to post a property.", "error"); return; }
+
+  /* ── Final subscription guard (re-check in case cached status is stale) ── */
+  const { hasAccess } = await checkOwnerSubscription(user.uid);
+  if (!hasAccess) {
+    showToast("Owner Subscription required to post a property.", "error");
+    renderSubmitArea(false, null);
     return;
   }
 
-  // Minimum 1 photo
-  if (uploadedFiles.length < 1) {
-    showToast("Please upload at least 1 photo before submitting.", "error");
-    return;
-  }
+  if (uploadedFiles.length < 1) { showToast("Please upload at least 1 photo before submitting.", "error"); return; }
 
   const btn = document.getElementById("submitBtn");
-  btn.disabled  = true;
-  btn.innerHTML = "⏳ Uploading photos…";
+  if (btn) { btn.disabled = true; btn.innerHTML = "⏳ Uploading photos…"; }
 
   showToast(`Uploading ${uploadedFiles.length} photo(s) to Cloudinary…`, "info");
 
   try {
-    /* A — Upload images to Cloudinary */
     const imageUrls = await uploadAllToCloudinary();
+    if (imageUrls.length === 0) throw new Error("All photo uploads failed. Please check your connection and try again.");
+    if (imageUrls.length < uploadedFiles.length) showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed — continuing with ${imageUrls.length} photo(s).`, "warn");
 
-    if (imageUrls.length === 0) {
-      throw new Error("All photo uploads failed. Please check your connection and try again.");
-    }
-    if (imageUrls.length < uploadedFiles.length) {
-      showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed — continuing with ${imageUrls.length} photo(s).`, "warn");
-    }
-
-    btn.innerHTML = "⏳ Saving listing…";
+    if (btn) btn.innerHTML = "⏳ Saving listing…";
     showToast("Photos uploaded! Saving to database…", "success");
 
-    /* B — Collect form values */
     const gv = (id) => document.getElementById(id)?.value?.trim() || "";
     const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
     const tenants   = [...document.querySelectorAll("#tenantWrap .chip.selected")].map(c => c.textContent.trim());
-    const user = window._currentUser;
 
-    /* C — Write to Firestore
-       KEY FIXES:
-       - ownerUid at top level (matches rules: request.auth.uid == resource.data.ownerUid)
-       - owner.uid inside nested object (matches rules: resource.data.owner.uid)
-       - approved: false  (rules forbid self-approval on create)
-       - status: 'pending'
-    */
     const docRef = await addDoc(collection(db, "properties"), {
-      /* ── Identity fields (match Firestore rules exactly) ── */
-      ownerUid:   user.uid,          // TOP-LEVEL for rule: ownerUid == request.auth.uid
+      ownerUid:   user.uid,
       owner: {
-        uid:      user.uid,          // Nested for legacy rule: owner.uid check
+        uid:      user.uid,
         name:     gv("ownerName"),
         phone:    gv("ownerPhone"),
         whatsapp: gv("ownerWA") || gv("ownerPhone"),
         email:    gv("ownerEmail") || user.email || "",
       },
-
-      /* ── Property details ── */
-      type:         selectedType,
-      title:        gv("title"),
-      price:        Number(gv("price")),
-      bhk:          gv("bhk"),
-      city:         gv("city"),
-      locality:     gv("locality"),
+      type:         selectedType, title: gv("title"), price: Number(gv("price")),
+      bhk:          gv("bhk"), city: gv("city"), locality: gv("locality"),
       fullAddress:  gv("fullAddress"),
       area:         gv("area")        ? Number(gv("area"))        : null,
       floor:        gv("floor")       || null,
       totalFloors:  gv("totalFloors") ? Number(gv("totalFloors")) : null,
-      facing:       gv("facing")      || null,
-      propAge:      gv("propAge")     || null,
+      facing:       gv("facing")      || null, propAge: gv("propAge") || null,
       deposit:      gv("deposit")     ? Number(gv("deposit"))     : null,
-      availableFrom:gv("availableFrom") || null,
-      maintenance:  gv("maintenance") || null,
-
-      /* ── Lifestyle ── */
-      furnishing:       selectedFurnish,
-      description:      gv("description"),
-      amenities,
-      preferredTenants: tenants,
-      cooking:          gv("cooking")  || null,
-      nonveg:           gv("nonveg")   || null,
-      smoking:          gv("smoking")  || null,
-      drinking:         gv("drinking") || null,
-      guests:           gv("guests")   || null,
-
-      /* ── Media ── */
-      images:       imageUrls,
-      coverImage:   imageUrls[0] || null,
-      imageCount:   imageUrls.length,
-
-      /* ── Status flags
-         FIX: approved MUST be false on create (Firestore rule enforces this)
-         Admin sets approved=true via dashboard after review
-      ── */
-      approved:   false,
-      status:     "pending",   // 'pending' → 'active' after admin approval
-
-      /* ── Counters ── */
-      views:      0,
-      enquiries:  0,
-      savedCount: 0,
-
-      /* ── Timestamps ── */
-      createdAt:  serverTimestamp(),
-      updatedAt:  serverTimestamp(),
+      availableFrom:gv("availableFrom") || null, maintenance: gv("maintenance") || null,
+      furnishing:   selectedFurnish, description: gv("description"),
+      amenities, preferredTenants: tenants,
+      cooking: gv("cooking") || null, nonveg: gv("nonveg") || null,
+      smoking: gv("smoking") || null, drinking: gv("drinking") || null, guests: gv("guests") || null,
+      images: imageUrls, coverImage: imageUrls[0] || null, imageCount: imageUrls.length,
+      approved: false, status: "pending",
+      views: 0, enquiries: 0, savedCount: 0,
+      createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
     });
 
-    /* D — Show success */
     showSuccess(docRef.id, imageUrls);
 
   } catch (err) {
     console.error("Submission error:", err);
     showToast("Error: " + (err.message || "Unknown error"), "error");
-    btn.disabled  = false;
-    btn.innerHTML = "🚀 Upload &amp; Submit for Review";
+    const btn2 = document.getElementById("submitBtn");
+    if (btn2) { btn2.disabled = false; btn2.innerHTML = "🚀 Upload &amp; Submit for Review"; }
   }
 };
 
 function showSuccess(docId, imageUrls) {
-  // Hide form, show success
   document.getElementById('stepper').style.display      = 'none';
   document.getElementById('formProgressBar').parentElement.style.display = 'none';
   document.querySelectorAll('.step-panel').forEach(p => p.style.display = 'none');
@@ -1457,8 +1698,7 @@ function showSuccess(docId, imageUrls) {
 
   const imgRow = document.getElementById("successImageRow");
   imageUrls.slice(0,5).forEach((url, i) => {
-    const img = new Image();
-    img.src = url; img.className = "success-img"; img.alt = "Photo " + (i+1);
+    const img = new Image(); img.src = url; img.className = "success-img"; img.alt = "Photo " + (i+1);
     imgRow.appendChild(img);
   });
 
@@ -1467,11 +1707,10 @@ function showSuccess(docId, imageUrls) {
 }
 
 /* ══════════════════════════════════════════════
-   UTILITIES (exposed to window for inline handlers)
+   UTILITIES
 ══════════════════════════════════════════════ */
 window.updateCharCount = (id, countId, max) => {
-  const el = document.getElementById(id);
-  const cc = document.getElementById(countId);
+  const el = document.getElementById(id); const cc = document.getElementById(countId);
   if (!el || !cc) return;
   const len = el.value.length;
   cc.textContent = `${len} / ${max}`;

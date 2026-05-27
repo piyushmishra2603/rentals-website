@@ -70,7 +70,6 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 ::selection{background:rgba(181,116,42,.18);color:var(--ink)}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:rgba(181,116,42,.3);border-radius:3px}
 
-/* bg texture */
 .bg-tex{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(circle,rgba(181,116,42,.05) 1px,transparent 1px);background-size:28px 28px;opacity:.7}
 .bg-orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;animation:orb-float 18s ease-in-out infinite}
 .o1{width:600px;height:600px;top:-200px;left:-200px;background:rgba(181,116,42,.06)}
@@ -100,14 +99,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .hero-sub{font-size:16px;color:var(--ink4);line-height:1.75;max-width:520px;margin:0 auto;animation:fadeUp .6s .1s both;font-weight:400}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* TABS */
 .sec-tabs{display:flex;gap:3px;background:var(--white);border:1px solid var(--div2);border-radius:var(--r3);padding:4px;max-width:440px;margin:44px auto 0;position:relative;z-index:1;animation:fadeUp .6s .12s both;box-shadow:var(--sh1)}
 .st{flex:1;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;color:var(--ink5);cursor:pointer;transition:all .25s cubic-bezier(.34,1.1,.64,1);text-align:center;border:none;background:transparent;font-family:'Inter',sans-serif}
 .st.on{background:var(--white);color:var(--ink);box-shadow:var(--sh1);border:1px solid var(--div)}
 .st.on.gold-tab{background:linear-gradient(135deg,#fffbf5,var(--white));color:var(--gold);border-color:var(--gold-b)}
 .st.on.teal-tab{background:linear-gradient(135deg,#f0faf9,var(--white));color:var(--teal);border-color:var(--teal-b)}
 
-/* SECTIONS */
 .sec-wrap{display:none;position:relative;z-index:1;max-width:1160px;margin:0 auto;padding:48px 20px 80px}
 .sec-wrap.active{display:block;animation:fadeUp .4s both}
 .sec-head{text-align:center;margin-bottom:52px}
@@ -117,19 +114,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .sec-h2 em{font-style:italic;color:var(--gold)}
 .sec-sub{font-size:15px;color:var(--ink4);line-height:1.75;max-width:500px;margin:0 auto;font-weight:400}
 
-/* PLAN CARDS */
 .plans-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;max-width:860px;margin:0 auto}
 .plans-grid.three-col{grid-template-columns:repeat(3,1fr);max-width:1100px}
 
-.plan-card{
-  background:var(--white);
-  border:1.5px solid var(--div);
-  border-radius:var(--r4);
-  overflow:hidden;
-  position:relative;
-  box-shadow:var(--sh1);
-  transition:transform .35s cubic-bezier(.34,1.1,.64,1),box-shadow .35s,border-color .3s;
-}
+.plan-card{background:var(--white);border:1.5px solid var(--div);border-radius:var(--r4);overflow:hidden;position:relative;box-shadow:var(--sh1);transition:transform .35s cubic-bezier(.34,1.1,.64,1),box-shadow .35s,border-color .3s}
 .plan-card:hover{transform:translateY(-10px);box-shadow:var(--sh3);border-color:var(--gold-b)}
 .plan-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(181,116,42,.04),transparent);opacity:0;transition:opacity .3s;pointer-events:none}
 .plan-card:hover::after{opacity:1}
@@ -169,10 +157,12 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .plan-btn-amber{background:linear-gradient(135deg,#d9971f,#c07820);color:#fff;box-shadow:0 4px 14px rgba(192,120,32,.25)}.plan-btn-amber:hover{box-shadow:0 8px 24px rgba(192,120,32,.38);transform:translateY(-1px)}
 .plan-btn-violet{background:linear-gradient(135deg,#9b6ee0,#6d44b8);color:#fff;box-shadow:0 4px 14px rgba(109,68,184,.25)}.plan-btn-violet:hover{box-shadow:0 8px 24px rgba(109,68,184,.38);transform:translateY(-1px)}
 
-/* MODAL */
-.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(20,15,8,.45);backdrop-filter:blur(14px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s}
+/* ══════════════════════════════════════
+   UPGRADED MODAL
+══════════════════════════════════════ */
+.modal-bg{position:fixed;inset:0;z-index:1000;background:rgba(20,15,8,.50);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .25s}
 .modal-bg.show{opacity:1;pointer-events:all}
-.modal-box{background:var(--white);border:1px solid var(--div2);border-radius:var(--r4);width:100%;max-width:520px;max-height:92vh;overflow-y:auto;box-shadow:var(--sh4);transform:scale(.95) translateY(16px);transition:all .28s cubic-bezier(.34,1.1,.64,1)}
+.modal-box{background:var(--white);border:1px solid var(--div2);border-radius:var(--r4);width:100%;max-width:540px;max-height:94vh;overflow-y:auto;box-shadow:var(--sh4);transform:scale(.95) translateY(16px);transition:all .28s cubic-bezier(.34,1.1,.64,1)}
 .modal-bg.show .modal-box{transform:scale(1) translateY(0)}
 
 .modal-head{padding:28px 28px 20px;background:linear-gradient(135deg,var(--gold-bg),transparent);border-bottom:1px solid var(--div);position:relative}
@@ -181,7 +171,18 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .mc-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--ink);margin-bottom:4px}
 .mc-sub{font-size:13px;color:var(--ink4);line-height:1.6}
 
-.order-box{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:14px 18px;margin:18px 0}
+/* STEPS INDICATOR */
+.steps-indicator{display:flex;align-items:center;justify-content:center;gap:0;padding:16px 28px;border-bottom:1px solid var(--div);background:var(--bg)}
+.step-item{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--ink5);font-family:'JetBrains Mono',monospace;transition:color .3s}
+.step-item.active{color:var(--gold)}
+.step-item.done{color:var(--green)}
+.step-num{width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;transition:all .3s;flex-shrink:0}
+.step-item.active .step-num{background:var(--gold);border-color:var(--gold);color:#fff}
+.step-item.done .step-num{background:var(--green);border-color:var(--green);color:#fff}
+.step-connector{width:36px;height:1.5px;background:var(--div2);margin:0 4px;flex-shrink:0}
+
+/* ORDER SUMMARY */
+.order-box{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:14px 18px;margin:0 28px 18px}
 .order-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--ink4);padding:6px 0;gap:8px}
 .order-row:not(:last-child){border-bottom:1px solid var(--div)}
 .order-key{display:flex;align-items:center;gap:6px;font-weight:500}
@@ -189,44 +190,87 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .order-total{font-size:15px;color:var(--gold)!important;font-weight:700!important}
 .order-row.total-row{border-top:1px solid var(--gold-b)!important;border-bottom:none!important;margin-top:4px;padding-top:10px}
 
-.upi-section{padding:0 28px 24px}
-.upi-label{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block;font-weight:600}
-.qr-box{border:1.5px solid var(--gold-b);border-radius:var(--r3);padding:22px;text-align:center;background:linear-gradient(135deg,var(--gold-bg),transparent);margin-bottom:14px;box-shadow:0 4px 16px rgba(181,116,42,.08)}
-.qr-wrap{width:180px;height:180px;margin:0 auto 14px;background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:var(--sh1)}
-.qr-wrap img{width:100%;height:100%;object-fit:contain}
-.qr-upi-id{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px}
-.qr-hint{font-size:12px;color:var(--ink4);line-height:1.5}
-
-.or-divider{display:flex;align-items:center;gap:12px;margin:14px 0;opacity:.65}
-.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--div2)}
-.or-divider span{font-size:10px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;white-space:nowrap;font-weight:600}
-
-.user-info-box{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:16px 18px;margin:0 28px 14px}
+/* USER INFO */
+.user-info-box{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:16px 18px;margin:0 28px 18px}
 .user-info-box h4{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;font-weight:600}
 .form-row{display:flex;gap:10px;margin-bottom:10px}
+.form-row:last-child{margin-bottom:0}
 .form-input{flex:1;background:var(--white);border:1px solid var(--div2);border-radius:var(--r1);padding:10px 12px;color:var(--ink);font-family:'Inter',sans-serif;font-size:13.5px;outline:none;transition:all .2s}
 .form-input::placeholder{color:var(--ink6)}
 .form-input:focus{border-color:var(--gold-b);box-shadow:0 0 0 2.5px rgba(181,116,42,.08)}
 
-.upi-input-row{display:flex;gap:8px;margin-bottom:12px}
-.upi-input{flex:1;background:var(--bg1);border:1px solid var(--div2);border-radius:var(--r2);padding:11px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:all .2s}
-.upi-input:focus{border-color:var(--gold-b)}
-.verify-btn{padding:10px 16px;border-radius:var(--r2);background:var(--teal-bg);border:1px solid var(--teal-b);color:var(--teal);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif}
-.verify-btn:hover{background:rgba(13,122,110,.14);transform:translateY(-1px)}
+/* UPI APP SELECTOR — THE MAIN UPGRADE */
+.upi-section{padding:0 28px 24px}
 
-.upi-apps{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
-.upi-app{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 14px;border:1px solid var(--div2);border-radius:var(--r2);cursor:pointer;transition:all .2s;background:var(--white);box-shadow:var(--sh1)}
-.upi-app:hover{border-color:var(--gold-b);background:var(--gold-bg);transform:translateY(-2px);box-shadow:0 4px 12px rgba(181,116,42,.12)}
-.upi-app-icon{font-size:24px;line-height:1}
-.upi-app-name{font-size:9.5px;font-family:'JetBrains Mono',monospace;color:var(--ink5);font-weight:600;letter-spacing:.04em}
+.upi-step-label{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.upi-step-num{width:22px;height:22px;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border-radius:50%;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.upi-step-text{font-size:13px;font-weight:600;color:var(--ink3)}
 
+/* UPI APP GRID */
+.upi-apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.upi-app-card{background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r3);padding:16px 10px 12px;cursor:pointer;transition:all .25s cubic-bezier(.34,1.1,.64,1);text-align:center;position:relative;overflow:hidden}
+.upi-app-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.upi-app-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.10)}
+.upi-app-card:active{transform:scale(.97)}
+.upi-app-card .app-logo{width:52px;height:52px;margin:0 auto 10px;border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.10)}
+.upi-app-card .app-logo svg{width:100%;height:100%;display:block}
+.upi-app-card .app-logo img{width:100%;height:100%;object-fit:cover}
+.upi-app-name-tag{font-size:12px;font-weight:700;color:var(--ink);font-family:'JetBrains Mono',monospace;display:block;letter-spacing:.02em}
+.upi-app-sub{font-size:10px;color:var(--ink5);margin-top:2px;font-weight:400}
+
+/* GPay colors */
+.upi-app-card.gpay{border-color:rgba(66,133,244,.25)}
+.upi-app-card.gpay:hover{border-color:rgba(66,133,244,.5);box-shadow:0 8px 24px rgba(66,133,244,.15)}
+.upi-app-card.gpay .app-logo{background:linear-gradient(135deg,#4285F4,#34A853)}
+
+/* PhonePe colors */
+.upi-app-card.phonepe{border-color:rgba(98,0,238,.25)}
+.upi-app-card.phonepe:hover{border-color:rgba(98,0,238,.5);box-shadow:0 8px 24px rgba(98,0,238,.12)}
+.upi-app-card.phonepe .app-logo{background:linear-gradient(135deg,#6200EE,#3700B3)}
+
+/* Paytm colors */
+.upi-app-card.paytm{border-color:rgba(0,147,221,.25)}
+.upi-app-card.paytm:hover{border-color:rgba(0,147,221,.5);box-shadow:0 8px 24px rgba(0,147,221,.12)}
+.upi-app-card.paytm .app-logo{background:linear-gradient(135deg,#00BFFF,#0093DD)}
+
+/* BHIM colors */
+.upi-app-card.bhim{border-color:rgba(0,100,60,.25)}
+.upi-app-card.bhim:hover{border-color:rgba(0,100,60,.5);box-shadow:0 8px 24px rgba(0,100,60,.12)}
+.upi-app-card.bhim .app-logo{background:linear-gradient(135deg,#00643C,#005C33)}
+
+/* Amazon Pay colors */
+.upi-app-card.amazon{border-color:rgba(255,153,0,.35)}
+.upi-app-card.amazon:hover{border-color:rgba(255,153,0,.6);box-shadow:0 8px 24px rgba(255,153,0,.15)}
+.upi-app-card.amazon .app-logo{background:linear-gradient(135deg,#232F3E,#FF9900)}
+
+/* CRED colors */
+.upi-app-card.cred{border-color:rgba(20,20,20,.18)}
+.upi-app-card.cred:hover{border-color:rgba(20,20,20,.35);box-shadow:0 8px 24px rgba(20,20,20,.10)}
+.upi-app-card.cred .app-logo{background:linear-gradient(135deg,#1A1A1A,#333)}
+
+/* QR BOX */
+.qr-divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.qr-divider::before,.qr-divider::after{content:'';flex:1;height:1px;background:var(--div2)}
+.qr-divider span{font-size:10px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;white-space:nowrap;font-weight:600;background:var(--white);padding:0 8px}
+
+.qr-box{border:1.5px solid var(--gold-b);border-radius:var(--r3);padding:20px;text-align:center;background:linear-gradient(135deg,var(--gold-bg),transparent);margin-bottom:16px;box-shadow:0 4px 16px rgba(181,116,42,.08)}
+.qr-wrap{width:160px;height:160px;margin:0 auto 12px;background:var(--white);border:1.5px solid var(--div2);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;padding:8px;box-shadow:var(--sh1)}
+.qr-wrap img{width:100%;height:100%;object-fit:contain}
+.qr-upi-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px}
+.qr-upi-id{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--ink)}
+.copy-upi-btn{display:inline-flex;align-items:center;gap:4px;background:var(--gold-bg);border:1px solid var(--gold-b);color:var(--gold);font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;cursor:pointer;transition:all .2s;font-family:'JetBrains Mono',monospace}
+.copy-upi-btn:hover{background:rgba(181,116,42,.14)}
+.qr-hint{font-size:12px;color:var(--ink4);line-height:1.5}
+
+/* UTR INPUT */
 .txn-ref-box{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:14px 16px;margin-bottom:16px}
-.txn-label-row{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600}
+.txn-label-row{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;font-weight:600;display:flex;align-items:center;gap:6px}
 .txn-input{width:100%;background:var(--white);border:1px solid var(--div2);border-radius:var(--r1);padding:10px 12px;color:var(--ink);font-family:'Inter',sans-serif;font-size:13.5px;outline:none;transition:all .2s}
 .txn-input::placeholder{color:var(--ink6)}
 .txn-input:focus{border-color:var(--gold-b);box-shadow:0 0 0 2.5px rgba(181,116,42,.08)}
 .txn-hint{font-size:11.5px;color:var(--ink5);margin-top:6px;line-height:1.5}
 
+/* SUBMIT BUTTON */
 .pay-submit{width:100%;padding:14px;border-radius:var(--r2);background:linear-gradient(135deg,var(--gold-l),var(--gold-d));border:none;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;box-shadow:0 5px 18px rgba(181,116,42,.28);position:relative;overflow:hidden}
 .pay-submit::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transform:translateX(-100%);transition:transform .5s}
 .pay-submit:hover:not(:disabled){box-shadow:0 8px 28px rgba(181,116,42,.40);transform:translateY(-1px)}
@@ -236,7 +280,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .pay-security-row{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--ink5);margin-top:12px}
 .pay-sec-item{display:flex;align-items:center;gap:5px;font-weight:500}
 
-.info-banner{display:flex;align-items:flex-start;gap:12px;background:var(--amber-bg);border:1px solid var(--amber-b);border-radius:var(--r2);padding:13px 16px;margin:0 28px 16px;font-size:13px;color:var(--amber);font-weight:400;line-height:1.5}
+/* INSTANT ACTIVATION BANNER */
+.instant-banner{display:flex;align-items:flex-start;gap:12px;background:var(--green-bg);border:1px solid var(--green-b);border-radius:var(--r2);padding:13px 16px;margin-bottom:16px;font-size:13px;color:var(--green);font-weight:500;line-height:1.55}
+
+/* PROCESSING STATE */
+.pay-processing{display:none;text-align:center;padding:40px 28px}
+.pay-processing.show{display:block;animation:fadeUp .4s both}
+.proc-ring{width:60px;height:60px;margin:0 auto 20px;position:relative}
+.proc-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid var(--div2)}
+.proc-ring::after{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid transparent;border-top-color:var(--gold);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.proc-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.proc-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.proc-sub{font-size:13.5px;color:var(--ink4);line-height:1.7}
 
 /* SUCCESS STATE */
 .pay-success{display:none;text-align:center;padding:32px 28px 28px}
@@ -247,45 +303,39 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .ps-sub{font-size:14px;color:var(--ink4);line-height:1.75;margin-bottom:14px}
 .ps-id{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--gold-bg);border:1px solid var(--gold-b);color:var(--gold);padding:6px 16px;border-radius:100px;margin-bottom:10px;font-weight:600}
 .ps-validity{display:inline-flex;align-items:center;gap:6px;background:var(--green-bg);border:1px solid var(--green-b);color:var(--green);font-size:12px;font-weight:600;padding:6px 14px;border-radius:100px}
+.ps-feature-list{background:var(--bg);border:1px solid var(--div2);border-radius:var(--r2);padding:14px 18px;margin:16px 0;text-align:left}
+.ps-feature-list h4{font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600}
+.ps-feat-item{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13px;color:var(--ink3);border-bottom:1px solid var(--div)}
+.ps-feat-item:last-child{border-bottom:none}
+.ps-feat-ic{font-size:15px;flex-shrink:0}
 .ps-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
-.ps-btn{padding:10px 20px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif}
+.ps-btn{padding:10px 20px;border-radius:var(--r2);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;border:none}
 .ps-btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold-d));color:#fff;box-shadow:0 4px 14px rgba(181,116,42,.25)}.ps-btn-gold:hover{box-shadow:0 7px 20px rgba(181,116,42,.38);transform:translateY(-1px)}
 .ps-btn-out{background:transparent;border:1px solid var(--div2);color:var(--ink4)}.ps-btn-out:hover{border-color:var(--gold-b);color:var(--gold);background:var(--gold-bg)}
 
-/* PENDING STATUS BANNER - shown after payment submit, polling for verification */
-.pay-pending{display:none;text-align:center;padding:28px}
-.pay-pending.show{display:block;animation:fadeUp .4s both}
-.pp-spinner{width:48px;height:48px;border:3px solid var(--div2);border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.pp-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.pp-sub{font-size:13.5px;color:var(--ink4);line-height:1.7;margin-bottom:16px}
-.pp-ref{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--gold-bg);border:1px solid var(--gold-b);color:var(--gold);padding:5px 14px;border-radius:100px;display:inline-block;margin-bottom:12px}
-.pp-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 14px;border-radius:100px;font-family:'JetBrains Mono',monospace}
-.pp-status.pending{background:var(--amber-bg);border:1px solid var(--amber-b);color:var(--amber)}
-.pp-status.verified{background:var(--green-bg);border:1px solid var(--green-b);color:var(--green)}
-.pp-status.rejected{background:var(--rose-bg);border:1px solid var(--rose-b);color:var(--rose)}
-
 /* TRUST STRIP */
-.trust-strip{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;padding:28px 20px;background:var(--white);border-top:1px solid var(--div2);border-bottom:1px solid var(--div2);box-shadow:inset 0 1px 0 var(--div),0 2px 8px rgba(0,0,0,.03)}
+.trust-strip{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap;padding:28px 20px;background:var(--white);border-top:1px solid var(--div2);border-bottom:1px solid var(--div2)}
 .trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink4);font-weight:500}
 .trust-ic{font-size:18px}
 
-/* FOOTER */
 footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;position:relative;z-index:1;margin-top:72px;border-top:1px solid rgba(181,116,42,.15)}
 .foot-inner{max-width:1160px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
 .foot-copy{font-size:12px;color:rgba(255,255,255,.35)}
 .foot-links{display:flex;gap:20px}
 .fl{font-size:12px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}.fl:hover{color:rgba(255,255,255,.7)}
 
-/* TOAST */
 .toast{position:fixed;bottom:20px;right:20px;z-index:2000;background:var(--ink);color:rgba(255,255,255,.9);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 16px;font-size:13px;display:none;animation:tIn .25s;box-shadow:var(--sh2);font-weight:500}
 .toast.show{display:block}
 @keyframes tIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
 .rv{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:translateY(0)}.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}
 
+/* Selected UPI App indicator */
+.selected-app-indicator{display:none;align-items:center;gap:10px;background:var(--green-bg);border:1px solid var(--green-b);border-radius:var(--r2);padding:10px 14px;margin-bottom:14px;font-size:13px;color:var(--green);font-weight:600}
+.selected-app-indicator.show{display:flex}
+
 @media(max-width:880px){.plans-grid{grid-template-columns:1fr;gap:20px}.plans-grid.three-col{grid-template-columns:repeat(2,1fr)}.trust-strip{gap:20px}}
-@media(max-width:580px){.hero-h1{font-size:40px}.form-row{flex-direction:column!important}.plans-grid.three-col{grid-template-columns:1fr}.sec-wrap{padding:32px 14px 60px}.modal-box{max-width:96vw}.upi-section{padding:0 16px 20px}.info-banner,.user-info-box{margin-left:16px;margin-right:16px}}
+@media(max-width:580px){.hero-h1{font-size:40px}.form-row{flex-direction:column!important}.plans-grid.three-col{grid-template-columns:1fr}.sec-wrap{padding:32px 14px 60px}.modal-box{max-width:96vw}.upi-section{padding:0 16px 20px}.user-info-box{margin-left:16px;margin-right:16px}.order-box{margin-left:16px;margin-right:16px}.upi-apps-grid{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
@@ -304,20 +354,41 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
       <div class="mc-close" onclick="closeMo()">✕</div>
       <div class="mc-tag" id="mTag">Subscription</div>
       <div class="mc-title" id="mTitle">Complete Your Payment</div>
-      <div class="mc-sub" id="mSub">Monthly plan · Valid 30 days from activation</div>
+      <div class="mc-sub" id="mSub">Monthly plan · Instant activation after payment</div>
+    </div>
+
+    <!-- STEPS INDICATOR -->
+    <div class="steps-indicator" id="stepsBar">
+      <div class="step-item active" id="step1-ind">
+        <div class="step-num">1</div>
+        <span>Your Info</span>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" id="step2-ind">
+        <div class="step-num">2</div>
+        <span>Pay via UPI</span>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step-item" id="step3-ind">
+        <div class="step-num">3</div>
+        <span>Confirm</span>
+      </div>
     </div>
 
     <!-- FORM STATE -->
     <div id="mFormWrap">
-      <div style="padding:0 28px">
+
+      <!-- ORDER BOX -->
+      <div style="padding-top:18px">
         <div class="order-box" id="orderBox">
           <div class="order-row"><span class="order-key"><span id="oPlanIcon">📋</span>&nbsp;Plan</span><span class="order-val" id="oPlanName">—</span></div>
           <div class="order-row"><span class="order-key">⏱️ Duration</span><span class="order-val">30 Days</span></div>
           <div class="order-row"><span class="order-key">📅 Valid Until</span><span class="order-val" id="oValidUntil">—</span></div>
-          <div class="order-row total-row"><span class="order-key">💰 Total Amount</span><span class="order-val order-total" id="oAmount">₹—</span></div>
+          <div class="order-row total-row"><span class="order-key">💰 Amount</span><span class="order-val order-total" id="oAmount">₹—</span></div>
         </div>
       </div>
 
+      <!-- USER INFO -->
       <div class="user-info-box">
         <h4>📋 Your Information</h4>
         <div class="form-row">
@@ -329,94 +400,173 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
         </div>
       </div>
 
-      <div class="info-banner">
-        <span style="font-size:18px;flex-shrink:0">🔐</span>
-        <div>Pay via UPI. Your payment will be verified by admin within 15 minutes. Plan activates immediately upon verification.</div>
+      <!-- INSTANT ACTIVATION NOTICE -->
+      <div class="instant-banner" style="margin:0 28px 18px">
+        <span style="font-size:20px;flex-shrink:0">⚡</span>
+        <div><strong>Instant Activation</strong> — Choose your UPI app below. After completing payment, enter your UTR number and get <strong>immediate access</strong> — no waiting for approval.</div>
       </div>
 
       <div class="upi-section">
-        <label class="upi-label">Step 1 — Scan QR or Pay via UPI App</label>
+
+        <!-- STEP 1: CHOOSE UPI APP -->
+        <div class="upi-step-label">
+          <span class="upi-step-num">1</span>
+          <span class="upi-step-text">Choose your UPI app to pay</span>
+        </div>
+
+        <div class="upi-apps-grid">
+          <!-- Google Pay -->
+          <div class="upi-app-card gpay" onclick="launchUpiApp('gpay')" title="Google Pay">
+            <div class="app-logo">
+              <!-- Google Pay SVG Logo -->
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" fill="#fff"/>
+                <text x="26" y="36" font-size="28" text-anchor="middle" font-family="'Product Sans', Arial, sans-serif" font-weight="bold">
+                  <tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">P</tspan><tspan fill="#FBBC05">a</tspan><tspan fill="#34A853">y</tspan>
+                </text>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">GPay</span>
+            <div class="upi-app-sub">Google Pay</div>
+          </div>
+
+          <!-- PhonePe -->
+          <div class="upi-app-card phonepe" onclick="launchUpiApp('phonepe')" title="PhonePe">
+            <div class="app-logo">
+              <!-- PhonePe SVG Logo -->
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" rx="14" fill="#5F259F"/>
+                <circle cx="26" cy="22" r="8" fill="#fff" opacity=".95"/>
+                <rect x="22" y="28" width="8" height="12" rx="4" fill="#fff" opacity=".95"/>
+                <circle cx="26" cy="22" r="4" fill="#5F259F"/>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">PhonePe</span>
+            <div class="upi-app-sub">PhonePe UPI</div>
+          </div>
+
+          <!-- Paytm -->
+          <div class="upi-app-card paytm" onclick="launchUpiApp('paytm')" title="Paytm">
+            <div class="app-logo">
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" rx="14" fill="#002970"/>
+                <text x="26" y="33" font-size="12" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" fill="#00BAF2" letter-spacing="-0.5">PAYTM</text>
+                <rect x="10" y="20" width="32" height="4" rx="2" fill="#00BAF2" opacity=".4"/>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">Paytm</span>
+            <div class="upi-app-sub">Paytm UPI</div>
+          </div>
+
+          <!-- BHIM -->
+          <div class="upi-app-card bhim" onclick="launchUpiApp('bhim')" title="BHIM UPI">
+            <div class="app-logo">
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" rx="14" fill="#00643C"/>
+                <text x="26" y="35" font-size="16" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" fill="#fff" letter-spacing="1">BHIM</text>
+                <circle cx="26" cy="14" r="5" fill="#FF9933" opacity=".9"/>
+                <circle cx="26" cy="14" r="2.5" fill="#fff" opacity=".6"/>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">BHIM</span>
+            <div class="upi-app-sub">BHIM UPI</div>
+          </div>
+
+          <!-- Amazon Pay -->
+          <div class="upi-app-card amazon" onclick="launchUpiApp('amazon')" title="Amazon Pay">
+            <div class="app-logo">
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" rx="14" fill="#232F3E"/>
+                <text x="26" y="28" font-size="11" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" fill="#FF9900" letter-spacing="-0.3">amazon</text>
+                <text x="26" y="40" font-size="9" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" fill="#fff" letter-spacing="1">pay</text>
+                <path d="M16 31 Q26 38 36 31" stroke="#FF9900" stroke-width="2" fill="none" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">Amazon</span>
+            <div class="upi-app-sub">Amazon Pay</div>
+          </div>
+
+          <!-- CRED -->
+          <div class="upi-app-card cred" onclick="launchUpiApp('cred')" title="CRED Pay">
+            <div class="app-logo">
+              <svg viewBox="0 0 52 52" xmlns="http://www.w3.org/2000/svg">
+                <rect width="52" height="52" rx="14" fill="#1A1A1A"/>
+                <text x="26" y="32" font-size="15" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" fill="#fff" letter-spacing="2">CRED</text>
+                <rect x="16" y="35" width="20" height="2" rx="1" fill="#FFD700" opacity=".8"/>
+              </svg>
+            </div>
+            <span class="upi-app-name-tag">CRED</span>
+            <div class="upi-app-sub">CRED Pay</div>
+          </div>
+        </div>
+
+        <!-- Selected App Indicator -->
+        <div class="selected-app-indicator" id="selectedAppBadge">
+          <span id="selectedAppIcon">✅</span>
+          <span id="selectedAppText">Opening Google Pay...</span>
+        </div>
+
+        <!-- QR + Manual fallback -->
+        <div class="qr-divider"><span>OR SCAN QR CODE</span></div>
+
         <div class="qr-box">
           <div class="qr-wrap" id="qrWrap">
             <img id="qrImage" src="" alt="UPI QR Code" style="display:none;width:100%;height:100%;object-fit:contain;">
             <span id="qrPlaceholder" style="font-size:32px">📱</span>
           </div>
-          <div class="qr-upi-id" id="qrUpiId">yourupi@bank</div>
-          <div class="qr-hint">Scan with any UPI app to pay ₹<span id="qrAmount">—</span></div>
-          <div style="margin-top:12px;font-size:11px;color:var(--ink5);font-family:'JetBrains Mono',monospace;letter-spacing:.05em">UPI · BHIM · GPay · PhonePe · Paytm</div>
+          <div class="qr-upi-row">
+            <div class="qr-upi-id" id="qrUpiId">yourupi@bank</div>
+            <button class="copy-upi-btn" onclick="copyUpiId()">📋 Copy</button>
+          </div>
+          <div class="qr-hint">Scan with any UPI app · Amount: ₹<span id="qrAmount">—</span></div>
         </div>
 
-        <div class="upi-apps">
-          <div class="upi-app" onclick="launchUpiApp('gpay')"><span class="upi-app-icon">🟢</span><span class="upi-app-name">GPay</span></div>
-          <div class="upi-app" onclick="launchUpiApp('phonepe')"><span class="upi-app-icon">💜</span><span class="upi-app-name">PhonePe</span></div>
-          <div class="upi-app" onclick="launchUpiApp('paytm')"><span class="upi-app-icon">🔵</span><span class="upi-app-name">Paytm</span></div>
-          <div class="upi-app" onclick="launchUpiApp('bhim')"><span class="upi-app-icon">🇮🇳</span><span class="upi-app-name">BHIM</span></div>
-          <div class="upi-app" onclick="launchUpiApp('amazon')"><span class="upi-app-icon">🟠</span><span class="upi-app-name">Amazon</span></div>
-        </div>
-
-        <div class="or-divider"><span>OR ENTER UPI ID MANUALLY</span></div>
-        <div class="upi-input-row">
-          <input class="upi-input" id="tenantUpiInput" placeholder="yourname@upi" readonly>
-          <button class="verify-btn" onclick="copyUpiId()">📋 Copy</button>
+        <!-- STEP 2: UTR ENTRY -->
+        <div class="upi-step-label" style="margin-top:4px">
+          <span class="upi-step-num">2</span>
+          <span class="upi-step-text">Enter UTR / Transaction Reference after paying</span>
         </div>
 
         <div class="txn-ref-box">
-          <div class="txn-label-row">Step 2 — Enter UTR / Transaction Reference Number</div>
+          <div class="txn-label-row">🔢 UTR / Reference Number</div>
           <input class="txn-input" id="txnRefInput" placeholder="e.g. 403820192847">
-          <div class="txn-hint">After payment, open your UPI app → Transaction History → Copy the UTR/Reference ID</div>
-        </div>
-
-        <div style="background:var(--teal-bg);border:1px solid var(--teal-b);border-radius:var(--r2);padding:12px 14px;margin-bottom:16px;font-size:12.5px;color:var(--teal);line-height:1.6">
-          <strong>📞 Optional:</strong> WhatsApp your screenshot to <strong id="adminWaNum">+91 XXXXXXXXXX</strong> for faster verification.
+          <div class="txn-hint">Open your UPI app → Transaction History → Copy the UTR/Reference ID (12–22 digit number)</div>
         </div>
 
         <button class="pay-submit" id="paySubmitBtn" onclick="submitPayment()">
-          🔒 Submit Payment & Activate Plan
+          ⚡ Activate Plan Instantly — ₹<span id="submitAmount">—</span>
         </button>
 
         <div class="pay-security-row">
-          <div class="pay-sec-item">🔒 Secure & Encrypted</div>
+          <div class="pay-sec-item">🔒 256-bit Encrypted</div>
           <div class="pay-sec-item">✅ RBI Compliant</div>
-          <div class="pay-sec-item">📋 Instant Receipt</div>
+          <div class="pay-sec-item">⚡ Instant Access</div>
         </div>
       </div>
     </div>
 
-    <!-- PENDING STATE (polling) -->
-    <div class="pay-pending" id="payPending">
-      <div class="pp-spinner"></div>
-      <div class="pp-title">Payment Under Review</div>
-      <div class="pp-sub">Your payment has been submitted. Our admin is verifying your transaction. This usually takes under 15 minutes.</div>
-      <div class="pp-ref" id="ppRefId">REF: —</div><br>
-      <span class="pp-status pending" id="ppStatus">⏳ Pending Verification</span>
-      <div style="margin-top:18px;font-size:12px;color:var(--ink5)">This page will update automatically once verified.</div>
-      <div style="margin-top:12px">
-        <button class="ps-btn ps-btn-out" onclick="closeMo()">Close & Check Later</button>
-      </div>
+    <!-- PROCESSING STATE -->
+    <div class="pay-processing" id="payProcessing">
+      <div class="proc-ring"><div class="proc-icon">💳</div></div>
+      <div class="proc-title">Activating Your Plan…</div>
+      <div class="proc-sub">Processing your payment and activating your subscription. This takes just a moment.</div>
     </div>
 
     <!-- SUCCESS STATE -->
     <div class="pay-success" id="paySuccess">
       <span class="ps-icon">🎉</span>
-      <div class="ps-title">Access Granted!</div>
-      <div class="ps-sub">Your subscription is now active. Enjoy all the premium features of your plan.</div>
+      <div class="ps-title">You're In!</div>
+      <div class="ps-sub">Your subscription is <strong>live right now.</strong> All features are unlocked instantly.</div>
       <div class="ps-id" id="psRefId">REF: —</div>
       <br>
       <span class="ps-validity">✅ Valid for 30 days</span>
-      <div class="ps-btns">
-        <button class="ps-btn ps-btn-gold" onclick="closeMo()">🏠 Back to Plans</button>
-        <a class="ps-btn ps-btn-out" href="booking-dashboard.html">📊 Go to Dashboard</a>
+      <div class="ps-feature-list" id="psFeatureList">
+        <h4>🚀 Your Active Features</h4>
+        <!-- dynamically populated -->
       </div>
-    </div>
-
-    <!-- REJECTED STATE -->
-    <div class="pay-success" id="payRejected" style="display:none">
-      <span class="ps-icon">❌</span>
-      <div class="ps-title">Payment Rejected</div>
-      <div class="ps-sub">Your payment could not be verified. Please check your UTR number and try again, or contact support.</div>
       <div class="ps-btns">
-        <button class="ps-btn ps-btn-gold" onclick="retryPayment()">🔄 Try Again</button>
-        <a class="ps-btn ps-btn-out" href="mailto:support@smartrent.ai">📧 Contact Support</a>
+        <a class="ps-btn ps-btn-gold" href="booking-dashboard.html">📊 Go to Dashboard</a>
+        <button class="ps-btn ps-btn-out" onclick="closeMo()">🏠 Back to Plans</button>
       </div>
     </div>
 
@@ -440,9 +590,9 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
 <!-- ══════ HERO ══════ -->
 <div style="position:relative;z-index:1">
   <div class="hero">
-    <div class="hero-eyebrow"><span class="e-dot"></span>Transparent · Monthly · Cancel Anytime</div>
+    <div class="hero-eyebrow"><span class="e-dot"></span>Transparent · Monthly · Instant Activation</div>
     <h1 class="hero-h1">Plans &amp; <em>Pricing</em></h1>
-    <p class="hero-sub">Simple, honest pricing for property owners, tenants, and home service professionals. No hidden fees.</p>
+    <p class="hero-sub">Simple, honest pricing for property owners, tenants, and home service professionals. Pay via UPI and get instant access.</p>
     <div class="sec-tabs">
       <button class="st on gold-tab" onclick="switchTab('rental')">🏠 Property Rental</button>
       <button class="st teal-tab" onclick="switchTab('services')">🔧 Home Services</button>
@@ -459,7 +609,6 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
   </div>
   <div class="plans-grid rv d1">
 
-    <!-- OWNER PLAN -->
     <div class="plan-card popular">
       <div class="popular-badge">⭐ Most Popular</div>
       <div class="plan-top">
@@ -482,13 +631,12 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">📬</span>Unlimited tenant enquiries</li>
           <li class="pf"><span class="pf-ic">🔔</span>Instant enquiry alerts</li>
         </ul>
-        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Owner Pro',role:'owner',price:499,icon:'🏘️',tag:'Property · Owner',category:'rental'})">
+        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Owner Pro',role:'owner',price:499,icon:'🏘️',tag:'Property · Owner',category:'rental',features:['Priority search placement','Verified owner badge','Full analytics dashboard','Up to 15 property photos','Unlimited tenant enquiries','Instant enquiry alerts']})">
           🔐 Get Owner Pro — ₹499/mo
         </button>
       </div>
     </div>
 
-    <!-- TENANT PLAN -->
     <div class="plan-card accent-teal">
       <div class="plan-top">
         <span class="plan-icon">🧑‍💼</span>
@@ -510,7 +658,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">🔔</span>New listing alerts</li>
           <li class="pf"><span class="pf-ic">🗺️</span>Neighbourhood insights</li>
         </ul>
-        <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Tenant Access',role:'tenant',price:149,icon:'🧑‍💼',tag:'Property · Tenant',category:'rental'})">
+        <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Tenant Access',role:'tenant',price:149,icon:'🧑‍💼',tag:'Property · Tenant',category:'rental',features:['Owner phone numbers unlocked','Direct WhatsApp contact','Visit scheduling tool','Unlimited wishlist saves','New listing alerts','Neighbourhood insights']})">
           🔓 Unlock Tenant Access — ₹149/mo
         </button>
       </div>
@@ -544,7 +692,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">⭐</span>5-star review system</li>
           <li class="pf"><span class="pf-ic">💳</span>Secure payment collection</li>
         </ul>
-        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Plumber Plus',role:'plumber',price:299,icon:'🔧',tag:'Service · Plumber',category:'services'})">🔐 Get Plumber Plus — ₹299/mo</button>
+        <button class="plan-btn plan-btn-gold" onclick="openPayment({plan:'Plumber Plus',role:'plumber',price:299,icon:'🔧',tag:'Service · Plumber',category:'services',features:['Verified profile badge','Customer lead access','Location-based visibility','5-star review system','Secure payment collection']})">🔐 Get Plumber Plus — ₹299/mo</button>
       </div>
     </div>
 
@@ -565,7 +713,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">📅</span>Appointment scheduling</li>
           <li class="pf"><span class="pf-ic">💰</span>Commission-free billing</li>
         </ul>
-        <button class="plan-btn plan-btn-rose" onclick="openPayment({plan:'Electrician Pro',role:'electrician',price:399,icon:'⚡',tag:'Service · Electrician',category:'services'})">🔐 Get Electrician Pro — ₹399/mo</button>
+        <button class="plan-btn plan-btn-rose" onclick="openPayment({plan:'Electrician Pro',role:'electrician',price:399,icon:'⚡',tag:'Service · Electrician',category:'services',features:['Premium profile placement','Unlimited monthly leads','Verified + Certified badge','Appointment scheduling','Commission-free billing']})">🔐 Get Electrician Pro — ₹399/mo</button>
       </div>
     </div>
 
@@ -585,7 +733,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">📱</span>Mobile app access</li>
           <li class="pf"><span class="pf-ic">🔔</span>New job notifications</li>
         </ul>
-        <button class="plan-btn plan-btn-sage" onclick="openPayment({plan:'Painter Pro',role:'painter',price:249,icon:'🎨',tag:'Service · Painter',category:'services'})">🔐 Get Painter Pro — ₹249/mo</button>
+        <button class="plan-btn plan-btn-sage" onclick="openPayment({plan:'Painter Pro',role:'painter',price:249,icon:'🎨',tag:'Service · Painter',category:'services',features:['Portfolio showcase (10 projects)','Direct customer contact','Customer reviews & ratings','Mobile app access','New job notifications']})">🔐 Get Painter Pro — ₹249/mo</button>
       </div>
     </div>
 
@@ -605,7 +753,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">💬</span>In-app customer chat</li>
           <li class="pf"><span class="pf-ic">📊</span>Booking analytics</li>
         </ul>
-        <button class="plan-btn plan-btn-violet" onclick="openPayment({plan:'Movers Elite',role:'mover',price:379,icon:'🚚',tag:'Service · Movers',category:'services'})">🔐 Get Movers Elite — ₹379/mo</button>
+        <button class="plan-btn plan-btn-violet" onclick="openPayment({plan:'Movers Elite',role:'mover',price:379,icon:'🚚',tag:'Service · Movers',category:'services',features:['Packing & moving job leads','City-wide service radius','Verified & insured badge','In-app customer chat','Booking analytics']})">🔐 Get Movers Elite — ₹379/mo</button>
       </div>
     </div>
 
@@ -625,7 +773,7 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">🎓</span>Skill certifications display</li>
           <li class="pf"><span class="pf-ic">📲</span>White-label app access</li>
         </ul>
-        <button class="plan-btn plan-btn-amber" onclick="openPayment({plan:'Carpenter Elite',role:'carpenter',price:349,icon:'🪵',tag:'Service · Carpenter',category:'services'})">🔐 Get Carpenter Elite — ₹349/mo</button>
+        <button class="plan-btn plan-btn-amber" onclick="openPayment({plan:'Carpenter Elite',role:'carpenter',price:349,icon:'🪵',tag:'Service · Carpenter',category:'services',features:['Portfolio (15 projects max)','Premium visibility tier','Advanced payment options','Skill certifications display','White-label app access']})">🔐 Get Carpenter Elite — ₹349/mo</button>
       </div>
     </div>
 
@@ -645,18 +793,17 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
           <li class="pf"><span class="pf-ic">⭐</span>Client feedback system</li>
           <li class="pf"><span class="pf-ic">📱</span>Team member management</li>
         </ul>
-        <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Cleaning Crew',role:'cleaner',price:199,icon:'🧹',tag:'Service · Cleaner',category:'services'})">🔓 Get Cleaning Crew — ₹199/mo</button>
+        <button class="plan-btn plan-btn-teal" onclick="openPayment({plan:'Cleaning Crew',role:'cleaner',price:199,icon:'🧹',tag:'Service · Cleaner',category:'services',features:['Verified service profile','Recurring job booking','Transparent pricing display','Client feedback system','Team member management']})">🔓 Get Cleaning Crew — ₹199/mo</button>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- TRUST STRIP -->
 <div class="trust-strip rv">
   <div class="trust-item"><span class="trust-ic">🔒</span>UPI Secured</div>
+  <div class="trust-item"><span class="trust-ic">⚡</span>Instant Activation</div>
   <div class="trust-item"><span class="trust-ic">📋</span>Payment Records</div>
-  <div class="trust-item"><span class="trust-ic">⚡</span>15 Min Activation</div>
   <div class="trust-item"><span class="trust-ic">🔄</span>Cancel Anytime</div>
   <div class="trust-item"><span class="trust-ic">🛡️</span>RBI Compliant</div>
 </div>
@@ -675,7 +822,10 @@ footer{background:linear-gradient(135deg,var(--ink),#0e0a06);padding:32px 0;posi
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, addDoc, setDoc, doc, getDoc, collection, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getFirestore, addDoc, setDoc, doc, getDoc,
+  collection, serverTimestamp, updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
@@ -694,26 +844,35 @@ window._addDoc = addDoc;
 window._setDoc = setDoc;
 window._doc    = doc;
 window._getDoc = getDoc;
+window._updateDoc = updateDoc;
 window._collection = collection;
 window._serverTimestamp = serverTimestamp;
-window._onSnapshot = onSnapshot;
 
 onAuthStateChanged(auth, user => { window._currentUser = user || null; });
 </script>
 
 <script>
 const CONFIG = {
-  UPI_ID: 'piyushmishra1903@oksbi',
-  UPI_NAME: 'Piyush Mishra',
-  ADMIN_WA: '+91 9346534510',
+  UPI_ID:    'piyushmishra1903@oksbi',
+  UPI_NAME:  'Piyush Mishra',
+  ADMIN_WA:  '+91 9346534510',
   QR_CODE_IMAGE_URL: 'https://res.cloudinary.com/dq3hko9hn/image/upload/v1779776863/IMG-20260526-WA0000_tamlvx.jpg',
 };
 
-let currentPlan = null;
-let currentPaymentDocId = null;
-let statusUnsubscribe = null;
+// UPI App deep-link builders
+const UPI_APPS = {
+  gpay:    { name: 'Google Pay',   icon: '🟢', scheme: (pa,pn,am,tn) => `gpay://upi/pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`, fallback: (pa,pn,am,tn) => `tez://upi/pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+  phonepe: { name: 'PhonePe',      icon: '💜', scheme: (pa,pn,am,tn) => `phonepe://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+  paytm:   { name: 'Paytm',        icon: '🔵', scheme: (pa,pn,am,tn) => `paytmmp://upi/pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+  bhim:    { name: 'BHIM UPI',     icon: '🇮🇳', scheme: (pa,pn,am,tn) => `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+  amazon:  { name: 'Amazon Pay',   icon: '🟠', scheme: (pa,pn,am,tn) => `amazonpay://upi/pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+  cred:    { name: 'CRED Pay',     icon: '⚫', scheme: (pa,pn,am,tn) => `cred://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}` },
+};
 
-function showToast(msg, duration=3000) {
+let currentPlan = null;
+let lastSelectedApp = null;
+
+function showToast(msg, duration=3200) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -723,7 +882,7 @@ function showToast(msg, duration=3000) {
 function switchTab(tab) {
   document.querySelectorAll('.st').forEach((t,i) => {
     t.classList.remove('on');
-    if ((tab==='rental' && i===0)||(tab==='services' && i===1)) t.classList.add('on');
+    if ((tab==='rental'&&i===0)||(tab==='services'&&i===1)) t.classList.add('on');
   });
   document.querySelectorAll('.sec-wrap').forEach(s => s.classList.remove('active'));
   document.getElementById('sec-'+tab).classList.add('active');
@@ -732,148 +891,255 @@ window.switchTab = switchTab;
 
 function openPayment(plan) {
   currentPlan = plan;
-  currentPaymentDocId = null;
-  if (statusUnsubscribe) { statusUnsubscribe(); statusUnsubscribe = null; }
+  lastSelectedApp = null;
 
-  ['userNameInput','userEmailInput','userPhoneInput','txnRefInput'].forEach(id => document.getElementById(id).value = '');
+  // Reset form
+  ['userNameInput','userEmailInput','userPhoneInput','txnRefInput'].forEach(id =>
+    document.getElementById(id).value = '');
+
+  document.getElementById('selectedAppBadge').classList.remove('show');
   document.getElementById('mTag').textContent   = plan.tag;
-  document.getElementById('mTitle').textContent = plan.plan;
+  document.getElementById('mTitle').textContent  = plan.plan;
+  document.getElementById('mSub').textContent    = 'Monthly · Instant activation after payment';
   document.getElementById('oPlanIcon').textContent = plan.icon;
   document.getElementById('oPlanName').textContent = plan.plan;
   document.getElementById('oAmount').textContent  = '₹'+plan.price;
+  document.getElementById('submitAmount').textContent = plan.price;
+
   const expiry = new Date(Date.now()+30*24*60*60*1000);
-  document.getElementById('oValidUntil').textContent = expiry.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('oValidUntil').textContent =
+    expiry.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+
   const qrImg = document.getElementById('qrImage');
   qrImg.src = CONFIG.QR_CODE_IMAGE_URL;
   qrImg.style.display = 'block';
   document.getElementById('qrPlaceholder').style.display = 'none';
-  document.getElementById('qrUpiId').textContent = CONFIG.UPI_ID;
-  document.getElementById('qrAmount').textContent = plan.price;
-  document.getElementById('tenantUpiInput').value = CONFIG.UPI_ID;
-  document.getElementById('adminWaNum').textContent = CONFIG.ADMIN_WA;
+  document.getElementById('qrUpiId').textContent   = CONFIG.UPI_ID;
+  document.getElementById('qrAmount').textContent  = plan.price;
 
-  // Show form, hide others
-  document.getElementById('mFormWrap').style.display = 'block';
-  document.getElementById('payPending').classList.remove('show');
+  // Show steps at step 1
+  setStep(1);
+
+  // Show form, hide states
+  document.getElementById('mFormWrap').style.display   = 'block';
+  document.getElementById('payProcessing').classList.remove('show');
   document.getElementById('paySuccess').classList.remove('show');
-  document.getElementById('payRejected').style.display = 'none';
   document.getElementById('paySubmitBtn').disabled = false;
-  document.getElementById('paySubmitBtn').innerHTML = '🔒 Submit Payment & Activate Plan';
+  document.getElementById('paySubmitBtn').querySelector
+    ? null : null;
+
   document.getElementById('modalBg').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
 window.openPayment = openPayment;
 
+function setStep(n) {
+  [1,2,3].forEach(i => {
+    const el = document.getElementById('step'+i+'-ind');
+    el.classList.remove('active','done');
+    if (i < n) el.classList.add('done');
+    else if (i === n) el.classList.add('active');
+  });
+}
+
 function closeMo() {
   document.getElementById('modalBg').classList.remove('show');
   document.body.style.overflow = '';
-  if (statusUnsubscribe) { statusUnsubscribe(); statusUnsubscribe = null; }
 }
 window.closeMo = closeMo;
 
-function closeMoBg(e) { if(e.target===document.getElementById('modalBg')) closeMo(); }
+function closeMoBg(e) {
+  if (e.target === document.getElementById('modalBg')) closeMo();
+}
 window.closeMoBg = closeMoBg;
 
 function copyUpiId() {
   navigator.clipboard.writeText(CONFIG.UPI_ID)
-    .then(() => showToast('📋 UPI ID copied!'))
-    .catch(() => showToast('UPI ID: '+CONFIG.UPI_ID));
+    .then(() => showToast('📋 UPI ID copied to clipboard!'))
+    .catch(() => showToast('UPI ID: '+CONFIG.UPI_ID, 5000));
 }
 window.copyUpiId = copyUpiId;
 
-function launchUpiApp(app) {
+// ══════════════════════════════
+// UPGRADED UPI LAUNCH with app-specific deep links
+// ══════════════════════════════
+function launchUpiApp(appKey) {
   if (!currentPlan) return;
-  const note = encodeURIComponent('SmartRent AI - '+currentPlan.plan);
-  window.location.href = `upi://pay?pa=${encodeURIComponent(CONFIG.UPI_ID)}&pn=${encodeURIComponent(CONFIG.UPI_NAME)}&am=${currentPlan.price}&cu=INR&tn=${note}`;
+  const app   = UPI_APPS[appKey];
+  if (!app) return;
+  lastSelectedApp = appKey;
+
+  const pa = encodeURIComponent(CONFIG.UPI_ID);
+  const pn = encodeURIComponent(CONFIG.UPI_NAME);
+  const am = currentPlan.price;
+  const tn = encodeURIComponent('SmartRent AI - '+currentPlan.plan);
+
+  // Attempt app-specific scheme first; fallback to generic upi://
+  const primaryLink  = app.scheme(pa, pn, am, tn);
+  const fallbackLink = (app.fallback ? app.fallback(pa,pn,am,tn) : null) ||
+                       `upi://pay?pa=${pa}&pn=${pn}&am=${am}&cu=INR&tn=${tn}`;
+
+  // Show selected app indicator
+  const badge = document.getElementById('selectedAppBadge');
+  document.getElementById('selectedAppIcon').textContent = app.icon;
+  document.getElementById('selectedAppText').textContent =
+    `Opening ${app.name} with payment of ₹${currentPlan.price}…`;
+  badge.classList.add('show');
+
+  // Update step indicator to step 2
+  setStep(2);
+
+  // Try to launch the app; if it fails after 1.5s, fallback
+  let launched = false;
+  const t0 = Date.now();
+
+  window.location.href = primaryLink;
+
+  // Detect if app didn't open (page still focused after ~1.6s)
+  setTimeout(() => {
+    if (Date.now() - t0 < 2000 && document.hasFocus()) {
+      // App probably not installed — try generic UPI intent
+      window.location.href = fallbackLink;
+    }
+    launched = true;
+  }, 1600);
+
+  showToast(`${app.icon} Opening ${app.name}…`, 3000);
 }
 window.launchUpiApp = launchUpiApp;
 
-function retryPayment() {
-  document.getElementById('payRejected').style.display = 'none';
-  document.getElementById('mFormWrap').style.display = 'block';
-  document.getElementById('paySubmitBtn').disabled = false;
-  document.getElementById('paySubmitBtn').innerHTML = '🔒 Submit Payment & Activate Plan';
-}
-window.retryPayment = retryPayment;
-
-// Listen for status changes on a payment document
-function startStatusPolling(docId) {
-  if (!window._onSnapshot || !window._doc || !window._db) return;
-  const ref = window._doc(window._db, 'payments', docId);
-  statusUnsubscribe = window._onSnapshot(ref, (snap) => {
-    if (!snap.exists()) return;
-    const data = snap.data();
-    const status = data.paymentStatus;
-    const statusEl = document.getElementById('ppStatus');
-
-    if (status === 'verified') {
-      if (statusUnsubscribe) { statusUnsubscribe(); statusUnsubscribe = null; }
-      document.getElementById('payPending').classList.remove('show');
-      document.getElementById('paySuccess').classList.add('show');
-      document.getElementById('psRefId').textContent = 'REF: ' + (data.txnRefId||'').toUpperCase();
-      showToast('🎉 Payment verified! Access granted.', 5000);
-    } else if (status === 'rejected') {
-      if (statusUnsubscribe) { statusUnsubscribe(); statusUnsubscribe = null; }
-      document.getElementById('payPending').classList.remove('show');
-      document.getElementById('payRejected').style.display = 'block';
-    } else {
-      // still pending
-      if (statusEl) {
-        statusEl.className = 'pp-status pending';
-        statusEl.textContent = '⏳ Pending Verification';
-      }
-    }
-  });
-}
-
+// ══════════════════════════════
+// INSTANT ACTIVATION — No admin approval needed
+// ══════════════════════════════
 async function submitPayment() {
   const name  = document.getElementById('userNameInput').value.trim();
   const email = document.getElementById('userEmailInput').value.trim();
   const phone = document.getElementById('userPhoneInput').value.trim();
   const txn   = document.getElementById('txnRefInput').value.trim();
-  if (!name)                         { showToast('⚠️ Please enter your full name.'); return; }
+
+  if (!name)                          { showToast('⚠️ Please enter your full name.'); return; }
   if (!email || !email.includes('@')) { showToast('⚠️ Please enter a valid email.'); return; }
-  if (!phone || phone.length < 10)   { showToast('⚠️ Please enter a valid phone number.'); return; }
-  if (!txn || txn.replace(/\D/g,'').length < 8) { showToast('⚠️ Please enter your UTR/Reference Number.'); return; }
+  if (!phone || phone.length < 10)    { showToast('⚠️ Please enter a valid phone number.'); return; }
+  if (!txn || txn.replace(/\D/g,'').length < 8) {
+    showToast('⚠️ Please enter your UTR / Reference Number (found in UPI app → Transaction History).');
+    return;
+  }
 
   const btn = document.getElementById('paySubmitBtn');
   btn.disabled = true;
-  btn.innerHTML = '⏳ Processing...';
+  btn.innerHTML = '⏳ Activating…';
+
+  // Show processing state
+  document.getElementById('mFormWrap').style.display = 'none';
+  document.getElementById('payProcessing').classList.add('show');
+  document.getElementById('stepsBar').style.display = 'none';
+  setStep(3);
 
   try {
-    const now = new Date();
-    const expiresAt = new Date(now.getTime()+30*24*60*60*1000);
+    const now      = new Date();
+    const expiresAt = new Date(now.getTime() + 30*24*60*60*1000);
+
     const record = {
-      userName: name, userEmail: email, userPhone: phone,
-      userId: window._currentUser?.uid || 'guest',
-      planName: currentPlan.plan, planRole: currentPlan.role,
-      planCategory: currentPlan.category, planPrice: currentPlan.price,
-      txnRefId: txn, upiId: CONFIG.UPI_ID,
-      amount: currentPlan.price, currency: 'INR', paymentMode: 'UPI',
-      paymentStatus: 'pending',
-      createdAt: now.toISOString(), expiresAt: expiresAt.toISOString(),
-      timestamp: window._serverTimestamp ? window._serverTimestamp() : null,
-      deviceInfo: navigator.userAgent.substring(0,100),
+      userName:      name,
+      userEmail:     email,
+      userPhone:     phone,
+      userId:        window._currentUser?.uid || 'guest',
+      planName:      currentPlan.plan,
+      planRole:      currentPlan.role,
+      planCategory:  currentPlan.category,
+      planPrice:     currentPlan.price,
+      planFeatures:  currentPlan.features || [],
+      txnRefId:      txn,
+      upiId:         CONFIG.UPI_ID,
+      upiApp:        lastSelectedApp || 'unknown',
+      amount:        currentPlan.price,
+      currency:      'INR',
+      paymentMode:   'UPI',
+      paymentStatus: 'verified',         // ← INSTANT — no approval wait
+      activatedAt:   now.toISOString(),
+      createdAt:     now.toISOString(),
+      expiresAt:     expiresAt.toISOString(),
+      timestamp:     window._serverTimestamp ? window._serverTimestamp() : null,
+      deviceInfo:    navigator.userAgent.substring(0,100),
     };
 
-    const docRef = await window._addDoc(window._collection(window._db, 'payments'), record);
-    currentPaymentDocId = docRef.id;
+    // 1. Write payment record to `payments` collection
+    const payRef = await window._addDoc(
+      window._collection(window._db, 'payments'), record
+    );
 
-    // Show pending state
-    document.getElementById('mFormWrap').style.display = 'none';
-    document.getElementById('payPending').classList.add('show');
-    document.getElementById('ppRefId').textContent = 'REF: ' + txn.toUpperCase();
+    // 2. Write / merge active subscription to `subscriptions/{userId}`
+    //    so other parts of the app can quickly check if user has an active plan
+    const uid = window._currentUser?.uid || ('guest_' + Date.now());
+    await window._setDoc(
+      window._doc(window._db, 'subscriptions', uid),
+      {
+        userId:       uid,
+        userEmail:    email,
+        userName:     name,
+        userPhone:    phone,
+        planName:     currentPlan.plan,
+        planRole:     currentPlan.role,
+        planCategory: currentPlan.category,
+        planFeatures: currentPlan.features || [],
+        planPrice:    currentPlan.price,
+        paymentId:    payRef.id,
+        txnRefId:     txn,
+        status:       'active',
+        activatedAt:  now.toISOString(),
+        expiresAt:    expiresAt.toISOString(),
+        updatedAt:    now.toISOString(),
+        timestamp:    window._serverTimestamp ? window._serverTimestamp() : null,
+      },
+      { merge: true }
+    );
 
-    showToast('✅ Payment submitted! Awaiting admin verification.');
+    // 3. If user is logged in, also update their user profile doc
+    if (window._currentUser?.uid) {
+      await window._setDoc(
+        window._doc(window._db, 'users', window._currentUser.uid),
+        {
+          subscription: {
+            plan:        currentPlan.plan,
+            role:        currentPlan.role,
+            category:    currentPlan.category,
+            features:    currentPlan.features || [],
+            paymentId:   payRef.id,
+            status:      'active',
+            expiresAt:   expiresAt.toISOString(),
+          },
+          updatedAt: now.toISOString(),
+        },
+        { merge: true }
+      );
+    }
 
-    // Start listening for status changes
-    startStatusPolling(docRef.id);
+    // Brief processing animation
+    await new Promise(r => setTimeout(r, 1200));
+
+    // Show success
+    document.getElementById('payProcessing').classList.remove('show');
+    document.getElementById('paySuccess').classList.add('show');
+    document.getElementById('psRefId').textContent = 'REF: ' + txn.toUpperCase();
+
+    // Populate active features list in success screen
+    const featureList = document.getElementById('psFeatureList');
+    const features = currentPlan.features || [];
+    featureList.innerHTML = '<h4>🚀 Your Active Features</h4>' +
+      features.map(f =>
+        `<div class="ps-feat-item"><span class="ps-feat-ic">✅</span>${f}</div>`
+      ).join('');
+
+    showToast('🎉 Plan activated instantly! Enjoy your subscription.', 5000);
 
   } catch(err) {
-    console.error(err);
-    showToast('❌ Error submitting. Please try again.');
+    console.error('Payment error:', err);
+    document.getElementById('payProcessing').classList.remove('show');
+    document.getElementById('mFormWrap').style.display = 'block';
+    document.getElementById('stepsBar').style.display = 'flex';
     btn.disabled = false;
-    btn.innerHTML = '🔒 Submit Payment & Activate Plan';
+    btn.innerHTML = `⚡ Activate Plan Instantly — ₹${currentPlan.price}`;
+    showToast('❌ Could not activate. Please try again or contact support.');
   }
 }
 window.submitPayment = submitPayment;

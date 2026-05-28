@@ -4,432 +4,416 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartRent AI — PG & Hostel Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
+/* ─── TOKENS ─────────────────────────────────────────────────────── */
 :root {
-  --void: #07090f;
-  --deep: #0c0f1a;
-  --surface: #111422;
-  --card: #141828;
-  --card-hover: #191d2e;
-  --border: rgba(255,255,255,0.06);
-  --border-md: rgba(255,255,255,0.1);
-  --border-bright: rgba(255,255,255,0.16);
+  --bg:        #f5f2ee;
+  --bg2:       #ede9e3;
+  --surface:   #ffffff;
+  --card:      #ffffff;
+  --card-h:    #fdfcfb;
+  --border:    rgba(60,50,40,0.10);
+  --border-md: rgba(60,50,40,0.15);
+  --border-str:rgba(60,50,40,0.22);
 
-  --cyan: #00d4e8;
-  --cyan-dim: rgba(0,212,232,0.1);
-  --cyan-border: rgba(0,212,232,0.25);
+  --ink:       #1c1814;
+  --ink-2:     #4a4038;
+  --ink-3:     #8a7e74;
+  --ink-4:     #b8afa6;
 
-  --violet: #8b5cf6;
-  --violet-dim: rgba(139,92,246,0.12);
-  --violet-border: rgba(139,92,246,0.3);
+  --teal:      #0d9488;
+  --teal-lt:   #f0fdfb;
+  --teal-bd:   rgba(13,148,136,0.22);
+  --teal-md:   rgba(13,148,136,0.12);
 
-  --amber: #f59e0b;
-  --amber-dim: rgba(245,158,11,0.1);
-  --amber-border: rgba(245,158,11,0.28);
+  --amber:     #b45309;
+  --amber-lt:  #fffbeb;
+  --amber-bd:  rgba(180,83,9,0.22);
 
-  --rose: #f43f5e;
-  --rose-dim: rgba(244,63,94,0.1);
+  --rose:      #e11d48;
+  --rose-lt:   #fff1f2;
 
-  --emerald: #10b981;
-  --emerald-dim: rgba(16,185,129,0.1);
-  --emerald-border: rgba(16,185,129,0.28);
+  --emerald:   #059669;
+  --emerald-lt:#ecfdf5;
+  --emerald-bd:rgba(5,150,105,0.2);
 
-  --text: #dde4f0;
-  --text-soft: rgba(200,210,230,0.65);
-  --text-muted: rgba(160,175,200,0.4);
+  --violet:    #7c3aed;
+  --violet-lt: #f5f3ff;
+  --violet-bd: rgba(124,58,237,0.2);
 
-  --pg-accent: #00d4e8;
-  --hostel-accent: #8b5cf6;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 24px;
+
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.07);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.09);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.11);
 }
 
+/* ─── RESET ──────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--void);
-  color: var(--text);
+  background: var(--bg);
+  color: var(--ink);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* ── BG texture ──────────────────────────────────── */
+/* subtle paper texture */
 body::before {
   content: '';
   position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 15% 0%, rgba(0,212,232,0.05) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85% 100%, rgba(139,92,246,0.06) 0%, transparent 55%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(245,158,11,0.02) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
-}
-
-body::after {
-  content: '';
-  position: fixed; inset: 0;
   background-image:
-    linear-gradient(rgba(0,212,232,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,232,0.025) 1px, transparent 1px);
-  background-size: 48px 48px;
+    radial-gradient(ellipse 70% 50% at 10% 0%, rgba(13,148,136,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(180,83,9,0.03) 0%, transparent 55%);
   pointer-events: none; z-index: 0;
 }
 
-/* ── Wrapper ─────────────────────────────────────── */
 .page { position: relative; z-index: 1; }
 
-/* ── NAV ─────────────────────────────────────────── */
+/* ─── NAV ────────────────────────────────────────────────────────── */
 nav {
   position: sticky; top: 0; z-index: 200;
-  background: rgba(7,9,15,0.85);
-  backdrop-filter: blur(24px);
+  background: rgba(245,242,238,0.92);
+  backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 0 32px;
-  height: 64px;
+  height: 60px;
   display: flex; align-items: center; gap: 20px;
+  box-shadow: var(--shadow-xs);
 }
 
 .nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  font-size: 17px;
-  color: var(--text);
+  display: flex; align-items: center; gap: 9px;
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  color: var(--ink);
   text-decoration: none;
   flex-shrink: 0;
 }
 
 .logo-gem {
-  width: 32px; height: 32px;
-  background: linear-gradient(135deg, var(--cyan), var(--violet));
-  border-radius: 8px;
+  width: 30px; height: 30px;
+  background: linear-gradient(135deg, var(--teal), #0f766e);
+  border-radius: 7px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  box-shadow: 0 0 16px rgba(0,212,232,0.3);
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(13,148,136,0.3);
 }
 
-.nav-links {
-  display: flex; gap: 4px; margin-left: 8px;
-}
+.nav-links { display: flex; gap: 2px; margin-left: 10px; }
 
 .nav-link {
-  padding: 6px 14px;
-  border-radius: 6px;
-  font-size: 13px;
+  padding: 5px 13px;
+  border-radius: var(--r-sm);
+  font-size: 13.5px;
   font-weight: 500;
-  color: var(--text-soft);
+  color: var(--ink-2);
   text-decoration: none;
-  transition: all 0.2s;
+  transition: all 0.15s;
   border: 1px solid transparent;
 }
 
-.nav-link:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-.nav-link.active { background: var(--cyan-dim); color: var(--cyan); border-color: var(--cyan-border); }
+.nav-link:hover { background: var(--bg2); color: var(--ink); }
+.nav-link.active { background: var(--teal-lt); color: var(--teal); border-color: var(--teal-bd); }
 
-.nav-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+.nav-right { margin-left: auto; display: flex; gap: 7px; align-items: center; }
 
 .nav-btn {
-  padding: 7px 16px;
-  border-radius: 7px;
+  padding: 6px 15px;
+  border-radius: var(--r-sm);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
-  transition: all 0.2s;
+  transition: all 0.15s;
   border: 1px solid var(--border-md);
   background: transparent;
-  color: var(--text-soft);
+  color: var(--ink-2);
 }
 
-.nav-btn:hover { color: var(--text); border-color: var(--border-bright); background: rgba(255,255,255,0.04); }
+.nav-btn:hover { background: var(--bg2); color: var(--ink); border-color: var(--border-str); }
 
 .nav-btn-primary {
-  background: linear-gradient(135deg, var(--cyan), #0099b3);
-  color: var(--void);
+  background: var(--teal);
+  color: #fff;
   border-color: transparent;
-  font-weight: 700;
+  font-weight: 600;
 }
 
-.nav-btn-primary:hover {
-  box-shadow: 0 0 20px rgba(0,212,232,0.4);
-  transform: translateY(-1px);
-}
+.nav-btn-primary:hover { background: #0f766e; box-shadow: 0 2px 10px rgba(13,148,136,0.35); }
 
-/* ── HERO ────────────────────────────────────────── */
+/* ─── HERO ───────────────────────────────────────────────────────── */
 .hero {
-  padding: 72px 40px 56px;
+  padding: 56px 40px 44px;
   text-align: center;
-  position: relative;
 }
 
 .hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 7px;
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--cyan);
-  background: var(--cyan-dim);
-  border: 1px solid var(--cyan-border);
-  padding: 5px 14px;
+  color: var(--teal);
+  background: var(--teal-lt);
+  border: 1px solid var(--teal-bd);
+  padding: 5px 13px;
   border-radius: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .hero-eyebrow::before {
   content: '';
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
-  background: var(--cyan);
-  animation: pulse-dot 2s infinite;
+  background: var(--teal);
+  animation: pulse-dot 2.2s infinite;
 }
 
 @keyframes pulse-dot {
-  0%,100% { box-shadow: 0 0 0 0 rgba(0,212,232,0.5); }
-  50% { box-shadow: 0 0 0 6px rgba(0,212,232,0); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(13,148,136,0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(13,148,136,0); }
 }
 
 .hero-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(34px, 5vw, 58px);
-  font-weight: 800;
-  color: #fff;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  margin-bottom: 18px;
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(32px, 4.5vw, 54px);
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
 }
 
-.hero-title .grad {
-  background: linear-gradient(90deg, var(--cyan) 0%, var(--violet) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.hero-title em {
+  font-style: italic;
+  color: var(--teal);
 }
 
 .hero-sub {
-  font-size: 16px;
-  color: var(--text-soft);
-  max-width: 560px;
-  margin: 0 auto 36px;
-  line-height: 1.75;
+  font-size: 15.5px;
+  color: var(--ink-2);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+  font-weight: 400;
 }
 
-/* ── HERO SEARCH ─────────────────────────────────── */
+/* ─── HERO SEARCH ────────────────────────────────────────────────── */
 .hero-search {
-  max-width: 720px;
-  margin: 0 auto 28px;
+  max-width: 680px;
+  margin: 0 auto 24px;
   background: var(--surface);
-  border: 1px solid var(--border-md);
-  border-radius: 16px;
-  padding: 10px;
+  border: 1.5px solid var(--border-md);
+  border-radius: var(--r-lg);
+  padding: 8px;
   display: flex;
-  gap: 8px;
-  align-items: stretch;
-  box-shadow: 0 8px 48px rgba(0,0,0,0.4);
-  transition: border-color 0.2s;
+  gap: 6px;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.hero-search:focus-within { border-color: var(--cyan-border); box-shadow: 0 0 0 3px rgba(0,212,232,0.07), 0 8px 48px rgba(0,0,0,0.4); }
+.hero-search:focus-within {
+  border-color: var(--teal-bd);
+  box-shadow: 0 0 0 3px rgba(13,148,136,0.08), var(--shadow-md);
+}
 
 .search-field {
   flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px 14px;
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 12px;
 }
 
-.search-field svg { color: var(--text-muted); flex-shrink: 0; }
+.search-field svg { color: var(--ink-4); flex-shrink: 0; }
 
 .search-field input {
   background: none; border: none; outline: none;
-  color: var(--text);
+  color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
   width: 100%;
 }
 
-.search-field input::placeholder { color: var(--text-muted); }
+.search-field input::placeholder { color: var(--ink-4); }
 
-.search-divider {
-  width: 1px;
-  background: var(--border);
-  align-self: stretch;
-  margin: 6px 0;
-}
+.search-divider { width: 1px; background: var(--border); align-self: stretch; margin: 6px 0; }
 
 .search-btn {
-  padding: 12px 28px;
-  background: linear-gradient(135deg, var(--cyan), #007a90);
+  padding: 10px 24px;
+  background: var(--teal);
   border: none;
   border-radius: 10px;
-  color: var(--void);
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
   white-space: nowrap;
-  display: flex; align-items: center; gap: 7px;
 }
 
-.search-btn:hover { box-shadow: 0 0 24px rgba(0,212,232,0.35); transform: translateY(-1px); }
+.search-btn:hover { background: #0f766e; box-shadow: 0 2px 12px rgba(13,148,136,0.3); }
 
-/* ── TYPE TOGGLE ─────────────────────────────────── */
+/* ─── TYPE TOGGLE ────────────────────────────────────────────────── */
 .type-toggle {
   display: inline-flex;
-  gap: 6px;
+  gap: 5px;
   background: var(--surface);
-  border: 1px solid var(--border-md);
-  border-radius: 12px;
+  border: 1.5px solid var(--border-md);
+  border-radius: var(--r-md);
   padding: 5px;
-  margin-bottom: 0;
+  box-shadow: var(--shadow-xs);
 }
 
 .type-btn {
-  padding: 9px 24px;
-  border-radius: 8px;
+  padding: 8px 22px;
+  border-radius: var(--r-sm);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   border: 1px solid transparent;
-  font-family: 'Syne', sans-serif;
-  transition: all 0.25s;
-  color: var(--text-soft);
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+  color: var(--ink-3);
   background: none;
-  display: flex; align-items: center; gap: 7px;
+  display: flex; align-items: center; gap: 6px;
 }
 
-.type-btn.pg.active {
-  background: var(--cyan-dim);
-  color: var(--cyan);
-  border-color: var(--cyan-border);
+.type-btn.active {
+  background: var(--teal-lt);
+  color: var(--teal);
+  border-color: var(--teal-bd);
+  font-weight: 600;
 }
 
 .type-btn.hostel.active {
-  background: var(--violet-dim);
+  background: var(--violet-lt);
   color: var(--violet);
-  border-color: var(--violet-border);
+  border-color: var(--violet-bd);
 }
 
-.type-btn:hover:not(.active) { background: rgba(255,255,255,0.04); color: var(--text); }
+.type-btn:hover:not(.active) { background: var(--bg2); color: var(--ink-2); }
 
-/* ── HERO STATS ──────────────────────────────────── */
+/* ─── HERO STATS ─────────────────────────────────────────────────── */
 .hero-stats {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 32px;
+  margin-top: 28px;
   flex-wrap: wrap;
 }
 
 .hstat { text-align: center; }
+
 .hstat-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 26px;
-  font-weight: 800;
-  color: #fff;
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  color: var(--ink);
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
-.hstat-val span { color: var(--cyan); }
-.hstat-label { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; }
+.hstat-val span { color: var(--teal); }
+.hstat-label { font-size: 11.5px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; }
 
-/* ── MAIN LAYOUT ─────────────────────────────────── */
+/* ─── LAYOUT ─────────────────────────────────────────────────────── */
 .main-wrap {
   display: flex;
   gap: 0;
-  max-width: 1400px;
+  max-width: 1380px;
   margin: 0 auto;
   padding: 0 24px 80px;
 }
 
-/* ── FILTER SIDEBAR ──────────────────────────────── */
+/* ─── SIDEBAR ────────────────────────────────────────────────────── */
 .filter-sidebar {
-  width: 272px;
+  width: 264px;
   flex-shrink: 0;
   position: sticky;
-  top: 80px;
-  height: calc(100vh - 100px);
+  top: 76px;
+  height: calc(100vh - 96px);
   overflow-y: auto;
-  padding-right: 20px;
+  padding-right: 18px;
   padding-bottom: 20px;
 }
 
-.filter-sidebar::-webkit-scrollbar { width: 4px; }
+.filter-sidebar::-webkit-scrollbar { width: 3px; }
 .filter-sidebar::-webkit-scrollbar-thumb { background: var(--border-md); border-radius: 2px; }
 
 .filter-panel {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .filter-header {
-  padding: 18px 20px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
 }
 
 .filter-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
-  display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex; align-items: center; gap: 6px;
 }
 
 .filter-reset {
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--cyan);
+  color: var(--teal);
   cursor: pointer;
   background: none; border: none;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   transition: opacity 0.2s;
+  padding: 0;
 }
 
-.filter-reset:hover { opacity: 0.7; }
+.filter-reset:hover { opacity: 0.65; }
 
 .filter-group {
-  padding: 18px 20px;
+  padding: 15px 18px;
   border-bottom: 1px solid var(--border);
 }
 
 .filter-group:last-child { border-bottom: none; }
 
 .filter-group-title {
-  font-size: 11px;
+  font-size: 10.5px;
   font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 13px;
+  color: var(--ink-4);
+  margin-bottom: 11px;
 }
 
-/* Range slider */
+/* Range */
 .price-display {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--cyan);
+  color: var(--teal);
 }
 
 input[type="range"] {
   width: 100%;
   -webkit-appearance: none;
-  height: 4px;
-  background: linear-gradient(90deg, var(--cyan) var(--val, 40%), var(--border-md) var(--val, 40%));
+  height: 3px;
+  background: linear-gradient(90deg, var(--teal) var(--val, 40%), var(--border-md) var(--val, 40%));
   border-radius: 2px;
   outline: none;
   cursor: pointer;
@@ -437,851 +421,568 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px; height: 16px;
+  width: 15px; height: 15px;
   border-radius: 50%;
-  background: var(--cyan);
-  border: 2px solid var(--card);
-  box-shadow: 0 0 8px rgba(0,212,232,0.4);
+  background: var(--teal);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 6px rgba(13,148,136,0.4);
 }
 
 /* Checkboxes */
 .check-list { display: flex; flex-direction: column; gap: 8px; }
 
 .check-item {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 9px;
   cursor: pointer;
   font-size: 13px;
-  color: var(--text-soft);
-  transition: color 0.15s;
+  color: var(--ink-2);
+  transition: color 0.12s;
   user-select: none;
 }
 
-.check-item:hover { color: var(--text); }
-
+.check-item:hover { color: var(--ink); }
 .check-item input[type="checkbox"] { display: none; }
 
 .check-box {
-  width: 17px; height: 17px;
+  width: 16px; height: 16px;
   border-radius: 4px;
   border: 1.5px solid var(--border-md);
-  background: var(--surface);
+  background: var(--bg);
   flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-size: 10px;
-  transition: all 0.15s;
+  transition: all 0.12s;
 }
 
 .check-item input:checked + .check-box {
-  background: var(--cyan-dim);
-  border-color: var(--cyan);
-  color: var(--cyan);
+  background: var(--teal-lt);
+  border-color: var(--teal);
+  color: var(--teal);
 }
 
-.check-item input:checked + .check-box::after { content: '✓'; }
+.check-item input:checked + .check-box::after { content: '✓'; font-weight: 700; }
 
-/* Pill chips */
-.chip-list { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Chips */
+.chip-list { display: flex; flex-wrap: wrap; gap: 5px; }
 
 .chip {
-  padding: 5px 12px;
+  padding: 4px 11px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   border: 1px solid var(--border-md);
-  background: var(--surface);
-  color: var(--text-soft);
-  transition: all 0.2s;
+  background: var(--bg);
+  color: var(--ink-3);
+  transition: all 0.15s;
   user-select: none;
 }
 
-.chip:hover { border-color: var(--cyan-border); color: var(--text); }
-.chip.active { background: var(--cyan-dim); border-color: var(--cyan-border); color: var(--cyan); }
-.chip.violet.active { background: var(--violet-dim); border-color: var(--violet-border); color: var(--violet); }
+.chip:hover { border-color: var(--teal-bd); color: var(--ink-2); }
+.chip.active { background: var(--teal-lt); border-color: var(--teal-bd); color: var(--teal); font-weight: 600; }
 
-/* ── LISTING AREA ─────────────────────────────────── */
+/* ─── LISTING AREA ───────────────────────────────────────────────── */
 .listing-area { flex: 1; min-width: 0; }
 
 .listing-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 0 20px;
-  flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; padding: 0 0 18px; flex-wrap: wrap;
 }
 
 .listing-count {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
 }
 
 .listing-count span {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--text-muted);
+  font-size: 11.5px;
+  color: var(--ink-4);
   font-weight: 400;
-  margin-left: 6px;
+  margin-left: 5px;
 }
 
-.listing-controls { display: flex; gap: 8px; align-items: center; }
+.listing-controls { display: flex; gap: 7px; align-items: center; }
 
 .view-toggle {
   display: flex;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-sm);
   overflow: hidden;
 }
 
 .view-btn {
-  padding: 7px 10px;
+  padding: 6px 9px;
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--text-muted);
-  transition: all 0.15s;
+  color: var(--ink-4);
+  transition: all 0.12s;
   display: flex; align-items: center;
 }
 
-.view-btn.active { background: var(--card); color: var(--cyan); }
-.view-btn:hover:not(.active) { color: var(--text-soft); }
+.view-btn.active { background: var(--teal-lt); color: var(--teal); }
+.view-btn:hover:not(.active) { color: var(--ink-2); background: var(--bg2); }
 
 .sort-select {
-  padding: 7px 14px;
+  padding: 6px 12px;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text-soft);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
   font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
+  font-size: 12.5px;
   outline: none;
   cursor: pointer;
 }
 
-.sort-select option { background: var(--deep); }
+/* ─── FEATURED BANNER ────────────────────────────────────────────── */
+.featured-banner {
+  background: linear-gradient(135deg, var(--teal-lt), #fefce8);
+  border: 1.5px solid var(--teal-bd);
+  border-radius: var(--r-lg);
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 14px;
+}
 
-/* ── CARD GRID ───────────────────────────────────── */
+.featured-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--teal), #0f766e);
+  border-radius: 11px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+
+.featured-text { flex: 1; }
+.featured-label { font-size: 10.5px; font-family: 'JetBrains Mono', monospace; color: var(--teal); letter-spacing: 0.14em; margin-bottom: 3px; }
+.featured-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 1px; }
+.featured-sub { font-size: 12px; color: var(--ink-3); }
+
+.enable-btn {
+  padding: 7px 15px;
+  background: var(--surface);
+  border: 1px solid var(--teal-bd);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--teal);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.enable-btn:hover { background: var(--teal-lt); }
+
+/* ─── CARDS GRID ─────────────────────────────────────────────────── */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(295px, 1fr));
+  gap: 16px;
 }
 
-.cards-grid.list-view {
-  grid-template-columns: 1fr;
-}
+.cards-grid.list-view { grid-template-columns: 1fr; }
 
-/* ── PROPERTY CARD ───────────────────────────────── */
+/* ─── PROPERTY CARD ──────────────────────────────────────────────── */
 .prop-card {
   background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
   cursor: pointer;
-  position: relative;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  animation: cardIn 0.35s cubic-bezier(0.4,0,0.2,1) both;
 }
 
 .prop-card:hover {
-  border-color: var(--border-bright);
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06);
+  border-color: var(--teal-bd);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
 }
 
 .cards-grid.list-view .prop-card {
   flex-direction: row;
-  max-height: 200px;
+  max-height: 195px;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* Card image */
 .card-img {
-  height: 195px;
+  height: 190px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--surface);
+  background: var(--bg2);
 }
 
-.cards-grid.list-view .card-img { width: 240px; height: 100%; border-radius: 0; }
+.cards-grid.list-view .card-img { width: 230px; height: 100%; }
 
-.card-img-inner {
+/* Photo from user submission */
+.card-photo {
   width: 100%; height: 100%;
   object-fit: cover;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 48px;
   transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-  position: relative;
+  display: block;
 }
 
-.prop-card:hover .card-img-inner { transform: scale(1.06); }
+.prop-card:hover .card-photo { transform: scale(1.05); }
 
-/* Dynamic gradient bg for each card */
-.img-bg-1 { background: linear-gradient(135deg, #0d1f35 0%, #1a3a5c 50%, #0d2845 100%); }
-.img-bg-2 { background: linear-gradient(135deg, #1a0d35 0%, #3a1a5c 50%, #28054a 100%); }
-.img-bg-3 { background: linear-gradient(135deg, #1a200d 0%, #2d3a0d 50%, #1a2a05 100%); }
-.img-bg-4 { background: linear-gradient(135deg, #35200d 0%, #5c3a1a 50%, #452a0d 100%); }
-.img-bg-5 { background: linear-gradient(135deg, #0d1535 0%, #1a2a5c 50%, #050a2a 100%); }
-.img-bg-6 { background: linear-gradient(135deg, #1a0d1a 0%, #3a1a3a 50%, #250525 100%); }
+/* Fallback placeholder */
+.card-photo-placeholder {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--bg2) 0%, #e5e0d8 100%);
+}
+
+.card-photo-placeholder .ph-icon { font-size: 44px; opacity: 0.45; }
+.card-photo-placeholder .ph-text { font-size: 11px; color: var(--ink-4); font-family: 'JetBrains Mono', monospace; }
 
 .card-img-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.65) 100%);
+  background: linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.35) 100%);
+  pointer-events: none;
 }
 
 /* Badges */
 .card-badges {
   position: absolute;
-  top: 12px; left: 12px;
-  display: flex; gap: 6px;
-  flex-wrap: wrap;
-  z-index: 2;
+  top: 10px; left: 10px;
+  display: flex; gap: 5px;
+  flex-wrap: wrap; z-index: 2;
 }
 
 .badge {
-  font-size: 10px;
+  font-size: 9.5px;
   font-family: 'JetBrains Mono', monospace;
-  font-weight: 500;
-  padding: 3px 9px;
+  padding: 3px 8px;
   border-radius: 4px;
-  letter-spacing: 0.08em;
-  backdrop-filter: blur(8px);
+  letter-spacing: 0.07em;
+  backdrop-filter: blur(6px);
+  font-weight: 500;
 }
 
-.badge-pg { background: rgba(0,212,232,0.2); color: var(--cyan); border: 1px solid rgba(0,212,232,0.35); }
-.badge-hostel { background: rgba(139,92,246,0.2); color: var(--violet); border: 1px solid rgba(139,92,246,0.35); }
-.badge-verified { background: rgba(16,185,129,0.2); color: var(--emerald); border: 1px solid rgba(16,185,129,0.35); }
-.badge-hot { background: rgba(244,63,94,0.2); color: #ff6b85; border: 1px solid rgba(244,63,94,0.35); }
-.badge-new { background: rgba(245,158,11,0.2); color: var(--amber); border: 1px solid rgba(245,158,11,0.35); }
+.badge-pg      { background: rgba(255,255,255,0.85); color: var(--teal); border: 1px solid rgba(13,148,136,0.3); }
+.badge-hostel  { background: rgba(255,255,255,0.85); color: var(--violet); border: 1px solid rgba(124,58,237,0.3); }
+.badge-verified{ background: rgba(255,255,255,0.85); color: var(--emerald); border: 1px solid rgba(5,150,105,0.3); }
+.badge-hot     { background: rgba(255,255,255,0.85); color: #dc2626; border: 1px solid rgba(220,38,38,0.3); }
+.badge-new     { background: rgba(255,255,255,0.85); color: var(--amber); border: 1px solid rgba(180,83,9,0.3); }
 
 /* Save button */
 .card-save {
-  position: absolute;
-  top: 12px; right: 12px;
-  width: 34px; height: 34px;
-  background: rgba(7,9,15,0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border-md);
+  position: absolute; top: 10px; right: 10px;
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  z-index: 2;
-  transition: all 0.2s;
+  cursor: pointer; font-size: 14px; z-index: 2;
+  transition: all 0.15s;
 }
 
-.card-save:hover { background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.4); }
-.card-save.saved { background: rgba(244,63,94,0.2); border-color: rgba(244,63,94,0.4); }
+.card-save:hover { background: var(--rose-lt); border-color: rgba(225,29,72,0.3); }
+.card-save.saved { background: var(--rose-lt); border-color: rgba(225,29,72,0.3); }
 
-/* Card bottom bar in image */
+/* Rating + distance */
 .card-img-bottom {
-  position: absolute;
-  bottom: 10px; left: 12px; right: 12px;
+  position: absolute; bottom: 9px; left: 10px; right: 10px;
   display: flex; align-items: center; justify-content: space-between;
   z-index: 2;
 }
 
 .card-rating {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(6px);
-  padding: 3px 8px;
-  border-radius: 5px;
+  display: flex; align-items: center; gap: 3px;
+  font-size: 11.5px; font-weight: 600; color: #fff;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(4px);
+  padding: 3px 8px; border-radius: 5px;
 }
 
 .card-distance {
-  font-size: 11px;
-  color: rgba(255,255,255,0.75);
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(6px);
-  padding: 3px 8px;
-  border-radius: 5px;
+  font-size: 10.5px; color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
+  padding: 3px 8px; border-radius: 5px;
   font-family: 'JetBrains Mono', monospace;
 }
 
 /* Card body */
-.card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+.card-body { padding: 15px 16px; flex: 1; display: flex; flex-direction: column; }
+.cards-grid.list-view .card-body { padding: 15px 18px; }
 
-.cards-grid.list-view .card-body { padding: 16px 20px; }
+.card-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
 
-.card-type-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.card-tag {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--bg2);
+  color: var(--ink-3);
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--border);
+}
+
+.card-gender {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-3);
 }
 
 .card-name {
-  font-family: 'Syne', sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.3;
-  margin-bottom: 5px;
+  font-family: 'Instrument Serif', serif;
+  font-size: 17px;
+  color: var(--ink);
+  line-height: 1.25;
+  margin-bottom: 4px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
 .cards-grid.list-view .card-name { white-space: normal; }
 
 .card-location {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 12px;
-  color: var(--text-soft);
-  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 4px;
+  font-size: 12px; color: var(--ink-3);
+  margin-bottom: 10px;
 }
 
-.card-location svg { flex-shrink: 0; }
-
-/* Room options */
-.card-rooms {
-  display: flex; gap: 5px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
+/* Room chips */
+.card-rooms { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
 
 .room-chip {
-  font-size: 11px;
+  font-size: 10.5px;
   font-family: 'JetBrains Mono', monospace;
-  padding: 3px 9px;
+  padding: 3px 8px;
   border-radius: 4px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: var(--text-muted);
+  border: 1px solid var(--border-md);
+  background: var(--bg);
+  color: var(--ink-3);
   white-space: nowrap;
 }
 
 /* Amenities */
-.card-amenities {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
+.card-amenities { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
 
-.amenity {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 11px;
-  color: var(--text-soft);
-}
+.amenity { font-size: 11px; color: var(--ink-3); display: flex; align-items: center; gap: 3px; }
 
-/* Price row */
+/* Footer */
 .card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   margin-top: auto;
-  padding-top: 12px;
+  padding-top: 11px;
   border-top: 1px solid var(--border);
   gap: 8px;
 }
 
-.card-price {
-  display: flex;
-  flex-direction: column;
-}
+.card-price { display: flex; flex-direction: column; }
 
 .price-val {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  font-weight: 800;
-  color: #fff;
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: var(--ink);
   line-height: 1;
 }
 
-.price-val .currency { font-size: 14px; font-weight: 600; }
-.price-period { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+.price-val .currency { font-size: 15px; }
+.price-period { font-size: 10px; color: var(--ink-4); font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
 
-.card-cta {
-  display: flex; gap: 6px;
-}
+.card-cta { display: flex; gap: 5px; }
 
 .cta-btn {
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 700;
+  padding: 7px 13px;
+  border-radius: var(--r-sm);
+  font-size: 12px; font-weight: 600;
   cursor: pointer;
-  font-family: 'Syne', sans-serif;
-  transition: all 0.2s;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
   border: 1px solid;
+  text-decoration: none;
+  display: inline-flex; align-items: center;
 }
 
 .cta-primary {
-  background: linear-gradient(135deg, var(--cyan), #0099b3);
-  color: var(--void);
-  border-color: transparent;
-}
-
-.cta-primary:hover { box-shadow: 0 0 16px rgba(0,212,232,0.4); transform: translateY(-1px); }
-
-.cta-hostel {
-  background: linear-gradient(135deg, var(--violet), #6d28d9);
+  background: var(--teal);
   color: #fff;
   border-color: transparent;
 }
 
-.cta-hostel:hover { box-shadow: 0 0 16px rgba(139,92,246,0.4); transform: translateY(-1px); }
+.cta-primary:hover { background: #0f766e; box-shadow: 0 2px 10px rgba(13,148,136,0.3); }
 
 .cta-outline {
   background: transparent;
-  color: var(--text-soft);
+  color: var(--ink-3);
   border-color: var(--border-md);
 }
 
-.cta-outline:hover { border-color: var(--border-bright); color: var(--text); background: rgba(255,255,255,0.04); }
+.cta-outline:hover { border-color: var(--border-str); color: var(--ink-2); background: var(--bg2); }
 
-/* ── FEATURED BANNER ─────────────────────────────── */
-.featured-banner {
-  background: linear-gradient(135deg, rgba(0,212,232,0.07) 0%, rgba(139,92,246,0.07) 100%);
-  border: 1px solid rgba(0,212,232,0.2);
-  border-radius: 16px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  overflow: hidden;
-  position: relative;
-}
-
-.featured-banner::before {
-  content: '⭐';
-  position: absolute;
-  right: -10px; top: -20px;
-  font-size: 100px;
-  opacity: 0.04;
-}
-
-.featured-icon {
-  width: 48px; height: 48px;
-  background: linear-gradient(135deg, var(--cyan), var(--violet));
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px;
-  flex-shrink: 0;
-  box-shadow: 0 0 20px rgba(0,212,232,0.25);
-}
-
-.featured-text { flex: 1; }
-.featured-label { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--cyan); letter-spacing: 0.15em; margin-bottom: 4px; }
-.featured-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
-.featured-sub { font-size: 12px; color: var(--text-soft); }
-
-/* ── MODAL ───────────────────────────────────────── */
-.modal-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(12px);
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s;
-}
-
-.modal-overlay.open { opacity: 1; pointer-events: all; }
-
-.modal {
-  background: var(--card);
-  border: 1px solid var(--border-md);
-  border-radius: 20px;
-  width: 100%;
-  max-width: 640px;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: scale(0.95) translateY(10px);
-  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 32px 100px rgba(0,0,0,0.6);
-}
-
-.modal-overlay.open .modal { transform: scale(1) translateY(0); }
-
-.modal-img {
-  height: 220px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 72px;
-  position: relative;
-  overflow: hidden;
-}
-
-.modal-close {
-  position: absolute;
-  top: 16px; right: 16px;
-  width: 36px; height: 36px;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--border-md);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.2s;
-  z-index: 10;
-}
-
-.modal-close:hover { background: rgba(244,63,94,0.3); }
-
-.modal-body { padding: 24px; }
-
-.modal-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 22px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.modal-location { font-size: 13px; color: var(--text-soft); margin-bottom: 20px; display: flex; align-items: center; gap: 5px; }
-
-.modal-section-title {
-  font-size: 11px;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  margin-top: 20px;
-}
-
-.modal-rooms-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
-}
-
-.modal-room-opt {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
+/* ─── EMPTY STATE ────────────────────────────────────────────────── */
+.empty-state {
+  grid-column: 1/-1;
   text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
+  padding: 72px 24px;
+  color: var(--ink-4);
 }
 
-.modal-room-opt:hover { border-color: var(--cyan-border); background: var(--cyan-dim); }
-.modal-room-opt.selected { border-color: var(--cyan); background: var(--cyan-dim); }
+.empty-state .big-icon { font-size: 52px; margin-bottom: 14px; }
+.empty-state h3 { font-family: 'Instrument Serif', serif; font-size: 20px; color: var(--ink-2); margin-bottom: 6px; }
+.empty-state p { font-size: 14px; }
 
-.room-opt-type { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); margin-bottom: 4px; }
-.room-opt-price { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--cyan); }
-
-.modal-amenities-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-
-.modal-amenity {
-  display: flex; align-items: center; gap: 8px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 13px;
-  color: var(--text-soft);
-}
-
-.modal-amenity .icon { font-size: 16px; }
-
-.modal-contact-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 20px;
-}
-
-.modal-cta {
-  flex: 1;
-  padding: 13px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  font-family: 'Syne', sans-serif;
-  border: 1px solid;
-  transition: all 0.2s;
-  text-align: center;
-}
-
-.modal-cta-book {
-  background: linear-gradient(135deg, var(--cyan), #007a90);
-  color: var(--void);
-  border-color: transparent;
-}
-
-.modal-cta-book:hover { box-shadow: 0 0 24px rgba(0,212,232,0.4); }
-
-.modal-cta-call {
-  background: var(--emerald-dim);
-  color: var(--emerald);
-  border-color: var(--emerald-border);
-}
-
-.modal-cta-call:hover { background: rgba(16,185,129,0.2); }
-
-/* ── TOAST ───────────────────────────────────────── */
+/* ─── TOAST ──────────────────────────────────────────────────────── */
 .toast-wrap {
-  position: fixed;
-  bottom: 28px; right: 28px;
+  position: fixed; bottom: 24px; right: 24px;
   z-index: 1000;
-  display: flex; flex-direction: column; gap: 10px;
+  display: flex; flex-direction: column; gap: 8px;
 }
 
 .toast {
-  background: var(--card);
-  border: 1px solid var(--border-md);
-  border-left: 3px solid var(--cyan);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-left: 3px solid var(--teal);
   border-radius: 10px;
-  padding: 12px 16px;
-  min-width: 260px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  display: flex; align-items: center; gap: 10px;
-  font-size: 13px;
+  padding: 11px 15px;
+  min-width: 240px;
+  box-shadow: var(--shadow-md);
+  display: flex; align-items: center; gap: 9px;
+  font-size: 13px; color: var(--ink-2);
   animation: toastIn 0.3s cubic-bezier(0.4,0,0.2,1);
 }
 
-@keyframes toastIn { from { transform: translateX(120%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);   opacity: 1; }
+}
 
 .toast.success { border-left-color: var(--emerald); }
 .toast.warning { border-left-color: var(--amber); }
 
-/* ── EMPTY STATE ─────────────────────────────────── */
-.empty-state {
-  grid-column: 1/-1;
-  text-align: center;
-  padding: 80px 24px;
-  color: var(--text-muted);
-}
-
-.empty-state .big-icon { font-size: 56px; margin-bottom: 16px; }
-.empty-state h3 { font-family: 'Syne', sans-serif; font-size: 18px; color: var(--text-soft); margin-bottom: 8px; }
-.empty-state p { font-size: 14px; }
-
-/* ── MAP TOGGLE BANNER ───────────────────────────── */
-.map-banner {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 20px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 20px;
-}
-
-.map-preview {
-  flex: 1;
-  height: 6px;
-  background: linear-gradient(90deg, var(--cyan-dim), var(--violet-dim));
-  border-radius: 3px;
-  position: relative;
-  overflow: hidden;
-}
-
-.map-preview::after {
-  content: '';
-  position: absolute;
-  left: -100%; top: 0; bottom: 0;
-  width: 60%;
-  background: linear-gradient(90deg, transparent, rgba(0,212,232,0.3), transparent);
-  animation: shimmer 2s linear infinite;
-}
-
-@keyframes shimmer { to { left: 200%; } }
-
-.map-btn {
-  padding: 8px 16px;
-  background: var(--card);
-  border: 1px solid var(--border-md);
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: 'Syne', sans-serif;
-  color: var(--text-soft);
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-  display: flex; align-items: center; gap: 6px;
-}
-
-.map-btn:hover { border-color: var(--cyan-border); color: var(--cyan); }
-
-/* ── LOAD MORE ───────────────────────────────────── */
-.load-more-wrap { text-align: center; margin-top: 32px; }
+/* ─── LOAD MORE ──────────────────────────────────────────────────── */
+.load-more-wrap { text-align: center; margin-top: 28px; }
 
 .load-more-btn {
-  padding: 12px 36px;
-  background: var(--card);
-  border: 1px solid var(--border-md);
+  padding: 11px 32px;
+  background: var(--surface);
+  border: 1.5px solid var(--border-md);
   border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Syne', sans-serif;
-  color: var(--text-soft);
+  font-size: 13.5px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink-2);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
-.load-more-btn:hover { border-color: var(--cyan-border); color: var(--cyan); background: var(--cyan-dim); }
+.load-more-btn:hover { border-color: var(--teal-bd); color: var(--teal); background: var(--teal-lt); }
 
-/* ── QUICK FILTERS (mobile) ──────────────────────── */
-.quick-filters {
-  display: none;
-  padding: 0 16px 12px;
-  overflow-x: auto;
-  gap: 8px;
-  scrollbar-width: none;
-}
-
-.quick-filters::-webkit-scrollbar { display: none; }
-
-/* ── OWNER CTA BANNER ────────────────────────────── */
+/* ─── OWNER CTA ───────────────────────────────────────────────────── */
 .owner-cta-banner {
   margin: 28px 0 0;
-  background: linear-gradient(135deg, rgba(0,212,232,0.06), rgba(139,92,246,0.07) 50%, rgba(245,158,11,0.04));
-  border: 1px solid rgba(0,212,232,0.22);
-  border-radius: 18px;
-  padding: 28px 32px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  position: relative;
-  overflow: hidden;
+  background: linear-gradient(135deg, var(--teal-lt), #fefce8);
+  border: 1.5px solid var(--teal-bd);
+  border-radius: var(--r-xl);
+  padding: 26px 28px;
+  display: flex; align-items: center; gap: 20px;
+  position: relative; overflow: hidden;
 }
 
 .owner-cta-banner::before {
   content: '🏠';
-  position: absolute;
-  right: -10px; bottom: -20px;
-  font-size: 130px;
-  opacity: 0.04;
-  pointer-events: none;
+  position: absolute; right: -5px; bottom: -15px;
+  font-size: 110px; opacity: 0.05; pointer-events: none;
 }
 
 .owner-cta-icon {
-  width: 60px; height: 60px;
-  background: linear-gradient(135deg, var(--cyan), #8b5cf6);
-  border-radius: 16px;
+  width: 54px; height: 54px;
+  background: linear-gradient(135deg, var(--teal), #0f766e);
+  border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px; flex-shrink: 0;
-  box-shadow: 0 0 28px rgba(0,212,232,0.35);
+  font-size: 24px; flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(13,148,136,0.3);
 }
 
 .owner-cta-text { flex: 1; min-width: 0; }
 
 .owner-cta-eyebrow {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--cyan); margin-bottom: 5px;
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 4px;
 }
 
 .owner-cta-title {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px; font-weight: 800;
-  color: #fff; margin-bottom: 5px;
-  letter-spacing: -0.01em; line-height: 1.2;
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px; color: var(--ink);
+  margin-bottom: 4px; line-height: 1.2;
 }
 
-.owner-cta-sub {
-  font-size: 13px; color: var(--text-soft); line-height: 1.6;
-}
+.owner-cta-sub { font-size: 13px; color: var(--ink-2); line-height: 1.6; }
 
-.owner-cta-perks {
-  display: flex; gap: 6px; margin-top: 11px; flex-wrap: wrap;
-}
+.owner-cta-perks { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
 
 .owner-cta-perk {
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  padding: 3px 9px; border-radius: 4px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: var(--text-soft);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px; border-radius: 4px;
+  background: rgba(13,148,136,0.07);
+  border: 1px solid var(--teal-bd);
+  color: var(--teal);
 }
 
-.owner-cta-actions {
-  display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
-}
+.owner-cta-actions { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
 
 .owner-cta-btn-primary {
-  padding: 12px 26px;
-  background: linear-gradient(135deg, var(--cyan), #007a90);
+  padding: 11px 22px;
+  background: var(--teal);
   border: none; border-radius: 10px;
-  color: #05070e; font-family: 'Syne', sans-serif;
-  font-size: 14px; font-weight: 800;
-  cursor: pointer; transition: all 0.22s;
-  white-space: nowrap; text-decoration: none;
-  display: flex; align-items: center; gap: 7px;
-  justify-content: center;
+  color: #fff; font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px; font-weight: 700;
+  cursor: pointer; transition: all 0.18s;
+  text-decoration: none; display: flex;
+  align-items: center; gap: 6px; justify-content: center;
 }
 
 .owner-cta-btn-primary:hover {
-  box-shadow: 0 0 28px rgba(0,212,232,0.5);
-  transform: translateY(-2px);
+  background: #0f766e;
+  box-shadow: 0 4px 16px rgba(13,148,136,0.35);
+  transform: translateY(-1px);
 }
 
 .owner-cta-btn-secondary {
-  padding: 9px 18px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.11);
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border-str);
   border-radius: 10px;
-  color: var(--text-soft); font-family: 'Syne', sans-serif;
+  color: var(--ink-2); font-family: 'DM Sans', sans-serif;
   font-size: 12px; font-weight: 600;
-  cursor: pointer; transition: all 0.2s;
-  white-space: nowrap; text-decoration: none;
-  display: flex; align-items: center; gap: 5px;
-  justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+  text-decoration: none; display: flex;
+  align-items: center; gap: 5px; justify-content: center;
 }
 
-.owner-cta-btn-secondary:hover {
-  background: rgba(255,255,255,0.08); color: #fff;
-  border-color: rgba(255,255,255,0.2);
-}
+.owner-cta-btn-secondary:hover { background: var(--bg2); color: var(--ink); }
 
-/* ── FLOATING LIST BUTTON (mobile) ───────────────── */
-.float-list-btn {
+/* ─── QUICK FILTERS (mobile) ─────────────────────────────────────── */
+.quick-filters {
   display: none;
-  position: fixed;
-  bottom: 22px; right: 18px;
-  z-index: 300;
-  padding: 13px 20px;
-  background: linear-gradient(135deg, var(--cyan), #007a90);
-  border: none; border-radius: 50px;
-  color: #05070e; font-family: 'Syne', sans-serif;
-  font-size: 13px; font-weight: 800;
-  cursor: pointer; transition: all 0.22s;
-  box-shadow: 0 6px 28px rgba(0,212,232,0.45);
-  align-items: center; gap: 7px;
-  text-decoration: none;
+  padding: 0 16px 12px;
+  overflow-x: auto; gap: 7px; scrollbar-width: none;
 }
 
-.float-list-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,212,232,0.55); }
+.quick-filters::-webkit-scrollbar { display: none; }
 
-@media (max-width: 640px) {
-  .float-list-btn { display: flex; }
-  .owner-cta-banner { flex-direction: column; align-items: flex-start; padding: 22px 20px; }
-  .owner-cta-actions { flex-direction: row; width: 100%; }
-  .owner-cta-btn-primary, .owner-cta-btn-secondary { flex: 1; }
-}
-
-/* ── Animations ──────────────────────────────────── */
-.prop-card { animation: cardIn 0.4s cubic-bezier(0.4,0,0.2,1) both; }
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── RESPONSIVE ──────────────────────────────────── */
+/* ─── RESPONSIVE ─────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .filter-sidebar { display: none; }
   .quick-filters { display: flex; }
@@ -1289,54 +990,25 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 @media (max-width: 640px) {
-  nav { padding: 0 16px; }
+  nav { padding: 0 14px; }
   .nav-links { display: none; }
-  .hero { padding: 48px 20px 40px; }
+  .hero { padding: 40px 18px 32px; }
   .hero-search { flex-direction: column; }
   .search-divider { display: none; }
   .cards-grid { grid-template-columns: 1fr; }
   .cards-grid.list-view .prop-card { flex-direction: column; max-height: none; }
-  .cards-grid.list-view .card-img { width: 100%; height: 180px; }
+  .cards-grid.list-view .card-img { width: 100%; height: 175px; }
+  .owner-cta-banner { flex-direction: column; padding: 20px 18px; }
+  .owner-cta-actions { flex-direction: row; width: 100%; }
+  .owner-cta-btn-primary, .owner-cta-btn-secondary { flex: 1; }
 }
 </style>
 </head>
 <body>
 <div class="page">
 
-<!-- Toast container -->
+<!-- Toast -->
 <div class="toast-wrap" id="toastWrap"></div>
-
-<!-- Modal -->
-<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
-  <div class="modal" id="modalBox">
-    <div class="modal-img img-bg-1" id="modalImg">
-      <span id="modalEmoji">🏠</span>
-      <div class="modal-close" onclick="closeModal()">✕</div>
-      <div class="card-img-overlay"></div>
-    </div>
-    <div class="modal-body">
-      <div class="card-badges" style="position:static;margin-bottom:10px" id="modalBadges"></div>
-      <div class="modal-title" id="modalTitle">Property Name</div>
-      <div class="modal-location" id="modalLocation">📍 Location</div>
-
-      <div class="modal-section-title">Room Options & Pricing</div>
-      <div class="modal-rooms-grid" id="modalRooms"></div>
-
-      <div class="modal-section-title">Amenities</div>
-      <div class="modal-amenities-grid" id="modalAmenities"></div>
-
-      <div id="modalRules" style="margin-top:16px">
-        <div class="modal-section-title">House Rules</div>
-        <div id="modalRulesList" style="font-size:13px;color:var(--text-soft);line-height:1.8"></div>
-      </div>
-
-      <div class="modal-contact-row">
-        <button class="modal-cta modal-cta-book" id="modalBookBtn">⚡ Request Visit</button>
-        <button class="modal-cta modal-cta-call" onclick="toast('📞 Calling...','Connecting you with the owner','success')">📞 Call Owner</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- ── NAV ── -->
 <nav>
@@ -1362,40 +1034,52 @@ input[type="range"]::-webkit-slider-thumb {
 <!-- ── HERO ── -->
 <div class="hero">
   <div class="hero-eyebrow">AI-Powered PG & Hostel Search</div>
-  <h1 class="hero-title">Find Your Perfect<br><span class="grad">PG or Hostel</span></h1>
+  <h1 class="hero-title">Find Your Perfect<br><em>PG or Hostel</em></h1>
   <p class="hero-sub">Discover verified paying guest accommodations and hostels with real photos, transparent pricing, and instant booking.</p>
 
   <div class="hero-search">
     <div class="search-field">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       <input id="searchInput" placeholder="Search by locality, area, or landmark..." oninput="handleSearch()">
     </div>
     <div class="search-divider"></div>
-    <div class="search-field" style="max-width:160px">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    <div class="search-field" style="max-width:150px">
+      <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
       <input id="genderInput" placeholder="Any gender">
     </div>
     <button class="search-btn" onclick="handleSearch()">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       Search
     </button>
   </div>
 
   <div class="type-toggle">
-    <button class="type-btn pg active" id="typePG" onclick="setType('PG')">🏠 PG / Paying Guest</button>
+    <button class="type-btn active" id="typeAll" onclick="setType('All')">📋 All</button>
+    <button class="type-btn" id="typePG" onclick="setType('PG')">🏠 PG / Paying Guest</button>
     <button class="type-btn hostel" id="typeHostel" onclick="setType('Hostel')">🏢 Hostel</button>
-    <button class="type-btn" id="typeAll" onclick="setType('All')" style="font-size:12px">📋 All</button>
   </div>
 
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-val"><span id="countStat">0</span>+</div><div class="hstat-label">Listings Available</div></div>
-    <div class="hstat"><div class="hstat-val"><span>100</span>%</div><div class="hstat-label">Verified Properties</div></div>
-    <div class="hstat"><div class="hstat-val"><span>24</span>hr</div><div class="hstat-label">Response Time</div></div>
-    <div class="hstat"><div class="hstat-val">₹<span>4K</span></div><div class="hstat-label">Starting Rent</div></div>
+    <div class="hstat">
+      <div class="hstat-val"><span id="countStat">0</span>+</div>
+      <div class="hstat-label">Listings Available</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-val"><span>100</span>%</div>
+      <div class="hstat-label">Verified Properties</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-val"><span>24</span>hr</div>
+      <div class="hstat-label">Response Time</div>
+    </div>
+    <div class="hstat">
+      <div class="hstat-val">₹<span>4K</span></div>
+      <div class="hstat-label">Starting Rent</div>
+    </div>
   </div>
 </div>
 
-<!-- Quick filters (mobile) -->
+<!-- Quick filters mobile -->
 <div class="quick-filters" id="quickFilters">
   <div class="chip active" onclick="toggleQuickFilter(this,'All')">All</div>
   <div class="chip" onclick="toggleQuickFilter(this,'ac')">❄️ AC</div>
@@ -1410,7 +1094,7 @@ input[type="range"]::-webkit-slider-thumb {
 <!-- ── MAIN ── -->
 <div class="main-wrap">
 
-  <!-- ── FILTERS ── -->
+  <!-- SIDEBAR -->
   <aside class="filter-sidebar">
     <div class="filter-panel">
       <div class="filter-header">
@@ -1418,28 +1102,24 @@ input[type="range"]::-webkit-slider-thumb {
         <button class="filter-reset" onclick="resetFilters()">Reset All</button>
       </div>
 
-      <!-- Budget -->
       <div class="filter-group">
         <div class="filter-group-title">Monthly Budget</div>
         <div class="price-display">
           <span>₹2,000</span>
-          <span id="priceLabel">≤ ₹<span id="priceVal">20,000</span></span>
+          <span>≤ ₹<span id="priceVal">20,000</span></span>
         </div>
         <input type="range" min="2000" max="50000" step="500" value="20000"
           id="priceRange" oninput="updatePrice(this.value)">
       </div>
 
-      <!-- Property Type -->
       <div class="filter-group">
         <div class="filter-group-title">Property Type</div>
         <div class="check-list">
           <label class="check-item"><input type="checkbox" checked onchange="applyFilters()"><span class="check-box"></span> PG / Paying Guest</label>
           <label class="check-item"><input type="checkbox" checked onchange="applyFilters()"><span class="check-box"></span> Hostel</label>
-          <label class="check-item"><input type="checkbox" onchange="applyFilters()"><span class="check-box"></span> Co-living Space</label>
         </div>
       </div>
 
-      <!-- Gender Preference -->
       <div class="filter-group">
         <div class="filter-group-title">Gender Preference</div>
         <div class="chip-list">
@@ -1450,7 +1130,6 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
       </div>
 
-      <!-- Room Type -->
       <div class="filter-group">
         <div class="filter-group-title">Room Type</div>
         <div class="chip-list">
@@ -1462,7 +1141,6 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
       </div>
 
-      <!-- Amenities -->
       <div class="filter-group">
         <div class="filter-group-title">Amenities</div>
         <div class="check-list">
@@ -1477,28 +1155,6 @@ input[type="range"]::-webkit-slider-thumb {
         </div>
       </div>
 
-      <!-- Availability -->
-      <div class="filter-group">
-        <div class="filter-group-title">Availability</div>
-        <div class="chip-list">
-          <div class="chip active" onclick="toggleChip(this,'avail')">Any Time</div>
-          <div class="chip" onclick="toggleChip(this,'avail')">Immediately</div>
-          <div class="chip" onclick="toggleChip(this,'avail')">This Month</div>
-          <div class="chip" onclick="toggleChip(this,'avail')">Next Month</div>
-        </div>
-      </div>
-
-      <!-- Furnishing -->
-      <div class="filter-group">
-        <div class="filter-group-title">Furnishing</div>
-        <div class="chip-list">
-          <div class="chip active" onclick="toggleChip(this,'furnish')">Any</div>
-          <div class="chip" onclick="toggleChip(this,'furnish')">Fully Furnished</div>
-          <div class="chip" onclick="toggleChip(this,'furnish')">Semi-Furnished</div>
-        </div>
-      </div>
-
-      <!-- Rating -->
       <div class="filter-group">
         <div class="filter-group-title">Minimum Rating</div>
         <div class="chip-list">
@@ -1511,29 +1167,18 @@ input[type="range"]::-webkit-slider-thumb {
     </div>
   </aside>
 
-  <!-- ── LISTINGS ── -->
+  <!-- LISTINGS -->
   <div class="listing-area">
 
-    <!-- Featured Banner -->
+    <!-- Featured banner -->
     <div class="featured-banner">
       <div class="featured-icon">⚡</div>
       <div class="featured-text">
         <div class="featured-label">AI Pick of the Day</div>
         <div class="featured-title">SmartRent AI recommends based on your location, budget & preferences</div>
-        <div class="featured-sub">Enable location access for hyper-local results within 2km</div>
+        <div class="featured-sub">Enable location access for hyper-local results within 2 km</div>
       </div>
-      <button class="map-btn" onclick="toast('📍','Location access requested','success')">
-        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-        Enable
-      </button>
-    </div>
-
-    <!-- Map banner -->
-    <div class="map-banner">
-      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--cyan);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-      <span style="font-size:13px;color:var(--text-soft)">View listings on map for better spatial context</span>
-      <div class="map-preview"></div>
-      <button class="map-btn">🗺️ Map View</button>
+      <button class="enable-btn" onclick="toast('📍','Location access requested','success')">📍 Enable</button>
     </div>
 
     <!-- Topbar -->
@@ -1543,11 +1188,11 @@ input[type="range"]::-webkit-slider-thumb {
       </div>
       <div class="listing-controls">
         <div class="view-toggle">
-          <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Grid view">
-            <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <button class="view-btn active" id="gridViewBtn" onclick="setView('grid')" title="Grid">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           </button>
-          <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="List view">
-            <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          <button class="view-btn" id="listViewBtn" onclick="setView('list')" title="List">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
           </button>
         </div>
         <select class="sort-select" id="sortSelect" onchange="applyFilters()">
@@ -1556,12 +1201,11 @@ input[type="range"]::-webkit-slider-thumb {
           <option value="price_desc">Price: High to Low</option>
           <option value="rating">Highest Rated</option>
           <option value="newest">Newest First</option>
-          <option value="distance">Nearest First</option>
         </select>
       </div>
     </div>
 
-    <!-- Cards -->
+    <!-- Cards container -->
     <div class="cards-grid" id="cardsGrid"></div>
 
     <!-- Load more -->
@@ -1569,244 +1213,115 @@ input[type="range"]::-webkit-slider-thumb {
       <button class="load-more-btn" onclick="loadMore()">Load More Listings ↓</button>
     </div>
 
-    <!-- ── OWNER CTA BANNER ── -->
+    <!-- Owner CTA -->
     <div class="owner-cta-banner">
       <div class="owner-cta-icon">🏠</div>
       <div class="owner-cta-text">
         <div class="owner-cta-eyebrow">For Property Owners</div>
         <div class="owner-cta-title">Own a PG or Hostel? List it Free Today</div>
-        <div class="owner-cta-sub">Join 500+ verified landlords on SmartRent AI. Get genuine tenant inquiries, manage bookings, and grow your rental income — all from one powerful dashboard.</div>
+        <div class="owner-cta-sub">Join verified landlords on SmartRent AI. Get genuine tenant inquiries, manage bookings, and grow your rental income — all from one dashboard.</div>
         <div class="owner-cta-perks">
           <span class="owner-cta-perk">✓ Free to list</span>
           <span class="owner-cta-perk">✓ Verified badge</span>
           <span class="owner-cta-perk">✓ 24hr review</span>
           <span class="owner-cta-perk">✓ Direct inquiries</span>
-          <span class="owner-cta-perk">✓ Dashboard analytics</span>
+          <span class="owner-cta-perk">✓ Analytics</span>
         </div>
       </div>
       <div class="owner-cta-actions">
-        <a class="owner-cta-btn-primary" href="post-property.html">
-          ➕ List Your Property
-        </a>
-        <a class="owner-cta-btn-secondary" href="booking-dashboard.html">
-          📋 Owner Dashboard
-        </a>
+        <a class="owner-cta-btn-primary" href="PG-posting.html">➕ List Your Property</a>
+        <a class="owner-cta-btn-secondary" href="booking-dashboard.html">📋 Owner Dashboard</a>
       </div>
     </div>
 
   </div>
+</div>
 
-</div><!-- end main-wrap -->
-</div><!-- end page -->
-
-<!-- ── FLOATING LIST BUTTON (mobile) ── -->
-<a class="float-list-btn" href="PG-posting.html">➕ List Property</a>
+</div><!-- .page -->
 
 <script>
-// ── DATA ───────────────────────────────────────────────────────────
-const LISTINGS = [
-  {
-    id:1, type:'PG', name:'Green Valley PG for Girls', area:'Banjara Hills', city:'Hyderabad',
-    distance:'0.8 km from Metro', rating:4.7, reviews:124,
-    gender:'Girls', verified:true, hot:false, isNew:false,
-    emoji:'🏠', bgClass:'img-bg-1',
-    rooms:[{label:'Single',price:9500},{label:'Double',price:6500},{label:'Triple',price:5200}],
-    amenities:['📶 WiFi','🍽️ Meals','❄️ AC','🔒 Security','🧺 Laundry','📷 CCTV','💧 RO Water','🚿 Geyser'],
-    rules:'No guests after 10PM • No alcohol • No smoking • Veg only kitchen',
-    wifi:true, meals:true, ac:true, laundry:true, gym:false, parking:false, security:true, cctv:true,
-    tags:['Popular','Girls only'],
-    basePrice:5200
-  },
-  {
-    id:2, type:'Hostel', name:'Urban Nest Co-living Hub', area:'Madhapur', city:'Hyderabad',
-    distance:'1.2 km from HITEC City', rating:4.5, reviews:89,
-    gender:'Boys', verified:true, hot:true, isNew:false,
-    emoji:'🏢', bgClass:'img-bg-2',
-    rooms:[{label:'Dorm 8-bed',price:4500},{label:'Dorm 4-bed',price:6000},{label:'Private',price:12000}],
-    amenities:['📶 WiFi','❄️ AC','💪 Gym','🚗 Parking','🔒 Security','📷 CCTV','🎮 Common Room','☕ Cafeteria'],
-    rules:'Entry allowed till midnight • Visitors in common area only • No loud music after 11PM',
-    wifi:true, meals:false, ac:true, laundry:false, gym:true, parking:true, security:true, cctv:true,
-    tags:['IT Hub','Co-ed'],
-    basePrice:4500
-  },
-  {
-    id:3, type:'PG', name:'Sunrise Boys PG', area:'Jubilee Hills', city:'Hyderabad',
-    distance:'0.5 km from Road No. 36', rating:4.3, reviews:67,
-    gender:'Boys', verified:true, hot:false, isNew:true,
-    emoji:'🏡', bgClass:'img-bg-3',
-    rooms:[{label:'Single',price:8000},{label:'Double',price:5500},{label:'Triple',price:4200}],
-    amenities:['📶 WiFi','🍽️ Meals','🧺 Laundry','🔒 Security','📷 CCTV','💧 RO Water','🛗 Lift','🏍️ Bike Stand'],
-    rules:'No smoking • No alcohol • Curfew 11PM • Veg & Non-veg meals',
-    wifi:true, meals:true, ac:false, laundry:true, gym:false, parking:true, security:true, cctv:true,
-    tags:['Budget Friendly'],
-    basePrice:4200
-  },
-  {
-    id:4, type:'PG', name:'Lotus Premium Girls PG', area:'Kondapur', city:'Hyderabad',
-    distance:'0.3 km from DLF Cyber City', rating:4.8, reviews:201,
-    gender:'Girls', verified:true, hot:true, isNew:false,
-    emoji:'🌸', bgClass:'img-bg-4',
-    rooms:[{label:'Single',price:14000},{label:'Double',price:9500}],
-    amenities:['📶 WiFi','🍽️ 3 Meals','❄️ AC','🧺 Laundry','💪 Gym','📷 CCTV','🔒 Biometric','🛁 Attached Bath'],
-    rules:'24/7 access for working professionals • Guests in lobby only • No smoking',
-    wifi:true, meals:true, ac:true, laundry:true, gym:true, parking:false, security:true, cctv:true,
-    tags:['Premium','Working Women'],
-    basePrice:9500
-  },
-  {
-    id:5, type:'Hostel', name:'The Backpacker\'s Den', area:'Ameerpet', city:'Hyderabad',
-    distance:'100m from Ameerpet Metro', rating:4.2, reviews:153,
-    gender:'Co-ed', verified:true, hot:false, isNew:false,
-    emoji:'🎒', bgClass:'img-bg-5',
-    rooms:[{label:'Dorm 10-bed',price:3500},{label:'Dorm 6-bed',price:4800},{label:'Private',price:9000}],
-    amenities:['📶 WiFi','☕ Café','🎮 Game Zone','🧺 Laundry','🔒 Lockers','🗺️ City Tours','💻 Work Desk','📚 Library'],
-    rules:'24/7 access • International guests welcome • Community events weekly',
-    wifi:true, meals:false, ac:false, laundry:true, gym:false, parking:false, security:true, cctv:false,
-    tags:['Budget','Social'],
-    basePrice:3500
-  },
-  {
-    id:6, type:'PG', name:'Silicon Valley PG', area:'Gachibowli', city:'Hyderabad',
-    distance:'0.6 km from DLF Tower', rating:4.6, reviews:98,
-    gender:'Co-ed', verified:true, hot:false, isNew:true,
-    emoji:'💻', bgClass:'img-bg-6',
-    rooms:[{label:'Single',price:11000},{label:'Double',price:7500},{label:'Triple',price:6000}],
-    amenities:['📶 High-Speed WiFi','❄️ AC','💪 Gym','🚗 Parking','🔒 Security','🧺 Laundry','💻 Work Station','🍽️ Meals'],
-    rules:'IT professionals preferred • Flexible check-in/out • Guest policy: prior approval',
-    wifi:true, meals:true, ac:true, laundry:true, gym:true, parking:true, security:true, cctv:true,
-    tags:['IT Professionals','Co-ed'],
-    basePrice:6000
-  },
-  {
-    id:7, type:'Hostel', name:'Sky Hostel & Cafe', area:'Begumpet', city:'Hyderabad',
-    distance:'1.5 km from Airport Metro', rating:4.4, reviews:77,
-    gender:'Co-ed', verified:false, hot:false, isNew:false,
-    emoji:'🌤️', bgClass:'img-bg-1',
-    rooms:[{label:'Dorm 6-bed',price:5000},{label:'Dorm 4-bed',price:6500},{label:'Private',price:11000}],
-    amenities:['📶 WiFi','☕ Rooftop Café','🎵 Music Room','🧺 Laundry','🚿 Hot Water','📷 CCTV','🏊 Pool Access','🎯 Recreation'],
-    rules:'No loud noise after 11PM • Eco-friendly hostel • Weekly cleaning mandatory',
-    wifi:true, meals:false, ac:false, laundry:true, gym:false, parking:false, security:false, cctv:true,
-    tags:['Rooftop','Social'],
-    basePrice:5000
-  },
-  {
-    id:8, type:'PG', name:'Heritage Boys PG', area:'Dilsukhnagar', city:'Hyderabad',
-    distance:'0.4 km from Metro Station', rating:4.1, reviews:45,
-    gender:'Boys', verified:true, hot:false, isNew:false,
-    emoji:'🏛️', bgClass:'img-bg-2',
-    rooms:[{label:'Single',price:6500},{label:'Double',price:4500},{label:'Triple',price:3800}],
-    amenities:['📶 WiFi','🍽️ Meals','🔒 Security','💧 RO Water','🧺 Laundry','📺 TV Lounge','🏍️ Bike Stand'],
-    rules:'Students welcome • Curfew 10:30PM • No alcohol • Veg only',
-    wifi:true, meals:true, ac:false, laundry:true, gym:false, parking:false, security:true, cctv:false,
-    tags:['Students','Budget'],
-    basePrice:3800
-  },
-  {
-    id:9, type:'Hostel', name:'NomadX Co-living', area:'Kukatpally', city:'Hyderabad',
-    distance:'0.2 km from KPHB Metro', rating:4.9, reviews:312,
-    gender:'Co-ed', verified:true, hot:true, isNew:false,
-    emoji:'🌐', bgClass:'img-bg-3',
-    rooms:[{label:'Dorm 6-bed',price:5500},{label:'Shared Suite',price:8000},{label:'Private',price:15000}],
-    amenities:['📶 1Gbps WiFi','❄️ AC','💪 Gym','🚗 Parking','🔒 Biometric','📷 CCTV','🧺 Laundry','🍽️ Meals'],
-    rules:'Digital nomads & remote workers preferred • 24/7 access • Co-working hours 6AM-12AM',
-    wifi:true, meals:true, ac:true, laundry:true, gym:true, parking:true, security:true, cctv:true,
-    tags:['Premium','Digital Nomads'],
-    basePrice:5500
-  },
-  {
-    id:10, type:'PG', name:'Serene Girls PG', area:'SR Nagar', city:'Hyderabad',
-    distance:'1.0 km from Ameerpet', rating:4.3, reviews:58,
-    gender:'Girls', verified:true, hot:false, isNew:true,
-    emoji:'🌺', bgClass:'img-bg-4',
-    rooms:[{label:'Single',price:7500},{label:'Double',price:5000}],
-    amenities:['📶 WiFi','🍽️ Veg Meals','🧺 Laundry','🔒 Security','💧 RO Water','🌿 Garden','🎨 Common Area'],
-    rules:'Girls only • Curfew 10PM • Visitors not allowed in rooms',
-    wifi:true, meals:true, ac:false, laundry:true, gym:false, parking:false, security:true, cctv:true,
-    tags:['Girls Only','Serene'],
-    basePrice:5000
-  },
-  {
-    id:11, type:'PG', name:'TechPark PG Suites', area:'Nanakramguda', city:'Hyderabad',
-    distance:'0.3 km from Financial District', rating:4.6, reviews:134,
-    gender:'Co-ed', verified:true, hot:true, isNew:false,
-    emoji:'🏙️', bgClass:'img-bg-5',
-    rooms:[{label:'Single AC',price:13500},{label:'Double AC',price:9000},{label:'Studio',price:18000}],
-    amenities:['📶 Fiber WiFi','❄️ AC','💪 Gym','🚗 Parking','🔒 Smart Lock','📷 CCTV','🍽️ Meals','🛁 Attached Bath'],
-    rules:'Working professionals • No curfew • Smart home features • Pets not allowed',
-    wifi:true, meals:true, ac:true, laundry:true, gym:true, parking:true, security:true, cctv:true,
-    tags:['Luxury','No Curfew'],
-    basePrice:9000
-  },
-  {
-    id:12, type:'Hostel', name:'Student Central Hostel', area:'Abids', city:'Hyderabad',
-    distance:'0.7 km from Osmania University', rating:3.9, reviews:203,
-    gender:'Boys', verified:false, hot:false, isNew:false,
-    emoji:'📚', bgClass:'img-bg-6',
-    rooms:[{label:'Dorm 12-bed',price:2800},{label:'Dorm 8-bed',price:3500},{label:'Double',price:5000}],
-    amenities:['📶 WiFi','📚 Study Hall','🍽️ Mess','🧺 Laundry','💧 RO Water','📷 CCTV','🚲 Cycle Stand'],
-    rules:'Students only • Exam leave policy • Curfew 11PM • No outside food in rooms',
-    wifi:true, meals:true, ac:false, laundry:true, gym:false, parking:false, security:false, cctv:true,
-    tags:['Students','Cheapest'],
-    basePrice:2800
-  }
-];
+/* ═══════════════════════════════════════════════════════════════════
+   SmartRent AI — PG & Hostel Listing Page
+   All listings are loaded dynamically from localStorage
+   (saved by the PG-posting.html submission form).
 
-// ── STATE ──────────────────────────────────────────────────────────
-let savedIds = new Set();
-let activeType = 'All';
-let currentView = 'grid';
-let maxPrice = 20000;
-let activeFilters = { wifi:false, meals:false, ac:false, laundry:false, gym:false, parking:false, security:false, cctv:false };
-let searchQ = '';
-let visibleCount = 9;
+   localStorage key: "smartrent_pg_listings"
+   Expected shape per listing (same keys your posting form saves):
+   {
+     id, type, name, area, city, distance, rating, reviews,
+     gender, verified, hot, isNew, emoji, photos,
+     rooms: [{label, price}],
+     amenities: ["📶 WiFi", ...],
+     rules, wifi, meals, ac, laundry, gym, parking, security, cctv,
+     tags, basePrice
+   }
+   "photos" is an array of base64 strings (or URLs) — index [0] is
+   used as the cover photo on the card.
+═══════════════════════════════════════════════════════════════════ */
+
+// ── Load listings from localStorage ─────────────────────────────
+function getListings() {
+  try {
+    const raw = localStorage.getItem('smartrent_pg_listings');
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.error('Error reading listings:', e);
+    return [];
+  }
+}
+
+// ── State ────────────────────────────────────────────────────────
+let savedIds       = new Set();
+let activeType     = 'All';
+let currentView    = 'grid';
+let maxPrice       = 20000;
+let searchQ        = '';
+let visibleCount   = 9;
 let currentFiltered = [];
 
-// ── INIT ──────────────────────────────────────────────────────────
+// ── Init ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  animateCount('countStat', LISTINGS.length, 0, 600);
+  const listings = getListings();
+  animateCount('countStat', listings.length, 0, 600);
   applyFilters();
 });
 
-// ── RENDER ────────────────────────────────────────────────────────
+// ── Apply filters & render ────────────────────────────────────────
 function applyFilters() {
-  let data = [...LISTINGS];
+  let data = getListings();
 
-  // Type filter
   if (activeType !== 'All') data = data.filter(l => l.type === activeType);
 
-  // Search
   if (searchQ) {
     const q = searchQ.toLowerCase();
     data = data.filter(l =>
-      l.name.toLowerCase().includes(q) ||
-      l.area.toLowerCase().includes(q) ||
-      l.city.toLowerCase().includes(q) ||
-      l.type.toLowerCase().includes(q)
+      (l.name  || '').toLowerCase().includes(q) ||
+      (l.area  || '').toLowerCase().includes(q) ||
+      (l.city  || '').toLowerCase().includes(q) ||
+      (l.type  || '').toLowerCase().includes(q)
     );
   }
 
-  // Price
-  data = data.filter(l => l.basePrice <= maxPrice);
+  data = data.filter(l => (l.basePrice || 0) <= maxPrice);
 
-  // Amenity checkboxes
-  const amenityKeys = ['wifi','meals','ac','laundry','gym','parking','security','cctv'];
-  amenityKeys.forEach(k => {
+  ['wifi','meals','ac','laundry','gym','parking','security','cctv'].forEach(k => {
     const el = document.getElementById('f_' + k);
     if (el && el.checked) data = data.filter(l => l[k]);
   });
 
-  // Sort
   const sort = document.getElementById('sortSelect').value;
-  if (sort === 'price_asc') data.sort((a,b) => a.basePrice - b.basePrice);
-  else if (sort === 'price_desc') data.sort((a,b) => b.basePrice - a.basePrice);
-  else if (sort === 'rating') data.sort((a,b) => b.rating - a.rating);
-  else if (sort === 'newest') data.sort((a,b) => b.isNew - a.isNew);
+  if (sort === 'price_asc')  data.sort((a,b) => a.basePrice - b.basePrice);
+  if (sort === 'price_desc') data.sort((a,b) => b.basePrice - a.basePrice);
+  if (sort === 'rating')     data.sort((a,b) => (b.rating||0) - (a.rating||0));
+  if (sort === 'newest')     data.sort((a,b) => (b.createdAt||0) - (a.createdAt||0));
 
   currentFiltered = data;
   renderCards(data.slice(0, visibleCount));
   document.getElementById('resultCount').textContent = `(${data.length} found)`;
+  document.getElementById('countStat').textContent   = getListings().length;
 }
 
+// ── Render card list ──────────────────────────────────────────────
 function renderCards(data) {
   const grid = document.getElementById('cardsGrid');
 
@@ -1823,122 +1338,99 @@ function renderCards(data) {
   grid.innerHTML = data.map((l, i) => cardHTML(l, i)).join('');
 }
 
+// ── Single card HTML ──────────────────────────────────────────────
 function cardHTML(l, i) {
-  const isSaved = savedIds.has(l.id);
-  const accentClass = l.type === 'PG' ? 'cta-primary' : 'cta-hostel';
-  const delay = Math.min(i * 0.05, 0.4);
+  const isSaved   = savedIds.has(l.id);
+  const delay     = Math.min(i * 0.05, 0.4);
+  const coverSrc  = (l.photos && l.photos[0]) || null;
 
+  // Cover image or placeholder
+  const imgInner = coverSrc
+    ? `<img class="card-photo" src="${coverSrc}" alt="${escHtml(l.name)}" loading="lazy">`
+    : `<div class="card-photo-placeholder">
+         <div class="ph-icon">${l.emoji || '🏠'}</div>
+         <div class="ph-text">No photo yet</div>
+       </div>`;
+
+  // Badges
   const badges = [
-    l.type === 'PG' ? '<span class="badge badge-pg">PG</span>' : '<span class="badge badge-hostel">HOSTEL</span>',
+    l.type === 'PG'
+      ? '<span class="badge badge-pg">PG</span>'
+      : '<span class="badge badge-hostel">HOSTEL</span>',
     l.verified ? '<span class="badge badge-verified">✓ Verified</span>' : '',
-    l.hot ? '<span class="badge badge-hot">🔥 Hot</span>' : '',
-    l.isNew ? '<span class="badge badge-new">✨ New</span>' : '',
+    l.hot      ? '<span class="badge badge-hot">🔥 Hot</span>'         : '',
+    l.isNew    ? '<span class="badge badge-new">✨ New</span>'          : '',
   ].filter(Boolean).join('');
 
-  const roomChips = l.rooms.map(r =>
-    `<div class="room-chip">${r.label}: ₹${r.price.toLocaleString('en-IN')}</div>`
+  // Room chips
+  const roomChips = (l.rooms || []).map(r =>
+    `<div class="room-chip">${r.label}: ₹${Number(r.price).toLocaleString('en-IN')}</div>`
   ).join('');
 
-  const topAmenities = l.amenities.slice(0,5).map(a => `<span class="amenity">${a}</span>`).join('');
+  // Top 4 amenities
+  const topAmenities = (l.amenities || []).slice(0,4).map(a =>
+    `<span class="amenity">${a}</span>`
+  ).join('');
+
+  // Tags
+  const tagHtml = (l.tags || []).map(t =>
+    `<span class="card-tag">${t}</span>`
+  ).join('');
+
+  // Gender colour
+  const genderColor = l.gender === 'Girls'
+    ? 'var(--rose)' : l.gender === 'Boys'
+    ? 'var(--teal)' : 'var(--emerald)';
 
   return `
-  <div class="prop-card" style="animation-delay:${delay}s" onclick="openModal(${l.id})">
-    <div class="card-img ${l.bgClass}">
-      <div class="card-img-inner">${l.emoji}</div>
+  <div class="prop-card" style="animation-delay:${delay}s">
+    <div class="card-img">
+      ${imgInner}
       <div class="card-img-overlay"></div>
       <div class="card-badges">${badges}</div>
       <div class="card-save ${isSaved ? 'saved' : ''}"
-        onclick="event.stopPropagation();toggleSave(${l.id},this)">
+           onclick="event.stopPropagation();toggleSave(${l.id},this)">
         ${isSaved ? '❤️' : '🤍'}
       </div>
       <div class="card-img-bottom">
-        <div class="card-rating">⭐ ${l.rating} <span style="opacity:0.6;font-size:10px">(${l.reviews})</span></div>
-        <div class="card-distance">📍 ${l.distance}</div>
+        <div class="card-rating">⭐ ${l.rating || '—'} <span style="opacity:.6;font-size:9.5px">(${l.reviews||0})</span></div>
+        <div class="card-distance">📍 ${l.distance || l.area || ''}</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="card-type-row">
-        <div style="display:flex;gap:5px;flex-wrap:wrap">
-          ${l.tags.map(t => `<span style="font-size:10px;padding:2px 7px;border-radius:3px;background:rgba(255,255,255,0.05);color:var(--text-muted);font-family:'JetBrains Mono',monospace">${t}</span>`).join('')}
-        </div>
-        <span style="font-size:11px;font-family:'JetBrains Mono',monospace;color:${l.gender==='Girls'?'var(--rose)':l.gender==='Boys'?'var(--cyan)':'var(--emerald)'}">
-          ${l.gender==='Girls'?'👩':'l.gender'==='Boys'?'👨':'🤝'} ${l.gender}
-        </span>
+      <div class="card-meta">
+        <div class="card-tags">${tagHtml}</div>
+        <span class="card-gender" style="color:${genderColor}">${l.gender || ''}</span>
       </div>
-      <div class="card-name">${l.name}</div>
+      <div class="card-name">${escHtml(l.name)}</div>
       <div class="card-location">
-        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-        ${l.area}, ${l.city}
+        <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+        ${escHtml(l.area || '')}, ${escHtml(l.city || '')}
       </div>
       <div class="card-rooms">${roomChips}</div>
       <div class="card-amenities">${topAmenities}</div>
       <div class="card-footer">
         <div class="card-price">
-          <div class="price-val"><span class="currency">₹</span>${l.basePrice.toLocaleString('en-IN')}</div>
+          <div class="price-val"><span class="currency">₹</span>${Number(l.basePrice||0).toLocaleString('en-IN')}</div>
           <div class="price-period">per month onwards</div>
         </div>
         <div class="card-cta">
-          <button class="cta-btn cta-outline" onclick="event.stopPropagation();toast('📞','Calling owner of ${l.name.replace(/'/,"'")}...','success')">Call</button>
-          <button class="cta-btn ${accentClass}" onclick="event.stopPropagation();openModal(${l.id})">View</button>
+          <button class="cta-btn cta-outline"
+            onclick="event.stopPropagation();toast('📞','Calling owner of ${escJs(l.name)}...','success')">
+            Call
+          </button>
+          <a class="cta-btn cta-primary"
+             href="pg-details.html?id=${l.id}"
+             onclick="event.stopPropagation()">
+            View →
+          </a>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────
-function openModal(id) {
-  const l = LISTINGS.find(x => x.id === id);
-  if (!l) return;
-
-  document.getElementById('modalImg').className = 'modal-img ' + l.bgClass;
-  document.getElementById('modalEmoji').textContent = l.emoji;
-  document.getElementById('modalTitle').textContent = l.name;
-  document.getElementById('modalLocation').innerHTML = `📍 ${l.area}, ${l.city} &nbsp;·&nbsp; ${l.distance}`;
-
-  const badges = [
-    l.type === 'PG' ? '<span class="badge badge-pg">PG</span>' : '<span class="badge badge-hostel">HOSTEL</span>',
-    l.verified ? '<span class="badge badge-verified">✓ Verified</span>' : '',
-    l.hot ? '<span class="badge badge-hot">🔥 Hot</span>' : '',
-    l.isNew ? '<span class="badge badge-new">✨ New</span>' : '',
-  ].filter(Boolean).join('');
-  document.getElementById('modalBadges').innerHTML = badges;
-
-  document.getElementById('modalRooms').innerHTML = l.rooms.map((r,i) => `
-    <div class="modal-room-opt ${i===0?'selected':''}" onclick="selectRoom(this)">
-      <div class="room-opt-type">${r.label}</div>
-      <div class="room-opt-price">₹${r.price.toLocaleString('en-IN')}/mo</div>
-    </div>`).join('');
-
-  document.getElementById('modalAmenities').innerHTML = l.amenities.map(a => `
-    <div class="modal-amenity"><span class="icon">${a.split(' ')[0]}</span>${a.split(' ').slice(1).join(' ')}</div>`).join('');
-
-  document.getElementById('modalRulesList').innerHTML = l.rules.split('•').filter(Boolean).map(r => `• ${r.trim()}<br>`).join('');
-
-  document.getElementById('modalBookBtn').onclick = () => {
-    toast('⚡', `Visit request sent for ${l.name}!`, 'success');
-    closeModal();
-  };
-
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function handleOverlayClick(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModal();
-}
-
-function selectRoom(el) {
-  el.closest('.modal-rooms-grid').querySelectorAll('.modal-room-opt').forEach(r => r.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-// ── SAVE ──────────────────────────────────────────────────────────
+// ── Save / wishlist ───────────────────────────────────────────────
 function toggleSave(id, btn) {
   if (savedIds.has(id)) {
     savedIds.delete(id);
@@ -1953,37 +1445,33 @@ function toggleSave(id, btn) {
   }
 }
 
-// ── TYPE TOGGLE ───────────────────────────────────────────────────
+// ── Type toggle ───────────────────────────────────────────────────
 function setType(type) {
-  activeType = type;
+  activeType   = type;
   visibleCount = 9;
   ['PG','Hostel','All'].forEach(t => {
     const btn = document.getElementById('type' + t);
-    if (btn) {
-      btn.classList.remove('active');
-      if (t === type) btn.classList.add('active');
-    }
+    if (btn) btn.classList.toggle('active', t === type);
   });
   applyFilters();
 }
 
-// ── VIEW TOGGLE ───────────────────────────────────────────────────
+// ── View toggle ───────────────────────────────────────────────────
 function setView(view) {
   currentView = view;
-  const grid = document.getElementById('cardsGrid');
-  grid.classList.toggle('list-view', view === 'list');
+  document.getElementById('cardsGrid').classList.toggle('list-view', view === 'list');
   document.getElementById('gridViewBtn').classList.toggle('active', view === 'grid');
   document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
 }
 
-// ── SEARCH ────────────────────────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────────
 function handleSearch() {
-  searchQ = document.getElementById('searchInput').value.trim();
+  searchQ      = document.getElementById('searchInput').value.trim();
   visibleCount = 9;
   applyFilters();
 }
 
-// ── PRICE ─────────────────────────────────────────────────────────
+// ── Price slider ──────────────────────────────────────────────────
 function updatePrice(val) {
   maxPrice = parseInt(val);
   document.getElementById('priceVal').textContent = parseInt(val).toLocaleString('en-IN');
@@ -1992,9 +1480,9 @@ function updatePrice(val) {
   applyFilters();
 }
 
-// ── CHIPS ─────────────────────────────────────────────────────────
+// ── Chips ─────────────────────────────────────────────────────────
 function toggleChip(el, group) {
-  el.closest('.chip-list').querySelectorAll('.chip').forEach(c => c.classList.remove('active','violet'));
+  el.closest('.chip-list').querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   applyFilters();
 }
@@ -2003,8 +1491,7 @@ function toggleQuickFilter(el, val) {
   document.querySelectorAll('#quickFilters .chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   if (val !== 'All') {
-    const key = val.toLowerCase();
-    const filterEl = document.getElementById('f_' + key);
+    const filterEl = document.getElementById('f_' + val.toLowerCase());
     if (filterEl) {
       document.querySelectorAll('[id^="f_"]').forEach(f => f.checked = false);
       filterEl.checked = true;
@@ -2015,18 +1502,18 @@ function toggleQuickFilter(el, val) {
   applyFilters();
 }
 
-// ── RESET ─────────────────────────────────────────────────────────
+// ── Reset ─────────────────────────────────────────────────────────
 function resetFilters() {
   document.querySelectorAll('[id^="f_"]').forEach(f => f.checked = false);
   document.getElementById('priceRange').value = 20000;
   updatePrice(20000);
   document.getElementById('searchInput').value = '';
-  searchQ = '';
+  searchQ    = '';
   activeType = 'All';
   document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('typeAll').classList.add('active');
-  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.chip-list').forEach(list => {
+    list.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
     const first = list.querySelector('.chip');
     if (first) first.classList.add('active');
   });
@@ -2035,30 +1522,33 @@ function resetFilters() {
   toast('🔄', 'All filters reset', '');
 }
 
-// ── LOAD MORE ─────────────────────────────────────────────────────
+// ── Load more ─────────────────────────────────────────────────────
 function loadMore() {
   visibleCount += 6;
   renderCards(currentFiltered.slice(0, visibleCount));
   toast('⬇️', 'More listings loaded', '');
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────
+// ── Toast ─────────────────────────────────────────────────────────
 function toast(icon, msg, type) {
   const wrap = document.getElementById('toastWrap');
-  const el = document.createElement('div');
+  const el   = document.createElement('div');
   el.className = 'toast ' + (type || '');
-  el.innerHTML = `<span style="font-size:18px">${icon}</span><span>${msg}</span>`;
+  el.innerHTML = `<span style="font-size:17px">${icon}</span><span>${msg}</span>`;
   wrap.appendChild(el);
-  setTimeout(() => { el.style.opacity='0'; el.style.transform='translateX(120%)'; el.style.transition='0.3s'; setTimeout(()=>el.remove(),300); }, 3000);
+  setTimeout(() => {
+    el.style.cssText = 'opacity:0;transform:translateX(120%);transition:.3s';
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
 }
 
-// ── COUNT ANIMATION ───────────────────────────────────────────────
+// ── Count animation ───────────────────────────────────────────────
 function animateCount(id, target, from, duration) {
   const el = document.getElementById(id);
   if (!el) return;
   const start = performance.now();
-  const tick = now => {
-    const t = Math.min((now - start) / duration, 1);
+  const tick  = now => {
+    const t    = Math.min((now - start) / duration, 1);
     const ease = 1 - Math.pow(1 - t, 3);
     el.textContent = Math.floor(from + ease * (target - from));
     if (t < 1) requestAnimationFrame(tick);
@@ -2066,8 +1556,21 @@ function animateCount(id, target, from, duration) {
   requestAnimationFrame(tick);
 }
 
-// Keyboard ESC to close modal
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+// ── Helpers ───────────────────────────────────────────────────────
+function escHtml(s) {
+  return String(s || '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function escJs(s) {
+  return String(s || '').replace(/'/g,"\\'");
+}
+
+// Keyboard ESC
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {/* modal closed */}
+});
 </script>
 </body>
 </html>

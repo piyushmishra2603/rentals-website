@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -185,13 +185,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .btn-wa-contact svg{flex-shrink:0}
 .btn-call-owner{width:100%;padding:11px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--ink3);font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}.btn-call-owner:hover{border-color:var(--terra-b);color:var(--terra)}
 
-/* ══ SUBSCRIPTION LOCK ══
-   These styles control the locked state of the contact buttons.
-   The lock overlay replaces the buttons when user has no active subscription.
-*/
+/* ══ SUBSCRIPTION LOCK ══ */
 .contact-lock-wrap{width:100%;margin-bottom:10px}
-
-/* Lock overlay card */
 .contact-lock{background:linear-gradient(135deg,rgba(200,148,58,.08),rgba(196,92,60,.06));border:1.5px solid var(--gold-b);border-radius:var(--r2);padding:16px 18px;text-align:center}
 .lock-icon{font-size:28px;margin-bottom:6px;display:block}
 .lock-title{font-family:'DM Serif Display',serif;font-size:15px;color:var(--ink);margin-bottom:4px}
@@ -199,6 +194,13 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .lock-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--gold);font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
 .btn-subscribe{display:block;width:100%;padding:12px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),#a8722a);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .22s;text-align:center}.btn-subscribe:hover{box-shadow:0 4px 18px rgba(200,148,58,.45);transform:translateY(-1px)}
 .btn-login-lock{display:block;width:100%;padding:9px;margin-top:7px;border-radius:var(--r1);background:transparent;border:1.5px solid var(--div2);color:var(--ink4);font-family:'Nunito',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;text-align:center;transition:all .2s}.btn-login-lock:hover{border-color:var(--terra-b);color:var(--terra)}
+
+/* Trial expired notice */
+.trial-expired-notice{background:rgba(196,92,60,.07);border:1.5px solid var(--terra-b);border-radius:var(--r2);padding:14px 16px;text-align:center;margin-bottom:10px}
+.ten-icon{font-size:24px;margin-bottom:5px;display:block}
+.ten-title{font-family:'DM Serif Display',serif;font-size:14px;color:var(--ink);margin-bottom:4px}
+.ten-sub{font-size:11.5px;color:var(--ink4);line-height:1.6;margin-bottom:10px}
+.btn-renew{display:block;width:100%;padding:11px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;text-align:center;transition:all .2s}.btn-renew:hover{box-shadow:0 4px 18px rgba(196,92,60,.4);transform:translateY(-1px)}
 
 .pc-perks{display:flex;flex-direction:column;gap:7px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--div)}
 .perk-row{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink3)}
@@ -218,7 +220,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .oc-wa-btn{width:100%;padding:12px;border-radius:var(--r1);background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;margin-bottom:8px}.oc-wa-btn:hover{box-shadow:0 3px 14px rgba(37,211,102,.4);transform:translateY(-1px)}
 .oc-call-btn{width:100%;padding:10px;border-radius:var(--r1);background:var(--terra-d);border:1.5px solid var(--terra-b);color:var(--terra);font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:7px}.oc-call-btn:hover{background:rgba(196,92,60,.18)}
 
-/* Blurred/locked owner phone row */
 .oc-row-locked{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink3)}
 .oc-row-locked span{font-size:15px;flex-shrink:0}
 .blurred-val{filter:blur(5px);user-select:none;pointer-events:none;font-weight:700;color:var(--ink);letter-spacing:.05em}
@@ -274,7 +275,6 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .sb-price{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);flex:1;line-height:1}
 .sb-price span{font-size:11px;font-weight:400;color:var(--ink5);font-family:'JetBrains Mono',monospace;display:block;margin-top:2px}
 .sb-btns{display:flex;gap:8px}
-/* Mobile share bar — locked state */
 .sb-wa{padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,#25D366,#128C7E);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
 .sb-wa-locked{padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),#a8722a);border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:6px}
 
@@ -478,14 +478,8 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
       <div class="pc-body">
         <button class="btn-enquire" onclick="openMo('enquiry')">⚡ Send Enquiry</button>
         <button class="btn-visit" onclick="openMo('visit')">📅 Schedule Site Visit</button>
-
-        <!-- ══════════════════════════════════
-             CONTACT BUTTONS CONTAINER
-             Rendered dynamically based on
-             subscription status (see JS below)
-        ══════════════════════════════════ -->
+        <!-- Contact buttons rendered by JS based on subscription status -->
         <div id="contactButtonsWrap"></div>
-
         <div class="pc-perks">
           <div class="perk-row"><span class="perk-ic">✅</span>Zero brokerage · Direct owner</div>
           <div class="perk-row"><span class="perk-ic">🛡️</span>KYC-verified &amp; safe listing</div>
@@ -503,9 +497,7 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
           <div class="oc-type">Property Owner</div>
         </div>
       </div>
-      <!-- Owner contact rows: locked or unlocked rendered by JS -->
       <div class="oc-detail" id="ownerDetail"></div>
-      <!-- Owner action buttons: locked or unlocked rendered by JS -->
       <div id="ownerContactBtns"></div>
     </div>
 
@@ -523,15 +515,24 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
     <div class="sb-price">₹<span id="sbPrice">—</span><span>/month</span></div>
   </div>
   <div class="sb-btns">
-    <!-- Mobile contact button: locked or unlocked rendered by JS -->
     <div id="sbContactBtn"></div>
     <button style="padding:11px 16px;border-radius:var(--r1);background:linear-gradient(135deg,var(--terra),var(--terra-dk));border:none;color:#fff;font-size:13px;font-weight:800;cursor:pointer" onclick="openMo('enquiry')">Enquire</button>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════
-     FIREBASE MODULE
-     Loads property data + checks tenant subscription status
+     SUBSCRIPTION CHECK
+     ─────────────────────────────────────────────────────────
+     Priority order:
+       1. localStorage  "sr_subscription"  (set by plans.html free trial)
+          Valid when: status === "trial_active" || "active"
+                      AND trialEndDate has not passed
+       2. Firebase Firestore  users/{uid}
+          Valid when: subscriptionStatus === "active"
+                      AND subscriptionPlan starts with "tenant"
+     ─────────────────────────────────────────────────────────
+     To change the Firebase fields, edit checkFirebaseSubscription().
+     The localStorage key "sr_subscription" must match plans.html.
 ══════════════════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -549,41 +550,74 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// ─── SUBSCRIPTION GATE ────────────────────────────────────────
-// Checks whether the currently logged-in user has an active
-// tenant subscription stored in Firestore.
-//
-// Document path:  users/{uid}
-// Field expected: subscriptionStatus  →  "active"
-//                 subscriptionPlan    →  "tenant_basic" | "tenant_premium" | etc.
-//
-// To adjust: change the collection name, document path, or
-// field names below to match your Firestore schema.
-// ─────────────────────────────────────────────────────────────
-async function checkSubscription(uid) {
+/* ════════════════════════════════════════
+   1. LOCALSTORAGE SUBSCRIPTION CHECK
+   Reads the "sr_subscription" key written
+   by plans.html when a free trial or paid
+   subscription is activated.
+════════════════════════════════════════ */
+const LS_KEY = "sr_subscription"; // must match plans.html
+
+function getLocalSubscription() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+/**
+ * Returns:
+ *   "active"  — trial/subscription valid, show contact info
+ *   "expired" — trial was set but has expired, show "renew" state
+ *   "none"    — no trial ever started
+ */
+function getLocalSubscriptionState() {
+  const sub = getLocalSubscription();
+  if (!sub) return "none";
+
+  const isKnownStatus = sub.status === 'trial_active' || sub.status === 'active';
+  if (!isKnownStatus) return "none";
+
+  // Check if trial end date has passed
+  if (sub.trialEndDate && Date.now() > new Date(sub.trialEndDate).getTime()) {
+    return "expired";
+  }
+
+  return "active";
+}
+
+/* ════════════════════════════════════════
+   2. FIREBASE SUBSCRIPTION CHECK
+   Falls back to Firestore if localStorage
+   doesn't have an active subscription.
+   Adjust field names here if your schema
+   uses different names.
+════════════════════════════════════════ */
+async function checkFirebaseSubscription(uid) {
   if (!uid) return false;
   try {
     const snap = await getDoc(doc(db, 'users', uid));
     if (!snap.exists()) return false;
     const data = snap.data();
-    // ↓ Adjust these field names / values to match your schema
-    const isActive = data.subscriptionStatus === 'active';
+    // ↓ Adjust field names / values to match your Firestore schema
+    const isActive     = data.subscriptionStatus === 'active';
     const isTenantPlan = (data.subscriptionPlan || '').startsWith('tenant');
     return isActive && isTenantPlan;
-  } catch (e) {
-    console.error('Subscription check failed:', e);
+  } catch(e) {
+    console.error('Firebase subscription check failed:', e);
     return false;
   }
 }
 
-// Wait for auth + property in parallel
+/* ════════════════════════════════════════
+   MAIN BOOT: auth + property + sub check
+════════════════════════════════════════ */
 const urlId = new URLSearchParams(window.location.search).get('id');
 
 if (!urlId) {
   showNotFound();
 } else {
   try {
-    // Resolve auth state and property data simultaneously
     const [userResult, propSnap] = await Promise.all([
       new Promise(resolve => onAuthStateChanged(auth, u => resolve(u), () => resolve(null))),
       getDoc(doc(db, 'properties', urlId))
@@ -597,14 +631,30 @@ if (!urlId) {
       const data = { id: propSnap.id, ...propSnap.data() };
       window._propData = data;
 
-      // Increment view count silently
       try { await updateDoc(doc(db, 'properties', urlId), { views: increment(1) }); } catch(e) {}
 
-      // Check subscription
-      const hasSubscription = await checkSubscription(window._currentUser?.uid);
-      window._hasSubscription = hasSubscription;
+      // ── SUBSCRIPTION CHECK (localStorage first, then Firebase) ──
+      const localState = getLocalSubscriptionState();
+      let hasSubscription = false;
+      let trialExpired    = false;
 
-      renderProperty(data, hasSubscription);
+      if (localState === 'active') {
+        // localStorage trial/sub is valid — grant access immediately
+        hasSubscription = true;
+      } else if (localState === 'expired') {
+        // Trial was set but has now expired
+        trialExpired = true;
+        hasSubscription = false;
+      } else {
+        // No localStorage record — check Firebase as fallback
+        hasSubscription = await checkFirebaseSubscription(window._currentUser?.uid);
+      }
+
+      window._hasSubscription = hasSubscription;
+      window._trialExpired    = trialExpired;
+      window._localSub        = getLocalSubscription();
+
+      renderProperty(data, hasSubscription, trialExpired);
     }
   } catch(err) {
     console.error('Error loading property:', err);
@@ -612,11 +662,12 @@ if (!urlId) {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════
    RENDER PROPERTY
-   hasSubscription: boolean — controls contact info visibility
-═══════════════════════════════════════════════════════════════ */
-function renderProperty(p, hasSubscription) {
+   hasSubscription: boolean — show/hide contact info
+   trialExpired:    boolean — show expired notice
+══════════════════════════════════════════════ */
+function renderProperty(p, hasSubscription, trialExpired) {
   const ls = document.getElementById('loadingScreen');
   ls.classList.add('hide');
   setTimeout(() => ls.style.display = 'none', 400);
@@ -627,7 +678,6 @@ function renderProperty(p, hasSubscription) {
   const title = p.title || 'Untitled Property';
   document.title = title + ' — SmartRent AI';
 
-  // Breadcrumb
   document.getElementById('bcCur').textContent = title.length > 44 ? title.slice(0,44) + '…' : title;
   const listLink = document.getElementById('bcListLink');
   if (p.type === 'Commercial' || p.type === 'commercial') {
@@ -638,7 +688,6 @@ function renderProperty(p, hasSubscription) {
     listLink.href = 'properties.html'; listLink.textContent = 'All Properties';
   }
 
-  // Status badge
   const statusEl = document.getElementById('statusBadge');
   if (p.status === 'active' || p.approved === true) {
     statusEl.textContent = 'Available Now';
@@ -721,7 +770,6 @@ function renderProperty(p, hasSubscription) {
     ).join('');
   }
 
-  // Map
   const mapQuery = encodeURIComponent([p.locality, p.city, 'India'].filter(Boolean).join(', '));
   const mapSrc = `https://maps.google.com/maps?q=${mapQuery}&output=embed&z=15`;
   document.getElementById('mapAddr').textContent = [p.locality, p.city].filter(Boolean).join(', ');
@@ -738,7 +786,6 @@ function renderProperty(p, hasSubscription) {
   }, { threshold: 0.1 });
   mapObs.observe(document.getElementById('mapSection'));
 
-  // Price
   document.getElementById('sidePrice').textContent = (p.price || 0).toLocaleString('en-IN');
   document.getElementById('sbPrice').textContent   = (p.price || 0).toLocaleString('en-IN');
   if (p.deposit) {
@@ -755,7 +802,6 @@ function renderProperty(p, hasSubscription) {
 
   document.getElementById('ownerNameEl').textContent = ownerName;
 
-  // Build WhatsApp href
   const propUrl = window.location.href;
   const waMsg = encodeURIComponent(
     `Hi ${ownerName}! I'm interested in your property "${title}" listed on SmartRent AI.\n` +
@@ -774,28 +820,38 @@ function renderProperty(p, hasSubscription) {
   const waHref  = waNum ? `https://wa.me/${waNum}?text=${waMsg}` : '#';
   const callHref = ownerPhone ? `tel:${ownerPhone.replace(/\s/g,'')}` : '#';
 
-  // ══════════════════════════════════════════════════════
-  //  RENDER CONTACT SECTION BASED ON SUBSCRIPTION STATUS
-  // ══════════════════════════════════════════════════════
-  if (hasSubscription) {
-    // ── UNLOCKED: show real WhatsApp & Call buttons ──────
+  /* ══════════════════════════════════════════════════════════════
+     RENDER CONTACT SECTION — THREE STATES:
 
-    // Owner detail rows (phone / email)
+     1. hasSubscription === true
+        → Show real WhatsApp & Call buttons (trial active / paid)
+
+     2. trialExpired === true
+        → Show "trial expired, subscribe to continue" notice
+
+     3. Neither (no trial ever started)
+        → Show lock overlay with "Start Free Trial" / subscribe CTA
+  ══════════════════════════════════════════════════════════════ */
+
+  const isLoggedIn = !!window._currentUser;
+  const sub        = window._localSub;
+
+  if (hasSubscription) {
+    /* ─── STATE 1: UNLOCKED ─────────────────────────── */
+
     const detailHtml = [];
     if (ownerPhone) detailHtml.push(`<div class="oc-row"><span>📞</span>${ownerPhone}</div>`);
     if (ownerWA && ownerWA !== ownerPhone) detailHtml.push(`<div class="oc-row"><span>💬</span>${ownerWA} (WhatsApp)</div>`);
     if (ownerEmail) detailHtml.push(`<div class="oc-row"><span>📧</span>${ownerEmail}</div>`);
     document.getElementById('ownerDetail').innerHTML = detailHtml.join('');
 
-    // Price card contact buttons
+    // Price card
     const cbWrap = document.getElementById('contactButtonsWrap');
     cbWrap.innerHTML = '';
     if (waNum) {
       const waBtn = document.createElement('a');
       waBtn.className = 'btn-wa-contact';
-      waBtn.href = waHref;
-      waBtn.target = '_blank';
-      waBtn.rel = 'noopener';
+      waBtn.href = waHref; waBtn.target = '_blank'; waBtn.rel = 'noopener';
       waBtn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Contact Owner on WhatsApp`;
       cbWrap.appendChild(waBtn);
@@ -808,7 +864,7 @@ function renderProperty(p, hasSubscription) {
       cbWrap.appendChild(callBtn);
     }
 
-    // Owner card buttons
+    // Owner card
     const ocBtns = document.getElementById('ownerContactBtns');
     ocBtns.innerHTML = '';
     if (waNum) {
@@ -822,7 +878,7 @@ function renderProperty(p, hasSubscription) {
       ocBtns.innerHTML += `<a class="oc-call-btn" href="${callHref}">📞 Call Owner</a>`;
     }
 
-    // Mobile share bar
+    // Mobile bar
     document.getElementById('sbContactBtn').innerHTML = waNum
       ? `<a class="sb-wa" href="${waHref}" target="_blank" rel="noopener">
            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -830,38 +886,50 @@ function renderProperty(p, hasSubscription) {
          </a>`
       : '';
 
-  } else {
-    // ── LOCKED: show blurred info + upgrade prompt ────────
+  } else if (trialExpired) {
+    /* ─── STATE 2: TRIAL EXPIRED ─────────────────────── */
 
-    // Blurred phone / email in owner detail
+    // Blurred owner details
     const lockedDetailHtml = [];
     if (ownerPhone) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📞</span><span class="blurred-val">+91 98765 43210</span></div>`);
     if (ownerEmail) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📧</span><span class="blurred-val">owner@email.com</span></div>`);
     document.getElementById('ownerDetail').innerHTML = lockedDetailHtml.join('');
 
-    // Lock overlay HTML (reused in both price card and owner card)
-    const isLoggedIn = !!window._currentUser;
+    const expiredHTML = `
+      <div class="trial-expired-notice">
+        <span class="ten-icon">⏰</span>
+        <div class="ten-title">Your Free Trial Ended</div>
+        <div class="ten-sub">Your 3-month free trial has expired. Subscribe to continue accessing owner contact details.</div>
+        <a class="btn-renew" href="plans.html">Subscribe to Continue →</a>
+      </div>`;
+
+    document.getElementById('contactButtonsWrap').innerHTML   = expiredHTML;
+    document.getElementById('ownerContactBtns').innerHTML      = expiredHTML;
+    document.getElementById('sbContactBtn').innerHTML          =
+      `<a class="sb-wa-locked" href="plans.html">🔒 Renew Access</a>`;
+
+  } else {
+    /* ─── STATE 3: LOCKED (no trial started) ─────────── */
+
+    const lockedDetailHtml = [];
+    if (ownerPhone) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📞</span><span class="blurred-val">+91 98765 43210</span></div>`);
+    if (ownerEmail) lockedDetailHtml.push(`<div class="oc-row-locked"><span>📧</span><span class="blurred-val">owner@email.com</span></div>`);
+    document.getElementById('ownerDetail').innerHTML = lockedDetailHtml.join('');
+
     const lockHTML = `
       <div class="contact-lock">
         <span class="lock-icon">🔒</span>
         <div class="lock-title">Contact Info Locked</div>
         <div class="lock-sub">Get direct access to the owner's WhatsApp &amp; phone number — no agents, no brokerage.</div>
-        <div class="lock-badge">✨ Tenant Subscription Required</div>
-        <a class="btn-subscribe" href="plans.html">View Plans &amp; Unlock</a>
+        <div class="lock-badge">✨ Free Trial Available</div>
+        <a class="btn-subscribe" href="plans.html">Start Free Trial — Unlock Now</a>
         ${!isLoggedIn ? `<a class="btn-login-lock" href="login.html?redirect=${encodeURIComponent(window.location.href)}">Already subscribed? Sign In</a>` : ''}
       </div>`;
 
-    // Price card
-    document.getElementById('contactButtonsWrap').innerHTML = lockHTML;
-
-    // Owner card buttons
-    document.getElementById('ownerContactBtns').innerHTML = lockHTML;
-
-    // Mobile share bar — show upgrade button
-    document.getElementById('sbContactBtn').innerHTML = `
-      <a class="sb-wa-locked" href="plans.html">
-        🔒 Unlock Contact
-      </a>`;
+    document.getElementById('contactButtonsWrap').innerHTML  = lockHTML;
+    document.getElementById('ownerContactBtns').innerHTML    = lockHTML;
+    document.getElementById('sbContactBtn').innerHTML        =
+      `<a class="sb-wa-locked" href="plans.html">🔒 Unlock Contact</a>`;
   }
 
   renderGallery(p);
@@ -913,7 +981,6 @@ function renderGallery(p) {
   }
 }
 
-/* ── Spec pills ── */
 function renderSpecs(p) {
   const specs = [];
   if (p.bhk)           specs.push({ic:'🛏️', val:p.bhk,                                    lbl:'Configuration'});
@@ -932,7 +999,6 @@ function renderSpecs(p) {
     </div>`).join('');
 }
 
-/* ── Not Found ── */
 function showNotFound() {
   document.getElementById('loadingScreen').classList.add('hide');
   setTimeout(() => document.getElementById('loadingScreen').style.display = 'none', 400);
@@ -940,7 +1006,6 @@ function showNotFound() {
 }
 window.showNotFound = showNotFound;
 
-/* ── Scroll Reveal ── */
 function initScrollReveal() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
@@ -948,7 +1013,6 @@ function initScrollReveal() {
   document.querySelectorAll('.rv').forEach(el => obs.observe(el));
 }
 
-/* ── Nav Scroll ── */
 function initNavScroll() {
   window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('solid', scrollY > 80);
@@ -958,7 +1022,6 @@ function initNavScroll() {
   });
 }
 
-/* ── Share Bar ── */
 function setupShareBar() {
   const bar = document.getElementById('shareBar');
   const check = () => { bar.style.display = window.innerWidth <= 1100 ? 'flex' : 'none'; };
@@ -967,9 +1030,8 @@ function setupShareBar() {
 
 </script>
 
-<!-- PLAIN JS — UI handlers only, no Firebase -->
+<!-- PLAIN JS — UI handlers only -->
 <script>
-/* ── Lightbox ── */
 let lbIdx = 0;
 function openLb(idx) {
   const images = window._propImages || [];
@@ -998,7 +1060,6 @@ function updateLb() {
   ).join('');
 }
 
-/* ── Save / Wishlist ── */
 let savedState = false;
 function toggleSave() {
   savedState = !savedState;
@@ -1007,7 +1068,6 @@ function toggleSave() {
   showToast(savedState ? '❤️ Saved to wishlist!' : '💔 Removed from wishlist');
 }
 
-/* ── Enquiry Modal ── */
 function openMo(type) {
   const titles = { enquiry:'⚡ Send Enquiry', visit:'📅 Schedule Site Visit', message:'✉️ Message Owner' };
   document.getElementById('modalTitle').textContent = titles[type] || '⚡ Send Enquiry';
@@ -1035,7 +1095,6 @@ function submitEnq() {
   showToast('✅ Enquiry sent! Owner will contact you within 2 hours.');
 }
 
-/* ── Mobile Menu ── */
 function toggleMob() {
   const d = document.getElementById('mobDrawer');
   const b = document.getElementById('mobBtn');
@@ -1043,7 +1102,6 @@ function toggleMob() {
   b.textContent = open ? '✕' : '☰';
 }
 
-/* ── Toast ── */
 let _tT;
 function showToast(msg) {
   const el = document.getElementById('toast');
@@ -1053,7 +1111,6 @@ function showToast(msg) {
   _tT = setTimeout(() => { el.style.display = 'none'; }, 3600);
 }
 
-/* ── Keyboard ── */
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape') { closeLb(); closeMo(); }
   if(e.key === 'ArrowRight' && document.getElementById('lightbox').classList.contains('show')) lbNext();
@@ -1061,4 +1118,4 @@ document.addEventListener('keydown', e => {
 });
 </script>
 </body>
-</html>
+</html>                

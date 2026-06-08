@@ -31,6 +31,8 @@
     document.querySelectorAll('.auth-name').forEach(el => {
       el.textContent = user ? (user.displayName || user.email) : 'Guest';
     });
+    // Once auth resolves, refresh trial button states
+    refreshTrialButtons();
   });
 </script>
 
@@ -150,7 +152,6 @@ ul { list-style: none; }
   40%      { transform: translate(25px,-18px) scale(1.04); }
   70%      { transform: translate(-18px,24px) scale(0.97); }
 }
-/* Subtle dot pattern */
 .page-bg::after {
   content: '';
   position: fixed; inset: 0;
@@ -189,9 +190,7 @@ ul { list-style: none; }
   box-shadow: 0 3px 12px rgba(37,99,235,0.28);
   flex-shrink: 0;
 }
-.nav-back {
-  margin-left: auto;
-}
+.nav-back { margin-left: auto; }
 .nav-back a {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 8px 16px; border-radius: var(--r);
@@ -214,7 +213,6 @@ ul { list-style: none; }
 }
 .sec-head p { color: var(--t2); font-size: 16px; max-width: 500px; margin: 0 auto; line-height: 1.65; }
 
-/* Eyebrow chip */
 .eyebrow {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 5px 13px; border-radius: 20px;
@@ -225,7 +223,6 @@ ul { list-style: none; }
 .ey-teal  { background: var(--teal-pale); border: 1px solid var(--teal-soft);  color: var(--teal); }
 .ey-green { background: var(--green-pale); border: 1px solid var(--green-soft); color: var(--green); }
 
-/* Gradient headings */
 .text-blue { color: var(--blue); }
 .text-gold { color: var(--gold); }
 .text-teal { color: var(--teal); }
@@ -252,7 +249,6 @@ ul { list-style: none; }
 }
 .hero p strong { color: var(--t1); font-weight: 600; }
 
-/* Trust pills */
 .trust-row {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
 }
@@ -316,7 +312,6 @@ ul { list-style: none; }
   display: grid; place-items: center; font-size: 9px;
   color: var(--green); font-weight: 800; flex-shrink: 0;
 }
-/* Countdown */
 .countdown {
   flex-shrink: 0; text-align: center;
   background: rgba(255,255,255,0.75);
@@ -366,7 +361,7 @@ ul { list-style: none; }
 .stat-lbl { font-size: 12px; color: var(--t3); margin-top: 5px; font-weight: 500; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PLAN CARDS  — shared
+   PLAN CARDS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .plans-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .plans-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
@@ -387,13 +382,11 @@ ul { list-style: none; }
   transform: translateY(-5px);
   box-shadow: var(--sh-xl);
 }
-/* Card top accent bar */
 .plan-card::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 3px;
   border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
-/* Subtle corner glow */
 .plan-card::after {
   content: '';
   position: absolute; top: 0; right: 0;
@@ -405,25 +398,21 @@ ul { list-style: none; }
 }
 .plan-card:hover::after { opacity: 1; }
 
-/* Gold — Owner */
 .card-gold::before  { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
 .card-gold::after   { background: radial-gradient(at top right, var(--gold-pale), transparent 65%); }
 .card-gold          { border-color: var(--gold-rim); }
 .card-gold:hover    { border-color: var(--gold-lt); box-shadow: 0 16px 48px rgba(217,119,6,0.12), 0 4px 16px rgba(217,119,6,0.07); }
 
-/* Blue — Tenant */
 .card-blue::before  { background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
 .card-blue::after   { background: radial-gradient(at top right, var(--blue-pale), transparent 65%); }
 .card-blue          { border-color: var(--blue-rim); }
 .card-blue:hover    { border-color: var(--blue-lt); box-shadow: 0 16px 48px rgba(37,99,235,0.12), 0 4px 16px rgba(37,99,235,0.07); }
 
-/* Teal — Service */
 .card-teal::before  { background: linear-gradient(90deg, var(--teal), var(--teal-lt)); }
 .card-teal::after   { background: radial-gradient(at top right, var(--teal-pale), transparent 65%); }
 .card-teal          { border-color: var(--teal-rim); }
 .card-teal:hover    { border-color: var(--teal-lt); box-shadow: 0 16px 48px rgba(8,145,178,0.12), 0 4px 16px rgba(8,145,178,0.07); }
 
-/* Popular badge */
 .badge-popular {
   position: absolute; top: 18px; right: 18px;
   padding: 4px 11px; border-radius: 20px; font-size: 10.5px;
@@ -432,7 +421,6 @@ ul { list-style: none; }
   border: 1px solid #fde68a;
 }
 
-/* Plan icon */
 .plan-icon {
   width: 52px; height: 52px; border-radius: 14px;
   display: grid; place-items: center; font-size: 24px;
@@ -464,7 +452,30 @@ ul { list-style: none; }
 .tag-blue { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); }
 .tag-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: var(--teal); }
 
-/* Feature list */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TRIAL USED BADGE
+   Shown instead of "Start Free Trial"
+   button when trial has already been
+   activated (checked via localStorage)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.trial-used-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: var(--r);
+  background: var(--green-pale); border: 1.5px solid var(--green-soft);
+  font-size: 13px; font-weight: 600; color: var(--green);
+  position: relative; z-index: 1; margin-bottom: 8px;
+}
+.trial-used-badge .trial-used-icon { font-size: 16px; flex-shrink: 0; }
+
+/* Active subscription banner */
+.active-sub-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-radius: var(--r);
+  background: var(--green-pale); border: 1.5px solid var(--green-soft);
+  font-size: 13px; font-weight: 600; color: #065f46;
+  position: relative; z-index: 1; margin-bottom: 8px;
+}
+
 .feat-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; position: relative; z-index: 1; }
 .feat-row  { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--t2); }
 .feat-tick {
@@ -476,7 +487,6 @@ ul { list-style: none; }
 .ft-blue { background: var(--blue-soft); color: var(--blue);  border: 1px solid #bfdbfe; }
 .ft-teal { background: var(--teal-soft); color: var(--teal);  border: 1px solid #a5f3fc; }
 
-/* After-activation callout */
 .activate-note {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 12px 14px; border-radius: var(--r);
@@ -488,7 +498,6 @@ ul { list-style: none; }
 .act-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: #164e63; }
 .activate-note strong { font-weight: 600; }
 
-/* Card buttons */
 .card-btns { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -507,32 +516,27 @@ ul { list-style: none; }
 .btn .arr { transition: transform 0.2s; display: inline-block; }
 .btn:hover .arr { transform: translateX(3px); }
 
-/* Ripple */
 .btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); transform: scale(0); animation: rip 0.5s ease-out forwards; pointer-events: none; }
 @keyframes rip { to { transform: scale(4); opacity: 0; } }
 
-/* Gold primary */
 .btn-gold {
   background: linear-gradient(135deg, var(--gold), var(--gold-lt));
   color: #fff; box-shadow: 0 3px 14px rgba(217,119,6,0.30);
 }
 .btn-gold:hover { box-shadow: 0 6px 22px rgba(217,119,6,0.42); transform: translateY(-2px); }
 
-/* Blue primary */
 .btn-blue {
   background: linear-gradient(135deg, #1d4ed8, var(--blue));
   color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,0.28);
 }
 .btn-blue:hover { box-shadow: 0 6px 22px rgba(37,99,235,0.40); transform: translateY(-2px); }
 
-/* Teal primary */
 .btn-teal {
   background: linear-gradient(135deg, #0e7490, var(--teal));
   color: #fff; box-shadow: 0 3px 14px rgba(8,145,178,0.28);
 }
 .btn-teal:hover { box-shadow: 0 6px 22px rgba(8,145,178,0.40); transform: translateY(-2px); }
 
-/* Ghost variants */
 .btn-outline-gold { background: var(--gold-pale); border: 1.5px solid var(--gold-soft); color: var(--gold); }
 .btn-outline-gold:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-1px); }
 
@@ -548,10 +552,12 @@ ul { list-style: none; }
 .btn-sm { padding: 9px 16px; font-size: 13px; }
 .btn-lg { padding: 15px 28px; font-size: 15px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DIVIDER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.divider { height: 1px; background: var(--line); }
+/* Disabled trial button */
+.btn-disabled {
+  background: var(--surface-2); border: 1.5px solid var(--line);
+  color: var(--t3); cursor: not-allowed; opacity: 0.65;
+}
+.btn-disabled:hover { transform: none !important; box-shadow: none !important; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    COMPARISON TABLE
@@ -582,7 +588,6 @@ ul { list-style: none; }
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .pay-sec { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
-/* Plan pills */
 .plan-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
 .ppill {
   padding: 8px 18px; border-radius: 20px;
@@ -594,7 +599,6 @@ ul { list-style: none; }
 .ppill.blue  { background: var(--blue-pale);  border-color: var(--blue-soft);  color: var(--blue); }
 .ppill.teal  { background: var(--teal-pale);  border-color: var(--teal-soft);  color: var(--teal); }
 
-/* Amount */
 .pay-amount {
   text-align: center; margin-bottom: 32px;
   padding: 28px; background: var(--surface-2);
@@ -609,7 +613,6 @@ ul { list-style: none; }
   font-size: 12.5px; font-weight: 600; color: var(--green);
 }
 
-/* UPI grid */
 .upi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 36px; }
 @media (max-width:900px) { .upi-grid { grid-template-columns: repeat(3,1fr); } }
 @media (max-width:520px) { .upi-grid { grid-template-columns: repeat(2,1fr); } }
@@ -636,7 +639,6 @@ ul { list-style: none; }
 }
 @keyframes livepulse { 0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4); } 50% { box-shadow: 0 0 0 5px rgba(5,150,105,0); } }
 
-/* UPI ID box */
 .upi-id-box {
   background: var(--surface-2); border: 1.5px solid var(--line);
   border-radius: var(--r-md); padding: 24px;
@@ -647,7 +649,6 @@ ul { list-style: none; }
 .upi-copy-btn { background: none; border: none; color: var(--blue); font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: var(--font); text-decoration: underline; transition: color 0.15s; }
 .upi-copy-btn:hover { color: #1d4ed8; }
 
-/* UTR row */
 .utr-row { display: flex; gap: 10px; align-items: flex-end; }
 .utr-field { flex: 1; }
 .utr-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--t2); margin-bottom: 7px; }
@@ -661,7 +662,6 @@ ul { list-style: none; }
 .utr-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
 .utr-input::placeholder { color: var(--t3); }
 
-/* Security badges */
 .sec-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 28px; border-top: 1px solid var(--line); }
 .sec-badge {
   display: flex; align-items: center; gap: 6px;
@@ -786,9 +786,6 @@ ul { list-style: none; }
 .toast.success { border-color: var(--green-soft); }
 .toast.err     { border-color: #fecaca; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESPONSIVE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width:768px) {
   .promo-card { padding: 24px 20px; gap: 18px; }
   .countdown  { display: none; }
@@ -804,19 +801,15 @@ ul { list-style: none; }
 </head>
 <body>
 
-<!-- BG -->
 <div class="page-bg" aria-hidden="true">
   <div class="bg-blob bg-blob-1"></div>
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>
 </div>
 
-<!-- Toast container -->
 <div id="toasts"></div>
 
-<!-- ─────────────────────────────────────
-     NAVBAR
-───────────────────────────────────── -->
+<!-- NAVBAR -->
 <nav class="navbar" id="nav">
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">
@@ -829,9 +822,7 @@ ul { list-style: none; }
   </div>
 </nav>
 
-<!-- ─────────────────────────────────────
-     HERO
-───────────────────────────────────── -->
+<!-- HERO -->
 <section class="hero">
   <div class="eyebrow ey-blue reveal">✦ Pricing & Plans</div>
   <h1 class="reveal">Unlock <span class="accent">Premium Access</span><br>& Grow Faster</h1>
@@ -848,9 +839,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     PROMO BANNER
-───────────────────────────────────── -->
+<!-- PROMO BANNER -->
 <div class="promo-wrap">
   <div class="promo-card reveal">
     <div class="promo-emoji">🎉</div>
@@ -879,9 +868,7 @@ ul { list-style: none; }
   </div>
 </div>
 
-<!-- ─────────────────────────────────────
-     STATS
-───────────────────────────────────── -->
+<!-- STATS -->
 <div class="wrap">
   <div class="stats-bar reveal">
     <div class="stat-cell">
@@ -903,9 +890,7 @@ ul { list-style: none; }
   </div>
 </div>
 
-<!-- ─────────────────────────────────────
-     PROPERTY PLANS
-───────────────────────────────────── -->
+<!-- PROPERTY PLANS -->
 <section class="sec">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -944,8 +929,9 @@ ul { list-style: none; }
           <span style="font-size:18px">⭐</span>
           <span><strong>After Activation:</strong> Gold Star Badge appears on your Profile, Dashboard, Property Listings & Search Results</span>
         </div>
-        <div class="card-btns">
-          <button class="btn btn-gold btn-lg" onclick="selectPlan('owner','₹249','Owner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="owner-btns">
+          <!-- Rendered by refreshTrialButtons() -->
+          <button class="btn btn-gold btn-lg" onclick="activateFreeTrial('owner','₹249','Owner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-gold" onclick="selectPlan('owner','₹249','Owner Plan'); scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Owner plan details coming soon…','info')">Learn More</button>
         </div>
@@ -977,8 +963,9 @@ ul { list-style: none; }
           <span style="font-size:18px">📞</span>
           <span><strong>After Activation:</strong> Unlocks <strong>📞 Call Owner</strong> and <strong>📲 WhatsApp Owner</strong> buttons on all listings</span>
         </div>
-        <div class="card-btns">
-          <button class="btn btn-blue btn-lg" onclick="selectPlan('tenant','₹149','Tenant Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="tenant-btns">
+          <!-- Rendered by refreshTrialButtons() -->
+          <button class="btn btn-blue btn-lg" onclick="activateFreeTrial('tenant','₹149','Tenant Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-blue" onclick="selectPlan('tenant','₹149','Tenant Plan'); scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Tenant plan details coming soon…','info')">Learn More</button>
         </div>
@@ -988,9 +975,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     SERVICE PLANS
-───────────────────────────────────── -->
+<!-- SERVICE PLANS -->
 <section class="sec" style="padding-top:16px;background:var(--surface-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -1000,7 +985,6 @@ ul { list-style: none; }
     </div>
 
     <div class="plans-3">
-      <!-- Each card shares the same features — service type changes -->
       <!-- PLUMBER -->
       <div class="plan-card card-teal reveal">
         <div class="plan-icon icon-teal">🔧</div>
@@ -1021,8 +1005,8 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings & Search</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('plumber','₹249','Plumber Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="plumber-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('plumber','₹249','Plumber Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-teal" onclick="selectPlan('plumber','₹249','Plumber Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
@@ -1048,8 +1032,8 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings & Search</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('electrician','₹249','Electrician Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="electrician-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('electrician','₹249','Electrician Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-teal" onclick="selectPlan('electrician','₹249','Electrician Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
@@ -1075,8 +1059,8 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('carpenter','₹249','Carpenter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="carpenter-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('carpenter','₹249','Carpenter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-teal" onclick="selectPlan('carpenter','₹249','Carpenter Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
@@ -1102,8 +1086,8 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('painter','₹249','Painter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="painter-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('painter','₹249','Painter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-teal" onclick="selectPlan('painter','₹249','Painter Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
@@ -1129,8 +1113,8 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('movers','₹249','Movers Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <div class="card-btns" id="movers-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('movers','₹249','Movers Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-teal" onclick="selectPlan('movers','₹249','Movers Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
@@ -1156,9 +1140,9 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
-        <div class="card-btns">
-          <button class="btn btn-teal" onclick="selectPlan('cleaner','₹249','Home Cleaner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('cleaner','₹249','Home Cleaner Plan'); scrollToPay()">Subscribe</button>
+        <div class="card-btns" id="cleaner-btns">
+          <button class="btn btn-teal" onclick="activateFreeTrial('cleaner','₹249','Home Cleaner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('cleaner','₹249','Cleaner Plan'); scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
@@ -1166,9 +1150,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     COMPARISON TABLE
-───────────────────────────────────── -->
+<!-- COMPARISON TABLE -->
 <section class="sec">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -1211,9 +1193,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     PAYMENT SECTION
-───────────────────────────────────── -->
+<!-- PAYMENT SECTION -->
 <section class="sec pay-sec" id="paySection">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -1222,7 +1202,6 @@ ul { list-style: none; }
       <p>Fast, safe and seamless payments via India's most trusted UPI apps.</p>
     </div>
 
-    <!-- Plan selector -->
     <div style="text-align:center;margin-bottom:10px" class="reveal">
       <p style="font-size:14px;color:var(--t2);font-weight:500;margin-bottom:14px">Select a Plan to Pay For:</p>
       <div class="plan-pills">
@@ -1237,14 +1216,12 @@ ul { list-style: none; }
       </div>
     </div>
 
-    <!-- Amount -->
     <div class="pay-amount reveal">
       <div class="amt-big" id="payAmtDisplay">₹249</div>
       <div class="amt-sub">Due after 3-month free trial</div>
       <div><span class="amt-tag">🎁 Your plan is FREE for the first 90 days</span></div>
     </div>
 
-    <!-- UPI apps -->
     <div class="upi-grid reveal">
       <div class="upi-card" id="upi-gpay"    onclick="launchUPI('gpay')"><div class="upi-live"></div><div class="upi-logo">🟢</div><div class="upi-name">Google Pay</div><div class="upi-secure">🔒 Secure</div></div>
       <div class="upi-card" id="upi-phonepe" onclick="launchUPI('phonepe')"><div class="upi-live"></div><div class="upi-logo">🟣</div><div class="upi-name">PhonePe</div><div class="upi-secure">🔒 Secure</div></div>
@@ -1253,7 +1230,6 @@ ul { list-style: none; }
       <div class="upi-card" id="upi-amazon"  onclick="launchUPI('amazon')"><div class="upi-live"></div><div class="upi-logo">🛒</div><div class="upi-name">Amazon Pay</div><div class="upi-secure">🔒 Secure</div></div>
     </div>
 
-    <!-- UPI ID + UTR -->
     <div style="max-width:540px;margin:0 auto" class="reveal">
       <div class="upi-id-box">
         <div class="upi-id-label">Pay to UPI ID</div>
@@ -1269,7 +1245,6 @@ ul { list-style: none; }
       </div>
     </div>
 
-    <!-- Security badges -->
     <div class="sec-badges reveal">
       <div class="sec-badge"><span class="si">🔒</span>256-Bit SSL</div>
       <div class="sec-badge"><span class="si">🔒</span>Secure UPI</div>
@@ -1278,13 +1253,10 @@ ul { list-style: none; }
       <div class="sec-badge"><span class="si">🔒</span>Instant Activation</div>
       <div class="sec-badge"><span class="si">🔒</span>RBI Compliant</div>
     </div>
-
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     TESTIMONIALS
-───────────────────────────────────── -->
+<!-- TESTIMONIALS -->
 <section class="sec">
   <div class="wrap">
     <div class="sec-head reveal">
@@ -1333,9 +1305,7 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- ─────────────────────────────────────
-     FOOTER
-───────────────────────────────────── -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="wrap">
     <div class="footer-inner">
@@ -1345,15 +1315,13 @@ ul { list-style: none; }
   </div>
 </footer>
 
-<!-- ─────────────────────────────────────
-     SUCCESS MODAL
-───────────────────────────────────── -->
+<!-- SUCCESS MODAL -->
 <div class="modal-overlay" id="successModal">
   <div class="modal-box" id="modalBox">
     <canvas id="confettiCanvas" width="500" height="500"></canvas>
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-check">✅</div>
-    <div class="modal-title">Subscription Activated!</div>
+    <div class="modal-title" id="modalTitle">Subscription Activated!</div>
     <div class="modal-sub">
       Your <strong id="modalPlanName">plan</strong> has been activated successfully.<br>
       Your 3-month FREE trial starts today — enjoy full premium access!
@@ -1369,13 +1337,34 @@ ul { list-style: none; }
   </div>
 </div>
 
-<!-- ─────────────────────────────────────
+<!-- ═══════════════════════════════════════════════════════════
      JAVASCRIPT
-───────────────────────────────────── -->
+     Key addition: activateFreeTrial() writes to localStorage
+     so property-details.html can read it immediately.
+
+     localStorage key:  "sr_subscription"
+     Value (JSON):
+     {
+       planId:       "tenant",            // plan identifier
+       planName:     "Tenant Plan",
+       planAmount:   "₹149",
+       status:       "trial_active",      // "trial_active" | "active" | "expired"
+       trialType:    "free",              // always "free" for trial
+       trialStartDate: "ISO string",
+       trialEndDate:   "ISO string",      // +90 days
+       activatedAt:    epoch ms,
+       uid:            "firebase uid or guest-xxxx"
+     }
+
+     property-details.html reads "sr_subscription" and grants
+     access when status is "trial_active" or "active" AND
+     trialEndDate has not passed.
+════════════════════════════════════════════════════════════ -->
 <script>
 /* ── CONFIG ── */
 const MERCHANT_UPI  = "smartrent@upi";
 const MERCHANT_NAME = "SmartRent";
+const LS_KEY        = "sr_subscription"; // shared with property-details.html
 
 /* ── STATE ── */
 let selectedPlan = { id: 'owner', amount: '₹249', name: 'Owner Plan' };
@@ -1430,7 +1419,153 @@ const rObs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => rObs.observe(el));
 
-/* ── PLAN SELECTION ── */
+/* ══════════════════════════════════════════════════════════
+   FREE TRIAL ACTIVATION
+   Writes subscription record to localStorage so
+   property-details.html can read it immediately without
+   requiring a Firebase round-trip.
+   Also syncs to Firebase if a user is logged in.
+══════════════════════════════════════════════════════════ */
+
+/**
+ * Returns the current subscription object from localStorage, or null.
+ */
+function getStoredSubscription() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch(e) { return null; }
+}
+
+/**
+ * Returns true if the stored subscription is still valid (trial_active or active, not expired).
+ */
+function isSubscriptionActive(sub) {
+  if (!sub) return false;
+  if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
+  if (sub.trialEndDate && Date.now() > new Date(sub.trialEndDate).getTime()) return false;
+  return true;
+}
+
+/**
+ * Refreshes plan card button states based on localStorage.
+ * Called on page load and after auth resolves.
+ */
+function refreshTrialButtons() {
+  const sub = getStoredSubscription();
+  const active = isSubscriptionActive(sub);
+
+  // All plan IDs mapped to their button container IDs
+  const allPlans = [
+    { id: 'owner',       btnId: 'owner-btns',       color: 'gold', amount: '₹249', name: 'Owner Plan' },
+    { id: 'tenant',      btnId: 'tenant-btns',      color: 'blue', amount: '₹149', name: 'Tenant Plan' },
+    { id: 'plumber',     btnId: 'plumber-btns',     color: 'teal', amount: '₹249', name: 'Plumber Plan' },
+    { id: 'electrician', btnId: 'electrician-btns', color: 'teal', amount: '₹249', name: 'Electrician Plan' },
+    { id: 'carpenter',   btnId: 'carpenter-btns',   color: 'teal', amount: '₹249', name: 'Carpenter Plan' },
+    { id: 'painter',     btnId: 'painter-btns',     color: 'teal', amount: '₹249', name: 'Painter Plan' },
+    { id: 'movers',      btnId: 'movers-btns',      color: 'teal', amount: '₹249', name: 'Movers Plan' },
+    { id: 'cleaner',     btnId: 'cleaner-btns',     color: 'teal', amount: '₹249', name: 'Home Cleaner Plan' },
+  ];
+
+  allPlans.forEach(plan => {
+    const container = document.getElementById(plan.btnId);
+    if (!container) return;
+
+    if (active && sub.planId === plan.id) {
+      // This exact plan is active — show "Active" banner + subscribe button
+      const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      container.innerHTML = `
+        <div class="active-sub-banner">
+          <span style="font-size:18px">✅</span>
+          <div>
+            <div style="font-weight:700;font-size:13px">Trial Active Until ${fmt(sub.trialEndDate)}</div>
+            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:0.8">Full access unlocked · Contact info visible</div>
+          </div>
+        </div>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe to Continue After Trial</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+    } else if (active && sub.planId !== plan.id) {
+      // A different plan is active — free trial on this plan is disabled
+      container.innerHTML = `
+        <div class="trial-used-badge">
+          <span class="trial-used-icon">ℹ️</span>
+          <span>Free trial used on <strong>${sub.planName}</strong></span>
+        </div>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+    } else {
+      // No active trial — show normal Start Free Trial button
+      const primaryClass = plan.color === 'gold' ? 'btn-gold' : plan.color === 'blue' ? 'btn-blue' : 'btn-teal';
+      const outlineClass = `btn-outline-${plan.color}`;
+      container.innerHTML = `
+        <button class="btn ${primaryClass} btn-lg" onclick="activateFreeTrial('${plan.id}','${plan.amount}','${plan.name}'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+        <button class="btn ${outlineClass}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+    }
+  });
+}
+
+/**
+ * Main function called when "Start Free Trial" is clicked.
+ * Writes to localStorage + Firebase (if logged in) + shows success modal.
+ */
+async function activateFreeTrial(planId, amount, planName) {
+  // Check if trial already used
+  const existing = getStoredSubscription();
+  if (isSubscriptionActive(existing)) {
+    toast(`You already have an active trial for ${existing.planName}. Subscribe to access more plans.`, 'info');
+    scrollToPay();
+    return;
+  }
+
+  const now   = new Date();
+  const trial = new Date(now);
+  trial.setDate(trial.getDate() + 90); // 90-day free trial
+
+  const uid = window.__currentUser?.uid || ('guest-' + Math.random().toString(36).slice(2, 9));
+
+  const sub = {
+    planId,
+    planName,
+    planAmount:      amount,
+    status:          'trial_active',
+    trialType:       'free',
+    trialStartDate:  now.toISOString(),
+    trialEndDate:    trial.toISOString(),
+    activatedAt:     Date.now(),
+    uid,
+  };
+
+  // ── Write to localStorage (read by property-details.html) ──
+  localStorage.setItem(LS_KEY, JSON.stringify(sub));
+
+  // ── Write to Firebase if user is logged in ──
+  const fb = window.__fb;
+  if (fb && fb.auth.currentUser) {
+    try {
+      await fb.setDoc(fb.doc(fb.db, 'subscriptions', uid), {
+        ...sub,
+        updatedAt: fb.serverTimestamp(),
+      });
+      await fb.setDoc(fb.doc(fb.db, 'users', uid), {
+        subscriptionStatus:  'active',          // <-- what property-details.html checks
+        subscriptionPlan:    'tenant_basic',    // always "tenant_basic" for tenant plan
+        planId,
+        planName,
+        trialEndDate:        trial.toISOString(),
+        updatedAt:           fb.serverTimestamp(),
+      }, { merge: true });
+    } catch(e) { console.warn('Firebase sync (non-critical):', e); }
+  }
+
+  // ── Refresh button states ──
+  refreshTrialButtons();
+
+  // ── Show success modal ──
+  showSuccess(sub, trial);
+}
+
+/* ── PLAN SELECTION (for UPI payment section) ── */
 function selectPlan(id, amount, name) {
   selectedPlan = { id, amount, name };
   document.getElementById('payAmtDisplay').textContent = amount;
@@ -1473,7 +1608,7 @@ function copyUPIId() {
   navigator.clipboard.writeText(MERCHANT_UPI).then(() => toast('UPI ID copied!', 'success'));
 }
 
-/* ── CONFIRM & FIREBASE ── */
+/* ── CONFIRM PAID SUBSCRIPTION & FIREBASE ── */
 async function confirmAndActivate() {
   const utr = document.getElementById('utrInput').value.trim();
   if (utr.length < 6) { toast('Please enter a valid UTR / Transaction ID', 'err'); return; }
@@ -1483,23 +1618,40 @@ async function confirmAndActivate() {
   const uid   = window.__currentUser?.uid || 'demo-' + Date.now();
 
   const sub = {
-    uid, planId: selectedPlan.id, planName: selectedPlan.name,
-    planAmount: selectedPlan.amount, status: 'trial_active',
-    trialStartDate: now.toISOString(), trialEndDate: trial.toISOString(),
-    subscriptionStartDate: trial.toISOString(), renewalDate: trial.toISOString(),
-    paymentMethod: 'UPI', utr,
+    planId:              selectedPlan.id,
+    planName:            selectedPlan.name,
+    planAmount:          selectedPlan.amount,
+    status:              'active',              // paid subscription = "active"
+    trialType:           'paid',
+    trialStartDate:      now.toISOString(),
+    trialEndDate:        trial.toISOString(),
+    activatedAt:         Date.now(),
+    paymentMethod:       'UPI',
+    utr,
+    uid,
     badge: selectedPlan.id === 'owner' ? 'gold_star' : 'diamond',
     permissions: getPerms(selectedPlan.id),
   };
+
+  // Save to localStorage
+  localStorage.setItem(LS_KEY, JSON.stringify(sub));
 
   const fb = window.__fb;
   if (fb && fb.auth.currentUser) {
     try {
       await fb.setDoc(fb.doc(fb.db,'subscriptions',uid), { ...sub, updatedAt: fb.serverTimestamp() });
       await fb.addDoc(fb.collection(fb.db,'payments'), { uid, planId: selectedPlan.id, amount: selectedPlan.amount, utr, paidAt: fb.serverTimestamp(), status: 'confirmed' });
-      await fb.setDoc(fb.doc(fb.db,'users',uid), { badge: sub.badge, planId: selectedPlan.id, updatedAt: fb.serverTimestamp() }, { merge: true });
+      await fb.setDoc(fb.doc(fb.db,'users',uid), {
+        subscriptionStatus: 'active',
+        subscriptionPlan:   selectedPlan.id === 'tenant' ? 'tenant_basic' : selectedPlan.id,
+        badge: sub.badge,
+        planId: selectedPlan.id,
+        updatedAt: fb.serverTimestamp()
+      }, { merge: true });
     } catch(e) { console.warn('Firestore (demo mode):', e); }
   }
+
+  refreshTrialButtons();
   showSuccess(sub, trial);
 }
 
@@ -1519,6 +1671,8 @@ function getPerms(id) {
 
 /* ── SUCCESS MODAL ── */
 function showSuccess(sub, trialEnd) {
+  const isTrial = sub.trialType === 'free';
+  document.getElementById('modalTitle').textContent = isTrial ? '🎉 Free Trial Activated!' : '✅ Subscription Activated!';
   document.getElementById('modalPlanName').textContent = sub.planName;
   const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
   document.getElementById('trialDates').textContent = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)} (FREE)`;
@@ -1543,7 +1697,6 @@ function confetti() {
     rot: Math.random()*360, rv: (Math.random()-.5)*8,
     life: 1,
   }));
-  let raf;
   (function draw() {
     ctx.clearRect(0,0,W,H);
     pts.forEach(p => {
@@ -1556,7 +1709,7 @@ function confetti() {
       ctx.restore();
       p.x+=p.vx; p.y+=p.vy; p.vy+=0.38; p.vx*=0.99; p.rot+=p.rv; p.life-=0.011;
     });
-    if (pts.some(p=>p.life>0)) raf=requestAnimationFrame(draw);
+    if (pts.some(p=>p.life>0)) requestAnimationFrame(draw);
     else ctx.clearRect(0,0,W,H);
   })();
 }
@@ -1593,6 +1746,9 @@ function toast(msg, type='info') {
     setTimeout(()=>t.remove(),300);
   }, 3500);
 }
+
+/* ── INIT: check localStorage on page load ── */
+refreshTrialButtons();
 </script>
 </body>
 </html>

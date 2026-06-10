@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -215,12 +215,35 @@ body{font-family:'Nunito',sans-serif;background:var(--cream);color:var(--ink);ov
 .pcard:hover{border-color:var(--terra-b);transform:translateY(-6px) scale(1.005);box-shadow:var(--sh3)}
 .list-view .pcard{flex-direction:row;max-height:none}
 
-/* Card image */
+/* ══════════════════════════════════════════════════════
+   CARD IMAGE AREA
+   ─────────────────────────────────────────────────────
+   .pcard-img          — the container (unchanged)
+   .pcard-photo        — NEW: actual <img> from Cloudinary
+   .pcard-emoji        — fallback emoji (unchanged, hidden
+                         when a real photo is present)
+   .pcard-photo-error  — shown if the real photo fails to load
+══════════════════════════════════════════════════════ */
 .pcard-img{height:210px;position:relative;overflow:hidden;flex-shrink:0;background:var(--cream2);display:flex;align-items:center;justify-content:center}
 .list-view .pcard-img{width:280px;height:auto;min-height:200px}
+
+/* Real photo — fills the container, zooms on card hover */
+.pcard-photo{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+  transition:transform .5s cubic-bezier(.25,.46,.45,.94);
+}
+.pcard:hover .pcard-photo{transform:scale(1.04)}
+
+/* Emoji placeholder — shown when no real photo */
 .pcard-emoji{font-size:72px;transition:transform .45s cubic-bezier(.34,1.3,.64,1);position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(30,20,10,.15))}
 .pcard:hover .pcard-emoji{transform:scale(1.12) translateY(-4px)}
-.pcard-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(26,20,16,.52))}
+
+/* Error / loading placeholder text (hidden by default) */
+.pcard-photo-err{display:none;font-size:36px;opacity:.5;position:relative;z-index:1}
+
+.pcard-img-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(26,20,16,.52));z-index:2}
 .list-view .pcard-img-ov{background:linear-gradient(to right,transparent 50%,rgba(26,20,16,.38))}
 
 /* Badges */
@@ -641,7 +664,16 @@ let budgetMax = 50000;
 let savedIds = new Set();
 let compareIds = new Set();
 
-/* ═══ RENDER CARDS ════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════════
+   RENDER CARDS
+   ───────────────────────────────────────────────────────────────
+   IMAGE LOGIC (the only change from the original):
+     1. Check for a real photo:  p.coverImage  OR  p.images?.[0]
+     2. If found → render <img class="pcard-photo"> with onerror
+        fallback that swaps it back to the emoji placeholder.
+     3. If not found → render the original emoji placeholder.
+   Everything else is identical to the original renderCards().
+════════════════════════════════════════════════════════════════ */
 function renderCards(data) {
   const grid = document.getElementById('cardsGrid');
   document.getElementById('resultCount').textContent = data.length;
@@ -661,11 +693,33 @@ function renderCards(data) {
 
     const waLink = `https://wa.me/${(p.whatsapp||'+919999999999').replace(/[^\d]/g,'')}?text=${encodeURIComponent(`Hi! I'm interested in your property: ${p.title} listed on SmartRent AI. Could you please share more details?`)}`;
 
+    /* ──────────────────────────────────────────────────────
+       PHOTO vs EMOJI
+       coverImage  — set by post-property.html as the first
+                     Cloudinary URL (the cover photo)
+       images[0]   — fallback if coverImage not stored
+       If neither exists → show emoji placeholder
+    ────────────────────────────────────────────────────── */
+    const photoUrl = p.coverImage || (Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : null);
+
+    const cardImageInner = photoUrl
+      ? /* Real Cloudinary photo */
+        `<img
+          class="pcard-photo"
+          src="${photoUrl}"
+          alt="${p.title}"
+          loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+        >
+        <div class="pcard-emoji" style="display:none">${emoji}</div>`
+      : /* Emoji placeholder (no photo uploaded) */
+        `<div class="pcard-emoji">${emoji}</div>`;
+
     return `
     <div class="pcard ${isFeatured ? 'featured' : ''}" style="animation-delay:${i * 0.05}s" onclick="goToDetail(${p.id})">
       <!-- Image -->
       <div class="pcard-img" style="background:${bg}">
-        <div class="pcard-emoji">${emoji}</div>
+        ${cardImageInner}
         <div class="pcard-img-ov"></div>
         <!-- Badges -->
         <div class="pcard-badges">${(p.badges||[]).map(b=>`<span class="pbdg ${b.c}">${b.l}</span>`).join('')}</div>

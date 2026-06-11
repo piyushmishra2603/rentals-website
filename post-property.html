@@ -106,7 +106,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .nav-link { font-size: 13px; color: var(--t2); padding: 7px 14px; border-radius: var(--r1); text-decoration: none; transition: all .2s; font-weight: 500; }
 .nav-link:hover { color: var(--t0); background: var(--gold-d); }
 
-/* Firebase status */
 .fb-pill { display: flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 100px; font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: .1em; font-weight: 600; border: 1px solid; transition: all .3s; }
 .fb-pill.connecting { background: var(--warn-d); border-color: rgba(192,124,42,.25); color: var(--warn); }
 .fb-pill.connected  { background: var(--emerald-d); border-color: var(--emerald-b); color: var(--emerald); }
@@ -192,7 +191,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .field input::placeholder, .field textarea::placeholder { color: var(--t3); font-style: italic; }
 .field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
 
-/* Error state */
 .field input.err, .field select.err, .field textarea.err {
   border-color: rgba(192,57,43,.45) !important;
   background: rgba(192,57,43,.02) !important;
@@ -202,7 +200,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .field.error .input-error { display: block; }
 .field.error > label { color: var(--rose); }
 
-/* Input icons / suffix */
 .input-wrap { position: relative; }
 .input-wrap .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--t3); font-size: 15px; pointer-events: none; }
 .input-wrap input { padding-left: 38px; }
@@ -210,7 +207,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .input-suf-wrap input { padding-right: 52px; }
 .input-suffix { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--t3); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
 
-/* Select arrow */
 .select-wrap { position: relative; }
 .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--t3); pointer-events: none; font-size: 12px; }
 .select-wrap select option { background: #fff; color: var(--t0); }
@@ -276,7 +272,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .drop-sub { font-size: 13px; color: var(--t2); }
 .drop-limit { display: inline-block; font-size: 11px; margin-top: 10px; padding: 3px 12px; border-radius: 100px; background: #fff; border: 1px solid var(--line2); color: var(--t3); font-family: 'JetBrains Mono', monospace; }
 
-/* Image grid */
 .img-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 14px; }
 .img-thumb {
   position: relative; border-radius: var(--r2); overflow: hidden;
@@ -306,7 +301,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .img-badge-cover { background: rgba(184,134,60,.9); color: #fff; }
 .img-badge-num  { background: rgba(26,20,9,.55); color: rgba(255,255,255,.75); }
 
-/* Upload progress rows */
 .upload-item { display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: var(--bg3); border: 1.5px solid var(--line2); border-radius: var(--r2); margin-bottom: 8px; transition: all .3s; }
 .upload-item.done  { border-color: var(--emerald-b); background: var(--emerald-d); }
 .upload-item.error { border-color: var(--rose-b); background: var(--rose-d); }
@@ -416,11 +410,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 /* ═══════════════════════════════════════════════
    SUBSCRIPTION GATE — Step 3 paywall UI
 ═══════════════════════════════════════════════ */
-
-/* Submit button area wrapper */
 .submit-area { position: relative; }
 
-/* Checking skeleton */
 .sub-checking {
   display: flex; align-items: center; gap: 10px;
   padding: 13px 20px; border-radius: var(--r2);
@@ -435,7 +426,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Active subscription badge */
 .sub-active-badge {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 16px; border-radius: 100px;
@@ -461,7 +451,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
   animation: fadeUp .45s cubic-bezier(.22,1,.36,1) both;
 }
 
-/* Top decorative banner */
 .sg-banner {
   background: linear-gradient(120deg, #1c1409 0%, #3a2714 40%, #2a1e08 100%);
   padding: 28px 32px 26px;
@@ -503,10 +492,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
   50%      { box-shadow: 0 0 0 5px rgba(184,134,60,.12); }
 }
 
-/* Body of gate */
 .sg-body { background: #fff; padding: 26px 32px 28px; }
 
-/* Benefits grid */
 .sg-benefits {
   display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px;
 }
@@ -522,7 +509,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .sg-benefit-title { font-size: 12.5px; font-weight: 600; color: var(--t0); margin-bottom: 2px; }
 .sg-benefit-desc  { font-size: 11.5px; color: var(--t3); line-height: 1.5; }
 
-/* CTA row */
 .sg-cta-row {
   display: flex; align-items: center; gap: 14px;
   padding: 18px 20px; border-radius: var(--r2);
@@ -535,7 +521,6 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
 .sg-cta-sub { font-size: 12px; color: var(--t2); line-height: 1.55; }
 .sg-cta-btns { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
 
-/* Locked submit button visual */
 .btn-locked {
   background: var(--bg4) !important;
   color: var(--t3) !important;
@@ -594,8 +579,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
   <div class="nav-links">
     <div class="fb-pill connecting" id="fbPill"><div class="fb-dot"></div><span id="fbPillText">CONNECTING</span></div>
     <a href="index.html" class="nav-link">🏠 Home</a>
-    <a href="booking-dashboard.html" class="nav-link">📊 Dashboard</a>
-    <a href="pg-hostel-listings.html" class="nav-link">🔍 Browse</a>
+    <a href="owner-dashboard.html" class="nav-link">📊 Dashboard</a>
+    <a href="properties.html" class="nav-link">🔍 Browse</a>
   </div>
 </nav>
 
@@ -1006,11 +991,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
       <!-- ══ SUBMIT AREA — subscription-gated ══ -->
       <div class="btn-row" id="step3BtnRow">
         <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
-
-        <!-- This whole right side is replaced by JS based on subscription state -->
         <div id="submitArea" class="submit-area">
-          <!-- State 1: checking subscription -->
-          <div id="subChecking" class="sub-checking">
+          <div class="sub-checking">
             <div class="spin"></div>
             Checking your subscription…
           </div>
@@ -1030,8 +1012,8 @@ body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0
       <div class="success-id" id="successDocId">Property ID: Generating…</div>
       <div class="success-images" id="successImageRow"></div>
       <div class="success-btns">
-        <a href="booking-dashboard.html" class="btn btn-primary btn-lg">📊 Go to Dashboard</a>
-        <a href="pg-hostel-listings.html" class="btn btn-ghost btn-lg">🔍 Browse Listings</a>
+        <a href="owner-dashboard.html" class="btn btn-primary btn-lg">📊 Go to Dashboard</a>
+        <a href="properties.html" class="btn btn-ghost btn-lg">🔍 Browse Listings</a>
         <button class="btn btn-ghost btn-lg" onclick="location.reload()">+ Post Another</button>
       </div>
     </div>
@@ -1067,28 +1049,72 @@ const UPLOAD_PRESET  = "dl6dnzau";
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
 /* ══════════════════════════════════════════════
-   SUBSCRIPTION CHECK
-   ──────────────────────────────────────────────
-   Reads the user's Firestore profile doc at:
-     users/{uid}
-   and checks for an "ownerSubscription" object with:
-     { plan: "owner" | "owner_pro" | …, status: "active", expiresAt: Timestamp }
-
-   Alternatively, a top-level boolean field  ownerPlan: true  also grants access.
-   Adjust the field names below to match your Firestore schema.
+   ╔═══════════════════════════════════════════╗
+   ║   SUBSCRIPTION CHECK — UPDATED           ║
+   ║                                          ║
+   ║  Priority order (fastest → most remote): ║
+   ║  1. localStorage "sr_owner_subscription" ║
+   ║     (written by plans.html on trial      ║
+   ║      activation — instant, no network)   ║
+   ║  2. localStorage "sr_subscription"       ║
+   ║     (generic key, planId === 'owner')    ║
+   ║  3. Firestore users/{uid} document       ║
+   ║     (existing Firebase check)            ║
+   ╚═══════════════════════════════════════════╝
 ══════════════════════════════════════════════ */
 
+/* ── Shared localStorage keys (must match plans.html) ── */
+const LS_OWNER_KEY = "sr_owner_subscription";   // written by plans.html activateFreeTrial
+const LS_ANY_KEY   = "sr_subscription";          // written by plans.html for all plans
+
 /**
- * Returns { hasAccess: bool, planName: string|null }
+ * Returns { hasAccess: bool, planName: string|null, source: string }
+ *
+ * Checks localStorage first so a user who just activated a free trial
+ * on plans.html gets immediate access without a page reload.
  */
 async function checkOwnerSubscription(uid) {
+
+  /* ─────────────────────────────────────────
+     1. localStorage: dedicated owner key
+        Written by plans.html when Owner Plan
+        free trial or paid sub is activated.
+  ───────────────────────────────────────── */
+  try {
+    const raw = localStorage.getItem(LS_OWNER_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      if (_isLocalSubValid(sub)) {
+        return { hasAccess: true, planName: sub.planName || "Owner Plan", source: "localStorage:owner" };
+      }
+    }
+  } catch(e) { /* corrupted JSON — ignore */ }
+
+  /* ─────────────────────────────────────────
+     2. localStorage: generic subscription key
+        Valid if planId is 'owner'.
+  ───────────────────────────────────────── */
+  try {
+    const raw = localStorage.getItem(LS_ANY_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      if (sub.planId === "owner" && _isLocalSubValid(sub)) {
+        return { hasAccess: true, planName: sub.planName || "Owner Plan", source: "localStorage:generic" };
+      }
+    }
+  } catch(e) { /* corrupted JSON — ignore */ }
+
+  /* ─────────────────────────────────────────
+     3. Firestore: users/{uid} document
+        (original check — kept intact)
+  ───────────────────────────────────────── */
   try {
     const snap = await getDoc(doc(db, "users", uid));
-    if (!snap.exists()) return { hasAccess: false, planName: null };
+    if (!snap.exists()) return { hasAccess: false, planName: null, source: "firestore:no-doc" };
 
     const data = snap.data();
 
-    /* ── Strategy A: nested ownerSubscription object ── */
+    /* Strategy A: nested ownerSubscription object */
     const sub = data.ownerSubscription || data.subscription || null;
     if (sub) {
       const isOwnerPlan = sub.plan && (
@@ -1097,46 +1123,58 @@ async function checkOwnerSubscription(uid) {
         String(sub.plan).toLowerCase().includes("pro")
       );
       const isActive = sub.status === "active" || sub.active === true;
-      // Check expiry if present
       let notExpired = true;
       if (sub.expiresAt) {
         const exp = sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt);
         notExpired = exp > new Date();
       }
       if (isOwnerPlan && isActive && notExpired) {
-        return { hasAccess: true, planName: sub.plan || "Owner Plan" };
+        return { hasAccess: true, planName: sub.plan || "Owner Plan", source: "firestore:sub-object" };
       }
     }
 
-    /* ── Strategy B: top-level boolean flags ── */
+    /* Strategy B: top-level boolean flags */
     if (data.ownerPlan === true || data.isOwner === true || data.canPostProperty === true) {
-      const planName = data.planName || data.subscriptionPlan || "Owner Plan";
-      return { hasAccess: true, planName };
+      return { hasAccess: true, planName: data.planName || data.subscriptionPlan || "Owner Plan", source: "firestore:flags" };
     }
 
-    /* ── Strategy C: role array ── */
+    /* Strategy C: role array */
     const roles = data.roles || data.role || [];
     const roleArr = Array.isArray(roles) ? roles : [roles];
     if (roleArr.some(r => ["owner","landlord","pro","premium"].includes(String(r).toLowerCase()))) {
-      return { hasAccess: true, planName: data.planName || "Owner Plan" };
+      return { hasAccess: true, planName: data.planName || "Owner Plan", source: "firestore:roles" };
     }
 
-    return { hasAccess: false, planName: null };
+    return { hasAccess: false, planName: null, source: "firestore:no-match" };
 
   } catch (err) {
     console.error("Subscription check error:", err);
-    // On Firestore read error, fail closed (no access)
-    return { hasAccess: false, planName: null, error: err.message };
+    return { hasAccess: false, planName: null, source: "error", error: err.message };
   }
 }
 
-/* ── Render the submit area based on subscription ── */
+/**
+ * Helper: validates a localStorage subscription record.
+ * Returns true if status is trial_active or active AND not expired.
+ */
+function _isLocalSubValid(sub) {
+  if (!sub) return false;
+  if (sub.status !== "trial_active" && sub.status !== "active") return false;
+  if (sub.trialEndDate) {
+    const exp = new Date(sub.trialEndDate);
+    if (isNaN(exp.getTime()) || exp < new Date()) return false;
+  }
+  return true;
+}
+
+/* ══════════════════════════════════════════════
+   RENDER SUBMIT AREA
+══════════════════════════════════════════════ */
 function renderSubmitArea(hasAccess, planName) {
   const area = document.getElementById("submitArea");
   if (!area) return;
 
   if (hasAccess) {
-    /* ─ Unlocked: show active badge + submit button ─ */
     area.innerHTML = `
       <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
         <div class="sub-active-badge">
@@ -1149,17 +1187,13 @@ function renderSubmitArea(hasAccess, planName) {
         </button>
       </div>`;
   } else {
-    /* ─ Locked: show paywall gate ─ */
     area.innerHTML = `
       <div style="width:100%;">
-        <!-- Locked submit button (visual only, always disabled) -->
         <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
           <button class="btn btn-success btn-lg btn-locked" disabled title="Owner Subscription required">
             Upload &amp; Submit for Review
           </button>
         </div>
-
-        <!-- Paywall card -->
         <div class="sub-gate">
           <div class="sg-banner">
             <div class="sg-banner-inner">
@@ -1209,7 +1243,7 @@ function renderSubmitArea(hasAccess, planName) {
               </div>
               <div class="sg-cta-btns">
                 <a href="plans.html" class="btn btn-primary btn-lg">View Plans →</a>
-                <a href="plans.html#owner" class="btn btn-teal">Get Owner Plan</a>
+                <a href="plans.html" class="btn btn-teal">Get Owner Plan</a>
               </div>
             </div>
           </div>
@@ -1227,12 +1261,13 @@ window.recheckSubscription = async () => {
   const user = window._currentUser;
   if (!user) return;
   renderSubChecking();
-  const { hasAccess, planName } = await checkOwnerSubscription(user.uid);
+  const { hasAccess, planName, source } = await checkOwnerSubscription(user.uid);
+  window._ownerSubStatus = { hasAccess, planName, checked: true };
   renderSubmitArea(hasAccess, planName);
   if (hasAccess) {
     showToast("✅ Subscription confirmed! You can now submit.", "success");
   } else {
-    showToast("No active Owner subscription found.", "warn");
+    showToast("No active Owner subscription found. Activate a free trial on the Plans page.", "warn");
   }
 };
 
@@ -1266,21 +1301,16 @@ onAuthStateChanged(auth, async (user) => {
     gate.style.display     = 'none';
     mainForm.style.display = 'block';
 
-    // Pre-fill owner fields
     const emailEl = document.getElementById('ownerEmail');
     const nameEl  = document.getElementById('ownerName');
     if (emailEl && !emailEl.value && user.email)       emailEl.value = user.email;
     if (nameEl  && !nameEl.value  && user.displayName) nameEl.value  = user.displayName;
 
-    // ── Check subscription immediately (don't wait for user to reach step 3) ──
-    const { hasAccess, planName, error } = await checkOwnerSubscription(user.uid);
+    /* ── Check subscription on load (localStorage is sync-instant) ── */
+    const { hasAccess, planName } = await checkOwnerSubscription(user.uid);
     window._ownerSubStatus = { hasAccess, planName, checked: true };
 
-    // If user is already on step 3, render the submit area now
-    if (currentStep === 3) {
-      renderSubmitArea(hasAccess, planName);
-    }
-    // (if not on step 3 yet, renderSubmitArea is called when entering step 3)
+    if (currentStep === 3) renderSubmitArea(hasAccess, planName);
 
   } else {
     gate.style.display     = 'block';
@@ -1313,39 +1343,27 @@ function setStep(n) {
     document.getElementById(`panel${i}`).classList.toggle("active", i === n);
     const sc = document.getElementById(`sc${i}`);
     const st = document.getElementById(`s${i}`);
-    if (i < n)       { st.className = "step done";   sc.textContent = "✓"; }
-    else if (i === n){ st.className = "step active"; sc.textContent = String(i); }
-    else             { st.className = "step";        sc.textContent = String(i); }
+    if (i < n)        { st.className = "step done";   sc.textContent = "✓"; }
+    else if (i === n) { st.className = "step active"; sc.textContent = String(i); }
+    else              { st.className = "step";        sc.textContent = String(i); }
     if (i < 3) document.getElementById(`sl${i}`).classList.toggle("done", i < n);
   });
-  const pct = ((n - 1) / 2) * 100;
-  document.getElementById('formProgressBar').style.width = pct + '%';
+  document.getElementById('formProgressBar').style.width = (((n - 1) / 2) * 100) + '%';
 
-  // ── When entering step 3, resolve subscription state ──
-  if (n === 3) {
-    resolveSubmitArea();
-  }
-
+  if (n === 3) resolveSubmitArea();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/**
- * Called whenever step 3 becomes visible.
- * Uses cached result if already fetched, otherwise re-fetches.
- */
 async function resolveSubmitArea() {
   const status = window._ownerSubStatus;
   if (status && status.checked) {
-    // Already fetched during auth — use cached result
     renderSubmitArea(status.hasAccess, status.planName);
   } else if (window._currentUser) {
-    // Auth resolved but sub not checked yet (rare race) — fetch now
     renderSubChecking();
     const { hasAccess, planName } = await checkOwnerSubscription(window._currentUser.uid);
     window._ownerSubStatus = { hasAccess, planName, checked: true };
     renderSubmitArea(hasAccess, planName);
   } else {
-    // Not logged in — keep checking indicator (auth state will update soon)
     renderSubChecking();
   }
 }
@@ -1415,7 +1433,6 @@ function validateStep2() {
   const ownerNameF = document.getElementById('f-ownerName');
   if (!ownerName.value.trim()) {
     ownerName.classList.add('err'); ownerNameF.classList.add('error'); ok = false;
-    if (ok === false && !desc.classList.contains('err')) ownerName.scrollIntoView({ behavior: "smooth", block: "center" });
   } else { ownerName.classList.remove('err'); ownerNameF.classList.remove('error'); }
 
   const ownerPhone = document.getElementById('ownerPhone');
@@ -1464,19 +1481,20 @@ dropZone.addEventListener("drop", e => { e.preventDefault(); addFiles([...e.data
 fileInput.addEventListener("change", () => { addFiles([...fileInput.files]); fileInput.value = ''; });
 
 function addFiles(newFiles) {
-  const MAX_SIZE   = 5 * 1024 * 1024;
+  const MAX_SIZE    = 5 * 1024 * 1024;
   const VALID_TYPES = ["image/jpeg","image/png","image/webp"];
-  const tooLarge   = newFiles.filter(f => f.size > MAX_SIZE);
-  const wrongType  = newFiles.filter(f => !VALID_TYPES.includes(f.type));
-  const valid      = newFiles.filter(f => VALID_TYPES.includes(f.type) && f.size <= MAX_SIZE);
+  const tooLarge    = newFiles.filter(f => f.size > MAX_SIZE);
+  const wrongType   = newFiles.filter(f => !VALID_TYPES.includes(f.type));
+  const valid       = newFiles.filter(f => VALID_TYPES.includes(f.type) && f.size <= MAX_SIZE);
 
   if (tooLarge.length)  showToast(`${tooLarge.length} file(s) skipped — must be under 5 MB.`, "warn");
   if (wrongType.length) showToast(`${wrongType.length} file(s) skipped — JPG, PNG, WEBP only.`, "warn");
 
   const remaining = 15 - uploadedFiles.length;
   if (valid.length > remaining) showToast(`Only ${remaining} more photo(s) allowed (max 15).`, "warn");
-  const toAdd = valid.slice(0, remaining);
-  toAdd.forEach(file => { uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" }); });
+  valid.slice(0, remaining).forEach(file => {
+    uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" });
+  });
   renderPreviews();
   updatePhotoCount();
 }
@@ -1615,14 +1633,14 @@ function buildSummary() {
 
 /* ══════════════════════════════════════════════
    SUBMIT
-   — Double-checks subscription server-side before writing to Firestore
+   Re-checks subscription right before writing
+   to Firestore (defence-in-depth).
 ══════════════════════════════════════════════ */
 window.submitProperty = async () => {
   const user = window._currentUser;
-
   if (!user) { showToast("You must be signed in to post a property.", "error"); return; }
 
-  /* ── Final subscription guard (re-check in case cached status is stale) ── */
+  /* Final guard — re-check (uses localStorage first, so it's still fast) */
   const { hasAccess } = await checkOwnerSubscription(user.uid);
   if (!hasAccess) {
     showToast("Owner Subscription required to post a property.", "error");
@@ -1640,7 +1658,7 @@ window.submitProperty = async () => {
   try {
     const imageUrls = await uploadAllToCloudinary();
     if (imageUrls.length === 0) throw new Error("All photo uploads failed. Please check your connection and try again.");
-    if (imageUrls.length < uploadedFiles.length) showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed — continuing with ${imageUrls.length} photo(s).`, "warn");
+    if (imageUrls.length < uploadedFiles.length) showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed — continuing with ${imageUrls.length}.`, "warn");
 
     if (btn) btn.innerHTML = "⏳ Saving listing…";
     showToast("Photos uploaded! Saving to database…", "success");
@@ -1650,7 +1668,7 @@ window.submitProperty = async () => {
     const tenants   = [...document.querySelectorAll("#tenantWrap .chip.selected")].map(c => c.textContent.trim());
 
     const docRef = await addDoc(collection(db, "properties"), {
-      ownerUid:   user.uid,
+      ownerUid: user.uid,
       owner: {
         uid:      user.uid,
         name:     gv("ownerName"),
@@ -1658,20 +1676,23 @@ window.submitProperty = async () => {
         whatsapp: gv("ownerWA") || gv("ownerPhone"),
         email:    gv("ownerEmail") || user.email || "",
       },
-      type:         selectedType, title: gv("title"), price: Number(gv("price")),
-      bhk:          gv("bhk"), city: gv("city"), locality: gv("locality"),
+      type:         selectedType,  title:        gv("title"),       price: Number(gv("price")),
+      bhk:          gv("bhk"),     city:         gv("city"),        locality: gv("locality"),
       fullAddress:  gv("fullAddress"),
-      area:         gv("area")        ? Number(gv("area"))        : null,
-      floor:        gv("floor")       || null,
-      totalFloors:  gv("totalFloors") ? Number(gv("totalFloors")) : null,
-      facing:       gv("facing")      || null, propAge: gv("propAge") || null,
-      deposit:      gv("deposit")     ? Number(gv("deposit"))     : null,
-      availableFrom:gv("availableFrom") || null, maintenance: gv("maintenance") || null,
-      furnishing:   selectedFurnish, description: gv("description"),
-      amenities, preferredTenants: tenants,
-      cooking: gv("cooking") || null, nonveg: gv("nonveg") || null,
-      smoking: gv("smoking") || null, drinking: gv("drinking") || null, guests: gv("guests") || null,
-      images: imageUrls, coverImage: imageUrls[0] || null, imageCount: imageUrls.length,
+      area:         gv("area")         ? Number(gv("area"))         : null,
+      floor:        gv("floor")        || null,
+      totalFloors:  gv("totalFloors")  ? Number(gv("totalFloors"))  : null,
+      facing:       gv("facing")       || null,
+      propAge:      gv("propAge")      || null,
+      deposit:      gv("deposit")      ? Number(gv("deposit"))      : null,
+      availableFrom:gv("availableFrom") || null,
+      maintenance:  gv("maintenance")  || null,
+      furnishing:   selectedFurnish,
+      description:  gv("description"),
+      amenities,    preferredTenants: tenants,
+      cooking:  gv("cooking")  || null, nonveg:   gv("nonveg")  || null,
+      smoking:  gv("smoking")  || null, drinking: gv("drinking") || null, guests: gv("guests") || null,
+      images:  imageUrls, coverImage: imageUrls[0] || null, imageCount: imageUrls.length,
       approved: false, status: "pending",
       views: 0, enquiries: 0, savedCount: 0,
       createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
@@ -1688,7 +1709,7 @@ window.submitProperty = async () => {
 };
 
 function showSuccess(docId, imageUrls) {
-  document.getElementById('stepper').style.display      = 'none';
+  document.getElementById('stepper').style.display = 'none';
   document.getElementById('formProgressBar').parentElement.style.display = 'none';
   document.querySelectorAll('.step-panel').forEach(p => p.style.display = 'none');
 
@@ -1714,7 +1735,7 @@ window.updateCharCount = (id, countId, max) => {
   if (!el || !cc) return;
   const len = el.value.length;
   cc.textContent = `${len} / ${max}`;
-  cc.className   = "char-count" + (len > max * 0.88 ? " warn" : "");
+  cc.className = "char-count" + (len > max * 0.88 ? " warn" : "");
 };
 
 function showToast(msg, type = "info") {

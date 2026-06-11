@@ -41,64 +41,45 @@
    DESIGN TOKENS  — light theme
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 :root {
-  /* Surfaces */
   --page:       #f5f7fb;
   --white:      #ffffff;
   --surface:    #ffffff;
   --surface-2:  #f0f3fa;
   --surface-3:  #e8edf7;
-
-  /* Borders */
   --line:       #e2e8f3;
   --line-2:     #d0d8ed;
   --line-3:     #b8c3de;
-
-  /* Text */
   --t1:  #0f172a;
   --t2:  #475569;
   --t3:  #94a3b8;
-
-  /* Blue accent */
   --blue:       #2563eb;
   --blue-lt:    #3b82f6;
   --blue-pale:  #eff6ff;
   --blue-soft:  #dbeafe;
   --blue-mid:   rgba(37,99,235,0.10);
   --blue-rim:   rgba(37,99,235,0.20);
-
-  /* Gold — property */
   --gold:       #d97706;
   --gold-lt:    #f59e0b;
   --gold-pale:  #fffbeb;
   --gold-soft:  #fef3c7;
   --gold-mid:   rgba(217,119,6,0.10);
   --gold-rim:   rgba(217,119,6,0.22);
-
-  /* Teal — services */
   --teal:       #0891b2;
   --teal-lt:    #06b6d4;
   --teal-pale:  #ecfeff;
   --teal-soft:  #cffafe;
   --teal-mid:   rgba(8,145,178,0.10);
   --teal-rim:   rgba(8,145,178,0.22);
-
-  /* Status */
   --green:      #059669;
   --green-pale: #ecfdf5;
   --green-soft: #d1fae5;
   --red:        #dc2626;
-
-  /* Font */
   --font: 'Plus Jakarta Sans', sans-serif;
-
-  /* Radius */
   --r-sm:  8px;
   --r:     12px;
   --r-md:  16px;
   --r-lg:  20px;
   --r-xl:  28px;
-
-  /* Shadow */
   --sh-xs:  0 1px 3px rgba(15,23,42,0.06), 0 1px 2px rgba(15,23,42,0.04);
   --sh-sm:  0 2px 8px rgba(15,23,42,0.08), 0 1px 3px rgba(15,23,42,0.05);
   --sh-md:  0 4px 16px rgba(15,23,42,0.10), 0 2px 6px rgba(15,23,42,0.06);
@@ -106,9 +87,6 @@
   --sh-xl:  0 16px 48px rgba(15,23,42,0.14), 0 6px 16px rgba(15,23,42,0.07);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESET
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
@@ -126,24 +104,12 @@ ul { list-style: none; }
 ::-webkit-scrollbar-track { background: var(--page); }
 ::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LAYOUT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 .sec  { padding: 88px 0; }
 @media (max-width: 768px) { .sec { padding: 56px 0; } }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   BG DECORATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.page-bg {
-  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-}
-.bg-blob {
-  position: absolute; border-radius: 50%;
-  filter: blur(90px); opacity: 0.35;
-  animation: blob-float 20s ease-in-out infinite;
-}
+.page-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; animation: blob-float 20s ease-in-out infinite; }
 .bg-blob-1 { width: 600px; height: 600px; background: #dbeafe; top: -150px; left: -100px; animation-delay: 0s; }
 .bg-blob-2 { width: 400px; height: 400px; background: #fef3c7; top: 40%; right: -80px; animation-delay: -8s; opacity: 0.25; }
 .bg-blob-3 { width: 500px; height: 500px; background: #cffafe; bottom: -100px; left: 25%; animation-delay: -15s; opacity: 0.2; }
@@ -160,13 +126,7 @@ ul { list-style: none; }
   opacity: 0.6;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   NAVBAR
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.navbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  transition: all 0.3s;
-}
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: all 0.3s; }
 .navbar.stuck {
   background: rgba(255,255,255,0.92);
   backdrop-filter: blur(16px);
@@ -178,11 +138,7 @@ ul { list-style: none; }
   display: flex; align-items: center;
   height: 66px; padding: 0 24px; gap: 0;
 }
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 19px; font-weight: 800; color: var(--t1);
-  letter-spacing: -0.4px;
-}
+.nav-logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; color: var(--t1); letter-spacing: -0.4px; }
 .logo-icon {
   width: 36px; height: 36px; border-radius: 10px;
   background: linear-gradient(135deg, var(--blue), var(--teal-lt));
@@ -201,16 +157,8 @@ ul { list-style: none; }
 }
 .nav-back a:hover { border-color: var(--blue-lt); color: var(--blue); background: var(--blue-pale); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SECTION HEADER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .sec-head { text-align: center; margin-bottom: 52px; }
-.sec-head h2 {
-  font-size: clamp(26px, 3.8vw, 40px);
-  font-weight: 700; color: var(--t1);
-  letter-spacing: -0.5px; margin: 12px 0 10px;
-  line-height: 1.2;
-}
+.sec-head h2 { font-size: clamp(26px, 3.8vw, 40px); font-weight: 700; color: var(--t1); letter-spacing: -0.5px; margin: 12px 0 10px; line-height: 1.2; }
 .sec-head p { color: var(--t2); font-size: 16px; max-width: 500px; margin: 0 auto; line-height: 1.65; }
 
 .eyebrow {
@@ -219,39 +167,19 @@ ul { list-style: none; }
   font-size: 11.5px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
 }
 .ey-blue  { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); }
-.ey-gold  { background: var(--gold-pale); border: 1px solid var(--gold-soft);  color: var(--gold); }
-.ey-teal  { background: var(--teal-pale); border: 1px solid var(--teal-soft);  color: var(--teal); }
+.ey-gold  { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: var(--gold); }
+.ey-teal  { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: var(--teal); }
 .ey-green { background: var(--green-pale); border: 1px solid var(--green-soft); color: var(--green); }
-
 .text-blue { color: var(--blue); }
 .text-gold { color: var(--gold); }
 .text-teal { color: var(--teal); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   HERO
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.hero {
-  padding: 148px 24px 72px;
-  text-align: center; position: relative; z-index: 1;
-}
-.hero h1 {
-  font-size: clamp(36px, 6vw, 64px);
-  font-weight: 800; color: var(--t1);
-  letter-spacing: -1px; line-height: 1.08;
-  margin: 16px 0 18px; max-width: 760px;
-  margin-left: auto; margin-right: auto;
-}
+.hero { padding: 148px 24px 72px; text-align: center; position: relative; z-index: 1; }
+.hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 800; color: var(--t1); letter-spacing: -1px; line-height: 1.08; margin: 16px 0 18px; max-width: 760px; margin-left: auto; margin-right: auto; }
 .hero h1 .accent { color: var(--blue); }
-.hero p {
-  font-size: clamp(15px, 2vw, 17.5px);
-  color: var(--t2); max-width: 560px;
-  margin: 0 auto 36px; line-height: 1.7; font-weight: 400;
-}
+.hero p { font-size: clamp(15px, 2vw, 17.5px); color: var(--t2); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; font-weight: 400; }
 .hero p strong { color: var(--t1); font-weight: 600; }
-
-.trust-row {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-}
+.trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .trust-pill {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 14px; border-radius: 20px;
@@ -262,13 +190,7 @@ ul { list-style: none; }
 .trust-pill:hover { border-color: var(--blue-soft); color: var(--blue); background: var(--blue-pale); transform: translateY(-1px); box-shadow: var(--sh-sm); }
 .trust-tick { color: var(--green); font-size: 12px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PROMO BANNER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.promo-wrap {
-  max-width: 1000px; margin: 0 auto 72px;
-  padding: 0 24px; position: relative; z-index: 1;
-}
+.promo-wrap { max-width: 1000px; margin: 0 auto 72px; padding: 0 24px; position: relative; z-index: 1; }
 .promo-card {
   border-radius: var(--r-xl);
   background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #ecfdf5 100%);
@@ -284,85 +206,29 @@ ul { list-style: none; }
   background: linear-gradient(90deg, var(--gold), var(--gold-lt), var(--green));
   border-radius: var(--r-xl) var(--r-xl) 0 0;
 }
-.promo-emoji {
-  font-size: 48px; flex-shrink: 0;
-  animation: bounce 2.4s ease-in-out infinite;
-}
-@keyframes bounce {
-  0%,100% { transform: translateY(0) rotate(-4deg); }
-  50%      { transform: translateY(-7px) rotate(4deg); }
-}
+.promo-emoji { font-size: 48px; flex-shrink: 0; animation: bounce 2.4s ease-in-out infinite; }
+@keyframes bounce { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
 .promo-body { flex: 1; min-width: 200px; }
-.promo-body h3 {
-  font-size: clamp(18px, 2.5vw, 24px);
-  font-weight: 800; color: var(--gold); letter-spacing: -0.4px;
-  margin-bottom: 6px;
-}
+.promo-body h3 { font-size: clamp(18px, 2.5vw, 24px); font-weight: 800; color: var(--gold); letter-spacing: -0.4px; margin-bottom: 6px; }
 .promo-body p { color: #92400e; font-size: 14px; line-height: 1.6; }
-.promo-checks {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0;
-}
-.promo-chk {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 13px; font-weight: 500; color: #92400e;
-}
-.chk-icon {
-  width: 19px; height: 19px; border-radius: 50%;
-  background: var(--green-soft); border: 1.5px solid #6ee7b7;
-  display: grid; place-items: center; font-size: 9px;
-  color: var(--green); font-weight: 800; flex-shrink: 0;
-}
-.countdown {
-  flex-shrink: 0; text-align: center;
-  background: rgba(255,255,255,0.75);
-  border: 1.5px solid #fde68a;
-  border-radius: var(--r-md); padding: 16px 24px;
-  box-shadow: var(--sh-sm);
-}
-.cd-label {
-  font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: #b45309; margin-bottom: 8px;
-}
+.promo-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0; }
+.promo-chk { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: #92400e; }
+.chk-icon { width: 19px; height: 19px; border-radius: 50%; background: var(--green-soft); border: 1.5px solid #6ee7b7; display: grid; place-items: center; font-size: 9px; color: var(--green); font-weight: 800; flex-shrink: 0; }
+.countdown { flex-shrink: 0; text-align: center; background: rgba(255,255,255,0.75); border: 1.5px solid #fde68a; border-radius: var(--r-md); padding: 16px 24px; box-shadow: var(--sh-sm); }
+.cd-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #b45309; margin-bottom: 8px; }
 .cd-digits { display: flex; gap: 6px; align-items: center; }
 .cd-block  { text-align: center; }
-.cd-num {
-  display: block; font-size: 26px; font-weight: 800;
-  color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums;
-}
+.cd-num { display: block; font-size: 26px; font-weight: 800; color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums; }
 .cd-unit { font-size: 9px; color: #b45309; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; font-weight: 600; }
 .cd-colon { font-size: 20px; color: var(--gold-lt); opacity: 0.6; margin-bottom: 10px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   STATS ROW
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.stats-bar {
-  display: flex; flex-wrap: wrap; gap: 0;
-  background: var(--white);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-xl);
-  overflow: hidden; margin-bottom: 52px;
-  box-shadow: var(--sh-sm);
-}
-.stat-cell {
-  flex: 1; min-width: 130px;
-  padding: 24px 20px; text-align: center;
-  border-right: 1px solid var(--line);
-  transition: background 0.2s;
-}
+.stats-bar { display: flex; flex-wrap: wrap; gap: 0; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 52px; box-shadow: var(--sh-sm); }
+.stat-cell { flex: 1; min-width: 130px; padding: 24px 20px; text-align: center; border-right: 1px solid var(--line); transition: background 0.2s; }
 .stat-cell:last-child { border-right: none; }
 .stat-cell:hover { background: var(--blue-pale); }
-.stat-val {
-  display: block;
-  font-size: clamp(22px, 3vw, 32px);
-  font-weight: 800; color: var(--blue);
-  letter-spacing: -0.5px; line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
+.stat-val { display: block; font-size: clamp(22px, 3vw, 32px); font-weight: 800; color: var(--blue); letter-spacing: -0.5px; line-height: 1; font-variant-numeric: tabular-nums; }
 .stat-lbl { font-size: 12px; color: var(--t3); margin-top: 5px; font-weight: 500; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PLAN CARDS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .plans-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .plans-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
 @media (max-width:900px) { .plans-2,.plans-3 { grid-template-columns: 1fr; } }
@@ -378,55 +244,27 @@ ul { list-style: none; }
   cursor: default;
   box-shadow: var(--sh-sm);
 }
-.plan-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--sh-xl);
-}
-.plan-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  border-radius: var(--r-lg) var(--r-lg) 0 0;
-}
-.plan-card::after {
-  content: '';
-  position: absolute; top: 0; right: 0;
-  width: 140px; height: 140px;
-  border-radius: 0 var(--r-lg) 0 0;
-  pointer-events: none;
-  opacity: 0.5;
-  transition: opacity 0.3s;
-}
+.plan-card:hover { transform: translateY(-5px); box-shadow: var(--sh-xl); }
+.plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+.plan-card::after { content: ''; position: absolute; top: 0; right: 0; width: 140px; height: 140px; border-radius: 0 var(--r-lg) 0 0; pointer-events: none; opacity: 0.5; transition: opacity 0.3s; }
 .plan-card:hover::after { opacity: 1; }
 
 .card-gold::before  { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
 .card-gold::after   { background: radial-gradient(at top right, var(--gold-pale), transparent 65%); }
 .card-gold          { border-color: var(--gold-rim); }
 .card-gold:hover    { border-color: var(--gold-lt); box-shadow: 0 16px 48px rgba(217,119,6,0.12), 0 4px 16px rgba(217,119,6,0.07); }
-
 .card-blue::before  { background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
 .card-blue::after   { background: radial-gradient(at top right, var(--blue-pale), transparent 65%); }
 .card-blue          { border-color: var(--blue-rim); }
 .card-blue:hover    { border-color: var(--blue-lt); box-shadow: 0 16px 48px rgba(37,99,235,0.12), 0 4px 16px rgba(37,99,235,0.07); }
-
 .card-teal::before  { background: linear-gradient(90deg, var(--teal), var(--teal-lt)); }
 .card-teal::after   { background: radial-gradient(at top right, var(--teal-pale), transparent 65%); }
 .card-teal          { border-color: var(--teal-rim); }
 .card-teal:hover    { border-color: var(--teal-lt); box-shadow: 0 16px 48px rgba(8,145,178,0.12), 0 4px 16px rgba(8,145,178,0.07); }
 
-.badge-popular {
-  position: absolute; top: 18px; right: 18px;
-  padding: 4px 11px; border-radius: 20px; font-size: 10.5px;
-  font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
-  background: var(--gold-soft); color: var(--gold);
-  border: 1px solid #fde68a;
-}
+.badge-popular { position: absolute; top: 18px; right: 18px; padding: 4px 11px; border-radius: 20px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: var(--gold-soft); color: var(--gold); border: 1px solid #fde68a; }
 
-.plan-icon {
-  width: 52px; height: 52px; border-radius: 14px;
-  display: grid; place-items: center; font-size: 24px;
-  margin-bottom: 18px; position: relative; z-index: 1;
-  border: 1.5px solid transparent;
-}
+.plan-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; margin-bottom: 18px; position: relative; z-index: 1; border: 1.5px solid transparent; }
 .icon-gold { background: var(--gold-pale); border-color: var(--gold-soft); }
 .icon-blue { background: var(--blue-pale); border-color: var(--blue-soft); }
 .icon-teal { background: var(--teal-pale); border-color: var(--teal-soft); }
@@ -442,57 +280,24 @@ ul { list-style: none; }
 .price-blue { color: var(--blue); }
 .price-teal { color: var(--teal); }
 
-.trial-tag {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 5px 11px; border-radius: 20px;
-  font-size: 12px; font-weight: 600;
-  margin-bottom: 22px; position: relative; z-index: 1;
-}
+.trial-tag { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 22px; position: relative; z-index: 1; }
 .tag-gold { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: var(--gold); }
 .tag-blue { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); }
 .tag-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: var(--teal); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TRIAL USED BADGE
-   Shown instead of "Start Free Trial"
-   button when trial has already been
-   activated (checked via localStorage)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.trial-used-badge {
-  display: flex; align-items: center; gap: 8px;
-  padding: 10px 14px; border-radius: var(--r);
-  background: var(--green-pale); border: 1.5px solid var(--green-soft);
-  font-size: 13px; font-weight: 600; color: var(--green);
-  position: relative; z-index: 1; margin-bottom: 8px;
-}
+/* Trial used / active banners */
+.trial-used-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: var(--r); background: var(--green-pale); border: 1.5px solid var(--green-soft); font-size: 13px; font-weight: 600; color: var(--green); position: relative; z-index: 1; margin-bottom: 8px; }
 .trial-used-badge .trial-used-icon { font-size: 16px; flex-shrink: 0; }
-
-/* Active subscription banner */
-.active-sub-banner {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 14px; border-radius: var(--r);
-  background: var(--green-pale); border: 1.5px solid var(--green-soft);
-  font-size: 13px; font-weight: 600; color: #065f46;
-  position: relative; z-index: 1; margin-bottom: 8px;
-}
+.active-sub-banner { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r); background: var(--green-pale); border: 1.5px solid var(--green-soft); font-size: 13px; font-weight: 600; color: #065f46; position: relative; z-index: 1; margin-bottom: 8px; }
 
 .feat-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; position: relative; z-index: 1; }
 .feat-row  { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--t2); }
-.feat-tick {
-  width: 18px; height: 18px; border-radius: 50%;
-  display: grid; place-items: center; font-size: 9px;
-  font-weight: 800; flex-shrink: 0; margin-top: 2px;
-}
-.ft-gold { background: var(--gold-soft); color: var(--gold);  border: 1px solid #fde68a; }
-.ft-blue { background: var(--blue-soft); color: var(--blue);  border: 1px solid #bfdbfe; }
-.ft-teal { background: var(--teal-soft); color: var(--teal);  border: 1px solid #a5f3fc; }
+.feat-tick { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 9px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+.ft-gold { background: var(--gold-soft); color: var(--gold); border: 1px solid #fde68a; }
+.ft-blue { background: var(--blue-soft); color: var(--blue); border: 1px solid #bfdbfe; }
+.ft-teal { background: var(--teal-soft); color: var(--teal); border: 1px solid #a5f3fc; }
 
-.activate-note {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 12px 14px; border-radius: var(--r);
-  margin-bottom: 22px; position: relative; z-index: 1;
-  font-size: 13px; line-height: 1.5;
-}
+.activate-note { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: var(--r); margin-bottom: 22px; position: relative; z-index: 1; font-size: 13px; line-height: 1.5; }
 .act-gold { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: #92400e; }
 .act-blue { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: #1e3a8a; }
 .act-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: #164e63; }
@@ -500,9 +305,6 @@ ul { list-style: none; }
 
 .card-btns { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   BUTTONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   padding: 12px 22px; border-radius: var(--r);
@@ -515,116 +317,59 @@ ul { list-style: none; }
 .btn:active { transform: scale(0.97) !important; }
 .btn .arr { transition: transform 0.2s; display: inline-block; }
 .btn:hover .arr { transform: translateX(3px); }
-
 .btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); transform: scale(0); animation: rip 0.5s ease-out forwards; pointer-events: none; }
 @keyframes rip { to { transform: scale(4); opacity: 0; } }
-
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold), var(--gold-lt));
-  color: #fff; box-shadow: 0 3px 14px rgba(217,119,6,0.30);
-}
+.btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: #fff; box-shadow: 0 3px 14px rgba(217,119,6,0.30); }
 .btn-gold:hover { box-shadow: 0 6px 22px rgba(217,119,6,0.42); transform: translateY(-2px); }
-
-.btn-blue {
-  background: linear-gradient(135deg, #1d4ed8, var(--blue));
-  color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,0.28);
-}
+.btn-blue { background: linear-gradient(135deg, #1d4ed8, var(--blue)); color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,0.28); }
 .btn-blue:hover { box-shadow: 0 6px 22px rgba(37,99,235,0.40); transform: translateY(-2px); }
-
-.btn-teal {
-  background: linear-gradient(135deg, #0e7490, var(--teal));
-  color: #fff; box-shadow: 0 3px 14px rgba(8,145,178,0.28);
-}
+.btn-teal { background: linear-gradient(135deg, #0e7490, var(--teal)); color: #fff; box-shadow: 0 3px 14px rgba(8,145,178,0.28); }
 .btn-teal:hover { box-shadow: 0 6px 22px rgba(8,145,178,0.40); transform: translateY(-2px); }
-
 .btn-outline-gold { background: var(--gold-pale); border: 1.5px solid var(--gold-soft); color: var(--gold); }
 .btn-outline-gold:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-1px); }
-
 .btn-outline-blue { background: var(--blue-pale); border: 1.5px solid var(--blue-soft); color: var(--blue); }
 .btn-outline-blue:hover { background: var(--blue-soft); border-color: var(--blue); transform: translateY(-1px); }
-
 .btn-outline-teal { background: var(--teal-pale); border: 1.5px solid var(--teal-soft); color: var(--teal); }
 .btn-outline-teal:hover { background: var(--teal-soft); border-color: var(--teal); transform: translateY(-1px); }
-
 .btn-ghost { background: var(--surface-2); border: 1.5px solid var(--line); color: var(--t2); }
 .btn-ghost:hover { background: var(--surface-3); border-color: var(--line-2); color: var(--t1); transform: translateY(-1px); }
-
 .btn-sm { padding: 9px 16px; font-size: 13px; }
 .btn-lg { padding: 15px 28px; font-size: 15px; }
-
-/* Disabled trial button */
-.btn-disabled {
-  background: var(--surface-2); border: 1.5px solid var(--line);
-  color: var(--t3); cursor: not-allowed; opacity: 0.65;
-}
+.btn-disabled { background: var(--surface-2); border: 1.5px solid var(--line); color: var(--t3); cursor: not-allowed; opacity: 0.65; }
 .btn-disabled:hover { transform: none !important; box-shadow: none !important; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   COMPARISON TABLE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .table-outer { border-radius: var(--r-lg); overflow: hidden; border: 1.5px solid var(--line); box-shadow: var(--sh-md); }
 .table-scroll { overflow-x: auto; }
 .cmp-table { width: 100%; border-collapse: collapse; background: var(--white); }
 .cmp-table thead tr { background: var(--surface-2); }
-.cmp-table th {
-  padding: 18px 22px; font-size: 14px; font-weight: 700; color: var(--t1);
-  border-bottom: 1.5px solid var(--line); text-align: center;
-  letter-spacing: -0.2px;
-}
+.cmp-table th { padding: 18px 22px; font-size: 14px; font-weight: 700; color: var(--t1); border-bottom: 1.5px solid var(--line); text-align: center; letter-spacing: -0.2px; }
 .th-feat { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); padding-left: 26px; }
-.th-owner   { color: var(--gold); }
-.th-tenant  { color: var(--blue); }
+.th-owner { color: var(--gold); }
+.th-tenant { color: var(--blue); }
 .th-service { color: var(--teal); }
 .cmp-table td { padding: 13px 22px; font-size: 13.5px; text-align: center; border-bottom: 1px solid var(--line); transition: background 0.15s; color: var(--t2); }
 .td-feat { text-align: left; padding-left: 26px; color: var(--t1); font-weight: 500; }
 .cmp-table tbody tr:hover td { background: var(--blue-pale); }
 .cmp-table tbody tr:last-child td { border-bottom: none; }
-.c-yes  { color: var(--green); font-size: 17px; font-weight: 700; }
-.c-no   { color: var(--t3);    font-size: 17px; }
-.c-part { color: var(--gold);  font-size: 12.5px; font-weight: 600; }
+.c-yes { color: var(--green); font-size: 17px; font-weight: 700; }
+.c-no  { color: var(--t3); font-size: 17px; }
+.c-part { color: var(--gold); font-size: 12.5px; font-weight: 600; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   PAYMENT SECTION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .pay-sec { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-
 .plan-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
-.ppill {
-  padding: 8px 18px; border-radius: 20px;
-  background: var(--surface-2); border: 1.5px solid var(--line);
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--t2);
-}
+.ppill { padding: 8px 18px; border-radius: 20px; background: var(--surface-2); border: 1.5px solid var(--line); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--t2); }
 .ppill:hover { border-color: var(--line-2); color: var(--t1); }
-.ppill.gold  { background: var(--gold-pale);  border-color: var(--gold-soft);  color: var(--gold); }
-.ppill.blue  { background: var(--blue-pale);  border-color: var(--blue-soft);  color: var(--blue); }
-.ppill.teal  { background: var(--teal-pale);  border-color: var(--teal-soft);  color: var(--teal); }
-
-.pay-amount {
-  text-align: center; margin-bottom: 32px;
-  padding: 28px; background: var(--surface-2);
-  border-radius: var(--r-lg); border: 1.5px solid var(--line);
-}
+.ppill.gold  { background: var(--gold-pale); border-color: var(--gold-soft); color: var(--gold); }
+.ppill.blue  { background: var(--blue-pale); border-color: var(--blue-soft); color: var(--blue); }
+.ppill.teal  { background: var(--teal-pale); border-color: var(--teal-soft); color: var(--teal); }
+.pay-amount { text-align: center; margin-bottom: 32px; padding: 28px; background: var(--surface-2); border-radius: var(--r-lg); border: 1.5px solid var(--line); }
 .amt-big { font-size: 52px; font-weight: 800; color: var(--blue); letter-spacing: -1.5px; line-height: 1; }
 .amt-sub { font-size: 14px; color: var(--t2); margin-top: 6px; }
-.amt-tag {
-  display: inline-flex; align-items: center; gap: 5px;
-  margin-top: 10px; padding: 6px 14px; border-radius: 20px;
-  background: var(--green-pale); border: 1px solid var(--green-soft);
-  font-size: 12.5px; font-weight: 600; color: var(--green);
-}
-
+.amt-tag { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 6px 14px; border-radius: 20px; background: var(--green-pale); border: 1px solid var(--green-soft); font-size: 12.5px; font-weight: 600; color: var(--green); }
 .upi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 36px; }
 @media (max-width:900px) { .upi-grid { grid-template-columns: repeat(3,1fr); } }
 @media (max-width:520px) { .upi-grid { grid-template-columns: repeat(2,1fr); } }
-
-.upi-card {
-  border-radius: var(--r-md); background: var(--white);
-  border: 1.5px solid var(--line); padding: 20px 14px;
-  text-align: center; cursor: pointer;
-  transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
-  position: relative; overflow: hidden;
-  box-shadow: var(--sh-xs);
-}
+.upi-card { border-radius: var(--r-md); background: var(--white); border: 1.5px solid var(--line); padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.25s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden; box-shadow: var(--sh-xs); }
 .upi-card:hover { transform: translateY(-5px); border-color: var(--blue-lt); box-shadow: var(--sh-lg); background: var(--blue-pale); }
 .upi-card.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft), var(--sh-md); background: var(--blue-pale); }
 .upi-card:active { transform: scale(0.95); }
@@ -632,59 +377,28 @@ ul { list-style: none; }
 .upi-card:hover .upi-logo { transform: scale(1.1); }
 .upi-name { font-size: 12.5px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
 .upi-secure { font-size: 10px; color: var(--green); font-weight: 600; }
-.upi-live {
-  position: absolute; top: 8px; right: 8px;
-  width: 7px; height: 7px; border-radius: 50%; background: var(--green);
-  animation: livepulse 2s ease-in-out infinite;
-}
+.upi-live { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: livepulse 2s ease-in-out infinite; }
 @keyframes livepulse { 0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4); } 50% { box-shadow: 0 0 0 5px rgba(5,150,105,0); } }
-
-.upi-id-box {
-  background: var(--surface-2); border: 1.5px solid var(--line);
-  border-radius: var(--r-md); padding: 24px;
-  text-align: center; margin-bottom: 20px;
-}
+.upi-id-box { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r-md); padding: 24px; text-align: center; margin-bottom: 20px; }
 .upi-id-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
 .upi-id-val { font-size: 21px; font-weight: 800; color: var(--green); letter-spacing: 0.3px; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
 .upi-copy-btn { background: none; border: none; color: var(--blue); font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: var(--font); text-decoration: underline; transition: color 0.15s; }
 .upi-copy-btn:hover { color: #1d4ed8; }
-
 .utr-row { display: flex; gap: 10px; align-items: flex-end; }
 .utr-field { flex: 1; }
 .utr-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--t2); margin-bottom: 7px; }
-.utr-input {
-  width: 100%; padding: 12px 15px;
-  background: var(--white); border: 1.5px solid var(--line);
-  border-radius: var(--r); color: var(--t1); font-family: var(--font);
-  font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: var(--sh-xs);
-}
+.utr-input { width: 100%; padding: 12px 15px; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r); color: var(--t1); font-family: var(--font); font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: var(--sh-xs); }
 .utr-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
 .utr-input::placeholder { color: var(--t3); }
-
 .sec-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 28px; border-top: 1px solid var(--line); }
-.sec-badge {
-  display: flex; align-items: center; gap: 6px;
-  padding: 7px 14px; border-radius: 20px;
-  background: var(--green-pale); border: 1px solid var(--green-soft);
-  font-size: 12px; font-weight: 500; color: #065f46;
-  transition: all 0.2s;
-}
+.sec-badge { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; background: var(--green-pale); border: 1px solid var(--green-soft); font-size: 12px; font-weight: 500; color: #065f46; transition: all 0.2s; }
 .sec-badge:hover { background: var(--green-soft); transform: translateY(-1px); box-shadow: var(--sh-xs); }
 .si { font-size: 13px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TESTIMONIALS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
 @media (max-width:768px) { .testi-grid { grid-template-columns: 1fr; } }
 @media (min-width:601px) and (max-width:768px) { .testi-grid { grid-template-columns: repeat(2,1fr); } }
-
-.testi-card {
-  background: var(--white); border: 1.5px solid var(--line);
-  border-radius: var(--r-lg); padding: 22px;
-  box-shadow: var(--sh-xs); transition: all 0.25s;
-}
+.testi-card { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 22px; box-shadow: var(--sh-xs); transition: all 0.25s; }
 .testi-card:hover { transform: translateY(-3px); box-shadow: var(--sh-lg); border-color: var(--line-2); }
 .stars { color: #f59e0b; font-size: 14px; margin-bottom: 10px; }
 .testi-text { font-size: 14px; color: var(--t2); line-height: 1.65; margin-bottom: 16px; font-style: italic; }
@@ -694,58 +408,23 @@ ul { list-style: none; }
 .testi-meta { font-size: 12px; color: var(--t3); margin-top: 1px; }
 .testi-plan { font-size: 11.5px; color: var(--blue); font-weight: 600; margin-top: 2px; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SUCCESS MODAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
-  background: rgba(15,23,42,0.55);
-  backdrop-filter: blur(8px);
-  display: none; place-items: center; padding: 20px;
-}
+.modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(15,23,42,0.55); backdrop-filter: blur(8px); display: none; place-items: center; padding: 20px; }
 .modal-overlay.open { display: grid; animation: mfade .3s ease; }
 @keyframes mfade { from { opacity:0; } to { opacity:1; } }
-.modal-box {
-  background: var(--white);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-xl);
-  padding: 52px 44px;
-  max-width: 480px; width: 100%;
-  text-align: center; position: relative;
-  box-shadow: var(--sh-xl);
-  animation: mslide .4s cubic-bezier(.34,1.56,.64,1);
-}
+.modal-box { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-xl); padding: 52px 44px; max-width: 480px; width: 100%; text-align: center; position: relative; box-shadow: var(--sh-xl); animation: mslide .4s cubic-bezier(.34,1.56,.64,1); }
 @keyframes mslide { from { transform: translateY(32px) scale(.96); opacity:0; } to { transform: none; opacity:1; } }
 .modal-box canvas { position: absolute; inset: 0; pointer-events: none; border-radius: var(--r-xl); }
-.modal-check {
-  width: 76px; height: 76px; border-radius: 50%;
-  background: var(--green-pale); border: 2px solid #6ee7b7;
-  display: grid; place-items: center;
-  margin: 0 auto 22px; font-size: 34px;
-  animation: mpop .6s cubic-bezier(.34,1.56,.64,1) .15s both;
-}
+.modal-check { width: 76px; height: 76px; border-radius: 50%; background: var(--green-pale); border: 2px solid #6ee7b7; display: grid; place-items: center; margin: 0 auto 22px; font-size: 34px; animation: mpop .6s cubic-bezier(.34,1.56,.64,1) .15s both; }
 @keyframes mpop { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
 .modal-title { font-size: 24px; font-weight: 800; color: var(--t1); margin-bottom: 8px; letter-spacing: -0.4px; }
 .modal-sub   { font-size: 14px; color: var(--t2); line-height: 1.6; margin-bottom: 24px; }
-.modal-trial-box {
-  background: var(--green-pale); border: 1px solid var(--green-soft);
-  border-radius: var(--r); padding: 14px 16px; margin-bottom: 24px;
-}
+.modal-trial-box { background: var(--green-pale); border: 1px solid var(--green-soft); border-radius: var(--r); padding: 14px 16px; margin-bottom: 24px; }
 .modal-trial-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); margin-bottom: 5px; }
 .modal-trial-dates { font-size: 15px; font-weight: 700; color: var(--green); }
 .modal-btns { display: flex; flex-direction: column; gap: 9px; }
-.modal-close {
-  position: absolute; top: 14px; right: 14px;
-  width: 30px; height: 30px; border-radius: var(--r-sm);
-  background: var(--surface-2); border: none;
-  color: var(--t2); display: grid; place-items: center; font-size: 16px;
-  cursor: pointer; transition: all 0.2s;
-}
+.modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--surface-2); border: none; color: var(--t2); display: grid; place-items: center; font-size: 16px; cursor: pointer; transition: all 0.2s; }
 .modal-close:hover { background: var(--line); color: var(--t1); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SCROLL REVEAL
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .reveal { opacity:0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .reveal.in { opacity:1; transform: none; }
 .d1 { transition-delay: .07s; }
@@ -754,35 +433,15 @@ ul { list-style: none; }
 .d4 { transition-delay: .28s; }
 .d5 { transition-delay: .35s; }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FOOTER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.footer {
-  padding: 24px 0; border-top: 1px solid var(--line);
-  background: var(--white);
-}
-.footer-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 12px;
-  font-size: 12.5px; color: var(--t3);
-}
+.footer { padding: 24px 0; border-top: 1px solid var(--line); background: var(--white); }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--t3); }
 .footer-inner a { color: var(--t2); transition: color 0.15s; }
 .footer-inner a:hover { color: var(--blue); }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TOAST
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 #toasts { position: fixed; bottom: 22px; right: 22px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
-.toast {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; border-radius: var(--r);
-  background: var(--white); border: 1.5px solid var(--line);
-  box-shadow: var(--sh-xl); font-size: 13.5px; font-weight: 500;
-  color: var(--t1); max-width: 300px;
-  animation: tfade .3s ease;
-}
+.toast { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--r); background: var(--white); border: 1.5px solid var(--line); box-shadow: var(--sh-xl); font-size: 13.5px; font-weight: 500; color: var(--t1); max-width: 300px; animation: tfade .3s ease; }
 @keyframes tfade { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: none; } }
-.toast.info    { border-color: var(--blue-soft);  }
+.toast.info    { border-color: var(--blue-soft); }
 .toast.success { border-color: var(--green-soft); }
 .toast.err     { border-color: #fecaca; }
 
@@ -806,7 +465,6 @@ ul { list-style: none; }
   <div class="bg-blob bg-blob-2"></div>
   <div class="bg-blob bg-blob-3"></div>
 </div>
-
 <div id="toasts"></div>
 
 <!-- NAVBAR -->
@@ -816,9 +474,7 @@ ul { list-style: none; }
       <div class="logo-icon">🏠</div>
       SmartRent
     </a>
-    <div class="nav-back">
-      <a href="index.html">← Back to Home</a>
-    </div>
+    <div class="nav-back"><a href="index.html">← Back to Home</a></div>
   </div>
 </nav>
 
@@ -871,22 +527,10 @@ ul { list-style: none; }
 <!-- STATS -->
 <div class="wrap">
   <div class="stats-bar reveal">
-    <div class="stat-cell">
-      <span class="stat-val" data-target="12400" data-suf="+">0</span>
-      <div class="stat-lbl">Active Subscribers</div>
-    </div>
-    <div class="stat-cell">
-      <span class="stat-val" data-target="8900" data-suf="+">0</span>
-      <div class="stat-lbl">Verified Owners</div>
-    </div>
-    <div class="stat-cell">
-      <span class="stat-val" data-target="3600" data-suf="+">0</span>
-      <div class="stat-lbl">Service Professionals</div>
-    </div>
-    <div class="stat-cell">
-      <span class="stat-val" data-target="4.9" data-suf="★" data-dec="1">0</span>
-      <div class="stat-lbl">Avg Platform Rating</div>
-    </div>
+    <div class="stat-cell"><span class="stat-val" data-target="12400" data-suf="+">0</span><div class="stat-lbl">Active Subscribers</div></div>
+    <div class="stat-cell"><span class="stat-val" data-target="8900" data-suf="+">0</span><div class="stat-lbl">Verified Owners</div></div>
+    <div class="stat-cell"><span class="stat-val" data-target="3600" data-suf="+">0</span><div class="stat-lbl">Service Professionals</div></div>
+    <div class="stat-cell"><span class="stat-val" data-target="4.9" data-suf="★" data-dec="1">0</span><div class="stat-lbl">Avg Platform Rating</div></div>
   </div>
 </div>
 
@@ -898,7 +542,6 @@ ul { list-style: none; }
       <h2>Perfect for <span class="text-gold">Property Owners</span> & Tenants</h2>
       <p>Whether you're listing a property or searching for your next home — we have the right plan.</p>
     </div>
-
     <div class="plans-2">
 
       <!-- OWNER PLAN -->
@@ -907,10 +550,7 @@ ul { list-style: none; }
         <div class="plan-icon icon-gold">⭐</div>
         <div class="plan-name">Owner Plan</div>
         <div class="plan-desc">Built for property owners who want maximum tenant reach with zero broker fees.</div>
-        <div class="price-row">
-          <span class="price-num price-gold">₹249</span>
-          <span class="price-per">/month</span>
-        </div>
+        <div class="price-row"><span class="price-num price-gold">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-gold">🎁 3 Months FREE — Start Today</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
@@ -930,7 +570,6 @@ ul { list-style: none; }
           <span><strong>After Activation:</strong> Gold Star Badge appears on your Profile, Dashboard, Property Listings & Search Results</span>
         </div>
         <div class="card-btns" id="owner-btns">
-          <!-- Rendered by refreshTrialButtons() -->
           <button class="btn btn-gold btn-lg" onclick="activateFreeTrial('owner','₹249','Owner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-gold" onclick="selectPlan('owner','₹249','Owner Plan'); scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Owner plan details coming soon…','info')">Learn More</button>
@@ -942,10 +581,7 @@ ul { list-style: none; }
         <div class="plan-icon icon-blue">🏠</div>
         <div class="plan-name">Tenant Plan</div>
         <div class="plan-desc">Unlock direct owner contact and schedule property visits instantly — no middlemen.</div>
-        <div class="price-row">
-          <span class="price-num price-blue">₹149</span>
-          <span class="price-per">/month</span>
-        </div>
+        <div class="price-row"><span class="price-num price-blue">₹149</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-blue">🎁 3 Months FREE — Start Today</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
@@ -964,7 +600,6 @@ ul { list-style: none; }
           <span><strong>After Activation:</strong> Unlocks <strong>📞 Call Owner</strong> and <strong>📲 WhatsApp Owner</strong> buttons on all listings</span>
         </div>
         <div class="card-btns" id="tenant-btns">
-          <!-- Rendered by refreshTrialButtons() -->
           <button class="btn btn-blue btn-lg" onclick="activateFreeTrial('tenant','₹149','Tenant Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
           <button class="btn btn-outline-blue" onclick="selectPlan('tenant','₹149','Tenant Plan'); scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Tenant plan details coming soon…','info')">Learn More</button>
@@ -983,12 +618,9 @@ ul { list-style: none; }
       <h2>Grow Your <span class="text-teal">Service Business</span></h2>
       <p>Get discovered by thousands of homeowners. Book more jobs. Build a 5-star reputation.</p>
     </div>
-
     <div class="plans-3">
-      <!-- PLUMBER -->
       <div class="plan-card card-teal reveal">
-        <div class="plan-icon icon-teal">🔧</div>
-        <div class="plan-name">Plumber</div>
+        <div class="plan-icon icon-teal">🔧</div><div class="plan-name">Plumber</div>
         <div class="plan-desc">Get listed as a verified plumber and receive direct booking requests.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1011,11 +643,8 @@ ul { list-style: none; }
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
-
-      <!-- ELECTRICIAN -->
       <div class="plan-card card-teal reveal d1">
-        <div class="plan-icon icon-teal">⚡</div>
-        <div class="plan-name">Electrician</div>
+        <div class="plan-icon icon-teal">⚡</div><div class="plan-name">Electrician</div>
         <div class="plan-desc">Connect with homeowners needing electrical repairs and installations.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1038,11 +667,8 @@ ul { list-style: none; }
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
-
-      <!-- CARPENTER -->
       <div class="plan-card card-teal reveal d2">
-        <div class="plan-icon icon-teal">🪚</div>
-        <div class="plan-name">Carpenter</div>
+        <div class="plan-icon icon-teal">🪚</div><div class="plan-name">Carpenter</div>
         <div class="plan-desc">Showcase woodwork expertise and fill your schedule with quality bookings.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1065,11 +691,8 @@ ul { list-style: none; }
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
-
-      <!-- PAINTER -->
       <div class="plan-card card-teal reveal d3">
-        <div class="plan-icon icon-teal">🎨</div>
-        <div class="plan-name">Painter</div>
+        <div class="plan-icon icon-teal">🎨</div><div class="plan-name">Painter</div>
         <div class="plan-desc">Get hired for interior and exterior painting projects across the city.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1092,11 +715,8 @@ ul { list-style: none; }
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
-
-      <!-- MOVERS -->
       <div class="plan-card card-teal reveal d4">
-        <div class="plan-icon icon-teal">🚚</div>
-        <div class="plan-name">Movers & Packers</div>
+        <div class="plan-icon icon-teal">🚚</div><div class="plan-name">Movers & Packers</div>
         <div class="plan-desc">Reach families moving within the city and handle full-service relocations.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1119,11 +739,8 @@ ul { list-style: none; }
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
-
-      <!-- CLEANER -->
       <div class="plan-card card-teal reveal d5">
-        <div class="plan-icon icon-teal">🧹</div>
-        <div class="plan-name">Home Cleaner</div>
+        <div class="plan-icon icon-teal">🧹</div><div class="plan-name">Home Cleaner</div>
         <div class="plan-desc">Get regular cleaning jobs from verified homeowners and tenants near you.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
         <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
@@ -1173,6 +790,7 @@ ul { list-style: none; }
             <tr><td class="td-feat">Property Listing</td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Unlimited Listings</td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Property Analytics</td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td></tr>
+            <tr><td class="td-feat">Post Properties</td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">WhatsApp Owner Access</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Phone Number Access</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Schedule Property Visits</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
@@ -1201,7 +819,6 @@ ul { list-style: none; }
       <h2>Secure <span class="text-blue">UPI Checkout</span></h2>
       <p>Fast, safe and seamless payments via India's most trusted UPI apps.</p>
     </div>
-
     <div style="text-align:center;margin-bottom:10px" class="reveal">
       <p style="font-size:14px;color:var(--t2);font-weight:500;margin-bottom:14px">Select a Plan to Pay For:</p>
       <div class="plan-pills">
@@ -1215,13 +832,11 @@ ul { list-style: none; }
         <button class="ppill"      id="pp-cleaner"  onclick="selectPlan('cleaner','₹249','Cleaner Plan')">🧹 Cleaner — ₹249/mo</button>
       </div>
     </div>
-
     <div class="pay-amount reveal">
       <div class="amt-big" id="payAmtDisplay">₹249</div>
       <div class="amt-sub">Due after 3-month free trial</div>
       <div><span class="amt-tag">🎁 Your plan is FREE for the first 90 days</span></div>
     </div>
-
     <div class="upi-grid reveal">
       <div class="upi-card" id="upi-gpay"    onclick="launchUPI('gpay')"><div class="upi-live"></div><div class="upi-logo">🟢</div><div class="upi-name">Google Pay</div><div class="upi-secure">🔒 Secure</div></div>
       <div class="upi-card" id="upi-phonepe" onclick="launchUPI('phonepe')"><div class="upi-live"></div><div class="upi-logo">🟣</div><div class="upi-name">PhonePe</div><div class="upi-secure">🔒 Secure</div></div>
@@ -1229,7 +844,6 @@ ul { list-style: none; }
       <div class="upi-card" id="upi-bhim"    onclick="launchUPI('bhim')"><div class="upi-live"></div><div class="upi-logo">🇮🇳</div><div class="upi-name">BHIM UPI</div><div class="upi-secure">🔒 Secure</div></div>
       <div class="upi-card" id="upi-amazon"  onclick="launchUPI('amazon')"><div class="upi-live"></div><div class="upi-logo">🛒</div><div class="upi-name">Amazon Pay</div><div class="upi-secure">🔒 Secure</div></div>
     </div>
-
     <div style="max-width:540px;margin:0 auto" class="reveal">
       <div class="upi-id-box">
         <div class="upi-id-label">Pay to UPI ID</div>
@@ -1244,7 +858,6 @@ ul { list-style: none; }
         <button class="btn btn-blue" style="padding:12px 20px;white-space:nowrap" onclick="confirmAndActivate()">Confirm & Activate</button>
       </div>
     </div>
-
     <div class="sec-badges reveal">
       <div class="sec-badge"><span class="si">🔒</span>256-Bit SSL</div>
       <div class="sec-badge"><span class="si">🔒</span>Secure UPI</div>
@@ -1268,38 +881,17 @@ ul { list-style: none; }
       <div class="testi-card reveal">
         <div class="stars">★★★★★</div>
         <div class="testi-text">"Got 18 genuine tenant inquiries in the first week after upgrading to the Owner Plan. No spam, no fake leads. Worth every rupee!"</div>
-        <div class="testi-author">
-          <div class="testi-av">👨‍💼</div>
-          <div>
-            <div class="testi-name">Vikram Mehta</div>
-            <div class="testi-meta">Property Owner · Mumbai</div>
-            <div class="testi-plan">⭐ Owner Plan Subscriber</div>
-          </div>
-        </div>
+        <div class="testi-author"><div class="testi-av">👨‍💼</div><div><div class="testi-name">Vikram Mehta</div><div class="testi-meta">Property Owner · Mumbai</div><div class="testi-plan">⭐ Owner Plan Subscriber</div></div></div>
       </div>
       <div class="testi-card reveal d1">
         <div class="stars">★★★★★</div>
         <div class="testi-text">"The Tenant Plan is a game-changer. I could call the owner directly, schedule a visit the same day, and moved in within a week. No broker fees!"</div>
-        <div class="testi-author">
-          <div class="testi-av">👩</div>
-          <div>
-            <div class="testi-name">Priya Iyer</div>
-            <div class="testi-meta">Tenant · Bangalore</div>
-            <div class="testi-plan">🏠 Tenant Plan Subscriber</div>
-          </div>
-        </div>
+        <div class="testi-author"><div class="testi-av">👩</div><div><div class="testi-name">Priya Iyer</div><div class="testi-meta">Tenant · Bangalore</div><div class="testi-plan">🏠 Tenant Plan Subscriber</div></div></div>
       </div>
       <div class="testi-card reveal d2">
         <div class="stars">★★★★★</div>
         <div class="testi-text">"My plumbing business bookings tripled after getting the Diamond Badge. Customers trust verified professionals. The analytics helped me grow."</div>
-        <div class="testi-author">
-          <div class="testi-av">🔧</div>
-          <div>
-            <div class="testi-name">Ramesh Kumar</div>
-            <div class="testi-meta">Plumber · Pune</div>
-            <div class="testi-plan">💎 Service Provider Subscriber</div>
-          </div>
-        </div>
+        <div class="testi-author"><div class="testi-av">🔧</div><div><div class="testi-name">Ramesh Kumar</div><div class="testi-meta">Plumber · Pune</div><div class="testi-plan">💎 Service Provider Subscriber</div></div></div>
       </div>
     </div>
   </div>
@@ -1330,41 +922,36 @@ ul { list-style: none; }
       <div class="modal-trial-label">Trial Period</div>
       <div class="modal-trial-dates" id="trialDates">—</div>
     </div>
-    <div class="modal-btns">
-      <button class="btn btn-blue btn-lg" onclick="window.location.href='dashboard.html'">Go To Dashboard <span class="arr">→</span></button>
-      <button class="btn btn-ghost" onclick="window.location.href='index.html'">Explore Premium Features</button>
+    <div class="modal-btns" id="modalBtns">
+      <!-- Filled by showSuccess() based on plan type -->
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════════════════════
      JAVASCRIPT
-     Key addition: activateFreeTrial() writes to localStorage
-     so property-details.html can read it immediately.
+     ─────────────────────────────────────────────────────────────
+     TWO localStorage keys are maintained:
 
-     localStorage key:  "sr_subscription"
-     Value (JSON):
-     {
-       planId:       "tenant",            // plan identifier
-       planName:     "Tenant Plan",
-       planAmount:   "₹149",
-       status:       "trial_active",      // "trial_active" | "active" | "expired"
-       trialType:    "free",              // always "free" for trial
-       trialStartDate: "ISO string",
-       trialEndDate:   "ISO string",      // +90 days
-       activatedAt:    epoch ms,
-       uid:            "firebase uid or guest-xxxx"
-     }
+       "sr_subscription"        — tenant / service plans
+                                  (read by property-details.html)
 
-     property-details.html reads "sr_subscription" and grants
-     access when status is "trial_active" or "active" AND
-     trialEndDate has not passed.
-════════════════════════════════════════════════════════════ -->
+       "sr_owner_subscription"  — owner plan ONLY          ← NEW
+                                  (read by post-property.html)
+
+     When the Owner Plan free trial or paid subscription is
+     activated, BOTH are written:
+       • sr_subscription        gets the standard record
+       • sr_owner_subscription  gets a simplified owner record
+         { status, trialType, trialEndDate, activatedAt, uid }
+         post-property.html reads this key to gate submission.
+═══════════════════════════════════════════════════════════════ -->
 <script>
 /* ── CONFIG ── */
 const MERCHANT_UPI  = "smartrent@upi";
 const MERCHANT_NAME = "SmartRent";
-const LS_KEY        = "sr_subscription"; // shared with property-details.html
+const LS_KEY        = "sr_subscription";         // tenant / service (existing)
+const LS_OWNER_KEY  = "sr_owner_subscription";   // owner plan gate  ← NEW
 
 /* ── STATE ── */
 let selectedPlan = { id: 'owner', amount: '₹249', name: 'Owner Plan' };
@@ -1419,27 +1006,14 @@ const rObs = new IntersectionObserver(entries => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach(el => rObs.observe(el));
 
-/* ══════════════════════════════════════════════════════════
-   FREE TRIAL ACTIVATION
-   Writes subscription record to localStorage so
-   property-details.html can read it immediately without
-   requiring a Firebase round-trip.
-   Also syncs to Firebase if a user is logged in.
-══════════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════════
+   SUBSCRIPTION HELPERS
+═══════════════════════════════════════════════════════════ */
 
-/**
- * Returns the current subscription object from localStorage, or null.
- */
 function getStoredSubscription() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch(e) { return null; }
+  try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
 }
 
-/**
- * Returns true if the stored subscription is still valid (trial_active or active, not expired).
- */
 function isSubscriptionActive(sub) {
   if (!sub) return false;
   if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
@@ -1447,15 +1021,27 @@ function isSubscriptionActive(sub) {
   return true;
 }
 
-/**
- * Refreshes plan card button states based on localStorage.
- * Called on page load and after auth resolves.
- */
+/* ── NEW: helpers for the owner-specific key ── */
+function getStoredOwnerSubscription() {
+  try { const r = localStorage.getItem(LS_OWNER_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
+}
+
+function isOwnerSubscriptionActive(sub) {
+  if (!sub) return false;
+  if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
+  if (sub.trialEndDate && Date.now() > new Date(sub.trialEndDate).getTime()) return false;
+  return true;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REFRESH TRIAL BUTTONS
+   Shows the correct button state on every card based on what
+   is stored in localStorage.
+═══════════════════════════════════════════════════════════ */
 function refreshTrialButtons() {
-  const sub = getStoredSubscription();
+  const sub   = getStoredSubscription();
   const active = isSubscriptionActive(sub);
 
-  // All plan IDs mapped to their button container IDs
   const allPlans = [
     { id: 'owner',       btnId: 'owner-btns',       color: 'gold', amount: '₹249', name: 'Owner Plan' },
     { id: 'tenant',      btnId: 'tenant-btns',      color: 'blue', amount: '₹149', name: 'Tenant Plan' },
@@ -1472,20 +1058,18 @@ function refreshTrialButtons() {
     if (!container) return;
 
     if (active && sub.planId === plan.id) {
-      // This exact plan is active — show "Active" banner + subscribe button
       const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
       container.innerHTML = `
         <div class="active-sub-banner">
           <span style="font-size:18px">✅</span>
           <div>
             <div style="font-weight:700;font-size:13px">Trial Active Until ${fmt(sub.trialEndDate)}</div>
-            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:0.8">Full access unlocked · Contact info visible</div>
+            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:0.8">Full access unlocked${plan.id === 'owner' ? ' · Property posting enabled' : ''}</div>
           </div>
         </div>
         <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe to Continue After Trial</button>
         <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
     } else if (active && sub.planId !== plan.id) {
-      // A different plan is active — free trial on this plan is disabled
       container.innerHTML = `
         <div class="trial-used-badge">
           <span class="trial-used-icon">ℹ️</span>
@@ -1494,23 +1078,23 @@ function refreshTrialButtons() {
         <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
         <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
     } else {
-      // No active trial — show normal Start Free Trial button
       const primaryClass = plan.color === 'gold' ? 'btn-gold' : plan.color === 'blue' ? 'btn-blue' : 'btn-teal';
-      const outlineClass = `btn-outline-${plan.color}`;
       container.innerHTML = `
         <button class="btn ${primaryClass} btn-lg" onclick="activateFreeTrial('${plan.id}','${plan.amount}','${plan.name}'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-        <button class="btn ${outlineClass}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
         <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
     }
   });
 }
 
-/**
- * Main function called when "Start Free Trial" is clicked.
- * Writes to localStorage + Firebase (if logged in) + shows success modal.
- */
+/* ═══════════════════════════════════════════════════════════
+   ACTIVATE FREE TRIAL
+   ─────────────────────────────────────────────────────────
+   KEY CHANGE: when planId === 'owner', also writes to
+   localStorage key "sr_owner_subscription" so that
+   post-property.html can instantly gate property submission.
+═══════════════════════════════════════════════════════════ */
 async function activateFreeTrial(planId, amount, planName) {
-  // Check if trial already used
   const existing = getStoredSubscription();
   if (isSubscriptionActive(existing)) {
     toast(`You already have an active trial for ${existing.planName}. Subscribe to access more plans.`, 'info');
@@ -1536,10 +1120,27 @@ async function activateFreeTrial(planId, amount, planName) {
     uid,
   };
 
-  // ── Write to localStorage (read by property-details.html) ──
+  /* ── Write to sr_subscription (tenant gate / existing key) ── */
   localStorage.setItem(LS_KEY, JSON.stringify(sub));
 
-  // ── Write to Firebase if user is logged in ──
+  /* ── NEW: if this is the Owner Plan, also write sr_owner_subscription ──
+     post-property.html reads THIS key to unlock property submission.
+     We write it for both free trial and paid subscription.             */
+  if (planId === 'owner') {
+    const ownerSub = {
+      status:         'trial_active',
+      trialType:      'free',
+      planId:         'owner',
+      planName:       planName,
+      trialStartDate: now.toISOString(),
+      trialEndDate:   trial.toISOString(),
+      activatedAt:    Date.now(),
+      uid,
+    };
+    localStorage.setItem(LS_OWNER_KEY, JSON.stringify(ownerSub));
+  }
+
+  /* ── Sync to Firebase if user is logged in ── */
   const fb = window.__fb;
   if (fb && fb.auth.currentUser) {
     try {
@@ -1547,30 +1148,41 @@ async function activateFreeTrial(planId, amount, planName) {
         ...sub,
         updatedAt: fb.serverTimestamp(),
       });
-      await fb.setDoc(fb.doc(fb.db, 'users', uid), {
-        subscriptionStatus:  'active',          // <-- what property-details.html checks
-        subscriptionPlan:    'tenant_basic',    // always "tenant_basic" for tenant plan
+      const userUpdate = {
+        subscriptionStatus: 'active',
+        subscriptionPlan:   planId === 'tenant' ? 'tenant_basic' : planId,
         planId,
         planName,
-        trialEndDate:        trial.toISOString(),
-        updatedAt:           fb.serverTimestamp(),
-      }, { merge: true });
+        trialEndDate:       trial.toISOString(),
+        updatedAt:          fb.serverTimestamp(),
+      };
+      /* ── NEW: also set ownerPlan flag so post-property.html Firebase check passes ── */
+      if (planId === 'owner') {
+        userUpdate.ownerPlan        = true;
+        userUpdate.canPostProperty  = true;
+        userUpdate.ownerSubscription = {
+          plan:      'owner',
+          status:    'active',
+          active:    true,
+          expiresAt: trial.toISOString(),
+        };
+      }
+      await fb.setDoc(fb.doc(fb.db, 'users', uid), userUpdate, { merge: true });
     } catch(e) { console.warn('Firebase sync (non-critical):', e); }
   }
 
-  // ── Refresh button states ──
   refreshTrialButtons();
-
-  // ── Show success modal ──
   showSuccess(sub, trial);
 }
 
-/* ── PLAN SELECTION (for UPI payment section) ── */
+/* ─────────────────────────────────────────────────────────
+   PLAN SELECTION (UPI payment section)
+───────────────────────────────────────────────────────── */
 function selectPlan(id, amount, name) {
   selectedPlan = { id, amount, name };
   document.getElementById('payAmtDisplay').textContent = amount;
   document.querySelectorAll('.ppill').forEach(p => { p.className = 'ppill'; });
-  const map = { owner:'gold', tenant:'blue', plumber:'teal', electrician:'teal', painter:'teal', carpenter:'teal', movers:'teal', cleaner:'teal' };
+  const map   = { owner:'gold', tenant:'blue', plumber:'teal', electrician:'teal', painter:'teal', carpenter:'teal', movers:'teal', cleaner:'teal' };
   const idMap = { plumber:'plumber', electrician:'electric', painter:'painter', carpenter:'carpenter', movers:'movers', cleaner:'cleaner', owner:'owner', tenant:'tenant' };
   const pp = document.getElementById('pp-' + (idMap[id] || id));
   if (pp) pp.className = 'ppill ' + (map[id] || 'teal');
@@ -1581,7 +1193,7 @@ function scrollToPay() {
   document.getElementById('paySection').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── UPI LINKS ── */
+/* ── UPI ── */
 function upiLink(app) {
   const amt  = selectedPlan.amount.replace('₹','');
   const note = encodeURIComponent(`SmartRent ${selectedPlan.name}`);
@@ -1608,7 +1220,12 @@ function copyUPIId() {
   navigator.clipboard.writeText(MERCHANT_UPI).then(() => toast('UPI ID copied!', 'success'));
 }
 
-/* ── CONFIRM PAID SUBSCRIPTION & FIREBASE ── */
+/* ═══════════════════════════════════════════════════════════
+   CONFIRM & ACTIVATE (UPI paid subscription)
+   ─────────────────────────────────────────────────────────
+   KEY CHANGE: also writes sr_owner_subscription when the
+   Owner Plan is paid, same as the free trial path above.
+═══════════════════════════════════════════════════════════ */
 async function confirmAndActivate() {
   const utr = document.getElementById('utrInput').value.trim();
   if (utr.length < 6) { toast('Please enter a valid UTR / Transaction ID', 'err'); return; }
@@ -1621,7 +1238,7 @@ async function confirmAndActivate() {
     planId:              selectedPlan.id,
     planName:            selectedPlan.name,
     planAmount:          selectedPlan.amount,
-    status:              'active',              // paid subscription = "active"
+    status:              'active',
     trialType:           'paid',
     trialStartDate:      now.toISOString(),
     trialEndDate:        trial.toISOString(),
@@ -1633,21 +1250,47 @@ async function confirmAndActivate() {
     permissions: getPerms(selectedPlan.id),
   };
 
-  // Save to localStorage
   localStorage.setItem(LS_KEY, JSON.stringify(sub));
+
+  /* ── NEW: unlock property posting for paid Owner Plan ── */
+  if (selectedPlan.id === 'owner') {
+    const ownerSub = {
+      status:         'active',
+      trialType:      'paid',
+      planId:         'owner',
+      planName:       selectedPlan.name,
+      trialStartDate: now.toISOString(),
+      trialEndDate:   trial.toISOString(),
+      activatedAt:    Date.now(),
+      utr,
+      uid,
+    };
+    localStorage.setItem(LS_OWNER_KEY, JSON.stringify(ownerSub));
+  }
 
   const fb = window.__fb;
   if (fb && fb.auth.currentUser) {
     try {
       await fb.setDoc(fb.doc(fb.db,'subscriptions',uid), { ...sub, updatedAt: fb.serverTimestamp() });
       await fb.addDoc(fb.collection(fb.db,'payments'), { uid, planId: selectedPlan.id, amount: selectedPlan.amount, utr, paidAt: fb.serverTimestamp(), status: 'confirmed' });
-      await fb.setDoc(fb.doc(fb.db,'users',uid), {
+      const userUpdate = {
         subscriptionStatus: 'active',
         subscriptionPlan:   selectedPlan.id === 'tenant' ? 'tenant_basic' : selectedPlan.id,
-        badge: sub.badge,
-        planId: selectedPlan.id,
+        badge:   sub.badge,
+        planId:  selectedPlan.id,
         updatedAt: fb.serverTimestamp()
-      }, { merge: true });
+      };
+      if (selectedPlan.id === 'owner') {
+        userUpdate.ownerPlan       = true;
+        userUpdate.canPostProperty = true;
+        userUpdate.ownerSubscription = {
+          plan:      'owner',
+          status:    'active',
+          active:    true,
+          expiresAt: trial.toISOString(),
+        };
+      }
+      await fb.setDoc(fb.doc(fb.db,'users',uid), userUpdate, { merge: true });
     } catch(e) { console.warn('Firestore (demo mode):', e); }
   }
 
@@ -1657,7 +1300,7 @@ async function confirmAndActivate() {
 
 function getPerms(id) {
   const p = {
-    owner:       ['list_properties','analytics','featured_listing','owner_badge'],
+    owner:       ['list_properties','analytics','featured_listing','owner_badge','post_property'],
     tenant:      ['unlock_phone','unlock_whatsapp','schedule_visit','save_properties','compare'],
     plumber:     ['service_listing','customer_leads','booking_mgmt','pro_badge'],
     electrician: ['service_listing','customer_leads','booking_mgmt','pro_badge'],
@@ -1671,11 +1314,25 @@ function getPerms(id) {
 
 /* ── SUCCESS MODAL ── */
 function showSuccess(sub, trialEnd) {
-  const isTrial = sub.trialType === 'free';
+  const isTrial  = sub.trialType === 'free';
+  const isOwner  = sub.planId === 'owner';
   document.getElementById('modalTitle').textContent = isTrial ? '🎉 Free Trial Activated!' : '✅ Subscription Activated!';
   document.getElementById('modalPlanName').textContent = sub.planName;
   const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
   document.getElementById('trialDates').textContent = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)} (FREE)`;
+
+  /* ── Show relevant CTA buttons in modal ── */
+  const btnsEl = document.getElementById('modalBtns');
+  if (isOwner) {
+    btnsEl.innerHTML = `
+      <button class="btn btn-gold btn-lg" onclick="window.location.href='post-property.html'">🏘️ Post a Property Now <span class="arr">→</span></button>
+      <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'">Go To Dashboard</button>`;
+  } else {
+    btnsEl.innerHTML = `
+      <button class="btn btn-blue btn-lg" onclick="window.location.href='dashboard.html'">Go To Dashboard <span class="arr">→</span></button>
+      <button class="btn btn-ghost" onclick="window.location.href='index.html'">Explore Premium Features</button>`;
+  }
+
   document.getElementById('successModal').classList.add('open');
   confetti();
 }
@@ -1700,12 +1357,9 @@ function confetti() {
   (function draw() {
     ctx.clearRect(0,0,W,H);
     pts.forEach(p => {
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot*Math.PI/180);
-      ctx.fillStyle = p.col;
-      ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);
+      ctx.save(); ctx.globalAlpha = Math.max(0, p.life);
+      ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle = p.col; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);
       ctx.restore();
       p.x+=p.vx; p.y+=p.vy; p.vy+=0.38; p.vx*=0.99; p.rot+=p.rv; p.life-=0.011;
     });
@@ -1747,7 +1401,7 @@ function toast(msg, type='info') {
   }, 3500);
 }
 
-/* ── INIT: check localStorage on page load ── */
+/* ── INIT ── */
 refreshTrialButtons();
 </script>
 </body>

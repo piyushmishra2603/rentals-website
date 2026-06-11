@@ -88,6 +88,8 @@ body.on-link .cur-ring{border-color:var(--teal-b);width:44px;height:44px}
 .nav-wordmark{display:flex;flex-direction:column;line-height:1}
 .nw-sr{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--t0);letter-spacing:.02em}
 .nw-ai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.18em;color:var(--teal);background:var(--teal-d);border:1px solid var(--teal-b);padding:1px 5px;border-radius:3px;margin-left:5px;align-self:flex-end;margin-bottom:2px}
+
+/* ── NAV LINKS (flat links for non-dropdown items) ── */
 .nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 24px}
 .nav-a{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s;position:relative;letter-spacing:.01em}
 .nav-a:hover{color:var(--t0);background:rgba(192,124,42,.06)}
@@ -95,11 +97,36 @@ body.on-link .cur-ring{border-color:var(--teal-b);width:44px;height:44px}
 .nav-a.on::after{content:'';position:absolute;bottom:-1px;left:14px;right:14px;height:2px;background:var(--gold);border-radius:2px}
 .nav-a .nav-badge{font-size:8px;font-family:'JetBrains Mono',monospace;background:rgba(225,29,72,.08);color:var(--rose);border:1px solid rgba(225,29,72,.22);padding:1px 5px;border-radius:3px;margin-left:4px;letter-spacing:.08em;vertical-align:middle}
 .nav-a.svc-l{color:var(--teal);font-weight:600}.nav-a.svc-l:hover{background:var(--teal-d);color:var(--teal)}
+
+/* ── DROPDOWN ── */
+.nav-dd{position:relative;display:inline-flex;align-items:center}
+.nav-dd-btn{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);background:transparent;border:none;cursor:none;display:inline-flex;align-items:center;gap:5px;transition:all .2s;letter-spacing:.01em;font-family:'DM Sans',sans-serif}
+.nav-dd-btn:hover,.nav-dd:hover .nav-dd-btn{color:var(--t0);background:rgba(192,124,42,.06)}
+.nav-dd-btn svg{width:10px;height:10px;transition:transform .2s;opacity:.6}
+.nav-dd:hover .nav-dd-btn svg{transform:rotate(180deg)}
+.nav-dd-panel{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:#fff;border:1.5px solid rgba(192,124,42,.14);border-radius:var(--r2);padding:8px;min-width:200px;box-shadow:0 16px 48px rgba(26,22,18,.12);opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;transform-origin:top center;transform:translateX(-50%) translateY(-6px) scale(.97);z-index:1000}
+.nav-dd:hover .nav-dd-panel{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0) scale(1)}
+.nav-dd-panel::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:12px;height:12px;background:#fff;border-left:1.5px solid rgba(192,124,42,.14);border-top:1.5px solid rgba(192,124,42,.14);transform:translateX(-50%) rotate(45deg)}
+.dd-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t1);text-decoration:none;transition:all .15s;white-space:nowrap}
+.dd-item:hover{background:var(--gold-d);color:var(--gold)}
+.dd-item-ic{font-size:15px;width:22px;text-align:center;flex-shrink:0}
+.dd-sep{height:1px;background:rgba(26,22,18,.06);margin:5px 4px}
+.dd-item.svc{color:var(--teal)}.dd-item.svc:hover{background:var(--teal-d)}
+
+/* ── NAV RIGHT ── */
 .nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
 .nb{padding:7px 16px;border-radius:var(--r1);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:none;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;letter-spacing:.01em}
 .nb-gh{background:transparent;border:1px solid var(--line2);color:var(--t1)}.nb-gh:hover{border-color:var(--gold-b);color:var(--gold)}
 .nb-gold{background:linear-gradient(135deg,var(--gold-lt),var(--gold));border:none;color:#fff;font-weight:700;box-shadow:0 2px 12px rgba(192,124,42,.25)}.nb-gold:hover{box-shadow:0 4px 22px var(--gold-glow);transform:translateY(-1px)}
+.nb-logout{background:transparent;border:1px solid rgba(225,29,72,.2);color:var(--rose);display:none}.nb-logout:hover{background:var(--rose-d);border-color:rgba(225,29,72,.38)}
+
+/* ── user avatar ── */
 .nav-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold-lt),var(--teal));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:#fff;cursor:none;border:2px solid white;box-shadow:var(--sh-sm);transition:all .2s}.nav-av:hover{box-shadow:0 0 0 3px var(--gold-d)}
+
+/* user greeting pill (shown when logged in) */
+.nav-user-pill{display:none;align-items:center;gap:7px;padding:4px 12px 4px 6px;border-radius:100px;background:var(--gold-d);border:1px solid var(--gold-b);cursor:none}
+.nav-user-pill span{font-size:12px;font-weight:600;color:var(--gold-dk);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 .mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--line2);background:transparent;font-size:18px;color:var(--t1);cursor:none;align-items:center;justify-content:center}
 .mob-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(250,248,245,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:6px;backdrop-filter:blur(22px);animation:mmDrop .25s ease;box-shadow:0 8px 32px rgba(26,22,18,.1)}
 @keyframes mmDrop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
@@ -120,7 +147,7 @@ section{position:relative;z-index:1}
 .rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}.rv.d4{transition-delay:.32s}
 
 /* ═══════════════════════════════════════════════
-   HERO — no search bar, pure statement
+   HERO
 ═══════════════════════════════════════════════ */
 .hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:110px 24px 80px;text-align:center;overflow:hidden;
   background:linear-gradient(170deg,#fdf9f4 0%,#f5ede0 38%,#faf7f2 70%,#eef6f5 100%)}
@@ -143,20 +170,18 @@ section{position:relative;z-index:1}
 .h-desc{font-size:clamp(13px,1.6vw,16px);color:var(--t2);line-height:1.82;max-width:530px;margin:0 auto 46px;font-weight:400;animation:fu .8s .26s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
 @keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-/* Hero CTA buttons */
 .hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fu .8s .34s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1;margin-bottom:52px}
 .h-btn-main{padding:15px 34px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold-lt),var(--gold));border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;display:inline-flex;align-items:center;gap:9px;transition:all .22s;letter-spacing:.02em;box-shadow:0 4px 20px rgba(192,124,42,.28);text-decoration:none}
 .h-btn-main:hover{box-shadow:0 8px 32px var(--gold-glow);transform:translateY(-2px)}
 .h-btn-sec{padding:14px 28px;border-radius:var(--r1);background:transparent;border:1.5px solid rgba(26,22,18,.14);color:var(--t1);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:none;display:inline-flex;align-items:center;gap:9px;transition:all .2s;text-decoration:none}
 .h-btn-sec:hover{border-color:var(--gold-b);color:var(--gold)}
 
-/* FLOATING TRUST CARDS */
 .trust-float{position:relative;z-index:1;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fu .8s .42s cubic-bezier(.4,0,.2,1) both}
 .tf-card{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.75);border:1px solid rgba(192,124,42,.16);border-radius:100px;padding:8px 16px;font-size:12.5px;color:var(--t1);font-weight:500;box-shadow:var(--sh-sm);backdrop-filter:blur(8px);transition:all .2s}
 .tf-card:hover{background:#fff;border-color:var(--gold-b);transform:translateY(-2px);box-shadow:var(--sh-md)}
 .tf-ic{font-size:14px}
 
-/* ── STATS TICKER ── */
+/* ── STATS ── */
 .h-stats{margin-top:52px;animation:fu .8s .5s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
 .stats-inner{display:flex;gap:0;justify-content:center;align-items:stretch;background:#fff;border:1px solid rgba(192,124,42,.14);border-radius:var(--r2);overflow:hidden;box-shadow:0 8px 36px rgba(26,22,18,.08)}
 .hst{padding:18px 38px;text-align:center;border-right:1px solid rgba(26,22,18,.06);transition:background .2s;cursor:default}.hst:last-child{border-right:none}.hst:hover{background:rgba(192,124,42,.03)}
@@ -165,7 +190,7 @@ section{position:relative;z-index:1}
 .h-fade{position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none}
 
 /* ── MARQUEE ── */
-.mbar-wrap{position:relative;z-index:1;background:var(--gold);border-top:none;border-bottom:none;overflow:hidden}
+.mbar-wrap{position:relative;z-index:1;background:var(--gold);overflow:hidden}
 .mtrack{display:flex;width:max-content;animation:mLeft 34s linear infinite}.mtrack:hover{animation-play-state:paused}
 @keyframes mLeft{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .mi{display:flex;align-items:center;gap:9px;padding:11px 42px;border-right:1px solid rgba(255,255,255,.18);white-space:nowrap;flex-shrink:0}
@@ -184,14 +209,11 @@ section{position:relative;z-index:1}
 .cat-nm{font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--t0);margin-bottom:3px}
 .cat-ct{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
 
-/* ── SERVICES SECTION ── */
+/* ── SERVICES ── */
 .svc-sec{padding:88px 0;background:#fff}
 .svc-header-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:38px;gap:16px;flex-wrap:wrap}
 .svc-cta-link{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:var(--teal);text-decoration:none;display:flex;align-items:center;gap:6px;font-weight:400;transition:gap .2s}.svc-cta-link:hover{gap:11px}
-
-/* 3-col grid for 6 services */
 .svc-grid-6{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-
 .sc{background:var(--bg3);border:1.5px solid rgba(26,22,18,.07);border-radius:var(--r3);padding:30px 24px;text-align:center;cursor:none;text-decoration:none;display:block;transition:all .3s;position:relative;overflow:hidden;box-shadow:var(--sh-sm)}
 .sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--scc,var(--gold)),var(--scc2,var(--teal)));transform:scaleX(0);transform-origin:left;transition:transform .35s}
 .sc:hover{border-color:var(--gold-b);transform:translateY(-6px);box-shadow:0 16px 44px rgba(26,22,18,.12)}.sc:hover::after{transform:scaleX(1)}
@@ -204,7 +226,7 @@ section{position:relative;z-index:1}
 .sc-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 22px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold-lt),var(--gold));border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:none;transition:all .2s;box-shadow:0 2px 10px rgba(192,124,42,.22)}
 .sc:hover .sc-btn{box-shadow:0 4px 16px var(--gold-glow);transform:translateY(-1px)}
 
-/* ── SERVICE BOOKING INTENT MODAL ── */
+/* ── MODAL ── */
 .modal-bg{position:fixed;inset:0;z-index:800;background:rgba(26,22,18,.6);backdrop-filter:blur(10px);display:none;place-items:center;padding:20px;animation:fadein .25s ease}
 .modal-bg.open{display:grid}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
@@ -221,13 +243,11 @@ section{position:relative;z-index:1}
 .modal-input{width:100%;padding:12px 14px;background:var(--bg3);border:1.5px solid var(--line2);border-radius:var(--r1);color:var(--t0);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px;transition:border-color .2s}.modal-input:focus{border-color:var(--gold-b)}
 .modal-cta{width:100%;padding:14px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold-lt),var(--gold));border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:none;transition:all .2s;letter-spacing:.03em;box-shadow:0 4px 16px rgba(192,124,42,.25);display:flex;align-items:center;justify-content:center;gap:8px}.modal-cta:hover{box-shadow:0 6px 24px var(--gold-b);transform:translateY(-1px)}
 
-/* ── HOW IT WORKS — ink draw timeline ── */
+/* ── HOW IT WORKS ── */
 .how-sec{padding:90px 0;background:#fff;border-top:1px solid rgba(26,22,18,.06);border-bottom:1px solid rgba(26,22,18,.06);position:relative;overflow:hidden}
-/* Animated SVG spine */
 .how-spine{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;height:4px;background:rgba(192,124,42,.08);border-radius:2px;z-index:0}
 .how-spine-fill{position:absolute;inset:0;background:linear-gradient(90deg,var(--gold),var(--gold-lt),var(--teal));border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform 1.2s cubic-bezier(.4,0,.2,1)}
 .how-spine-fill.drawn{transform:scaleX(1)}
-
 .how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:50px;position:relative;z-index:1}
 .how-step{padding:34px 28px;border-right:1px solid rgba(192,124,42,.09);position:relative;transition:background .3s}.how-step:last-child{border-right:none}.how-step:hover{background:rgba(192,124,42,.03)}
 .how-n{font-family:'Cormorant Garamond',serif;font-size:76px;font-weight:300;font-style:italic;color:rgba(192,124,42,.08);line-height:1;position:absolute;bottom:18px;right:18px;user-select:none}
@@ -401,8 +421,16 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
   <a class="mob-link svc" href="services.html">🔧 Home Services</a>
   <a class="mob-link" href="owner-dashboard.html">📋 My Dashboard</a>
   <hr style="border:none;border-top:1px solid rgba(26,22,18,.08);margin:6px 0">
-  <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
-  <a class="nb nb-gold" href="post-property.html" style="text-decoration:none;justify-content:center;margin-top:7px">+ List Your Property Free</a>
+  <!-- shown when logged OUT -->
+  <div id="mobAuthOut">
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none;justify-content:center;display:flex">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none;justify-content:center;display:flex;margin-top:7px">+ List Your Property Free</a>
+  </div>
+  <!-- shown when logged IN -->
+  <div id="mobAuthIn" style="display:none">
+    <a class="nb nb-gold" href="owner-dashboard.html" style="text-decoration:none;justify-content:center;display:flex">📋 My Dashboard</a>
+    <button class="nb nb-logout" onclick="doLogout()" style="width:100%;justify-content:center;margin-top:7px;border-radius:7px;padding:11px">🚪 Sign Out</button>
+  </div>
 </div>
 
 <!-- CONSENT -->
@@ -427,20 +455,64 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
       </div>
     </div>
   </a>
+
+  <!-- ── NAV CENTRE: dropdowns + direct links ── -->
   <div class="nav-links">
-    <a class="nav-a on" href="index.html">Home</a>
-    <a class="nav-a" href="pgs-hostels.html">PG &amp; Hostels</a>
-    <a class="nav-a" href="properties.html">Flats</a>
-    <a class="nav-a" href="properties.html">Co-living</a>
-    <a class="nav-a" href="commercial.html">Commercial</a>
-    <a class="nav-a svc-l" href="services.html">🔧 Services</a>
+
+    <!-- Rentals dropdown -->
+    <div class="nav-dd">
+      <button class="nav-dd-btn">
+        Browse Rentals
+        <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="nav-dd-panel">
+        <a class="dd-item" href="pgs-hostels.html"><span class="dd-item-ic">🏠</span>PG &amp; Hostels</a>
+        <a class="dd-item" href="properties.html"><span class="dd-item-ic">🏡</span>Flats &amp; Apartments</a>
+        <a class="dd-item" href="properties.html"><span class="dd-item-ic">🤝</span>Co-living Spaces</a>
+        <a class="dd-item" href="properties.html"><span class="dd-item-ic">🏗️</span>Builder Floors</a>
+        <div class="dd-sep"></div>
+        <a class="dd-item" href="commercial.html"><span class="dd-item-ic">🏪</span>Commercial</a>
+      </div>
+    </div>
+
+    <!-- Services dropdown -->
+    <div class="nav-dd">
+      <button class="nav-dd-btn" style="color:var(--teal);font-weight:600">
+        🔧 Services
+        <svg viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="nav-dd-panel">
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">🔧</span>Plumber</a>
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">⚡</span>Electrician</a>
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">🪚</span>Carpenter</a>
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">🎨</span>Painter</a>
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">🚚</span>Movers &amp; Packers</a>
+        <a class="dd-item svc" href="services.html"><span class="dd-item-ic">🧹</span>Home Cleaner</a>
+      </div>
+    </div>
+
     <a class="nav-a" href="post-property.html">List Property <span class="nav-badge">FREE</span></a>
     <a class="nav-a" href="plans.html">Pricing</a>
   </div>
+
+  <!-- ── NAV RIGHT: auth-aware ── -->
   <div class="nav-right">
-    <a class="nb nb-gh" href="login.html" style="text-decoration:none">Sign In</a>
-    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none">+ List Property</a>
-    <div class="nav-av" id="navAv" onclick="showToast('📋 Sign in to access your dashboard')" title="My Account">P</div>
+
+    <!-- Shown when LOGGED OUT -->
+    <a class="nb nb-gh" href="login.html" style="text-decoration:none" id="navSignIn">Sign In</a>
+    <a class="nb nb-gold" href="post-property.html" style="text-decoration:none" id="navListBtn">+ List Property</a>
+
+    <!-- Shown when LOGGED IN -->
+    <div class="nav-user-pill" id="navUserPill">
+      <div class="nav-av" id="navAv" onclick="location.href='owner-dashboard.html'" title="My Dashboard" style="width:28px;height:28px;font-size:13px;border-width:1.5px">P</div>
+      <span id="navUserName">User</span>
+    </div>
+    <button class="nb nb-logout" id="navLogout" onclick="doLogout()">🚪 Sign Out</button>
+
     <button class="mob-btn" onclick="toggleMob()" id="mobBtn">☰</button>
   </div>
 </nav>
@@ -463,18 +535,11 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
   <p class="h-desc">Discover verified PGs, hostels, flats &amp; co-living spaces across India — intelligently matched to your commute, budget and lifestyle. Zero brokerage, always.</p>
 
   <div class="hero-ctas">
-    <a class="h-btn-main" href="properties.html">
-      🏠 Browse Rentals
-    </a>
-    <a class="h-btn-sec" href="services.html">
-      🔧 Explore Services
-    </a>
-    <a class="h-btn-sec" href="post-property.html">
-      ✦ List Property Free
-    </a>
+    <a class="h-btn-main" href="properties.html">🏠 Browse Rentals</a>
+    <a class="h-btn-sec" href="services.html">🔧 Explore Services</a>
+    <a class="h-btn-sec" href="post-property.html">✦ List Property Free</a>
   </div>
 
-  <!-- TRUST FLOATERS -->
   <div class="trust-float">
     <div class="tf-card"><span class="tf-ic">✅</span> KYC Verified Owners</div>
     <div class="tf-card"><span class="tf-ic">⚡</span> Zero Brokerage</div>
@@ -483,12 +548,11 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
     <div class="tf-card"><span class="tf-ic">📞</span> Direct Connect</div>
   </div>
 
-  <!-- STATS — populated by Firebase or zero-state -->
   <div class="h-stats">
     <div class="stats-inner">
       <div class="hst"><div class="hst-v" id="hs-props">—</div><div class="hst-l">Live Properties</div></div>
       <div class="hst"><div class="hst-v" id="hs-owners">—</div><div class="hst-l">Verified Owners</div></div>
-      <div class="hst"><div class="hst-v" id="hs-cities">15+</div><div class="hst-l">Cities Covered</div></div>
+      <div class="hst"><div class="hst-v">15+</div><div class="hst-l">Cities Covered</div></div>
       <div class="hst"><div class="hst-v">₹0</div><div class="hst-l">Brokerage Fee</div></div>
     </div>
   </div>
@@ -540,75 +604,49 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
       </div>
       <a class="svc-cta-link" href="services.html">View all services →</a>
     </div>
-
     <div class="svc-grid-6 rv d1">
-
       <div class="sc" style="--scc:#c07c2a;--scc2:#e09a4a" onclick="openServiceModal('🔧','Plumber','Leaks, pipe fitting, bathroom repairs, drainage issues — same-day availability.','₹299')">
         <span class="sc-icon">🔧</span>
         <div class="sc-name">Plumber</div>
         <div class="sc-desc">Leaks, pipe fitting, bathroom repairs, drainage issues — same-day availability.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹299</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹299</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
       <div class="sc" style="--scc:#0d9488;--scc2:#0d9488" onclick="openServiceModal('⚡','Electrician','Wiring, fan & light installation, switchboard repairs, short circuit fixes.','₹349')">
         <span class="sc-icon">⚡</span>
         <div class="sc-name">Electrician</div>
         <div class="sc-desc">Wiring, fan &amp; light installation, switchboard repairs, short circuit fixes.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹349</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹349</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
       <div class="sc" style="--scc:#c07c2a;--scc2:#0d9488" onclick="openServiceModal('🪚','Carpenter','Furniture assembly, door & window repairs, wardrobes, custom woodwork.','₹399')">
         <span class="sc-icon">🪚</span>
         <div class="sc-name">Carpenter</div>
         <div class="sc-desc">Furniture assembly, door &amp; window repairs, wardrobes, custom woodwork.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹399</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹399</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
       <div class="sc" style="--scc:#e09a4a;--scc2:#c07c2a" onclick="openServiceModal('🎨','Painter','Interior & exterior painting, waterproofing, texture finish, touch-ups.','₹499')">
         <span class="sc-icon">🎨</span>
         <div class="sc-name">Painter</div>
         <div class="sc-desc">Interior &amp; exterior painting, waterproofing, texture finish, touch-ups.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹499</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹499</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
       <div class="sc" style="--scc:#0d9488;--scc2:#c07c2a" onclick="openServiceModal('🚚','Movers & Packers','Safe packing, loading, transportation & unloading — complete home shifting.','₹1,999')">
         <span class="sc-icon">🚚</span>
         <div class="sc-name">Movers &amp; Packers</div>
         <div class="sc-desc">Safe packing, loading, transportation &amp; unloading — complete home shifting.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹1,999</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹1,999</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
       <div class="sc" style="--scc:#c07c2a;--scc2:#e09a4a" onclick="openServiceModal('🧹','Home Cleaner','Full flat cleaning, sofa cleaning, bathroom scrub, move-in/out deep cleaning.','₹499')">
         <span class="sc-icon">🧹</span>
         <div class="sc-name">Home Cleaner</div>
         <div class="sc-desc">Full flat cleaning, sofa cleaning, bathroom scrub, move-in/out deep cleaning.</div>
-        <div class="sc-meta">
-          <span class="sc-tag">✓ Verified</span>
-          <span class="sc-price">From ₹499</span>
-        </div>
+        <div class="sc-meta"><span class="sc-tag">✓ Verified</span><span class="sc-price">From ₹499</span></div>
         <button class="sc-btn">Book Now →</button>
       </div>
-
     </div>
   </div>
 </section>
@@ -752,7 +790,6 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
           <a class="cta-sec" href="owner-dashboard.html">📋 Owner Dashboard</a>
         </div>
       </div>
-      <!-- Dashboard mockup -->
       <div class="mock">
         <div class="mock-bar">
           <div class="md md1"></div><div class="md md2"></div><div class="md md3"></div>
@@ -760,8 +797,8 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
         </div>
         <div class="mock-body">
           <div class="mock-stats">
-            <div class="ms"><div class="msv" style="color:var(--gold)" id="ms1">0</div><div class="msl">Inquiries</div></div>
-            <div class="ms"><div class="msv" style="color:var(--teal)" id="ms2">0</div><div class="msl">Bookings</div></div>
+            <div class="ms"><div class="msv" style="color:var(--gold)" id="ms1">—</div><div class="msl">Inquiries</div></div>
+            <div class="ms"><div class="msv" style="color:var(--teal)" id="ms2">—</div><div class="msl">Bookings</div></div>
             <div class="ms"><div class="msv" style="color:var(--gold-lt)" id="ms3">—</div><div class="msl">Revenue</div></div>
           </div>
           <div class="mock-chart" id="mchart"></div>
@@ -792,7 +829,7 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
   <div class="wrap">
     <div class="fg">
       <div>
-        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px;text-decoration:none">
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
           <div class="nav-gem" style="width:30px;height:30px;font-size:14px">💎</div>
           <div style="display:flex;align-items:baseline;gap:1px"><span class="nw-sr" style="font-size:17px;color:#fff">SmartRent</span><span class="nw-ai">AI</span></div>
         </div>
@@ -848,8 +885,8 @@ footer{padding:64px 0 30px;background:var(--t0);color:rgba(255,255,255,.8)}
 <!-- ═══════════════ FIREBASE ═══════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, getCountFromServer, getDocs, query, where, limit, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, getCountFromServer, query, where, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const cfg = {
   apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
@@ -860,44 +897,59 @@ const app  = initializeApp(cfg);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-window.__fb = { db, collection, addDoc, serverTimestamp };
+window.__fb   = { db, collection, addDoc, serverTimestamp };
+window.__auth = auth;
 
-// Auth
-onAuthStateChanged(auth, u => {
-  const av = document.getElementById('navAv');
-  if (u && av) {
-    av.textContent = (u.displayName || u.email || 'U')[0].toUpperCase();
-    av.title = u.email;
-    av.onclick = () => location.href = 'owner-dashboard.html';
+/* ── AUTH STATE → show/hide nav elements ── */
+onAuthStateChanged(auth, user => {
+  const signInBtn  = document.getElementById('navSignIn');
+  const listBtn    = document.getElementById('navListBtn');
+  const userPill   = document.getElementById('navUserPill');
+  const logoutBtn  = document.getElementById('navLogout');
+  const navAv      = document.getElementById('navAv');
+  const navName    = document.getElementById('navUserName');
+  const mobAuthOut = document.getElementById('mobAuthOut');
+  const mobAuthIn  = document.getElementById('mobAuthIn');
+
+  if (user) {
+    /* logged in */
+    const displayName = user.displayName || user.email || 'User';
+    const initial     = displayName[0].toUpperCase();
+
+    navAv.textContent       = initial;
+    navAv.title             = user.email;
+    navName.textContent     = user.displayName || user.email.split('@')[0];
+
+    signInBtn.style.display  = 'none';
+    listBtn.style.display    = 'none';
+    userPill.style.display   = 'flex';
+    logoutBtn.style.display  = 'inline-flex';
+
+    if (mobAuthOut) mobAuthOut.style.display = 'none';
+    if (mobAuthIn)  mobAuthIn.style.display  = 'block';
+  } else {
+    /* logged out */
+    signInBtn.style.display  = 'inline-flex';
+    listBtn.style.display    = 'inline-flex';
+    userPill.style.display   = 'none';
+    logoutBtn.style.display  = 'none';
+
+    if (mobAuthOut) mobAuthOut.style.display = 'block';
+    if (mobAuthIn)  mobAuthIn.style.display  = 'none';
   }
 });
 
-// Live property count
-try {
-  const propSnap = await getCountFromServer(query(collection(db,'properties'), where('approved','==',true)));
-  const propCount = propSnap.data().count;
-  if (propCount > 0) {
-    animCounter('hs-props', propCount);
-  } else {
-    document.getElementById('hs-props').textContent = '0';
+/* ── LOGOUT ── */
+window.doLogout = async function() {
+  try {
+    await signOut(auth);
+    showToast('👋 Signed out successfully.');
+  } catch(e) {
+    showToast('⚠️ Could not sign out. Please try again.');
   }
-} catch(e) {
-  document.getElementById('hs-props').textContent = '—';
-}
+};
 
-// Live owner count
-try {
-  const ownerSnap = await getCountFromServer(query(collection(db,'users'), where('role','==','owner')));
-  const ownerCount = ownerSnap.data().count;
-  if (ownerCount > 0) {
-    animCounter('hs-owners', ownerCount);
-  } else {
-    document.getElementById('hs-owners').textContent = '0';
-  }
-} catch(e) {
-  document.getElementById('hs-owners').textContent = '—';
-}
-
+/* ── LIVE COUNTS ── */
 function animCounter(id, target) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -912,6 +964,20 @@ function animCounter(id, target) {
   requestAnimationFrame(tick);
 }
 window.animCounter = animCounter;
+
+try {
+  const propSnap = await getCountFromServer(query(collection(db,'properties'), where('approved','==',true)));
+  const c = propSnap.data().count;
+  document.getElementById('hs-props').textContent = c > 0 ? '' : '0';
+  if (c > 0) animCounter('hs-props', c);
+} catch(e) { document.getElementById('hs-props').textContent = '—'; }
+
+try {
+  const ownerSnap = await getCountFromServer(query(collection(db,'users'), where('role','==','owner')));
+  const c = ownerSnap.data().count;
+  document.getElementById('hs-owners').textContent = c > 0 ? '' : '0';
+  if (c > 0) animCounter('hs-owners', c);
+} catch(e) { document.getElementById('hs-owners').textContent = '—'; }
 </script>
 
 <!-- ═══════════════ APP SCRIPT ═══════════════ -->
@@ -923,13 +989,9 @@ window.addEventListener('scroll', () => {
   const pct = h > 0 ? (scrollY / h) * 100 : 0;
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('navbar').classList.toggle('solid', scrollY > 40);
-  // How-it-works spine draw
   const sec = document.getElementById('howSec');
-  if (sec) {
-    const r = sec.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.7) {
-      document.getElementById('howSpine').classList.add('drawn');
-    }
+  if (sec && sec.getBoundingClientRect().top < window.innerHeight * 0.7) {
+    document.getElementById('howSpine').classList.add('drawn');
   }
 });
 
@@ -938,7 +1000,7 @@ const dot  = document.getElementById('curDot');
 const ring = document.getElementById('curRing');
 let mx = 0, my = 0, rx = 0, ry = 0;
 window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-function animCursor() {
+(function animCursor() {
   dot.style.left  = mx + 'px';
   dot.style.top   = my + 'px';
   rx += (mx - rx) * 0.12;
@@ -946,14 +1008,11 @@ function animCursor() {
   ring.style.left = rx + 'px';
   ring.style.top  = ry + 'px';
   requestAnimationFrame(animCursor);
-}
-animCursor();
-// Hover state
+})();
 document.querySelectorAll('a,button,.cat-card,.sc,.cc,.tc,.fc').forEach(el => {
   el.addEventListener('mouseenter', () => { document.body.classList.add('on-link'); dot.classList.add('hover'); ring.classList.add('hover'); });
   el.addEventListener('mouseleave', () => { document.body.classList.remove('on-link'); dot.classList.remove('hover'); ring.classList.remove('hover'); });
 });
-// Hide on mobile
 if (!window.matchMedia('(pointer:fine)').matches) {
   dot.style.display = 'none'; ring.style.display = 'none';
   document.body.style.cursor = 'auto';
@@ -1000,18 +1059,13 @@ function showActivity() {
   card.innerHTML = `<div class="at-dot"></div><div class="at-text">${ACTIVITIES[actIdx++ % ACTIVITIES.length]}</div>`;
   ticker.appendChild(card);
   requestAnimationFrame(() => card.classList.add('show'));
-  setTimeout(() => {
-    card.classList.remove('show');
-    card.style.opacity = '0';
-    setTimeout(() => card.remove(), 400);
-  }, 5000);
+  setTimeout(() => { card.classList.remove('show'); setTimeout(() => card.remove(), 400); }, 5000);
 }
 
 /* ── MOCK DASHBOARD ── */
 function buildMock() {
   document.getElementById('mchart').innerHTML =
     [32,48,38,65,78,58,85,68,92,72,88,95].map(h => `<div class="mbar-b" style="height:${h}%"></div>`).join('');
-  // Show placeholder values (not real data)
   document.getElementById('ms1').textContent = '—';
   document.getElementById('ms2').textContent = '—';
   document.getElementById('ms3').textContent = '—';
@@ -1046,20 +1100,17 @@ window.submitBooking = async function() {
   const phone = document.getElementById('bookPhone').value.trim();
   const area  = document.getElementById('bookArea').value.trim();
   if (!name || !phone) { showToast('⚠️ Please enter your name and phone number'); return; }
-
   const fb = window.__fb;
   if (fb) {
     try {
       await fb.addDoc(fb.collection(fb.db, 'service_bookings'), {
         service: document.getElementById('modalTitle').textContent,
-        name, phone, area,
-        status: 'pending',
-        createdAt: fb.serverTimestamp(),
+        name, phone, area, status: 'pending', createdAt: fb.serverTimestamp(),
       });
     } catch(e) { /* demo mode */ }
   }
   closeModal();
-  showToast('✅ Booking request sent! We\'ll contact you within 30 minutes.');
+  showToast("✅ Booking request sent! We'll contact you within 30 minutes.");
 };
 
 /* ── SCROLL REVEAL ── */
@@ -1073,7 +1124,7 @@ window.subNL = function() {
   const e = document.getElementById('nlEmail').value.trim();
   if (!e.includes('@')) { showToast('⚠️ Please enter a valid email address'); return; }
   document.getElementById('nlEmail').value = '';
-  showToast('🎉 Subscribed! You\'ll receive daily property alerts.');
+  showToast("🎉 Subscribed! You'll receive daily property alerts.");
 };
 
 /* ── NAVBAR & MOBILE ── */

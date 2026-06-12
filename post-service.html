@@ -3,864 +3,1070 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post Your Service | ProServ</title>
+<title>Post Your Service — SmartRent AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<!-- ═══════════════════════════════════════════════
-     FIREBASE SETUP
-     Replace the config values below with your own
-     from Firebase Console → Project Settings
-═══════════════════════════════════════════════ -->
+<!-- Firebase -->
 <script type="module">
-  import { initializeApp }                               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc,
-           collection, serverTimestamp }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getStorage, ref,
-           uploadBytes, getDownloadURL }                 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+  import { initializeApp }                                    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged }                      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc,
+           collection, addDoc, serverTimestamp }              from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL }    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-  const firebaseConfig = {
-    apiKey:            "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-    authDomain:        "smart-property-portal.firebaseapp.com",
-    projectId:         "smart-property-portal",
-    storageBucket:     "smart-property-portal.firebasestorage.app",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",   // ← replace
-    appId:             "YOUR_APP_ID"                 // ← replace
+  const cfg = {
+    apiKey:        "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    authDomain:    "smart-property-portal.firebaseapp.com",
+    projectId:     "smart-property-portal",
+    storageBucket: "smart-property-portal.firebasestorage.app"
   };
-
-  const app     = initializeApp(firebaseConfig);
+  const app     = initializeApp(cfg);
   const auth    = getAuth(app);
   const db      = getFirestore(app);
   const storage = getStorage(app);
-
-  window.__fb = {
-    auth, db, storage,
-    setDoc, doc, collection, serverTimestamp,
-    ref, uploadBytes, getDownloadURL, onAuthStateChanged
-  };
+  window.__fb   = { auth, db, storage, onAuthStateChanged, doc, setDoc, getDoc, collection, addDoc, serverTimestamp, ref, uploadBytes, getDownloadURL };
 </script>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-/* ═══════════════════════════ TOKENS ═══════════════════════════ */
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — SmartRent warm light theme
+═══════════════════════════════════════════════ */
 :root {
-  --bg:        #08090c;
-  --surface:   #0f1117;
-  --card:      #151822;
-  --border:    #232738;
-  --border-hi: #383f58;
-  --accent:    #4f8aff;
-  --accent-g:  linear-gradient(135deg,#4f8aff,#a066ff);
-  --gold:      #fbbf24;
-  --green:     #22d3a0;
-  --red:       #f87171;
-  --text:      #e8eaf2;
-  --muted:     #636880;
-  --dim:       #3a3f55;
-  --r:         12px;
-  --font:      'Outfit', sans-serif;
-  --mono:      'JetBrains Mono', monospace;
+  --bg:      #faf8f5;
+  --bg1:     #f5f1eb;
+  --bg2:     #ffffff;
+  --bg3:     #fdf9f4;
+  --bg4:     #eee9e0;
+
+  --gold:      #c07c2a;
+  --gold-lt:   #e09a4a;
+  --gold-dk:   #8a5418;
+  --gold-d:    rgba(192,124,42,0.08);
+  --gold-b:    rgba(192,124,42,0.20);
+  --gold-glow: rgba(192,124,42,0.28);
+
+  --teal:   #0d9488;
+  --teal-d: rgba(13,148,136,0.08);
+  --teal-b: rgba(13,148,136,0.20);
+
+  --rose:      #e11d48;
+  --rose-d:    rgba(225,29,72,0.08);
+  --rose-b:    rgba(225,29,72,0.22);
+
+  --emerald:   #059669;
+  --emerald-d: rgba(5,150,105,0.08);
+  --emerald-b: rgba(5,150,105,0.22);
+
+  --t0: #1a1612;
+  --t1: #3d3529;
+  --t2: #6b5e4e;
+  --t3: #a89a88;
+
+  --line:  rgba(192,124,42,0.10);
+  --line2: rgba(26,22,18,0.08);
+  --line3: rgba(26,22,18,0.14);
+
+  --r1: 8px; --r2: 14px; --r3: 20px; --r4: 28px;
+  --sh-xs: 0 1px 4px rgba(26,22,18,0.06);
+  --sh-sm: 0 2px 12px rgba(26,22,18,0.07);
+  --sh-md: 0 6px 28px rgba(26,22,18,0.09);
+  --sh-lg: 0 14px 48px rgba(26,22,18,0.11);
+  --sh-xl: 0 24px 68px rgba(26,22,18,0.13);
 }
 
-/* ═══════════════════════════ RESET ═══════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t0); min-height: 100vh; overflow-x: hidden; }
+::selection { background: rgba(192,124,42,0.15); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg1); }
+::-webkit-scrollbar-thumb { background: var(--gold-b); border-radius: 2px; }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* subtle dot-grid bg */
-body::before {
-  content:'';
-  position: fixed; inset: 0; z-index: 0;
-  background-image: radial-gradient(circle, #ffffff08 1px, transparent 1px);
+/* ── AMBIENT ── */
+.bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(130px); animation: drift 18s ease-in-out infinite alternate; }
+.o1 { width: 600px; height: 600px; background: rgba(192,124,42,.05); top: -180px; left: -150px; }
+.o2 { width: 500px; height: 500px; background: rgba(13,148,136,.04); bottom: -120px; right: -120px; animation-delay: -9s; }
+@keyframes drift { from { transform: translate(0,0); } to { transform: translate(24px,18px); } }
+.dot-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(circle, rgba(192,124,42,.15) 1px, transparent 1px);
   background-size: 28px 28px;
-  pointer-events: none;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 30%, black 0%, transparent 100%);
+  opacity: .45;
 }
 
-/* ═══════════════════════════ HEADER ═══════════════════════════ */
-header {
+/* ── TOPBAR ── */
+.topbar {
   position: sticky; top: 0; z-index: 200;
-  padding: 16px 32px;
+  height: 68px; padding: 0 36px;
   display: flex; align-items: center; gap: 12px;
-  background: rgba(8,9,12,.82);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(250,248,245,.9); backdrop-filter: blur(24px) saturate(1.8);
+  border-bottom: 1px solid rgba(192,124,42,.12);
+  transition: all .3s;
 }
-.logo {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: var(--accent-g);
-  display: grid; place-items: center;
-  font-weight: 800; font-size: 15px; color: #fff;
-}
-header h1 { font-size: 18px; font-weight: 700; }
-.hbadge {
-  margin-left: auto; display: flex; align-items: center; gap: 8px;
-  font-size: 12.5px; color: var(--muted);
-}
-.hbadge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+.topbar.solid { background: rgba(250,248,245,.98); box-shadow: 0 1px 0 rgba(192,124,42,.12), 0 4px 20px rgba(26,22,18,.06); }
 
-/* ═══════════════════════════ LAYOUT ═══════════════════════════ */
-main { max-width: 900px; margin: 0 auto; padding: 44px 20px 80px; position: relative; z-index: 1; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand-gem { width: 36px; height: 36px; background: linear-gradient(135deg,var(--gold-lt),var(--gold-dk)); border-radius: 9px; display: grid; place-items: center; font-size: 17px; box-shadow: 0 2px 12px var(--gold-glow); }
+.brand-name { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 700; color: var(--t0); }
+.brand-tag { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: .18em; color: var(--teal); background: var(--teal-d); border: 1px solid var(--teal-b); padding: 2px 5px; border-radius: 3px; margin-left: 2px; vertical-align: super; }
 
-/* ═══════════════════════════ PAGE TITLE ═══════════════════════ */
-.pt { margin-bottom: 36px; }
-.pt-tag {
-  display: inline-block; padding: 4px 12px;
-  background: rgba(79,138,255,.12); border: 1px solid rgba(79,138,255,.3);
-  border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
-}
-.pt h2 { font-size: clamp(26px,5vw,40px); font-weight: 800; line-height: 1.1; }
-.pt p  { color: var(--muted); margin-top: 8px; font-size: 14px; }
+.nav-right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.nav-link { font-size: 13px; color: var(--t2); padding: 7px 14px; border-radius: var(--r1); text-decoration: none; transition: all .2s; font-weight: 500; }
+.nav-link:hover { color: var(--t0); background: var(--gold-d); }
+.nav-link.active { color: var(--gold); background: var(--gold-d); }
 
-/* ═══════════════════════════ STEP BAR ═══════════════════════════ */
-.stepbar {
-  display: flex; gap: 0; margin-bottom: 40px;
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--r); overflow: hidden;
-}
-.sb-step {
-  flex: 1; padding: 13px 10px; text-align: center; position: relative;
-  font-size: 11.5px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase;
-  color: var(--muted); transition: background .25s, color .25s;
-}
-.sb-step + .sb-step::before {
-  content:''; position: absolute; left: 0; top: 20%; height: 60%;
-  width: 1px; background: var(--border);
-}
-.sb-step.active { background: rgba(79,138,255,.1); color: var(--accent); }
-.sb-step.done   { background: rgba(34,211,160,.07); color: var(--green); }
-.sb-num {
-  display: inline-block; width: 19px; height: 19px; border-radius: 50%;
-  background: var(--dim); font-size: 10px; line-height: 19px; margin-right: 6px;
-  transition: background .25s;
-}
-.sb-step.active .sb-num { background: var(--accent); color: #fff; }
-.sb-step.done   .sb-num { background: var(--green);  color: #000; }
+.auth-pill { display: flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 100px; background: var(--bg3); border: 1px solid var(--line2); font-size: 12px; color: var(--t2); font-weight: 500; max-width: 160px; overflow: hidden; }
+.auth-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.auth-dot.on  { background: var(--emerald); }
+.auth-dot.off { background: var(--t3); }
+.auth-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* ═══════════════════════════ PANELS ═══════════════════════════ */
+/* ── PAGE ── */
+.page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 40px 24px 96px; }
+
+/* ── PAGE HEADER ── */
+.page-header { margin-bottom: 36px; animation: fadeUp .5s both; }
+.ph-eye { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.ph-eye::before { content: ''; width: 20px; height: 1.5px; background: var(--gold); }
+.ph-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px,4vw,44px); font-weight: 700; letter-spacing: -.02em; color: var(--t0); margin-bottom: 6px; line-height: 1.08; }
+.ph-sub { font-size: 15px; color: var(--t2); line-height: 1.72; }
+
+/* ── STEPPER ── */
+.stepper { display: flex; align-items: center; margin-bottom: 32px; animation: fadeUp .5s .08s both; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; }
+.sc {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 2px solid var(--line3); background: var(--bg2); color: var(--t3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 16px;
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  position: relative; z-index: 1; box-shadow: var(--sh-xs);
+}
+.step.active .sc { border-color: var(--gold); background: linear-gradient(135deg,var(--gold-lt),var(--gold-dk)); color: #fff; box-shadow: 0 4px 16px var(--gold-glow); }
+.step.done   .sc { border-color: var(--emerald); background: var(--emerald-d); color: var(--emerald); }
+.step-lbl { font-size: 11px; color: var(--t3); margin-top: 5px; font-weight: 500; white-space: nowrap; }
+.step.active .step-lbl { color: var(--gold); font-weight: 600; }
+.step.done   .step-lbl { color: var(--emerald); }
+.step-line { flex: 1; height: 2px; background: var(--line2); margin-bottom: 24px; margin: 0 -2px 24px; transition: background .4s; }
+.step-line.done { background: linear-gradient(90deg,var(--emerald),var(--gold)); }
+
+/* ── PROGRESS BAR ── */
+.prog-wrap { height: 3px; background: var(--bg4); border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+.prog-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg,var(--teal),var(--gold-lt)); transition: width .5s cubic-bezier(.4,0,.2,1); }
+
+/* ── PANEL ── */
 .panel { display: none; }
-.panel.visible { display: block; animation: up .3s ease; }
-@keyframes up { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+.panel.visible { display: block; animation: fadeUp .35s cubic-bezier(.22,1,.36,1) both; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
 
-/* ═══════════════════════════ SERVICE GRID ═══════════════════════ */
-.svc-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+/* ── CARD ── */
+.card {
+  background: #fff; border: 1.5px solid rgba(26,22,18,.07);
+  border-radius: var(--r3); padding: 36px; margin-bottom: 20px;
+  box-shadow: var(--sh-sm); transition: border-color .3s;
 }
+.card:focus-within { border-color: var(--teal-b); box-shadow: var(--sh-md); }
+.card-header { margin-bottom: 26px; }
+.card-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; font-weight: 600; }
+.card-title { font-family: 'Cormorant Garamond', serif; font-weight: 800; font-size: 24px; letter-spacing: -.02em; color: var(--t0); margin-bottom: 4px; }
+.card-sub { color: var(--t2); font-size: 13.5px; line-height: 1.65; }
+
+/* ── SERVICE SELECTOR ── */
+.svc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 11px; margin-bottom: 6px; }
+@media(max-width:580px){ .svc-grid { grid-template-columns: repeat(2,1fr); } }
+
 .svc-card {
-  background: var(--card); border: 2px solid var(--border);
-  border-radius: var(--r); padding: 22px 14px;
-  text-align: center; cursor: pointer; user-select: none;
-  transition: border-color .2s, background .2s, transform .15s;
+  border: 1.5px solid rgba(26,22,18,.08); border-radius: var(--r2);
+  padding: 20px 12px; text-align: center; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.4,.64,1);
+  background: var(--bg3); box-shadow: var(--sh-xs); position: relative;
 }
-.svc-card:hover { border-color: var(--border-hi); transform: translateY(-2px); }
-.svc-card.sel {
-  border-color: var(--accent);
-  background: rgba(79,138,255,.08);
-  box-shadow: 0 0 0 4px rgba(79,138,255,.1);
+.svc-card:hover { border-color: var(--gold-b); transform: translateY(-3px); box-shadow: var(--sh-md); }
+.svc-card.sel { border-color: var(--gold); background: var(--gold-d); box-shadow: 0 4px 18px var(--gold-glow); }
+.svc-icon { font-size: 28px; margin-bottom: 8px; display: block; transition: transform .25s; }
+.svc-card:hover .svc-icon, .svc-card.sel .svc-icon { transform: scale(1.12); }
+.svc-name { font-family: 'Cormorant Garamond', serif; font-size: 14.5px; font-weight: 600; color: var(--t1); margin-bottom: 3px; }
+.svc-card.sel .svc-name { color: var(--gold); }
+.svc-price { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--t3); font-weight: 600; }
+.svc-card.sel .svc-price { color: var(--gold); }
+.sel-check {
+  position: absolute; top: 8px; right: 8px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); display: none; align-items: center; justify-content: center;
+  font-size: 10px; color: #fff; font-weight: 700;
 }
-.svc-icon  { font-size: 32px; display: block; margin-bottom: 10px; }
-.svc-name  { font-weight: 700; font-size: 13.5px; }
-.svc-price { margin-top: 5px; font-size: 11.5px; color: var(--gold); font-weight: 600; font-family: var(--mono); }
+.svc-card.sel .sel-check { display: flex; }
 
-/* ═══════════════════════════ SECTION LABEL ═══════════════════════ */
-.slabel {
-  font-size: 10.5px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--muted); margin: 32px 0 16px;
-  display: flex; align-items: center; gap: 10px;
-}
-.slabel::after { content:''; flex:1; height:1px; background: var(--border); }
+/* ── FIELDS ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.span-2 { grid-column: span 2; }
+@media(max-width:640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } .span-2 { grid-column: span 1; } }
 
-/* ═══════════════════════════ FORM ═══════════════════════════ */
-.fg { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media(max-width:580px){ .fg { grid-template-columns: 1fr; } }
-.ff { grid-column: 1/-1; }
-
-.field { display: flex; flex-direction: column; gap: 6px; }
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 2px; }
 .field label {
-  font-size: 11px; font-weight: 600; letter-spacing: .8px;
-  text-transform: uppercase; color: var(--muted);
-  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--t2); display: flex; align-items: center; gap: 6px;
 }
-.opt-badge {
-  font-size: 9.5px; padding: 1px 7px; border-radius: 20px;
-  background: var(--dim); color: var(--muted); letter-spacing: 0; text-transform: none;
-}
-.field input,
-.field select,
-.field textarea {
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 9px; color: var(--text); font-family: var(--font);
-  font-size: 13.5px; padding: 11px 13px; outline: none;
-  transition: border-color .2s;
-}
-.field input:focus,
-.field select:focus,
-.field textarea:focus { border-color: var(--accent); }
-.field select { appearance: none; cursor: pointer; }
-.field textarea { resize: vertical; min-height: 80px; }
+.opt { font-size: 9.5px; padding: 1px 7px; border-radius: 20px; background: var(--bg4); color: var(--t3); letter-spacing: 0; text-transform: none; font-weight: 400; }
+.req-dot { color: var(--rose); }
 
-/* ═══════════════════════════ DAY TAGS ═══════════════════════════ */
-.day-row { display: flex; flex-wrap: wrap; gap: 8px; }
-.day-tag {
-  padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
-  border: 1.5px solid var(--border); cursor: pointer; user-select: none;
-  transition: all .15s; color: var(--muted);
+.field input, .field select, .field textarea {
+  width: 100%; padding: 11px 14px;
+  background: var(--bg3); border: 1.5px solid rgba(26,22,18,.08);
+  border-radius: var(--r2); color: var(--t0); font-family: 'DM Sans', sans-serif; font-size: 14px;
+  outline: none; -webkit-appearance: none; appearance: none;
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-.day-tag.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.field input:hover, .field select:hover, .field textarea:hover { border-color: rgba(26,22,18,.14); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: rgba(13,148,136,.45); box-shadow: 0 0 0 3px var(--teal-d); background: #fff;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--t3); font-style: italic; }
+.field textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
+.field input.err, .field select.err { border-color: rgba(225,29,72,.4) !important; background: rgba(225,29,72,.02) !important; }
+.field-hint { font-size: 11.5px; color: var(--t3); margin-top: 4px; }
+.field-err  { font-size: 11.5px; color: var(--rose); margin-top: 4px; display: none; }
+.field.error .field-err { display: block; }
+.field.error > label { color: var(--rose); }
 
-/* ═══════════════════════════ PHOTO UPLOAD ═══════════════════════ */
+.select-wrap { position: relative; }
+.select-wrap::after { content: '▾'; position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--t3); pointer-events: none; font-size: 12px; }
+
+.input-icon-wrap { position: relative; }
+.input-icon-wrap .ico { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--t3); font-size: 14px; pointer-events: none; }
+.input-icon-wrap input { padding-left: 36px; }
+.input-suf-wrap { position: relative; }
+.input-suf-wrap input { padding-right: 50px; }
+.input-suf { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--t3); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
+
+/* ── DIVIDER ── */
+.divider { display: flex; align-items: center; gap: 12px; margin: 22px 0 18px; }
+.divider span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--t3); font-weight: 600; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line2); }
+
+/* ── DAY CHIPS ── */
+.day-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.day-chip {
+  padding: 6px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 600;
+  border: 1.5px solid var(--line2); cursor: pointer; user-select: none;
+  transition: all .18s; color: var(--t2); background: var(--bg3);
+}
+.day-chip:hover { border-color: var(--gold-b); color: var(--t0); }
+.day-chip.on { background: var(--gold-d); border-color: var(--gold-b); color: var(--gold); }
+
+/* ── PHOTO ZONE ── */
 .pz {
-  border: 2px dashed var(--border); border-radius: var(--r);
+  border: 2px dashed rgba(192,124,42,.2); border-radius: var(--r2);
   padding: 28px; text-align: center; cursor: pointer;
-  transition: border-color .2s, background .2s;
+  transition: all .25s; background: var(--bg3);
 }
-.pz:hover,.pz.drag-over { border-color: var(--accent); background: rgba(79,138,255,.04); }
+.pz:hover, .pz.drag-over { border-color: var(--gold); background: var(--gold-d); }
 .pz input[type=file] { display: none; }
-.pz-icon { font-size: 26px; margin-bottom: 8px; }
-.pz p { color: var(--muted); font-size: 13px; }
-.pz strong { color: var(--accent); }
+.pz-icon { font-size: 30px; margin-bottom: 8px; display: block; }
+.pz p { color: var(--t2); font-size: 13px; }
+.pz strong { color: var(--gold); }
+.pz-limit { display: inline-block; font-size: 11px; margin-top: 8px; padding: 3px 11px; border-radius: 100px; background: #fff; border: 1px solid var(--line2); color: var(--t3); font-family: 'JetBrains Mono', monospace; }
 .pthumb-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .pthumb-wrap { position: relative; }
-.pthumb { width: 76px; height: 76px; border-radius: 9px; object-fit: cover; border: 2px solid var(--border); }
-.pthumb-rm {
-  position: absolute; top: -6px; right: -6px;
-  width: 19px; height: 19px; border-radius: 50%;
-  background: var(--red); border: none; cursor: pointer;
-  color: #fff; font-size: 11px; display: grid; place-items: center;
-}
+.pthumb { width: 72px; height: 72px; border-radius: var(--r1); object-fit: cover; border: 1.5px solid var(--line2); box-shadow: var(--sh-xs); }
+.pthumb-rm { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: var(--rose); border: none; cursor: pointer; color: #fff; font-size: 10px; display: grid; place-items: center; box-shadow: var(--sh-xs); }
 
-/* ═══════════════════════════ BUTTONS ═══════════════════════════ */
+/* ── INFO ROW ── */
+.info-row { display: flex; align-items: flex-start; gap: 11px; padding: 12px 15px; border-radius: var(--r2); font-size: 13px; color: var(--t2); line-height: 1.6; margin-bottom: 18px; }
+.info-row .ii { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+.info-row.info    { background: var(--teal-d); border: 1px solid var(--teal-b); }
+.info-row.success { background: var(--emerald-d); border: 1px solid var(--emerald-b); }
+.info-row.warn    { background: var(--gold-d); border: 1px solid var(--gold-b); }
+
+/* ── SUBSCRIPTION GATE ── */
+.sub-gate {
+  border-radius: var(--r3); overflow: hidden;
+  border: 1.5px solid rgba(192,124,42,.22);
+  box-shadow: var(--sh-lg), 0 0 0 4px var(--gold-d);
+  animation: fadeUp .4s cubic-bezier(.22,1,.36,1) both;
+  margin-bottom: 20px;
+}
+.sg-banner {
+  background: linear-gradient(120deg,#1c1409,#3a2714 45%,#2a1e08);
+  padding: 26px 30px;
+  position: relative; overflow: hidden;
+}
+.sg-banner::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 80% at 80% 50%,rgba(192,124,42,.18),transparent); }
+.sg-banner::after  { content:''; position:absolute; bottom:-1px; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(192,124,42,.4),transparent); }
+.sg-inner { position:relative; z-index:1; display:flex; align-items:center; gap:16px; }
+.sg-lock { width:52px; height:52px; border-radius:50%; flex-shrink:0; background:linear-gradient(135deg,rgba(192,124,42,.25),rgba(192,124,42,.1)); border:1.5px solid rgba(192,124,42,.3); display:flex; align-items:center; justify-content:center; font-size:22px; box-shadow:0 0 20px rgba(192,124,42,.2); }
+.sg-text { flex:1; }
+.sg-title { font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:700; color:#fff; margin-bottom:3px; }
+.sg-sub   { font-size:13px; color:rgba(255,255,255,.55); line-height:1.55; }
+.sg-chip  { padding:5px 13px; border-radius:100px; background:rgba(192,124,42,.15); border:1px solid rgba(192,124,42,.3); font-size:10px; font-family:'JetBrains Mono',monospace; letter-spacing:.12em; color:#d4a055; font-weight:700; white-space:nowrap; flex-shrink:0; }
+
+.sg-body { background:#fff; padding:24px 30px 26px; }
+.sg-perks { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:20px; }
+.sg-perk { display:flex; align-items:flex-start; gap:9px; padding:11px 13px; border-radius:var(--r2); background:var(--bg3); border:1px solid var(--line2); transition:all .2s; }
+.sg-perk:hover { border-color:var(--gold-b); background:var(--gold-d); }
+.sg-perk-ic { font-size:18px; flex-shrink:0; margin-top:1px; }
+.sg-perk-title { font-size:12px; font-weight:600; color:var(--t0); margin-bottom:1px; }
+.sg-perk-desc  { font-size:11px; color:var(--t3); line-height:1.45; }
+.sg-cta { display:flex; align-items:center; gap:14px; padding:16px 18px; border-radius:var(--r2); background:linear-gradient(120deg,var(--gold-d),var(--teal-d)); border:1.5px solid var(--gold-b); flex-wrap:wrap; }
+.sg-cta-text { flex:1; min-width:180px; }
+.sg-cta-title { font-size:14px; font-weight:700; color:var(--t0); margin-bottom:2px; }
+.sg-cta-sub   { font-size:12px; color:var(--t2); }
+.sg-cta-sub a { color:var(--teal); font-weight:600; text-decoration:underline; cursor:pointer; }
+.sg-cta-btns  { display:flex; gap:8px; flex-shrink:0; flex-wrap:wrap; }
+
+/* ── ACTIVE SUB BADGE ── */
+.sub-badge {
+  display:flex; align-items:center; gap:8px; padding:8px 16px; border-radius:100px;
+  background:var(--emerald-d); border:1px solid var(--emerald-b);
+  font-size:12px; font-weight:600; color:var(--emerald);
+  font-family:'JetBrains Mono',monospace; letter-spacing:.05em;
+}
+.sub-badge .sb-dot { width:8px; height:8px; border-radius:50%; background:var(--emerald); animation:pulse 2s infinite; }
+.sub-badge .sb-plan { background:rgba(5,150,105,.14); padding:2px 8px; border-radius:100px; margin-left:4px; font-size:10px; }
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,.4);}50%{box-shadow:0 0 0 5px rgba(5,150,105,0);} }
+
+/* ── CHECKING SPINNER ── */
+.sub-checking { display:flex; align-items:center; gap:10px; padding:12px 18px; border-radius:var(--r2); background:var(--bg3); border:1.5px solid var(--line2); font-size:13px; color:var(--t3); font-weight:500; }
+.spin { width:17px; height:17px; border-radius:50%; border:2.5px solid var(--line3); border-top-color:var(--gold); animation:rot .7s linear infinite; flex-shrink:0; }
+@keyframes rot { to { transform:rotate(360deg); } }
+
+/* ── SUMMARY ── */
+.summary { background:linear-gradient(135deg,rgba(13,148,136,.04),rgba(192,124,42,.03)); border:1.5px solid var(--gold-b); border-radius:var(--r2); overflow:hidden; }
+.summary-row { display:flex; justify-content:space-between; align-items:center; padding:11px 18px; border-bottom:1px solid rgba(26,22,18,.05); gap:12px; }
+.summary-row:last-child { border-bottom:none; }
+.s-key { font-size:11px; color:var(--t3); font-family:'JetBrains Mono',monospace; letter-spacing:.04em; flex-shrink:0; min-width:110px; }
+.s-val { font-size:13.5px; font-weight:500; color:var(--t0); text-align:right; }
+.s-val.gold { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; color:var(--gold); }
+
+/* ── BUTTONS ── */
 .btn {
-  padding: 13px 26px; border-radius: 9px;
-  font-family: var(--font); font-size: 14px; font-weight: 700;
-  cursor: pointer; border: none; transition: opacity .2s, transform .1s;
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  padding:11px 24px; border-radius:var(--r2);
+  font-family:'DM Sans',sans-serif; font-size:14px; font-weight:600;
+  border:none; cursor:pointer; transition:all .22s;
+  letter-spacing:.01em; text-decoration:none; white-space:nowrap;
 }
-.btn:hover { opacity: .85; }
-.btn:active { transform: scale(.97); }
-.btn:disabled { opacity: .35; cursor: not-allowed; transform: none !important; }
-.btn-primary { background: var(--accent-g); color: #fff; }
-.btn-ghost   { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
-.btn-green   { background: var(--green); color: #000; }
-.btn-row { display: flex; gap: 10px; margin-top: 28px; justify-content: flex-end; }
+.btn:disabled { opacity:.45; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
+.btn-primary { background:linear-gradient(135deg,var(--gold-lt),var(--gold-dk)); color:#fff; box-shadow:0 3px 14px rgba(192,124,42,.28); }
+.btn-primary:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 22px var(--gold-glow); }
+.btn-teal { background:linear-gradient(135deg,#14a99c,var(--teal)); color:#fff; box-shadow:0 3px 14px rgba(13,148,136,.25); }
+.btn-teal:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 20px rgba(13,148,136,.35); }
+.btn-success { background:linear-gradient(135deg,#20a06a,var(--emerald)); color:#fff; box-shadow:0 3px 14px rgba(5,150,105,.25); }
+.btn-success:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 20px rgba(5,150,105,.35); }
+.btn-ghost { background:transparent; border:1.5px solid var(--line3); color:var(--t1); }
+.btn-ghost:hover:not(:disabled) { background:var(--gold-d); border-color:var(--gold-b); color:var(--gold); }
+.btn-outline { background:var(--gold-d); border:1.5px solid var(--gold-b); color:var(--gold); }
+.btn-outline:hover:not(:disabled) { background:rgba(192,124,42,.14); border-color:var(--gold); }
+.btn-sm { padding:8px 16px; font-size:13px; }
+.btn-lg { padding:13px 28px; font-size:15px; }
 
-/* ═══════════════════════════ PAY CARD ═══════════════════════════ */
-.pcard {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--r); padding: 24px;
-}
-.prow {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 13px 0; border-bottom: 1px solid var(--border);
-}
-.prow:last-child { border-bottom: none; }
-.plabel { color: var(--muted); font-size: 13.5px; }
-.pval   { font-weight: 600; font-size: 14px; }
-.ptotal { color: var(--gold); font-family: var(--mono); font-size: 22px; font-weight: 700; }
-.plan-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 12px; background: rgba(251,191,36,.1);
-  border-radius: 20px; font-size: 11.5px; font-weight: 600; color: var(--gold);
-  margin-bottom: 18px;
-}
+.btn-row { display:flex; gap:10px; justify-content:space-between; align-items:center; margin-top:26px; padding-top:18px; border-top:1px solid var(--line2); }
 
-/* ═══════════════════════════ UPI SECTION ═══════════════════════════ */
-.upi-info {
-  background: rgba(79,138,255,.07); border: 1px solid rgba(79,138,255,.2);
-  border-radius: var(--r); padding: 18px 20px; margin-bottom: 20px;
-  font-size: 13px; color: var(--muted); line-height: 1.6;
-}
-.upi-info strong { color: var(--text); }
-.upi-id-display {
-  font-family: var(--mono); font-size: 16px; font-weight: 600;
-  color: var(--accent); background: rgba(79,138,255,.1);
-  border: 1px solid rgba(79,138,255,.25); border-radius: 8px;
-  padding: 10px 16px; margin: 10px 0; display: inline-block;
-  letter-spacing: .5px;
-}
-.upi-copy {
-  font-size: 11px; color: var(--muted); cursor: pointer;
-  text-decoration: underline; margin-left: 10px;
-  background: none; border: none; font-family: var(--font);
-}
-.upi-copy:hover { color: var(--accent); }
+/* ── SUCCESS ── */
+.success-screen { text-align:center; padding:60px 24px; animation:fadeUp .6s both; }
+.suc-icon { font-size:72px; margin-bottom:20px; display:block; animation:pop .6s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes pop { from{opacity:0;transform:scale(.3);}to{opacity:1;transform:scale(1);} }
+.suc-title { font-family:'Cormorant Garamond',serif; font-weight:800; font-size:clamp(26px,4vw,38px); letter-spacing:-.02em; margin-bottom:10px; color:var(--t0); }
+.suc-sub { color:var(--t2); line-height:1.78; font-size:15px; max-width:420px; margin:0 auto 20px; }
+.suc-active-pill { display:inline-block; padding:8px 22px; background:var(--emerald-d); border:1px solid var(--emerald-b); border-radius:100px; font-size:12.5px; font-weight:600; color:var(--emerald); margin-bottom:28px; font-family:'JetBrains Mono',monospace; letter-spacing:.04em; }
+.suc-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
-/* UPI app grid */
-.upi-apps { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-@media(max-width:480px){ .upi-apps { grid-template-columns: repeat(2,1fr); } }
+/* ── TOAST ── */
+.toast-wrap { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
+.toast { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--r2); background:#fff; border:1.5px solid var(--line2); box-shadow:var(--sh-xl); font-size:13.5px; font-weight:500; color:var(--t0); max-width:300px; animation:fadeUp .28s ease; }
+.toast.ok   { border-color:var(--emerald-b); }
+.toast.err  { border-color:var(--rose-b); }
+.toast.info { border-color:var(--teal-b); }
 
-.upi-app-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  padding: 18px 10px; border-radius: var(--r);
-  background: var(--card); border: 2px solid var(--border);
-  cursor: pointer; transition: border-color .2s, transform .15s, background .2s;
-  text-decoration: none; color: var(--text); user-select: none;
+/* ── RESPONSIVE ── */
+@media(max-width:640px) {
+  .topbar { padding:0 18px; }
+  .page   { padding:24px 16px 80px; }
+  .card   { padding:24px 18px; }
+  .svc-grid { grid-template-columns:repeat(2,1fr); }
+  .sg-perks { grid-template-columns:1fr; }
+  .sg-chip  { display:none; }
+  .sg-cta   { flex-direction:column; align-items:flex-start; gap:12px; }
+  .step-lbl { display:none; }
 }
-.upi-app-btn:hover { border-color: var(--border-hi); transform: translateY(-2px); }
-.upi-app-btn.used  { border-color: var(--green); background: rgba(34,211,160,.07); }
-.upi-app-icon { font-size: 30px; }
-.upi-app-name { font-size: 12px; font-weight: 600; color: var(--muted); }
-
-/* UTR confirm row */
-.utr-row {
-  display: flex; gap: 10px; align-items: flex-end; margin-top: 18px;
-}
-.utr-row .field { flex: 1; }
-.utr-row .btn   { white-space: nowrap; padding: 11px 18px; font-size: 13px; }
-
-/* verified badge */
-.pay-verified {
-  display: none; align-items: center; gap: 8px; padding: 12px 16px;
-  background: rgba(34,211,160,.1); border: 1px solid rgba(34,211,160,.3);
-  border-radius: 9px; margin-top: 14px; font-size: 13px; font-weight: 600;
-  color: var(--green);
-}
-.pay-verified.show { display: flex; }
-
-/* ═══════════════════════════ SUCCESS ═══════════════════════════ */
-.success-wrap { text-align: center; padding: 56px 20px; }
-.s-emoji { font-size: 68px; animation: pop .5s cubic-bezier(.17,.67,.58,1.4); }
-@keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
-.success-wrap h3 { font-size: 28px; font-weight: 800; margin: 18px 0 10px; }
-.success-wrap p  { color: var(--muted); max-width: 380px; margin: 0 auto; font-size: 14px; line-height: 1.7; }
-.active-pill {
-  display: inline-block; margin-top: 20px; padding: 9px 20px;
-  background: rgba(34,211,160,.1); border: 1px solid rgba(34,211,160,.3);
-  border-radius: 20px; font-size: 12.5px; font-weight: 600; color: var(--green);
-}
-
-/* ═══════════════════════════ TOAST ═══════════════════════════ */
-#toast {
-  position: fixed; bottom: 24px; right: 24px;
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 13px 18px;
-  font-size: 13px; font-weight: 500; z-index: 9999;
-  transform: translateY(70px); opacity: 0;
-  transition: all .3s; pointer-events: none; max-width: 300px;
-}
-#toast.show { transform: translateY(0); opacity: 1; }
-#toast.ok  { border-color: var(--green); color: var(--green); }
-#toast.err { border-color: var(--red);   color: var(--red); }
-
-/* ═══════════════════════════ SPINNER ═══════════════════════════ */
-.spin {
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,.25);
-  border-top-color: #fff;
-  border-radius: 50%; animation: rot .7s linear infinite;
-  display: inline-block; vertical-align: middle;
-}
-@keyframes rot { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<!-- ════════════════════ HEADER ════════════════════ -->
-<header>
-  <div class="logo">P</div>
-  <h1>ProServ</h1>
-  <div class="hbadge">
-    <div class="hbadge-dot"></div>
-    <span id="header-user">Loading…</span>
+<!-- AMBIENT -->
+<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div></div>
+<div class="dot-grid"></div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- TOPBAR -->
+<nav class="topbar" id="topbar">
+  <a href="index.html" class="brand">
+    <div class="brand-gem">💎</div>
+    <span class="brand-name">SmartRent<span class="brand-tag">AI</span></span>
+  </a>
+  <div class="nav-right">
+    <a href="index.html"   class="nav-link">🏠 Home</a>
+    <a href="services.html" class="nav-link">🔧 Services</a>
+    <a href="plans.html"   class="nav-link">💎 Plans</a>
+    <div class="auth-pill" id="authPill">
+      <div class="auth-dot off" id="authDot"></div>
+      <span class="auth-name" id="authName">Loading…</span>
+    </div>
   </div>
-</header>
+</nav>
 
-<!-- ════════════════════ MAIN ════════════════════ -->
-<main>
+<!-- PAGE -->
+<div class="page">
 
-  <div class="pt">
-    <div class="pt-tag">Professional Dashboard</div>
-    <h2>List Your Service</h2>
-    <p>3 quick steps — pick a service, add details, pay via UPI &amp; go live for 30 days.</p>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="ph-eye">New Service Listing</div>
+    <h1 class="ph-title">List Your Service 🔧</h1>
+    <p class="ph-sub">3 quick steps — choose your service type, add your details, and go live in minutes.</p>
   </div>
 
-  <!-- Step Bar -->
-  <div class="stepbar">
-    <div class="sb-step active" id="si-1"><span class="sb-num">1</span>Service</div>
-    <div class="sb-step"        id="si-2"><span class="sb-num">2</span>Details</div>
-    <div class="sb-step"        id="si-3"><span class="sb-num">3</span>Pay &amp; List</div>
+  <!-- STEPPER -->
+  <div class="stepper" id="stepper">
+    <div class="step active" id="st1"><div class="sc" id="sc1">1</div><div class="step-lbl">Service Type</div></div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step" id="st2"><div class="sc" id="sc2">2</div><div class="step-lbl">Your Details</div></div>
+    <div class="step-line" id="sl2"></div>
+    <div class="step" id="st3"><div class="sc" id="sc3">3</div><div class="step-lbl">Review &amp; Submit</div></div>
   </div>
 
-  <!-- ─────────────── PANEL 1 : Choose Service ─────────────── -->
+  <!-- PROGRESS -->
+  <div class="prog-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+
+  <!-- ══════════════════════════════════════
+       PANEL 1 — Choose Service
+  ══════════════════════════════════════ -->
   <div class="panel visible" id="p1">
-    <div class="svc-grid" id="svc-grid"></div>
-    <div class="btn-row">
-      <button class="btn btn-primary" onclick="goStep(2)">Continue →</button>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-tag">Step 1 of 3</div>
+        <div class="card-title">What service do you offer?</div>
+        <div class="card-sub">Select your primary service. Each listing is active for 30 days and is covered by the SmartRent Verified Professional badge.</div>
+      </div>
+
+      <div class="svc-grid" id="svcGrid"></div>
+
+      <div class="info-row info" style="margin-top:18px">
+        <span class="ii">ℹ️</span>
+        <div>All plans include a <strong>3-month FREE trial</strong>. After trial, billing is <strong>₹249/month</strong>. Cancel any time from your dashboard.</div>
+      </div>
+
+      <div class="btn-row">
+        <span style="font-size:12px;color:var(--t3)">Step 1 of 3</span>
+        <button class="btn btn-primary btn-lg" onclick="goStep(2)">Continue →</button>
+      </div>
     </div>
   </div>
 
-  <!-- ─────────────── PANEL 2 : Service Details ─────────────── -->
+  <!-- ══════════════════════════════════════
+       PANEL 2 — Your Details
+  ══════════════════════════════════════ -->
   <div class="panel" id="p2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-tag">Step 2 of 3 · ~3 min</div>
+        <div class="card-title">Your Professional Profile</div>
+        <div class="card-sub">All fields are optional — fill in what helps customers trust and find you.</div>
+      </div>
 
-    <div class="slabel">Personal Info <span class="opt-badge" style="font-size:10px;background:transparent;color:var(--muted)">— all fields optional</span></div>
-    <div class="fg">
-      <div class="field">
-        <label>Full Name <span class="opt-badge">optional</span></label>
-        <input type="text" id="f-name" placeholder="e.g. Rahul Sharma">
+      <!-- Personal -->
+      <div class="divider"><span>Your Information</span></div>
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="field">
+          <label>Full Name <span class="opt">optional</span></label>
+          <div class="input-icon-wrap">
+            <span class="ico">👤</span>
+            <input type="text" id="f-name" placeholder="Rahul Sharma">
+          </div>
+        </div>
+        <div class="field">
+          <label>Mobile Number <span class="opt">optional</span></label>
+          <div class="input-icon-wrap">
+            <span class="ico">📞</span>
+            <input type="tel" id="f-phone" placeholder="+91 98765 43210">
+          </div>
+        </div>
+        <div class="field">
+          <label>City / Area <span class="opt">optional</span></label>
+          <div class="input-icon-wrap">
+            <span class="ico">📍</span>
+            <input type="text" id="f-city" placeholder="Pune, Maharashtra">
+          </div>
+        </div>
+        <div class="field">
+          <label>Years of Experience <span class="opt">optional</span></label>
+          <div class="input-suf-wrap">
+            <input type="number" id="f-exp" min="0" max="60" placeholder="5">
+            <span class="input-suf">yrs</span>
+          </div>
+        </div>
+        <div class="field span-2">
+          <label>Service Area / Coverage Zone <span class="opt">optional</span></label>
+          <input type="text" id="f-area" placeholder="e.g. Kothrud, Pune — 10 km radius">
+          <div class="field-hint">Helps customers in your area find you faster</div>
+        </div>
       </div>
-      <div class="field">
-        <label>Phone <span class="opt-badge">optional</span></label>
-        <input type="tel" id="f-phone" placeholder="+91 98765 43210">
-      </div>
-      <div class="field">
-        <label>City / Area <span class="opt-badge">optional</span></label>
-        <input type="text" id="f-city" placeholder="Pune, Maharashtra">
-      </div>
-      <div class="field">
-        <label>Years of Experience <span class="opt-badge">optional</span></label>
-        <input type="number" id="f-exp" min="0" max="60" placeholder="e.g. 5">
-      </div>
-      <div class="field ff">
-        <label>Service Area / Address <span class="opt-badge">optional</span></label>
-        <input type="text" id="f-address" placeholder="Kothrud, Pune – 10 km radius">
-      </div>
-    </div>
 
-    <div class="slabel">Service Details</div>
-    <div class="fg">
-      <div class="field">
-        <label>Service Title <span class="opt-badge">optional</span></label>
-        <input type="text" id="f-title" placeholder="e.g. Expert Home Plumber">
+      <!-- Service details -->
+      <div class="divider"><span>Service Details</span></div>
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="field">
+          <label>Listing Title <span class="opt">optional</span></label>
+          <input type="text" id="f-title" placeholder="e.g. Expert Home Plumber">
+        </div>
+        <div class="field">
+          <label>Your Rate <span class="opt">optional</span></label>
+          <div class="input-icon-wrap">
+            <span class="ico">₹</span>
+            <div class="input-suf-wrap">
+              <input type="number" id="f-rate" placeholder="350" style="padding-left:36px">
+              <span class="input-suf">/ hr</span>
+            </div>
+          </div>
+        </div>
+        <div class="field span-2">
+          <label>About You / Description <span class="opt">optional</span></label>
+          <textarea id="f-desc" placeholder="Tools you carry, specializations, certifications, languages, response time…"></textarea>
+        </div>
       </div>
-      <div class="field">
-        <label>Your Rate (₹ / hour) <span class="opt-badge">optional</span></label>
-        <input type="number" id="f-rate" placeholder="350">
-      </div>
-      <div class="field ff">
-        <label>About / Description <span class="opt-badge">optional</span></label>
-        <textarea id="f-desc" placeholder="Tools you carry, specializations, certifications…"></textarea>
-      </div>
-    </div>
 
-    <div class="slabel">Availability <span class="opt-badge" style="font-size:10px;background:transparent;color:var(--muted);letter-spacing:0;text-transform:none">— tap to toggle</span></div>
-    <div class="day-row" id="day-tags"></div>
-    <div class="fg" style="margin-top:14px">
-      <div class="field">
-        <label>From</label>
-        <input type="time" id="f-from" value="08:00">
+      <!-- Availability -->
+      <div class="divider"><span>Availability</span></div>
+      <div class="field" style="margin-bottom:14px">
+        <label>Working Days <span class="opt">tap to toggle</span></label>
+        <div class="day-wrap" id="dayWrap"></div>
       </div>
-      <div class="field">
-        <label>To</label>
-        <input type="time" id="f-to" value="20:00">
+      <div class="grid-2" style="margin-bottom:14px">
+        <div class="field">
+          <label>Available From</label>
+          <input type="time" id="f-from" value="08:00">
+        </div>
+        <div class="field">
+          <label>Available Until</label>
+          <input type="time" id="f-to" value="20:00">
+        </div>
       </div>
-    </div>
 
-    <div class="slabel">Photos <span class="opt-badge" style="font-size:10px;background:transparent;color:var(--muted);letter-spacing:0;text-transform:none">— up to 5, optional</span></div>
-    <div class="pz" id="pz"
-         onclick="document.getElementById('pi').click()"
-         ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event)">
-      <input type="file" id="pi" accept="image/*" multiple onchange="addPhotos(this.files)">
-      <div class="pz-icon">📸</div>
-      <p>Drag &amp; drop or <strong>click to browse</strong></p>
-      <p style="margin-top:4px;font-size:11.5px;color:var(--dim)">JPG / PNG · max 5 images · 5 MB each</p>
-    </div>
-    <div class="pthumb-row" id="pthumb-row"></div>
+      <!-- Photos -->
+      <div class="divider"><span>Work Photos <span class="opt" style="font-size:10px;background:transparent;color:var(--t3);letter-spacing:0;text-transform:none">— up to 5, optional</span></span></div>
+      <div class="pz" id="pz"
+           onclick="document.getElementById('pi').click()"
+           ondragover="dOver(event)" ondragleave="dLeave(event)" ondrop="dDrop(event)">
+        <input type="file" id="pi" accept="image/*" multiple onchange="addPhotos(this.files)">
+        <span class="pz-icon">📸</span>
+        <p>Drag &amp; drop or <strong>click to browse</strong></p>
+        <span class="pz-limit">JPG / PNG · max 5 images · 5 MB each</span>
+      </div>
+      <div class="pthumb-row" id="pthumbRow"></div>
 
-    <div class="btn-row">
-      <button class="btn btn-ghost"   onclick="goStep(1)">← Back</button>
-      <button class="btn btn-primary" onclick="goStep(3)">Review &amp; Pay →</button>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+        <button class="btn btn-primary btn-lg" onclick="goStep(3)">Review &amp; Submit →</button>
+      </div>
     </div>
   </div>
 
-  <!-- ─────────────── PANEL 3 : Pay & List ─────────────── -->
+  <!-- ══════════════════════════════════════
+       PANEL 3 — Review & Submit
+  ══════════════════════════════════════ -->
   <div class="panel" id="p3">
 
-    <!-- Order summary -->
-    <div class="pcard" style="margin-bottom:28px">
-      <div class="plan-pill">⚡ 30-Day Activation</div>
-      <div class="prow">
-        <span class="plabel">Service Type</span>
-        <span class="pval" id="pay-svc">—</span>
+    <!-- Summary -->
+    <div class="card">
+      <div class="card-header" style="margin-bottom:16px">
+        <div class="card-tag">Step 3 of 3 · Review Your Listing</div>
+        <div class="card-title">Everything look good?</div>
+        <div class="card-sub">Your listing will be live for 30 days once submitted.</div>
       </div>
-      <div class="prow">
-        <span class="plabel">Duration</span>
-        <span class="pval">30 Days</span>
-      </div>
-      <div class="prow">
-        <span class="plabel">Amount</span>
-        <span class="pval ptotal" id="pay-amt">₹0</span>
+      <div class="summary" id="summaryBox">
+        <div style="text-align:center;padding:18px;color:var(--t3);font-size:13px">Fill in the previous steps to see your summary.</div>
       </div>
     </div>
 
-    <!-- UPI instructions -->
-    <div class="upi-info">
-      <strong>How to pay:</strong><br>
-      1. Tap any UPI app below — it will open with the amount pre-filled.<br>
-      2. Complete the payment in your UPI app.<br>
-      3. Come back and enter the <strong>UTR / Transaction ID</strong> to confirm.<br>
-      4. Click <strong>Confirm Payment</strong> — your listing will unlock instantly.
+    <!-- Subscription gate / submit area -->
+    <div id="submitArea">
+      <div class="sub-checking"><div class="spin"></div>Checking subscription…</div>
     </div>
 
-    <div class="slabel">Pay to UPI ID</div>
-    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin-bottom:22px">
-      <span class="upi-id-display" id="upi-id-text">proserv@upi</span>
-      <button class="upi-copy" onclick="copyUPI()">copy</button>
-    </div>
-
-    <div class="slabel">Choose UPI App</div>
-    <div class="upi-apps" id="upi-apps"></div>
-
-    <!-- UTR input + confirm -->
-    <div class="slabel">Confirm Your Payment</div>
-    <div class="utr-row">
-      <div class="field">
-        <label>UTR / Transaction ID</label>
-        <input type="text" id="utr-input" placeholder="12-digit UTR or transaction reference"
-               oninput="this.value=this.value.toUpperCase()">
-      </div>
-      <button class="btn btn-primary" onclick="confirmPayment()">Confirm</button>
-    </div>
-
-    <div class="pay-verified" id="pay-verified">
-      ✅ &nbsp;Payment confirmed — listing ready to submit!
-    </div>
-
-    <div class="btn-row" style="margin-top:24px">
+    <div class="btn-row" style="margin-top:0;border-top:none">
       <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
-      <button class="btn btn-green" id="submit-btn" disabled onclick="submitListing()">
-        Submit &amp; Go Live 🚀
-      </button>
+      <div id="submitBtnArea"></div>
     </div>
 
   </div>
 
-  <!-- ─────────────── PANEL 4 : Success ─────────────── -->
-  <div class="panel" id="p4">
-    <div class="success-wrap">
-      <div class="s-emoji">🎉</div>
-      <h3>You're Live!</h3>
-      <p>Your listing is active for <strong>30 days</strong>. Customers in your area can find and contact you directly.</p>
-      <div class="active-pill" id="active-pill">Active: — → —</div>
-      <div style="margin-top:28px">
-        <button class="btn btn-green" onclick="window.location.href='services.html'">
-          View My Service Card →
-        </button>
-      </div>
+  <!-- ══ SUCCESS ══ -->
+  <div class="success-screen" id="successScreen" style="display:none">
+    <span class="suc-icon">🎉</span>
+    <div class="suc-title">You're Live!</div>
+    <div class="suc-sub">Your service listing is active. Customers in your area can now find and contact you directly.</div>
+    <div class="suc-active-pill" id="sucPill">Active: — → —</div>
+    <div class="suc-btns">
+      <a href="services.html" class="btn btn-primary btn-lg">View My Listing →</a>
+      <a href="owner-dashboard.html" class="btn btn-ghost btn-lg">📊 Go to Dashboard</a>
+      <button class="btn btn-ghost btn-lg" onclick="location.reload()">+ List Another Service</button>
     </div>
   </div>
 
-</main>
-<div id="toast"></div>
+</div><!-- /page -->
 
-<!-- ════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════
      JAVASCRIPT
-════════════════════════════════════════════════════════════ -->
+════════════════════════════════════════════ -->
 <script>
-/* ─── CONFIG ──────────────────────────────────────────────── */
-/* ⚠ Replace with your actual UPI ID and merchant name */
-const MERCHANT_UPI  = "proserv@upi";       // ← your UPI ID
-const MERCHANT_NAME = "ProServ";           // ← name shown in UPI apps
+/* ── CONFIG ── */
+/* localStorage keys — must match plans.html exactly */
+const LS_KEY       = "sr_subscription";         // any plan (planId field tells which)
+const LS_SVC_KEY   = "sr_service_subscription"; // optional: service-specific key
 
-/* Service catalogue */
+/* ── SERVICE CATALOGUE — prices match plans.html (₹249/mo) ── */
 const SERVICES = [
-  { id:'plumber',     name:'Plumber',     icon:'🔧', price:499  },
-  { id:'electrician', name:'Electrician', icon:'⚡', price:599  },
-  { id:'painter',     name:'Painter',     icon:'🎨', price:449  },
-  { id:'movers',      name:'Movers',      icon:'📦', price:799  },
-  { id:'carpenter',   name:'Carpenter',   icon:'🪚', price:549  },
-  { id:'cleaner',     name:'Cleaner',     icon:'🧹', price:399  },
-  { id:'ac_repair',   name:'AC Repair',   icon:'❄️', price:649  },
-  { id:'gardener',    name:'Gardener',    icon:'🌱', price:349  },
+  { id:'plumber',     name:'Plumber',          icon:'🔧', planId:'plumber'     },
+  { id:'electrician', name:'Electrician',       icon:'⚡', planId:'electrician' },
+  { id:'painter',     name:'Painter',           icon:'🎨', planId:'painter'     },
+  { id:'movers',      name:'Movers & Packers',  icon:'🚚', planId:'movers'      },
+  { id:'carpenter',   name:'Carpenter',         icon:'🪚', planId:'carpenter'   },
+  { id:'cleaner',     name:'Home Cleaner',      icon:'🧹', planId:'cleaner'     },
 ];
+const PRICE = 249; // ₹249/mo after trial — shown in UI
 
-/* UPI deep-link builders */
-function upiLink(app, upiId, name, amount, note) {
-  const base = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-  const links = {
-    gpay:    `tez://upi/pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`,
-    phonepe: `phonepe://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`,
-    paytm:   `paytmmp://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`,
-    bhim:    base,
-  };
-  return links[app] || base;
-}
-
-const UPI_APPS = [
-  { id:'gpay',    name:'Google Pay', icon:'🟢' },
-  { id:'phonepe', name:'PhonePe',    icon:'🟣' },
-  { id:'paytm',   name:'Paytm',      icon:'🔵' },
-  { id:'bhim',    name:'BHIM / Any', icon:'🇮🇳' },
-];
-
-/* ─── STATE ─────────────────────────────────────────────── */
+/* ── STATE ── */
 let selSvc       = null;
 let selDays      = new Set(['Mon','Tue','Wed','Thu','Fri']);
 let photoFiles   = [];
 let currentUser  = null;
-let payConfirmed = false;
-let usedUpiApp   = null;
+let subStatus    = null; // { hasAccess, planName, source }
 
-/* ─── BUILD SERVICE GRID ─────────────────────────────────── */
-const sg = document.getElementById('svc-grid');
+/* ═══════════════════════════════════════
+   SUBSCRIPTION CHECK
+   Priority: localStorage → Firestore
+   Accepts any service plan OR owner plan
+═══════════════════════════════════════ */
+function _isLocalSubValid(sub) {
+  if (!sub) return false;
+  if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
+  if (sub.trialEndDate && new Date(sub.trialEndDate) < new Date()) return false;
+  return true;
+}
+
+function _getServicePlanIds() {
+  /* Any service planId qualifies for post-service */
+  return new Set(['plumber','electrician','painter','movers','carpenter','cleaner']);
+}
+
+async function checkServiceSubscription(uid) {
+  /* ── 1. localStorage: sr_subscription ── */
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      const svcPlanIds = _getServicePlanIds();
+      if (svcPlanIds.has(sub.planId) && _isLocalSubValid(sub)) {
+        return { hasAccess:true, planName: sub.planName || 'Service Plan', source:'localStorage' };
+      }
+    }
+  } catch(e) {}
+
+  /* ── 2. localStorage: sr_service_subscription (older key) ── */
+  try {
+    const raw = localStorage.getItem(LS_SVC_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      if (_isLocalSubValid(sub)) {
+        return { hasAccess:true, planName: sub.planName || 'Service Plan', source:'localStorage:svc' };
+      }
+    }
+  } catch(e) {}
+
+  /* ── 3. Firestore users/{uid} ── */
+  try {
+    const fb = window.__fb;
+    if (!fb) return { hasAccess:false, planName:null, source:'no-firebase' };
+    const snap = await fb.getDoc(fb.doc(fb.db,'users',uid));
+    if (!snap.exists()) return { hasAccess:false, planName:null, source:'firestore:no-doc' };
+    const data = snap.data();
+
+    /* nested subscription object */
+    const sub = data.subscription || data.serviceSubscription || null;
+    if (sub) {
+      const svcPlanIds = _getServicePlanIds();
+      const planOk = !sub.plan || svcPlanIds.has(String(sub.plan).toLowerCase());
+      const active = sub.status === 'active' || sub.active === true;
+      let notExp = true;
+      if (sub.expiresAt) { const e = sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt); notExp = e > new Date(); }
+      if (planOk && active && notExp) return { hasAccess:true, planName: sub.plan || 'Service Plan', source:'firestore:sub' };
+    }
+
+    /* top-level flags */
+    if (data.serviceProvider===true || data.isProvider===true || data.canListService===true) {
+      return { hasAccess:true, planName: data.planName || 'Service Plan', source:'firestore:flags' };
+    }
+
+    /* role array */
+    const roles = Array.isArray(data.roles) ? data.roles : [data.role||''];
+    if (roles.some(r=>['provider','professional','service_pro'].includes(String(r).toLowerCase()))) {
+      return { hasAccess:true, planName: data.planName || 'Service Plan', source:'firestore:roles' };
+    }
+
+    return { hasAccess:false, planName:null, source:'firestore:no-match' };
+  } catch(err) {
+    console.error('Sub check error:', err);
+    return { hasAccess:false, planName:null, source:'error', error:err.message };
+  }
+}
+
+/* ══════════════════════════════════════
+   RENDER SUBMIT AREA
+══════════════════════════════════════ */
+function renderSubmitArea(hasAccess, planName) {
+  const area    = document.getElementById('submitArea');
+  const btnArea = document.getElementById('submitBtnArea');
+  if (!area) return;
+
+  if (hasAccess) {
+    area.innerHTML = `
+      <div class="info-row success" style="margin-top:0;margin-bottom:16px">
+        <span class="ii">✅</span>
+        <div><strong>Subscription active</strong> — you're ready to publish your listing.</div>
+      </div>`;
+    btnArea.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end">
+        <div class="sub-badge">
+          <div class="sb-dot"></div>
+          PLAN ACTIVE
+          <span class="sb-plan">${esc(planName||'Service Plan')}</span>
+        </div>
+        <button class="btn btn-success btn-lg" id="submitBtn" onclick="submitListing()">
+          🚀 Publish Listing
+        </button>
+      </div>`;
+  } else {
+    area.innerHTML = `
+      <div class="sub-gate">
+        <div class="sg-banner">
+          <div class="sg-inner">
+            <div class="sg-lock">🔒</div>
+            <div class="sg-text">
+              <div class="sg-title">Service Plan Required</div>
+              <div class="sg-sub">Activate a free trial or subscribe to publish your listing and start getting leads.</div>
+            </div>
+            <div class="sg-chip">SERVICE PLAN · ₹249/mo</div>
+          </div>
+        </div>
+        <div class="sg-body">
+          <div class="sg-perks">
+            <div class="sg-perk"><span class="sg-perk-ic">📋</span><div><div class="sg-perk-title">Your Listing Goes Live</div><div class="sg-perk-desc">Visible to homeowners searching your service type.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">💎</span><div><div class="sg-perk-title">Verified Professional Badge</div><div class="sg-perk-desc">Builds trust and increases booking rate.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">📊</span><div><div class="sg-perk-title">Performance Analytics</div><div class="sg-perk-desc">Track views, leads, and booking conversions.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">🎁</span><div><div class="sg-perk-title">3 Months FREE Trial</div><div class="sg-perk-desc">No upfront cost — ₹249/mo only after trial ends.</div></div></div>
+          </div>
+          <div class="sg-cta">
+            <div class="sg-cta-text">
+              <div class="sg-cta-title">Activate a free trial to publish</div>
+              <div class="sg-cta-sub">Already activated? <a onclick="recheckSub()">Refresh subscription status</a></div>
+            </div>
+            <div class="sg-cta-btns">
+              <a href="plans.html" class="btn btn-primary btn-lg">View Plans →</a>
+              <a href="plans.html#services" class="btn btn-outline">Start Free Trial</a>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    btnArea.innerHTML = `<button class="btn btn-success btn-lg" disabled style="opacity:.35;cursor:not-allowed;filter:grayscale(.5)">🔒 Publish Listing</button>`;
+  }
+}
+
+window.recheckSub = async () => {
+  if (!currentUser) return;
+  document.getElementById('submitArea').innerHTML = `<div class="sub-checking"><div class="spin"></div>Re-checking subscription…</div>`;
+  subStatus = await checkServiceSubscription(currentUser.uid);
+  renderSubmitArea(subStatus.hasAccess, subStatus.planName);
+  if (subStatus.hasAccess) toast('✅ Subscription confirmed!', 'ok');
+  else toast('No active service subscription found.', 'err');
+};
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ══════════════════════════════════════
+   BUILD SERVICE GRID
+══════════════════════════════════════ */
+const grid = document.getElementById('svcGrid');
 SERVICES.forEach(s => {
   const c = document.createElement('div');
-  c.className   = 'svc-card';
-  c.dataset.id  = s.id;
-  c.innerHTML   = `<span class="svc-icon">${s.icon}</span>
+  c.className  = 'svc-card';
+  c.dataset.id = s.id;
+  c.innerHTML  = `
+    <div class="sel-check">✓</div>
+    <span class="svc-icon">${s.icon}</span>
     <div class="svc-name">${s.name}</div>
-    <div class="svc-price">₹${s.price}</div>`;
-  c.onclick = () => pickService(s);
-  sg.appendChild(c);
-});
-
-/* ─── BUILD DAY TAGS ─────────────────────────────────────── */
-const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-const dt = document.getElementById('day-tags');
-DAYS.forEach(d => {
-  const t = document.createElement('div');
-  t.className  = 'day-tag' + (selDays.has(d) ? ' on' : '');
-  t.textContent = d;
-  t.onclick = () => {
-    selDays.has(d) ? selDays.delete(d) : selDays.add(d);
-    t.classList.toggle('on');
+    <div class="svc-price">₹${PRICE}/mo after trial</div>`;
+  c.onclick = () => {
+    selSvc = s;
+    document.querySelectorAll('.svc-card').forEach(x => x.classList.remove('sel'));
+    c.classList.add('sel');
   };
-  dt.appendChild(t);
+  grid.appendChild(c);
 });
 
-/* ─── AUTH ────────────────────────────────────────────────── */
-window.addEventListener('load', () => {
+/* ══════════════════════════════════════
+   BUILD DAY CHIPS
+══════════════════════════════════════ */
+['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(d => {
+  const t = document.createElement('div');
+  t.className  = 'day-chip' + (selDays.has(d) ? ' on' : '');
+  t.textContent = d;
+  t.onclick = () => { selDays.has(d) ? selDays.delete(d) : selDays.add(d); t.classList.toggle('on'); };
+  document.getElementById('dayWrap').appendChild(t);
+});
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+window.addEventListener('load', async () => {
   const fb = window.__fb;
-  if (!fb) { document.getElementById('header-user').textContent = 'Not connected'; return; }
-  fb.onAuthStateChanged(fb.auth, user => {
+  if (!fb) return;
+  fb.onAuthStateChanged(fb.auth, async user => {
+    currentUser = user;
+    const dot  = document.getElementById('authDot');
+    const name = document.getElementById('authName');
     if (user) {
-      currentUser = user;
-      document.getElementById('header-user').textContent = user.email || user.displayName || 'Professional';
-      const el = document.getElementById('f-name');
-      if (user.displayName && !el.value) el.value = user.displayName;
+      dot.className  = 'auth-dot on';
+      name.textContent = user.displayName || user.email || 'Signed In';
+      const nameF = document.getElementById('f-name');
+      if (nameF && !nameF.value && user.displayName) nameF.value = user.displayName;
+      /* Pre-fetch subscription so step 3 is instant */
+      subStatus = await checkServiceSubscription(user.uid);
     } else {
-      document.getElementById('header-user').textContent = 'Not signed in';
-      toast('Sign in to post a service', 'err');
+      dot.className  = 'auth-dot off';
+      name.textContent = 'Not signed in';
+      subStatus = { hasAccess:false, planName:null, source:'not-authed' };
     }
+    if (currentStep === 3) renderSubmitArea(subStatus?.hasAccess, subStatus?.planName);
   });
 });
 
-/* ─── STEP NAVIGATION ─────────────────────────────────────── */
+/* ══════════════════════════════════════
+   STEP NAVIGATION
+══════════════════════════════════════ */
+let currentStep = 1;
+
 function goStep(n) {
-  if (n === 2 && !selSvc) { toast('Please choose a service first', 'err'); return; }
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
-  document.getElementById('p' + n).classList.add('visible');
-  document.querySelectorAll('.sb-step').forEach((s, i) => {
-    s.classList.remove('active', 'done');
-    if (i + 1 < n) s.classList.add('done');
-    if (i + 1 === n) s.classList.add('active');
+  if (n === 2 && !selSvc) { toast('Please choose a service type first.', 'err'); return; }
+  if (n === 3) buildSummary();
+
+  currentStep = n;
+  ['p1','p2','p3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('visible', i+1 === n);
   });
-  if (n === 3) buildPayPanel();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function pickService(s) {
-  selSvc = s;
-  document.querySelectorAll('.svc-card')
-    .forEach(c => c.classList.toggle('sel', c.dataset.id === s.id));
-}
-
-/* ─── PAY PANEL BUILDER ──────────────────────────────────── */
-function buildPayPanel() {
-  if (!selSvc) return;
-  document.getElementById('pay-svc').textContent = selSvc.name;
-  document.getElementById('pay-amt').textContent = '₹' + selSvc.price;
-  document.getElementById('upi-id-text').textContent = MERCHANT_UPI;
-
-  // Build UPI app buttons
-  const wrap = document.getElementById('upi-apps');
-  wrap.innerHTML = '';
-  UPI_APPS.forEach(app => {
-    const a = document.createElement('a');
-    a.className  = 'upi-app-btn';
-    a.id         = 'upi-' + app.id;
-    a.innerHTML  = `<span class="upi-app-icon">${app.icon}</span><span class="upi-app-name">${app.name}</span>`;
-    a.href       = '#';
-    a.onclick    = (e) => {
-      e.preventDefault();
-      usedUpiApp = app.id;
-      const note = `ProServ listing - ${selSvc.name}`;
-      const link = upiLink(app.id, MERCHANT_UPI, MERCHANT_NAME, selSvc.price, note);
-      // Highlight chosen app
-      document.querySelectorAll('.upi-app-btn').forEach(b => b.classList.remove('used'));
-      a.classList.add('used');
-      // Open deep-link
-      window.location.href = link;
-      // Fallback: if app not installed, UPI link stays as-is
-      toast(`Opening ${app.name}…`, 'ok');
-    };
-    wrap.appendChild(a);
+  [1,2,3].forEach(i => {
+    const sc  = document.getElementById('sc'+i);
+    const st  = document.getElementById('st'+i);
+    const sl  = document.getElementById('sl'+i);
+    if (i < n)       { st.className='step done';   sc.textContent='✓'; }
+    else if (i === n){ st.className='step active'; sc.textContent=String(i); }
+    else             { st.className='step';        sc.textContent=String(i); }
+    if (sl) sl.classList.toggle('done', i < n);
   });
+  document.getElementById('progBar').style.width = ((n-1)/2*100)+'%';
 
-  // Reset confirmation state
-  payConfirmed = false;
-  document.getElementById('pay-verified').classList.remove('show');
-  document.getElementById('submit-btn').disabled = true;
-  document.getElementById('utr-input').value = '';
+  if (n === 3) resolveSubmitArea();
+  window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-/* ─── CONFIRM PAYMENT ─────────────────────────────────────── */
-function confirmPayment() {
-  const utr = document.getElementById('utr-input').value.trim();
-  if (utr.length < 6) {
-    toast('Enter a valid UTR / transaction ID', 'err'); return;
+async function resolveSubmitArea() {
+  if (subStatus && subStatus.source) {
+    renderSubmitArea(subStatus.hasAccess, subStatus.planName);
+  } else if (currentUser) {
+    document.getElementById('submitArea').innerHTML = `<div class="sub-checking"><div class="spin"></div>Checking subscription…</div>`;
+    subStatus = await checkServiceSubscription(currentUser.uid);
+    renderSubmitArea(subStatus.hasAccess, subStatus.planName);
+  } else {
+    renderSubmitArea(false, null);
   }
-  payConfirmed = true;
-  document.getElementById('pay-verified').classList.add('show');
-  document.getElementById('submit-btn').disabled = false;
-  toast('Payment confirmed! Click Submit to go live.', 'ok');
 }
 
-/* ─── COPY UPI ID ─────────────────────────────────────────── */
-function copyUPI() {
-  navigator.clipboard.writeText(MERCHANT_UPI).then(() => toast('UPI ID copied!', 'ok'));
+/* ══════════════════════════════════════
+   BUILD SUMMARY
+══════════════════════════════════════ */
+function buildSummary() {
+  if (!selSvc) return;
+  const gv = id => (document.getElementById(id)?.value||'').trim();
+  const days = [...selDays].join(', ') || 'Not set';
+  const now  = new Date();
+  const exp  = new Date(now); exp.setDate(exp.getDate()+30);
+  const fmt  = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const rows = [
+    ['SERVICE', `${selSvc.icon} ${selSvc.name}`],
+    ['LISTING ACTIVE', `${fmt(now)} → ${fmt(exp)}`],
+    ['NAME',    gv('f-name')   || '—'],
+    ['PHONE',   gv('f-phone')  || '—'],
+    ['CITY',    gv('f-city')   || '—'],
+    ['EXP',     gv('f-exp')    ? gv('f-exp')+' yrs' : '—'],
+    ['RATE',    gv('f-rate')   ? '₹'+gv('f-rate')+'/hr' : '—'],
+    ['AREA',    gv('f-area')   || '—'],
+    ['TITLE',   gv('f-title')  || selSvc.name],
+    ['DAYS',    days],
+    ['HOURS',   gv('f-from') + ' – ' + gv('f-to')],
+    ['PHOTOS',  photoFiles.length ? photoFiles.length+' selected' : 'None'],
+    ['PLAN',    `₹${PRICE}/mo after 3-month free trial`],
+  ];
+  document.getElementById('summaryBox').innerHTML = rows.map(([k,v]) =>
+    `<div class="summary-row"><span class="s-key">${k}</span><span class="s-val">${v}</span></div>`
+  ).join('');
 }
 
-/* ─── PHOTO HANDLING ─────────────────────────────────────── */
+/* ══════════════════════════════════════
+   PHOTOS
+══════════════════════════════════════ */
 function addPhotos(files) {
   Array.from(files).forEach(f => {
-    if (photoFiles.length >= 5) { toast('Max 5 photos', 'err'); return; }
-    if (f.size > 5 * 1024 * 1024) { toast(`${f.name} exceeds 5 MB`, 'err'); return; }
+    if (photoFiles.length >= 5) { toast('Maximum 5 photos allowed.', 'err'); return; }
+    if (f.size > 5*1024*1024)   { toast(`${f.name} is over 5 MB.`, 'err'); return; }
+    if (!f.type.startsWith('image/')) { toast('Only image files allowed.', 'err'); return; }
     photoFiles.push(f);
   });
   renderThumbs();
 }
 function renderThumbs() {
-  const row = document.getElementById('pthumb-row');
+  const row = document.getElementById('pthumbRow');
   row.innerHTML = '';
-  photoFiles.forEach((f, i) => {
-    const w = document.createElement('div');
-    w.className = 'pthumb-wrap';
+  photoFiles.forEach((f,i) => {
+    const w = document.createElement('div'); w.className = 'pthumb-wrap';
     w.innerHTML = `<img src="${URL.createObjectURL(f)}" class="pthumb">
-      <button class="pthumb-rm" onclick="rmPhoto(${i})">✕</button>`;
+      <button class="pthumb-rm" onclick="rmPhoto(${i})" title="Remove">✕</button>`;
     row.appendChild(w);
   });
 }
-function rmPhoto(i) { photoFiles.splice(i, 1); renderThumbs(); }
-function dOver(e)  { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-function dLeave(e) { e.currentTarget.classList.remove('drag-over'); }
-function dDrop(e)  { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); addPhotos(e.dataTransfer.files); }
+function rmPhoto(i) { photoFiles.splice(i,1); renderThumbs(); }
+function dOver(e)   { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function dLeave(e)  { e.currentTarget.classList.remove('drag-over'); }
+function dDrop(e)   { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); addPhotos(e.dataTransfer.files); }
 
-/* ─── SUBMIT LISTING ─────────────────────────────────────── */
-async function submitListing() {
-  if (!payConfirmed) { toast('Please confirm payment first', 'err'); return; }
+/* ══════════════════════════════════════
+   SUBMIT
+══════════════════════════════════════ */
+window.submitListing = async () => {
+  /* Final subscription guard */
+  const uid = currentUser?.uid;
+  if (!uid) { toast('Please sign in first.', 'err'); return; }
 
-  const btn = document.getElementById('submit-btn');
-  btn.innerHTML = '<span class="spin"></span> Saving…';
-  btn.disabled  = true;
+  const status = await checkServiceSubscription(uid);
+  if (!status.hasAccess) {
+    toast('A service subscription is required to publish.', 'err');
+    renderSubmitArea(false, null);
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin" style="border-top-color:#fff"></span> Publishing…'; }
 
   try {
     const photoUrls = await uploadPhotos();
-
+    const gv = id => (document.getElementById(id)?.value||'').trim();
     const now = new Date();
-    const exp = new Date(now); exp.setDate(exp.getDate() + 30);
-    const uid = currentUser?.uid || 'demo-' + Date.now();
-    const utr = document.getElementById('utr-input').value.trim();
+    const exp = new Date(now); exp.setDate(exp.getDate()+30);
 
     const listing = {
       uid,
       serviceType:  selSvc.id,
       serviceName:  selSvc.name,
       serviceIcon:  selSvc.icon,
-      title:        document.getElementById('f-title').value.trim()   || selSvc.name,
-      ownerName:    document.getElementById('f-name').value.trim()    || '',
-      phone:        document.getElementById('f-phone').value.trim()   || '',
-      city:         document.getElementById('f-city').value.trim()    || '',
-      address:      document.getElementById('f-address').value.trim() || '',
-      experience:   Number(document.getElementById('f-exp').value)    || 0,
-      hourlyRate:   Number(document.getElementById('f-rate').value)   || 0,
-      description:  document.getElementById('f-desc').value.trim()    || '',
-      availability: {
-        days:     [...selDays],
-        timeFrom: document.getElementById('f-from').value,
-        timeTo:   document.getElementById('f-to').value,
-      },
+      title:        gv('f-title') || selSvc.name,
+      ownerName:    gv('f-name'),
+      phone:        gv('f-phone'),
+      city:         gv('f-city'),
+      serviceArea:  gv('f-area'),
+      experience:   Number(gv('f-exp'))  || 0,
+      hourlyRate:   Number(gv('f-rate')) || 0,
+      description:  gv('f-desc'),
+      availability: { days:[...selDays], timeFrom:gv('f-from'), timeTo:gv('f-to') },
       photos:       photoUrls,
-      payment: {
-        method:    'UPI',
-        upiApp:    usedUpiApp || 'unknown',
-        utr:       utr,
-        amount:    selSvc.price,
-        paidAt:    now.toISOString(),
-      },
-      planExpiresAt: exp.toISOString(),
-      active:        true,
-      owner:         { uid },
-      createdAt:     now.toISOString(),
+      planId:       selSvc.planId,
+      planAmount:   PRICE,
+      listingActiveFrom:  now.toISOString(),
+      listingActiveTo:    exp.toISOString(),
+      active:       true,
+      approved:     true,
+      status:       'active',
+      views:        0, leads: 0,
+      owner: { uid },
+      createdAt: now.toISOString(),
     };
 
-    await saveFirestore(listing, uid, exp);
+    const fb = window.__fb;
+    if (fb) {
+      const propId = `${uid}_${Date.now()}`;
+      await fb.setDoc(fb.doc(fb.db,'service_listings',propId), { ...listing, createdAt: fb.serverTimestamp() });
+      await fb.setDoc(fb.doc(fb.db,'users',uid,'listings',propId), {
+        listingId:   propId,
+        serviceType: selSvc.id,
+        title:       listing.title,
+        active:      true,
+        activeTo:    exp.toISOString(),
+        createdAt:   fb.serverTimestamp(),
+      });
+    }
 
-    // Success panel
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('visible'));
-    document.getElementById('p4').classList.add('visible');
-    document.querySelectorAll('.sb-step').forEach(s => s.classList.add('done'));
+    /* Show success */
+    document.getElementById('stepper').style.display     = 'none';
+    document.getElementById('progBar').parentElement.style.display = 'none';
+    ['p1','p2','p3'].forEach(id => document.getElementById(id).style.display = 'none');
+    const ss = document.getElementById('successScreen');
+    ss.style.display = 'block';
+    const fmt = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    document.getElementById('sucPill').textContent = `Active: ${fmt(now)} → ${fmt(exp)}`;
+    toast('🎉 Listing published!', 'ok');
 
-    const fmt = d => d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-    document.getElementById('active-pill').textContent = `Active: ${fmt(now)} → ${fmt(exp)}`;
-    toast('🎉 Service listed!', 'ok');
-
-  } catch (err) {
+  } catch(err) {
     console.error(err);
-    toast('Error saving listing. Try again.', 'err');
-    btn.innerHTML = 'Submit &amp; Go Live 🚀';
-    btn.disabled  = false;
+    toast('Something went wrong. Please try again.', 'err');
+    if (btn) { btn.disabled = false; btn.innerHTML = '🚀 Publish Listing'; }
   }
-}
+};
 
-/* ─── FIREBASE STORAGE UPLOAD ─────────────────────────────── */
+/* ── Firebase Storage Upload ── */
 async function uploadPhotos() {
   const fb = window.__fb;
-  if (!fb || photoFiles.length === 0) return [];
-  const uid  = currentUser?.uid || 'demo';
+  if (!fb || !photoFiles.length) return [];
+  const uid  = currentUser?.uid || 'guest';
   const urls = [];
   for (const f of photoFiles) {
-    const r   = fb.ref(fb.storage, `service-photos/${uid}/${Date.now()}-${f.name}`);
-    const snap = await fb.uploadBytes(r, f);
-    urls.push(await fb.getDownloadURL(snap.ref));
+    try {
+      const r    = fb.ref(fb.storage, `service-photos/${uid}/${Date.now()}-${f.name}`);
+      const snap = await fb.uploadBytes(r, f);
+      urls.push(await fb.getDownloadURL(snap.ref));
+    } catch(e) { console.warn('Photo upload skipped:', e.message); }
   }
   return urls;
 }
 
-/* ─── FIRESTORE SAVE ──────────────────────────────────────── */
-async function saveFirestore(listing, uid, expiryDate) {
-  const fb = window.__fb;
-  if (!fb) {
-    // Demo mode — log to console
-    console.log('[ Demo ] Listing data:', listing);
-    return;
-  }
-  const propId = `${uid}_${Date.now()}`;
-
-  // /properties/{propId}  — matches Firestore rule: request.resource.data.owner.uid == request.auth.uid
-  await fb.setDoc(fb.doc(fb.db, 'properties', propId), {
-    ...listing,
-    createdAt: fb.serverTimestamp()
-  });
-
-  // /users/{uid}/listings/{propId}  — matches rule: request.auth.uid == userId
-  await fb.setDoc(fb.doc(fb.db, 'users', uid, 'listings', propId), {
-    listingId:   propId,
-    serviceType: listing.serviceType,
-    title:       listing.title,
-    active:      true,
-    expiresAt:   expiryDate.toISOString(),
-    utr:         listing.payment.utr,
-    createdAt:   fb.serverTimestamp(),
-  });
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+function toast(msg, type='info') {
+  const wrap = document.getElementById('toastWrap');
+  const t    = document.createElement('div');
+  const typeMap = { ok:'ok', err:'err', info:'info' };
+  t.className  = 'toast ' + (typeMap[type]||'info');
+  const icons  = { ok:'✅', err:'⚠️', info:'ℹ️' };
+  t.innerHTML  = `<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+  wrap.appendChild(t);
+  setTimeout(() => { t.style.transition='all .3s'; t.style.opacity='0'; t.style.transform='translateY(8px)'; setTimeout(()=>t.remove(),300); }, 3500);
 }
 
-/* ─── TOAST ──────────────────────────────────────────────── */
-function toast(msg, type='ok') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className   = `show ${type}`;
-  clearTimeout(t._t);
-  t._t = setTimeout(() => t.classList.remove('show'), 3500);
-}
+/* ── Navbar scroll ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('topbar').classList.toggle('solid', scrollY > 30);
+});
 </script>
 </body>
 </html>

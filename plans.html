@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing & Plans — SmartRent</title>
+<title>Pricing & Plans — SmartRent AI</title>
 <meta name="description" content="Unlock premium access to India's best rental and home services marketplace. 3 months FREE for every new user.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,27 +11,49 @@
 
 <!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp }          from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
   const cfg = {
-    apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-    authDomain: "smart-property-portal.firebaseapp.com",
-    projectId: "smart-property-portal",
+    apiKey:        "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    authDomain:    "smart-property-portal.firebaseapp.com",
+    projectId:     "smart-property-portal",
     storageBucket: "smart-property-portal.firebasestorage.app",
     messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    appId:         "YOUR_APP_ID"
   };
-  const app = initializeApp(cfg);
+
+  const app  = initializeApp(cfg);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const db   = getFirestore(app);
+
   window.__fb = { auth, db, onAuthStateChanged, doc, setDoc, getDoc, collection, addDoc, serverTimestamp };
-  onAuthStateChanged(auth, user => {
+
+  onAuthStateChanged(auth, async user => {
     window.__currentUser = user || null;
     document.querySelectorAll('.auth-name').forEach(el => {
       el.textContent = user ? (user.displayName || user.email) : 'Guest';
     });
-    // Once auth resolves, refresh trial button states
+    /* Check if this account already used its free trial */
+    if (user) {
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        window.__accountTrialUsed = snap.exists() && snap.data().trialUsed === true;
+        window.__accountActivePlan = snap.exists() ? (snap.data().planId || null) : null;
+        window.__accountTrialEnd   = snap.exists() ? (snap.data().trialEndDate || null) : null;
+      } catch(e) {
+        /* Firestore read failed — fall back to localStorage */
+        window.__accountTrialUsed  = false;
+        window.__accountActivePlan = null;
+        window.__accountTrialEnd   = null;
+      }
+    } else {
+      window.__accountTrialUsed  = false;
+      window.__accountActivePlan = null;
+      window.__accountTrialEnd   = null;
+    }
     refreshTrialButtons();
   });
 </script>
@@ -49,26 +71,23 @@
   --line:       #e2e8f3;
   --line-2:     #d0d8ed;
   --line-3:     #b8c3de;
-  --t1:  #0f172a;
-  --t2:  #475569;
-  --t3:  #94a3b8;
+  --t1: #0f172a;
+  --t2: #475569;
+  --t3: #94a3b8;
   --blue:       #2563eb;
   --blue-lt:    #3b82f6;
   --blue-pale:  #eff6ff;
   --blue-soft:  #dbeafe;
-  --blue-mid:   rgba(37,99,235,0.10);
   --blue-rim:   rgba(37,99,235,0.20);
   --gold:       #d97706;
   --gold-lt:    #f59e0b;
   --gold-pale:  #fffbeb;
   --gold-soft:  #fef3c7;
-  --gold-mid:   rgba(217,119,6,0.10);
   --gold-rim:   rgba(217,119,6,0.22);
   --teal:       #0891b2;
   --teal-lt:    #06b6d4;
   --teal-pale:  #ecfeff;
   --teal-soft:  #cffafe;
-  --teal-mid:   rgba(8,145,178,0.10);
   --teal-rim:   rgba(8,145,178,0.22);
   --green:      #059669;
   --green-pale: #ecfdf5;
@@ -89,14 +108,7 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
-body {
-  font-family: var(--font);
-  background: var(--page);
-  color: var(--t1);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+body { font-family: var(--font); background: var(--page); color: var(--t1); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 a { text-decoration: none; color: inherit; }
 button { cursor: pointer; font-family: var(--font); }
 ul { list-style: none; }
@@ -106,66 +118,32 @@ ul { list-style: none; }
 
 .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 .sec  { padding: 88px 0; }
-@media (max-width: 768px) { .sec { padding: 56px 0; } }
+@media(max-width:768px){ .sec { padding: 56px 0; } }
 
+/* ── PAGE BG ── */
 .page-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-.bg-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; animation: blob-float 20s ease-in-out infinite; }
-.bg-blob-1 { width: 600px; height: 600px; background: #dbeafe; top: -150px; left: -100px; animation-delay: 0s; }
-.bg-blob-2 { width: 400px; height: 400px; background: #fef3c7; top: 40%; right: -80px; animation-delay: -8s; opacity: 0.25; }
-.bg-blob-3 { width: 500px; height: 500px; background: #cffafe; bottom: -100px; left: 25%; animation-delay: -15s; opacity: 0.2; }
-@keyframes blob-float {
-  0%,100% { transform: translate(0,0) scale(1); }
-  40%      { transform: translate(25px,-18px) scale(1.04); }
-  70%      { transform: translate(-18px,24px) scale(0.97); }
-}
-.page-bg::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 28px 28px;
-  opacity: 0.6;
-}
+.bg-blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .35; animation: blob-float 20s ease-in-out infinite; }
+.bg-blob-1 { width: 600px; height: 600px; background: #dbeafe; top: -150px; left: -100px; }
+.bg-blob-2 { width: 400px; height: 400px; background: #fef3c7; top: 40%; right: -80px; animation-delay: -8s; opacity: .25; }
+.bg-blob-3 { width: 500px; height: 500px; background: #cffafe; bottom: -100px; left: 25%; animation-delay: -15s; opacity: .2; }
+@keyframes blob-float { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(25px,-18px) scale(1.04)} 70%{transform:translate(-18px,24px) scale(.97)} }
+.page-bg::after { content:''; position:fixed; inset:0; background-image:radial-gradient(var(--line) 1px, transparent 1px); background-size:28px 28px; opacity:.6; }
 
-.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: all 0.3s; }
-.navbar.stuck {
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line);
-  box-shadow: 0 2px 12px rgba(15,23,42,0.08);
-}
-.nav-inner {
-  max-width: 1200px; margin: 0 auto;
-  display: flex; align-items: center;
-  height: 66px; padding: 0 24px; gap: 0;
-}
-.nav-logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; color: var(--t1); letter-spacing: -0.4px; }
-.logo-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--blue), var(--teal-lt));
-  display: grid; place-items: center; font-size: 17px;
-  box-shadow: 0 3px 12px rgba(37,99,235,0.28);
-  flex-shrink: 0;
-}
+/* ── NAVBAR ── */
+.navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; transition: all .3s; }
+.navbar.stuck { background: rgba(255,255,255,.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); box-shadow: 0 2px 12px rgba(15,23,42,.08); }
+.nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; height: 66px; padding: 0 24px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-size: 19px; font-weight: 800; color: var(--t1); letter-spacing: -.4px; }
+.logo-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,var(--blue),var(--teal-lt)); display: grid; place-items: center; font-size: 17px; box-shadow: 0 3px 12px rgba(37,99,235,.28); flex-shrink: 0; }
 .nav-back { margin-left: auto; }
-.nav-back a {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 8px 16px; border-radius: var(--r);
-  border: 1.5px solid var(--line-2);
-  background: var(--white);
-  font-size: 13.5px; font-weight: 500; color: var(--t2);
-  transition: all 0.2s; box-shadow: var(--sh-xs);
-}
+.nav-back a { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--r); border: 1.5px solid var(--line-2); background: var(--white); font-size: 13.5px; font-weight: 500; color: var(--t2); transition: all .2s; box-shadow: var(--sh-xs); }
 .nav-back a:hover { border-color: var(--blue-lt); color: var(--blue); background: var(--blue-pale); }
 
+/* ── TYPOGRAPHY ── */
 .sec-head { text-align: center; margin-bottom: 52px; }
-.sec-head h2 { font-size: clamp(26px, 3.8vw, 40px); font-weight: 700; color: var(--t1); letter-spacing: -0.5px; margin: 12px 0 10px; line-height: 1.2; }
+.sec-head h2 { font-size: clamp(26px,3.8vw,40px); font-weight: 700; color: var(--t1); letter-spacing: -.5px; margin: 12px 0 10px; line-height: 1.2; }
 .sec-head p { color: var(--t2); font-size: 16px; max-width: 500px; margin: 0 auto; line-height: 1.65; }
-
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 13px; border-radius: 20px;
-  font-size: 11.5px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
-}
+.eyebrow { display: inline-flex; align-items: center; gap: 6px; padding: 5px 13px; border-radius: 20px; font-size: 11.5px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; }
 .ey-blue  { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); }
 .ey-gold  { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: var(--gold); }
 .ey-teal  { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: var(--teal); }
@@ -174,157 +152,117 @@ ul { list-style: none; }
 .text-gold { color: var(--gold); }
 .text-teal { color: var(--teal); }
 
+/* ── HERO ── */
 .hero { padding: 148px 24px 72px; text-align: center; position: relative; z-index: 1; }
-.hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 800; color: var(--t1); letter-spacing: -1px; line-height: 1.08; margin: 16px 0 18px; max-width: 760px; margin-left: auto; margin-right: auto; }
+.hero h1 { font-size: clamp(36px,6vw,64px); font-weight: 800; color: var(--t1); letter-spacing: -1px; line-height: 1.08; margin: 16px 0 18px; max-width: 760px; margin-left: auto; margin-right: auto; }
 .hero h1 .accent { color: var(--blue); }
-.hero p { font-size: clamp(15px, 2vw, 17.5px); color: var(--t2); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; font-weight: 400; }
+.hero p { font-size: clamp(15px,2vw,17.5px); color: var(--t2); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; }
 .hero p strong { color: var(--t1); font-weight: 600; }
 .trust-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-.trust-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 14px; border-radius: 20px;
-  background: var(--white); border: 1.5px solid var(--line);
-  font-size: 12.5px; font-weight: 500; color: var(--t2);
-  box-shadow: var(--sh-xs); transition: all 0.2s;
-}
+.trust-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: var(--white); border: 1.5px solid var(--line); font-size: 12.5px; font-weight: 500; color: var(--t2); box-shadow: var(--sh-xs); transition: all .2s; }
 .trust-pill:hover { border-color: var(--blue-soft); color: var(--blue); background: var(--blue-pale); transform: translateY(-1px); box-shadow: var(--sh-sm); }
 .trust-tick { color: var(--green); font-size: 12px; }
 
+/* ── PROMO BANNER ── */
 .promo-wrap { max-width: 1000px; margin: 0 auto 72px; padding: 0 24px; position: relative; z-index: 1; }
-.promo-card {
-  border-radius: var(--r-xl);
-  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #ecfdf5 100%);
-  border: 1.5px solid #fde68a;
-  padding: 36px 44px;
-  display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
-  position: relative; overflow: hidden;
-  box-shadow: 0 4px 24px rgba(217,119,6,0.10), 0 1px 6px rgba(217,119,6,0.06);
-}
-.promo-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: linear-gradient(90deg, var(--gold), var(--gold-lt), var(--green));
-  border-radius: var(--r-xl) var(--r-xl) 0 0;
-}
+.promo-card { border-radius: var(--r-xl); background: linear-gradient(135deg,#fffbeb 0%,#fef3c7 50%,#ecfdf5 100%); border: 1.5px solid #fde68a; padding: 36px 44px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; position: relative; overflow: hidden; box-shadow: 0 4px 24px rgba(217,119,6,.10), 0 1px 6px rgba(217,119,6,.06); }
+.promo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg,var(--gold),var(--gold-lt),var(--green)); border-radius: var(--r-xl) var(--r-xl) 0 0; }
 .promo-emoji { font-size: 48px; flex-shrink: 0; animation: bounce 2.4s ease-in-out infinite; }
-@keyframes bounce { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
+@keyframes bounce { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-7px) rotate(4deg)} }
 .promo-body { flex: 1; min-width: 200px; }
-.promo-body h3 { font-size: clamp(18px, 2.5vw, 24px); font-weight: 800; color: var(--gold); letter-spacing: -0.4px; margin-bottom: 6px; }
+.promo-body h3 { font-size: clamp(18px,2.5vw,24px); font-weight: 800; color: var(--gold); letter-spacing: -.4px; margin-bottom: 6px; }
 .promo-body p { color: #92400e; font-size: 14px; line-height: 1.6; }
 .promo-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex-shrink: 0; }
 .promo-chk { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 500; color: #92400e; }
 .chk-icon { width: 19px; height: 19px; border-radius: 50%; background: var(--green-soft); border: 1.5px solid #6ee7b7; display: grid; place-items: center; font-size: 9px; color: var(--green); font-weight: 800; flex-shrink: 0; }
-.countdown { flex-shrink: 0; text-align: center; background: rgba(255,255,255,0.75); border: 1.5px solid #fde68a; border-radius: var(--r-md); padding: 16px 24px; box-shadow: var(--sh-sm); }
+.countdown { flex-shrink: 0; text-align: center; background: rgba(255,255,255,.75); border: 1.5px solid #fde68a; border-radius: var(--r-md); padding: 16px 24px; box-shadow: var(--sh-sm); }
 .cd-label { font-size: 10px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #b45309; margin-bottom: 8px; }
 .cd-digits { display: flex; gap: 6px; align-items: center; }
-.cd-block  { text-align: center; }
+.cd-block { text-align: center; }
 .cd-num { display: block; font-size: 26px; font-weight: 800; color: var(--gold); line-height: 1; font-variant-numeric: tabular-nums; }
-.cd-unit { font-size: 9px; color: #b45309; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 2px; font-weight: 600; }
-.cd-colon { font-size: 20px; color: var(--gold-lt); opacity: 0.6; margin-bottom: 10px; }
+.cd-unit { font-size: 9px; color: #b45309; text-transform: uppercase; letter-spacing: .8px; margin-top: 2px; font-weight: 600; }
+.cd-colon { font-size: 20px; color: var(--gold-lt); opacity: .6; margin-bottom: 10px; }
 
-.stats-bar { display: flex; flex-wrap: wrap; gap: 0; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 52px; box-shadow: var(--sh-sm); }
-.stat-cell { flex: 1; min-width: 130px; padding: 24px 20px; text-align: center; border-right: 1px solid var(--line); transition: background 0.2s; }
+/* ── STATS BAR ── */
+.stats-bar { display: flex; flex-wrap: wrap; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 52px; box-shadow: var(--sh-sm); }
+.stat-cell { flex: 1; min-width: 130px; padding: 24px 20px; text-align: center; border-right: 1px solid var(--line); transition: background .2s; }
 .stat-cell:last-child { border-right: none; }
 .stat-cell:hover { background: var(--blue-pale); }
-.stat-val { display: block; font-size: clamp(22px, 3vw, 32px); font-weight: 800; color: var(--blue); letter-spacing: -0.5px; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat-val { display: block; font-size: clamp(22px,3vw,32px); font-weight: 800; color: var(--blue); letter-spacing: -.5px; line-height: 1; font-variant-numeric: tabular-nums; }
 .stat-lbl { font-size: 12px; color: var(--t3); margin-top: 5px; font-weight: 500; }
 
+/* ── PLAN CARDS ── */
 .plans-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .plans-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-@media (max-width:900px) { .plans-2,.plans-3 { grid-template-columns: 1fr; } }
-@media (min-width:601px) and (max-width:900px) { .plans-3 { grid-template-columns: repeat(2,1fr); } }
+@media(max-width:900px){ .plans-2,.plans-3 { grid-template-columns: 1fr; } }
+@media(min-width:601px) and (max-width:900px){ .plans-3 { grid-template-columns: repeat(2,1fr); } }
 
-.plan-card {
-  background: var(--white);
-  border: 1.5px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: 32px;
-  position: relative; overflow: hidden;
-  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s, border-color 0.25s;
-  cursor: default;
-  box-shadow: var(--sh-sm);
-}
+.plan-card { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 32px; position: relative; overflow: hidden; transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, border-color .25s; box-shadow: var(--sh-sm); }
 .plan-card:hover { transform: translateY(-5px); box-shadow: var(--sh-xl); }
 .plan-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--r-lg) var(--r-lg) 0 0; }
-.plan-card::after { content: ''; position: absolute; top: 0; right: 0; width: 140px; height: 140px; border-radius: 0 var(--r-lg) 0 0; pointer-events: none; opacity: 0.5; transition: opacity 0.3s; }
+.plan-card::after { content: ''; position: absolute; top: 0; right: 0; width: 140px; height: 140px; border-radius: 0 var(--r-lg) 0 0; pointer-events: none; opacity: .5; transition: opacity .3s; }
 .plan-card:hover::after { opacity: 1; }
+.card-gold::before { background: linear-gradient(90deg,var(--gold),var(--gold-lt)); }
+.card-gold::after  { background: radial-gradient(at top right,var(--gold-pale),transparent 65%); }
+.card-gold         { border-color: var(--gold-rim); }
+.card-gold:hover   { border-color: var(--gold-lt); box-shadow: 0 16px 48px rgba(217,119,6,.12), 0 4px 16px rgba(217,119,6,.07); }
+.card-blue::before { background: linear-gradient(90deg,var(--blue),var(--blue-lt)); }
+.card-blue::after  { background: radial-gradient(at top right,var(--blue-pale),transparent 65%); }
+.card-blue         { border-color: var(--blue-rim); }
+.card-blue:hover   { border-color: var(--blue-lt); box-shadow: 0 16px 48px rgba(37,99,235,.12), 0 4px 16px rgba(37,99,235,.07); }
+.card-teal::before { background: linear-gradient(90deg,var(--teal),var(--teal-lt)); }
+.card-teal::after  { background: radial-gradient(at top right,var(--teal-pale),transparent 65%); }
+.card-teal         { border-color: var(--teal-rim); }
+.card-teal:hover   { border-color: var(--teal-lt); box-shadow: 0 16px 48px rgba(8,145,178,.12), 0 4px 16px rgba(8,145,178,.07); }
 
-.card-gold::before  { background: linear-gradient(90deg, var(--gold), var(--gold-lt)); }
-.card-gold::after   { background: radial-gradient(at top right, var(--gold-pale), transparent 65%); }
-.card-gold          { border-color: var(--gold-rim); }
-.card-gold:hover    { border-color: var(--gold-lt); box-shadow: 0 16px 48px rgba(217,119,6,0.12), 0 4px 16px rgba(217,119,6,0.07); }
-.card-blue::before  { background: linear-gradient(90deg, var(--blue), var(--blue-lt)); }
-.card-blue::after   { background: radial-gradient(at top right, var(--blue-pale), transparent 65%); }
-.card-blue          { border-color: var(--blue-rim); }
-.card-blue:hover    { border-color: var(--blue-lt); box-shadow: 0 16px 48px rgba(37,99,235,0.12), 0 4px 16px rgba(37,99,235,0.07); }
-.card-teal::before  { background: linear-gradient(90deg, var(--teal), var(--teal-lt)); }
-.card-teal::after   { background: radial-gradient(at top right, var(--teal-pale), transparent 65%); }
-.card-teal          { border-color: var(--teal-rim); }
-.card-teal:hover    { border-color: var(--teal-lt); box-shadow: 0 16px 48px rgba(8,145,178,0.12), 0 4px 16px rgba(8,145,178,0.07); }
-
-.badge-popular { position: absolute; top: 18px; right: 18px; padding: 4px 11px; border-radius: 20px; font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; background: var(--gold-soft); color: var(--gold); border: 1px solid #fde68a; }
-
+.badge-popular { position: absolute; top: 18px; right: 18px; padding: 4px 11px; border-radius: 20px; font-size: 10.5px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; background: var(--gold-soft); color: var(--gold); border: 1px solid #fde68a; }
 .plan-icon { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font-size: 24px; margin-bottom: 18px; position: relative; z-index: 1; border: 1.5px solid transparent; }
 .icon-gold { background: var(--gold-pale); border-color: var(--gold-soft); }
 .icon-blue { background: var(--blue-pale); border-color: var(--blue-soft); }
 .icon-teal { background: var(--teal-pale); border-color: var(--teal-soft); }
-
-.plan-name  { font-size: 20px; font-weight: 700; color: var(--t1); margin-bottom: 5px; position: relative; z-index: 1; letter-spacing: -0.3px; }
+.plan-name  { font-size: 20px; font-weight: 700; color: var(--t1); margin-bottom: 5px; position: relative; z-index: 1; letter-spacing: -.3px; }
 .plan-desc  { font-size: 13.5px; color: var(--t2); margin-bottom: 22px; position: relative; z-index: 1; line-height: 1.55; }
 .plan-divider { height: 1px; background: var(--line); margin: 18px 0; position: relative; z-index: 1; }
-
-.price-row { display: flex; align-items: flex-end; gap: 5px; margin-bottom: 6px; position: relative; z-index: 1; }
-.price-num { font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
-.price-per { font-size: 14px; color: var(--t2); margin-bottom: 6px; font-weight: 400; }
+.price-row  { display: flex; align-items: flex-end; gap: 5px; margin-bottom: 6px; position: relative; z-index: 1; }
+.price-num  { font-size: 40px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
+.price-per  { font-size: 14px; color: var(--t2); margin-bottom: 6px; font-weight: 400; }
 .price-gold { color: var(--gold); }
 .price-blue { color: var(--blue); }
 .price-teal { color: var(--teal); }
-
-.trial-tag { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 22px; position: relative; z-index: 1; }
+.trial-tag  { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 22px; position: relative; z-index: 1; }
 .tag-gold { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: var(--gold); }
 .tag-blue { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); }
 .tag-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: var(--teal); }
-
-/* Trial used / active banners */
-.trial-used-badge { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: var(--r); background: var(--green-pale); border: 1.5px solid var(--green-soft); font-size: 13px; font-weight: 600; color: var(--green); position: relative; z-index: 1; margin-bottom: 8px; }
-.trial-used-badge .trial-used-icon { font-size: 16px; flex-shrink: 0; }
+.trial-used-badge  { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: var(--r); background: var(--green-pale); border: 1.5px solid var(--green-soft); font-size: 13px; font-weight: 600; color: var(--green); position: relative; z-index: 1; margin-bottom: 8px; }
 .active-sub-banner { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r); background: var(--green-pale); border: 1.5px solid var(--green-soft); font-size: 13px; font-weight: 600; color: #065f46; position: relative; z-index: 1; margin-bottom: 8px; }
-
 .feat-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; position: relative; z-index: 1; }
 .feat-row  { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; color: var(--t2); }
 .feat-tick { width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; font-size: 9px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
 .ft-gold { background: var(--gold-soft); color: var(--gold); border: 1px solid #fde68a; }
 .ft-blue { background: var(--blue-soft); color: var(--blue); border: 1px solid #bfdbfe; }
 .ft-teal { background: var(--teal-soft); color: var(--teal); border: 1px solid #a5f3fc; }
-
 .activate-note { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: var(--r); margin-bottom: 22px; position: relative; z-index: 1; font-size: 13px; line-height: 1.5; }
 .act-gold { background: var(--gold-pale); border: 1px solid var(--gold-soft); color: #92400e; }
 .act-blue { background: var(--blue-pale); border: 1px solid var(--blue-soft); color: #1e3a8a; }
 .act-teal { background: var(--teal-pale); border: 1px solid var(--teal-soft); color: #164e63; }
 .activate-note strong { font-weight: 600; }
-
 .card-btns { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
 
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 12px 22px; border-radius: var(--r);
-  font-size: 14px; font-weight: 600; border: none;
-  transition: all 0.22s cubic-bezier(.34,1.56,.64,1);
-  position: relative; overflow: hidden;
-  white-space: nowrap; cursor: pointer; font-family: var(--font);
-  letter-spacing: -0.1px;
-}
-.btn:active { transform: scale(0.97) !important; }
-.btn .arr { transition: transform 0.2s; display: inline-block; }
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 22px; border-radius: var(--r); font-size: 14px; font-weight: 600; border: none; transition: all .22s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden; white-space: nowrap; cursor: pointer; font-family: var(--font); letter-spacing: -.1px; }
+.btn:active { transform: scale(.97) !important; }
+.btn .arr { transition: transform .2s; display: inline-block; }
 .btn:hover .arr { transform: translateX(3px); }
-.btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3); transform: scale(0); animation: rip 0.5s ease-out forwards; pointer-events: none; }
+.btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,.3); transform: scale(0); animation: rip .5s ease-out forwards; pointer-events: none; }
 @keyframes rip { to { transform: scale(4); opacity: 0; } }
-.btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-lt)); color: #fff; box-shadow: 0 3px 14px rgba(217,119,6,0.30); }
-.btn-gold:hover { box-shadow: 0 6px 22px rgba(217,119,6,0.42); transform: translateY(-2px); }
-.btn-blue { background: linear-gradient(135deg, #1d4ed8, var(--blue)); color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,0.28); }
-.btn-blue:hover { box-shadow: 0 6px 22px rgba(37,99,235,0.40); transform: translateY(-2px); }
-.btn-teal { background: linear-gradient(135deg, #0e7490, var(--teal)); color: #fff; box-shadow: 0 3px 14px rgba(8,145,178,0.28); }
-.btn-teal:hover { box-shadow: 0 6px 22px rgba(8,145,178,0.40); transform: translateY(-2px); }
+.btn-gold { background: linear-gradient(135deg,var(--gold),var(--gold-lt)); color: #fff; box-shadow: 0 3px 14px rgba(217,119,6,.30); }
+.btn-gold:hover { box-shadow: 0 6px 22px rgba(217,119,6,.42); transform: translateY(-2px); }
+.btn-blue { background: linear-gradient(135deg,#1d4ed8,var(--blue)); color: #fff; box-shadow: 0 3px 14px rgba(37,99,235,.28); }
+.btn-blue:hover { box-shadow: 0 6px 22px rgba(37,99,235,.40); transform: translateY(-2px); }
+.btn-teal { background: linear-gradient(135deg,#0e7490,var(--teal)); color: #fff; box-shadow: 0 3px 14px rgba(8,145,178,.28); }
+.btn-teal:hover { box-shadow: 0 6px 22px rgba(8,145,178,.40); transform: translateY(-2px); }
+.btn-green { background: linear-gradient(135deg,#047857,var(--green)); color: #fff; box-shadow: 0 3px 14px rgba(5,150,105,.30); }
+.btn-green:hover { box-shadow: 0 6px 22px rgba(5,150,105,.42); transform: translateY(-2px); }
 .btn-outline-gold { background: var(--gold-pale); border: 1.5px solid var(--gold-soft); color: var(--gold); }
 .btn-outline-gold:hover { background: var(--gold-soft); border-color: var(--gold); transform: translateY(-1px); }
 .btn-outline-blue { background: var(--blue-pale); border: 1.5px solid var(--blue-soft); color: var(--blue); }
@@ -335,70 +273,154 @@ ul { list-style: none; }
 .btn-ghost:hover { background: var(--surface-3); border-color: var(--line-2); color: var(--t1); transform: translateY(-1px); }
 .btn-sm { padding: 9px 16px; font-size: 13px; }
 .btn-lg { padding: 15px 28px; font-size: 15px; }
-.btn-disabled { background: var(--surface-2); border: 1.5px solid var(--line); color: var(--t3); cursor: not-allowed; opacity: 0.65; }
-.btn-disabled:hover { transform: none !important; box-shadow: none !important; }
 
+/* ── COMPARISON TABLE ── */
 .table-outer { border-radius: var(--r-lg); overflow: hidden; border: 1.5px solid var(--line); box-shadow: var(--sh-md); }
 .table-scroll { overflow-x: auto; }
 .cmp-table { width: 100%; border-collapse: collapse; background: var(--white); }
 .cmp-table thead tr { background: var(--surface-2); }
-.cmp-table th { padding: 18px 22px; font-size: 14px; font-weight: 700; color: var(--t1); border-bottom: 1.5px solid var(--line); text-align: center; letter-spacing: -0.2px; }
+.cmp-table th { padding: 18px 22px; font-size: 14px; font-weight: 700; color: var(--t1); border-bottom: 1.5px solid var(--line); text-align: center; }
 .th-feat { text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); padding-left: 26px; }
 .th-owner { color: var(--gold); }
 .th-tenant { color: var(--blue); }
 .th-service { color: var(--teal); }
-.cmp-table td { padding: 13px 22px; font-size: 13.5px; text-align: center; border-bottom: 1px solid var(--line); transition: background 0.15s; color: var(--t2); }
+.cmp-table td { padding: 13px 22px; font-size: 13.5px; text-align: center; border-bottom: 1px solid var(--line); transition: background .15s; color: var(--t2); }
 .td-feat { text-align: left; padding-left: 26px; color: var(--t1); font-weight: 500; }
 .cmp-table tbody tr:hover td { background: var(--blue-pale); }
 .cmp-table tbody tr:last-child td { border-bottom: none; }
-.c-yes { color: var(--green); font-size: 17px; font-weight: 700; }
-.c-no  { color: var(--t3); font-size: 17px; }
+.c-yes  { color: var(--green); font-size: 17px; font-weight: 700; }
+.c-no   { color: var(--t3); font-size: 17px; }
 .c-part { color: var(--gold); font-size: 12.5px; font-weight: 600; }
 
+/* ═══════════════════════════════════════════════════
+   PAYMENT SECTION — REDESIGNED
+═══════════════════════════════════════════════════ */
 .pay-sec { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.plan-pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
-.ppill { padding: 8px 18px; border-radius: 20px; background: var(--surface-2); border: 1.5px solid var(--line); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--t2); }
+
+.pay-layout { display: grid; grid-template-columns: 1fr 420px; gap: 32px; align-items: start; }
+@media(max-width:900px) { .pay-layout { grid-template-columns: 1fr; } }
+
+/* Left: plan selector + amount */
+.pay-left-card { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r-xl); padding: 32px; }
+.pay-left-title { font-size: 18px; font-weight: 700; color: var(--t1); margin-bottom: 6px; letter-spacing: -.3px; }
+.pay-left-sub { font-size: 13.5px; color: var(--t2); margin-bottom: 22px; }
+
+.plan-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.ppill { padding: 8px 16px; border-radius: 20px; background: var(--white); border: 1.5px solid var(--line); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .2s; color: var(--t2); }
 .ppill:hover { border-color: var(--line-2); color: var(--t1); }
 .ppill.gold  { background: var(--gold-pale); border-color: var(--gold-soft); color: var(--gold); }
 .ppill.blue  { background: var(--blue-pale); border-color: var(--blue-soft); color: var(--blue); }
 .ppill.teal  { background: var(--teal-pale); border-color: var(--teal-soft); color: var(--teal); }
-.pay-amount { text-align: center; margin-bottom: 32px; padding: 28px; background: var(--surface-2); border-radius: var(--r-lg); border: 1.5px solid var(--line); }
-.amt-big { font-size: 52px; font-weight: 800; color: var(--blue); letter-spacing: -1.5px; line-height: 1; }
-.amt-sub { font-size: 14px; color: var(--t2); margin-top: 6px; }
-.amt-tag { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 6px 14px; border-radius: 20px; background: var(--green-pale); border: 1px solid var(--green-soft); font-size: 12.5px; font-weight: 600; color: var(--green); }
-.upi-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 36px; }
-@media (max-width:900px) { .upi-grid { grid-template-columns: repeat(3,1fr); } }
-@media (max-width:520px) { .upi-grid { grid-template-columns: repeat(2,1fr); } }
-.upi-card { border-radius: var(--r-md); background: var(--white); border: 1.5px solid var(--line); padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.25s cubic-bezier(.34,1.56,.64,1); position: relative; overflow: hidden; box-shadow: var(--sh-xs); }
-.upi-card:hover { transform: translateY(-5px); border-color: var(--blue-lt); box-shadow: var(--sh-lg); background: var(--blue-pale); }
-.upi-card.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft), var(--sh-md); background: var(--blue-pale); }
-.upi-card:active { transform: scale(0.95); }
-.upi-logo { font-size: 36px; margin-bottom: 8px; display: block; transition: transform 0.25s; }
-.upi-card:hover .upi-logo { transform: scale(1.1); }
-.upi-name { font-size: 12.5px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
-.upi-secure { font-size: 10px; color: var(--green); font-weight: 600; }
-.upi-live { position: absolute; top: 8px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: livepulse 2s ease-in-out infinite; }
-@keyframes livepulse { 0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4); } 50% { box-shadow: 0 0 0 5px rgba(5,150,105,0); } }
-.upi-id-box { background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r-md); padding: 24px; text-align: center; margin-bottom: 20px; }
-.upi-id-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
-.upi-id-val { font-size: 21px; font-weight: 800; color: var(--green); letter-spacing: 0.3px; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
-.upi-copy-btn { background: none; border: none; color: var(--blue); font-size: 12.5px; font-weight: 500; cursor: pointer; font-family: var(--font); text-decoration: underline; transition: color 0.15s; }
-.upi-copy-btn:hover { color: #1d4ed8; }
-.utr-row { display: flex; gap: 10px; align-items: flex-end; }
-.utr-field { flex: 1; }
-.utr-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--t2); margin-bottom: 7px; }
-.utr-input { width: 100%; padding: 12px 15px; background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r); color: var(--t1); font-family: var(--font); font-size: 14px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: var(--sh-xs); }
+
+/* Amount display */
+.pay-amount-box { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 24px; text-align: center; margin-bottom: 16px; }
+.pay-plan-name  { font-size: 13px; font-weight: 600; color: var(--t2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .8px; }
+.pay-price-big  { font-size: 52px; font-weight: 800; color: var(--blue); letter-spacing: -1.5px; line-height: 1; }
+.pay-price-sub  { font-size: 14px; color: var(--t2); margin-top: 4px; }
+.pay-free-tag   { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 6px 14px; border-radius: 20px; background: var(--green-pale); border: 1px solid var(--green-soft); font-size: 12.5px; font-weight: 600; color: var(--green); }
+
+/* Order summary lines */
+.order-summary { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 16px; }
+.os-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.os-row:last-child { border-bottom: none; }
+.os-key { color: var(--t2); }
+.os-val { font-weight: 600; color: var(--t1); }
+.os-val.green { color: var(--green); }
+
+/* Right: UPI payment card */
+.pay-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--sh-lg);
+  position: sticky; top: 80px;
+}
+
+/* Payment card header */
+.pay-card-header {
+  background: linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);
+  padding: 22px 24px;
+  display: flex; align-items: center; gap: 12px;
+  position: relative; overflow: hidden;
+}
+.pay-card-header::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(37,99,235,.2),transparent); }
+.pch-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 22px; position: relative; z-index: 1; flex-shrink: 0; }
+.pch-text { position: relative; z-index: 1; }
+.pch-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.pch-sub   { font-size: 12px; color: rgba(255,255,255,.6); }
+.pch-ssl { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); z-index: 1; display: flex; align-items: center; gap: 5px; background: rgba(5,150,105,.2); border: 1px solid rgba(5,150,105,.4); border-radius: 20px; padding: 4px 10px; font-size: 11px; color: #6ee7b7; font-weight: 600; }
+
+/* QR + UPI ID section */
+.pay-card-body { padding: 22px 24px; }
+
+.upi-merchant-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding: 14px 16px; background: var(--surface-2); border-radius: var(--r-md); border: 1px solid var(--line); }
+.merchant-logo { width: 44px; height: 44px; border-radius: 10px; background: linear-gradient(135deg,#1e40af,#3b82f6); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.merchant-info { flex: 1; min-width: 0; }
+.merchant-name { font-size: 14px; font-weight: 700; color: var(--t1); }
+.merchant-upi  { font-size: 12px; color: var(--t2); font-family: monospace; margin-top: 2px; }
+.merchant-verified { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; color: var(--green); background: var(--green-pale); border: 1px solid var(--green-soft); border-radius: 20px; padding: 2px 8px; margin-top: 3px; }
+
+/* QR code area */
+.qr-section { text-align: center; margin-bottom: 20px; }
+.qr-label { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--t3); margin-bottom: 12px; }
+.qr-frame { display: inline-block; padding: 12px; background: #fff; border: 1.5px solid var(--line); border-radius: var(--r-md); box-shadow: var(--sh-sm); }
+.qr-frame img { display: block; width: 160px; height: 160px; border-radius: 4px; }
+.qr-sub { font-size: 11.5px; color: var(--t3); margin-top: 10px; }
+
+/* UPI copy row */
+.upi-copy-row { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r); padding: 11px 14px; margin-bottom: 20px; }
+.upi-id-val { font-family: monospace; font-size: 14px; font-weight: 700; color: var(--t1); flex: 1; }
+.upi-copy-btn { padding: 5px 12px; border-radius: 6px; background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all .15s; white-space: nowrap; }
+.upi-copy-btn:hover { background: var(--blue-soft); }
+
+/* UPI app buttons */
+.upi-apps-label { font-size: 12px; font-weight: 600; color: var(--t2); margin-bottom: 10px; letter-spacing: .3px; }
+.upi-apps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
+
+.upi-app-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 12px 6px; border-radius: var(--r-md);
+  background: var(--white); border: 1.5px solid var(--line);
+  cursor: pointer; transition: all .2s cubic-bezier(.34,1.56,.64,1);
+  text-decoration: none; color: var(--t1); user-select: none;
+}
+.upi-app-btn:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
+.upi-app-btn.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+
+/* UPI logos — branded colors */
+.upi-logo-gpay    { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #e8edf7; }
+.upi-logo-phonepe { width: 38px; height: 38px; border-radius: 10px; background: #5f259f; display: flex; align-items: center; justify-content: center; }
+.upi-logo-paytm   { width: 38px; height: 38px; border-radius: 10px; background: #002970; display: flex; align-items: center; justify-content: center; }
+.upi-logo-bhim    { width: 38px; height: 38px; border-radius: 10px; background: #00509d; display: flex; align-items: center; justify-content: center; }
+.upi-logo-amazon  { width: 38px; height: 38px; border-radius: 10px; background: #ff9900; display: flex; align-items: center; justify-content: center; }
+
+/* SVG logo inner styles */
+.upi-app-name { font-size: 10px; font-weight: 600; color: var(--t2); text-align: center; }
+
+.upi-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: livepulse 2s ease-in-out infinite; display: inline-block; margin-right: 4px; }
+@keyframes livepulse { 0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,.4)} 50%{box-shadow:0 0 0 5px rgba(5,150,105,0)} }
+
+/* UTR row */
+.utr-section label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--t2); margin-bottom: 8px; }
+.utr-hint { font-size: 11.5px; color: var(--t3); margin-bottom: 10px; }
+.utr-input-row { display: flex; gap: 8px; }
+.utr-input { flex: 1; padding: 12px 14px; background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r); color: var(--t1); font-family: var(--font); font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s; }
 .utr-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
 .utr-input::placeholder { color: var(--t3); }
-.sec-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding-top: 28px; border-top: 1px solid var(--line); }
-.sec-badge { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; background: var(--green-pale); border: 1px solid var(--green-soft); font-size: 12px; font-weight: 500; color: #065f46; transition: all 0.2s; }
-.sec-badge:hover { background: var(--green-soft); transform: translateY(-1px); box-shadow: var(--sh-xs); }
-.si { font-size: 13px; }
 
+.pay-card-footer { padding: 16px 24px; border-top: 1px solid var(--line); background: var(--surface-2); }
+.trust-badges-mini { display: flex; flex-wrap: wrap; gap: 8px; }
+.tb { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: var(--t3); }
+.tb .ti { font-size: 12px; }
+/* RBI badge */
+.rbi-badge { background: linear-gradient(135deg,#1e40af,#1d4ed8); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .5px; }
+
+/* ── TESTIMONIALS ── */
 .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-@media (max-width:768px) { .testi-grid { grid-template-columns: 1fr; } }
-@media (min-width:601px) and (max-width:768px) { .testi-grid { grid-template-columns: repeat(2,1fr); } }
-.testi-card { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 22px; box-shadow: var(--sh-xs); transition: all 0.25s; }
+@media(max-width:768px){ .testi-grid { grid-template-columns: 1fr; } }
+@media(min-width:601px) and (max-width:768px){ .testi-grid { grid-template-columns: repeat(2,1fr); } }
+.testi-card { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 22px; box-shadow: var(--sh-xs); transition: all .25s; }
 .testi-card:hover { transform: translateY(-3px); box-shadow: var(--sh-lg); border-color: var(--line-2); }
 .stars { color: #f59e0b; font-size: 14px; margin-bottom: 10px; }
 .testi-text { font-size: 14px; color: var(--t2); line-height: 1.65; margin-bottom: 16px; font-style: italic; }
@@ -408,53 +430,57 @@ ul { list-style: none; }
 .testi-meta { font-size: 12px; color: var(--t3); margin-top: 1px; }
 .testi-plan { font-size: 11.5px; color: var(--blue); font-weight: 600; margin-top: 2px; }
 
-.modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(15,23,42,0.55); backdrop-filter: blur(8px); display: none; place-items: center; padding: 20px; }
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(15,23,42,.55); backdrop-filter: blur(8px); display: none; place-items: center; padding: 20px; }
 .modal-overlay.open { display: grid; animation: mfade .3s ease; }
-@keyframes mfade { from { opacity:0; } to { opacity:1; } }
+@keyframes mfade { from{opacity:0}to{opacity:1} }
 .modal-box { background: var(--white); border: 1.5px solid var(--line); border-radius: var(--r-xl); padding: 52px 44px; max-width: 480px; width: 100%; text-align: center; position: relative; box-shadow: var(--sh-xl); animation: mslide .4s cubic-bezier(.34,1.56,.64,1); }
-@keyframes mslide { from { transform: translateY(32px) scale(.96); opacity:0; } to { transform: none; opacity:1; } }
+@keyframes mslide { from{transform:translateY(32px) scale(.96);opacity:0}to{transform:none;opacity:1} }
 .modal-box canvas { position: absolute; inset: 0; pointer-events: none; border-radius: var(--r-xl); }
 .modal-check { width: 76px; height: 76px; border-radius: 50%; background: var(--green-pale); border: 2px solid #6ee7b7; display: grid; place-items: center; margin: 0 auto 22px; font-size: 34px; animation: mpop .6s cubic-bezier(.34,1.56,.64,1) .15s both; }
-@keyframes mpop { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
-.modal-title { font-size: 24px; font-weight: 800; color: var(--t1); margin-bottom: 8px; letter-spacing: -0.4px; }
+@keyframes mpop { from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)} }
+.modal-title { font-size: 24px; font-weight: 800; color: var(--t1); margin-bottom: 8px; letter-spacing: -.4px; }
 .modal-sub   { font-size: 14px; color: var(--t2); line-height: 1.6; margin-bottom: 24px; }
 .modal-trial-box { background: var(--green-pale); border: 1px solid var(--green-soft); border-radius: var(--r); padding: 14px 16px; margin-bottom: 24px; }
 .modal-trial-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--t3); margin-bottom: 5px; }
 .modal-trial-dates { font-size: 15px; font-weight: 700; color: var(--green); }
 .modal-btns { display: flex; flex-direction: column; gap: 9px; }
-.modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--surface-2); border: none; color: var(--t2); display: grid; place-items: center; font-size: 16px; cursor: pointer; transition: all 0.2s; }
+.modal-close { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: var(--r-sm); background: var(--surface-2); border: none; color: var(--t2); display: grid; place-items: center; font-size: 16px; cursor: pointer; transition: all .2s; }
 .modal-close:hover { background: var(--line); color: var(--t1); }
 
-.reveal { opacity:0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.in { opacity:1; transform: none; }
-.d1 { transition-delay: .07s; }
-.d2 { transition-delay: .14s; }
-.d3 { transition-delay: .21s; }
-.d4 { transition-delay: .28s; }
-.d5 { transition-delay: .35s; }
+/* ── SIGN-IN REQUIRED ── */
+.signin-required { text-align:center; padding:28px; background:var(--blue-pale); border:1.5px solid var(--blue-soft); border-radius:var(--r-lg); margin-bottom:16px; }
+.signin-required p { color:var(--blue); font-size:14px; font-weight:600; margin-bottom:12px; }
 
+/* ── SCROLL REVEAL ── */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity:1; transform:none; }
+.d1{transition-delay:.07s} .d2{transition-delay:.14s} .d3{transition-delay:.21s} .d4{transition-delay:.28s} .d5{transition-delay:.35s}
+
+/* ── FOOTER ── */
 .footer { padding: 24px 0; border-top: 1px solid var(--line); background: var(--white); }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--t3); }
-.footer-inner a { color: var(--t2); transition: color 0.15s; }
+.footer-inner a { color: var(--t2); transition: color .15s; }
 .footer-inner a:hover { color: var(--blue); }
 
+/* ── TOASTS ── */
 #toasts { position: fixed; bottom: 22px; right: 22px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
 .toast { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--r); background: var(--white); border: 1.5px solid var(--line); box-shadow: var(--sh-xl); font-size: 13.5px; font-weight: 500; color: var(--t1); max-width: 300px; animation: tfade .3s ease; }
-@keyframes tfade { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: none; } }
+@keyframes tfade { from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none} }
 .toast.info    { border-color: var(--blue-soft); }
 .toast.success { border-color: var(--green-soft); }
 .toast.err     { border-color: #fecaca; }
 
-@media (max-width:768px) {
+@media(max-width:768px) {
   .promo-card { padding: 24px 20px; gap: 18px; }
   .countdown  { display: none; }
   .plan-card  { padding: 24px 20px; }
   .price-num  { font-size: 32px; }
   .cmp-table th, .cmp-table td { padding: 11px 13px; font-size: 12px; }
-  .upi-card   { padding: 16px 10px; }
   .modal-box  { padding: 36px 22px; }
   .stats-bar .stat-cell { min-width: 110px; padding: 18px 12px; }
-  .amt-big    { font-size: 40px; }
+  .pay-price-big { font-size: 40px; }
+  .upi-apps-grid { grid-template-columns: repeat(3,1fr); }
 }
 </style>
 </head>
@@ -480,12 +506,9 @@ ul { list-style: none; }
 
 <!-- HERO -->
 <section class="hero">
-  <div class="eyebrow ey-blue reveal">✦ Pricing & Plans</div>
-  <h1 class="reveal">Unlock <span class="accent">Premium Access</span><br>& Grow Faster</h1>
-  <p class="reveal">
-    List properties, connect with tenants, showcase your services, and grow your business —
-    starting completely <strong>FREE for 3 months</strong>.
-  </p>
+  <div class="eyebrow ey-blue reveal">✦ Pricing &amp; Plans</div>
+  <h1 class="reveal">Unlock <span class="accent">Premium Access</span><br>&amp; Grow Faster</h1>
+  <p class="reveal">List properties, connect with tenants, showcase your services, and grow your business — starting completely <strong>FREE for 3 months</strong>.</p>
   <div class="trust-row reveal">
     <div class="trust-pill"><span class="trust-tick">✓</span> Secure Payments</div>
     <div class="trust-pill"><span class="trust-tick">✓</span> Instant Access</div>
@@ -501,12 +524,12 @@ ul { list-style: none; }
     <div class="promo-emoji">🎉</div>
     <div class="promo-body">
       <h3>FREE for the First 3 Months</h3>
-      <p>Every new user gets 3 months of full premium access completely FREE before monthly billing begins. No credit card required to start.</p>
+      <p>Every new account gets 3 months of full premium access completely FREE. Trial is tied to your account — sign in on any device to access it.</p>
     </div>
     <div class="promo-checks">
       <div class="promo-chk"><div class="chk-icon">✓</div>No Upfront Charges</div>
       <div class="promo-chk"><div class="chk-icon">✓</div>Full Premium Access</div>
-      <div class="promo-chk"><div class="chk-icon">✓</div>Cancel Anytime</div>
+      <div class="promo-chk"><div class="chk-icon">✓</div>Account-Linked Trial</div>
       <div class="promo-chk"><div class="chk-icon">✓</div>Monthly After Trial</div>
     </div>
     <div class="countdown">
@@ -539,24 +562,22 @@ ul { list-style: none; }
   <div class="wrap">
     <div class="sec-head reveal">
       <div class="eyebrow ey-gold">🏠 Property Plans</div>
-      <h2>Perfect for <span class="text-gold">Property Owners</span> & Tenants</h2>
+      <h2>Perfect for <span class="text-gold">Property Owners</span> &amp; Tenants</h2>
       <p>Whether you're listing a property or searching for your next home — we have the right plan.</p>
     </div>
     <div class="plans-2">
-
-      <!-- OWNER PLAN -->
       <div class="plan-card card-gold reveal">
         <div class="badge-popular">⭐ Most Popular</div>
         <div class="plan-icon icon-gold">⭐</div>
         <div class="plan-name">Owner Plan</div>
         <div class="plan-desc">Built for property owners who want maximum tenant reach with zero broker fees.</div>
         <div class="price-row"><span class="price-num price-gold">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-gold">🎁 3 Months FREE — Start Today</div>
+        <div class="trial-tag tag-gold">🎁 3 Months FREE — Start Today</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-gold">✓</div>List Rental Properties</div>
           <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Unlimited Property Listings</div>
-          <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Property Analytics & Insights</div>
+          <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Property Analytics &amp; Insights</div>
           <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Tenant Inquiry Management</div>
           <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Dashboard Management</div>
           <div class="feat-row"><div class="feat-tick ft-gold">✓</div>Property Performance Reports</div>
@@ -567,22 +588,21 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-gold">
           <span style="font-size:18px">⭐</span>
-          <span><strong>After Activation:</strong> Gold Star Badge appears on your Profile, Dashboard, Property Listings & Search Results</span>
+          <span><strong>After Activation:</strong> Gold Star Badge on your Profile, Dashboard, Listings &amp; Search</span>
         </div>
         <div class="card-btns" id="owner-btns">
-          <button class="btn btn-gold btn-lg" onclick="activateFreeTrial('owner','₹249','Owner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-gold" onclick="selectPlan('owner','₹249','Owner Plan'); scrollToPay()">Subscribe Now</button>
+          <button class="btn btn-gold btn-lg" onclick="activateFreeTrial('owner','₹249','Owner Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-gold" onclick="selectPlan('owner','₹249','Owner Plan');scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Owner plan details coming soon…','info')">Learn More</button>
         </div>
       </div>
 
-      <!-- TENANT PLAN -->
       <div class="plan-card card-blue reveal d1">
         <div class="plan-icon icon-blue">🏠</div>
         <div class="plan-name">Tenant Plan</div>
         <div class="plan-desc">Unlock direct owner contact and schedule property visits instantly — no middlemen.</div>
         <div class="price-row"><span class="price-num price-blue">₹149</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-blue">🎁 3 Months FREE — Start Today</div>
+        <div class="trial-tag tag-blue">🎁 3 Months FREE — Start Today</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-blue">✓</div>Unlock Owner Phone Number</div>
@@ -597,15 +617,14 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-blue">
           <span style="font-size:18px">📞</span>
-          <span><strong>After Activation:</strong> Unlocks <strong>📞 Call Owner</strong> and <strong>📲 WhatsApp Owner</strong> buttons on all listings</span>
+          <span><strong>After Activation:</strong> Unlocks <strong>📞 Call Owner</strong> and <strong>📲 WhatsApp Owner</strong> on all listings</span>
         </div>
         <div class="card-btns" id="tenant-btns">
-          <button class="btn btn-blue btn-lg" onclick="activateFreeTrial('tenant','₹149','Tenant Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-blue" onclick="selectPlan('tenant','₹149','Tenant Plan'); scrollToPay()">Subscribe Now</button>
+          <button class="btn btn-blue btn-lg" onclick="activateFreeTrial('tenant','₹149','Tenant Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-blue" onclick="selectPlan('tenant','₹149','Tenant Plan');scrollToPay()">Subscribe Now</button>
           <button class="btn btn-ghost btn-sm" onclick="toast('Tenant plan details coming soon…','info')">Learn More</button>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -619,11 +638,13 @@ ul { list-style: none; }
       <p>Get discovered by thousands of homeowners. Book more jobs. Build a 5-star reputation.</p>
     </div>
     <div class="plans-3">
+
+      <!-- Plumber -->
       <div class="plan-card card-teal reveal">
         <div class="plan-icon icon-teal">🔧</div><div class="plan-name">Plumber</div>
         <div class="plan-desc">Get listed as a verified plumber and receive direct booking requests.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -636,18 +657,20 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Premium Visibility</div>
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
-        <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings & Search</span></div>
+        <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings &amp; Search</span></div>
         <div class="card-btns" id="plumber-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('plumber','₹249','Plumber Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('plumber','₹249','Plumber Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('plumber','₹249','Plumber Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('plumber','₹249','Plumber Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
+      <!-- Electrician -->
       <div class="plan-card card-teal reveal d1">
         <div class="plan-icon icon-teal">⚡</div><div class="plan-name">Electrician</div>
         <div class="plan-desc">Connect with homeowners needing electrical repairs and installations.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -660,18 +683,20 @@ ul { list-style: none; }
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Premium Visibility</div>
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Verified Professional Badge</div>
         </div>
-        <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings & Search</span></div>
+        <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on Dashboard, Profile, Listings &amp; Search</span></div>
         <div class="card-btns" id="electrician-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('electrician','₹249','Electrician Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('electrician','₹249','Electrician Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('electrician','₹249','Electrician Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('electrician','₹249','Electrician Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
+      <!-- Carpenter -->
       <div class="plan-card card-teal reveal d2">
         <div class="plan-icon icon-teal">🪚</div><div class="plan-name">Carpenter</div>
         <div class="plan-desc">Showcase woodwork expertise and fill your schedule with quality bookings.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -686,16 +711,18 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
         <div class="card-btns" id="carpenter-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('carpenter','₹249','Carpenter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('carpenter','₹249','Carpenter Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('carpenter','₹249','Carpenter Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('carpenter','₹249','Carpenter Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
+      <!-- Painter -->
       <div class="plan-card card-teal reveal d3">
         <div class="plan-icon icon-teal">🎨</div><div class="plan-name">Painter</div>
         <div class="plan-desc">Get hired for interior and exterior painting projects across the city.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -710,16 +737,18 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
         <div class="card-btns" id="painter-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('painter','₹249','Painter Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('painter','₹249','Painter Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('painter','₹249','Painter Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('painter','₹249','Painter Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
+      <!-- Movers -->
       <div class="plan-card card-teal reveal d4">
-        <div class="plan-icon icon-teal">🚚</div><div class="plan-name">Movers & Packers</div>
+        <div class="plan-icon icon-teal">🚚</div><div class="plan-name">Movers &amp; Packers</div>
         <div class="plan-desc">Reach families moving within the city and handle full-service relocations.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -734,16 +763,18 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
         <div class="card-btns" id="movers-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('movers','₹249','Movers Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('movers','₹249','Movers Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('movers','₹249','Movers Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('movers','₹249','Movers Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
+      <!-- Cleaner -->
       <div class="plan-card card-teal reveal d5">
         <div class="plan-icon icon-teal">🧹</div><div class="plan-name">Home Cleaner</div>
         <div class="plan-desc">Get regular cleaning jobs from verified homeowners and tenants near you.</div>
         <div class="price-row"><span class="price-num price-teal">₹249</span><span class="price-per">/month</span></div>
-        <div class="plan-trial tag-teal">🎁 3 Months FREE Trial</div>
+        <div class="trial-tag tag-teal">🎁 3 Months FREE Trial</div>
         <div class="plan-divider"></div>
         <div class="feat-list">
           <div class="feat-row"><div class="feat-tick ft-teal">✓</div>Service Listing</div>
@@ -758,11 +789,12 @@ ul { list-style: none; }
         </div>
         <div class="activate-note act-teal"><span>💎</span><span><strong>After Activation:</strong> Diamond Badge on all public profiles</span></div>
         <div class="card-btns" id="cleaner-btns">
-          <button class="btn btn-teal" onclick="activateFreeTrial('cleaner','₹249','Home Cleaner Plan'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-          <button class="btn btn-outline-teal" onclick="selectPlan('cleaner','₹249','Cleaner Plan'); scrollToPay()">Subscribe</button>
+          <button class="btn btn-teal" onclick="activateFreeTrial('cleaner','₹249','Home Cleaner Plan');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+          <button class="btn btn-outline-teal" onclick="selectPlan('cleaner','₹249','Cleaner Plan');scrollToPay()">Subscribe</button>
           <button class="btn btn-ghost btn-sm">View Benefits</button>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -794,7 +826,7 @@ ul { list-style: none; }
             <tr><td class="td-feat">WhatsApp Owner Access</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Phone Number Access</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Schedule Property Visits</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
-            <tr><td class="td-feat">Save & Compare Properties</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
+            <tr><td class="td-feat">Save &amp; Compare Properties</td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td><td><span class="c-no">—</span></td></tr>
             <tr><td class="td-feat">Service Listing</td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td></tr>
             <tr><td class="td-feat">Customer Leads</td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td></tr>
             <tr><td class="td-feat">Booking Management</td><td><span class="c-no">—</span></td><td><span class="c-no">—</span></td><td><span class="c-yes">✓</span></td></tr>
@@ -811,61 +843,188 @@ ul { list-style: none; }
   </div>
 </section>
 
-<!-- PAYMENT SECTION -->
+<!-- ═══════════════════════════════════════════════════
+     PAYMENT SECTION — REDESIGNED
+═══════════════════════════════════════════════════ -->
 <section class="sec pay-sec" id="paySection">
   <div class="wrap">
     <div class="sec-head reveal">
       <div class="eyebrow ey-green">🔐 Secure Checkout</div>
-      <h2>Secure <span class="text-blue">UPI Checkout</span></h2>
-      <p>Fast, safe and seamless payments via India's most trusted UPI apps.</p>
+      <h2>Pay &amp; Activate <span class="text-blue">Your Plan</span></h2>
+      <p>Secure UPI payment · Instant activation · RBI compliant · Zero hidden fees</p>
     </div>
-    <div style="text-align:center;margin-bottom:10px" class="reveal">
-      <p style="font-size:14px;color:var(--t2);font-weight:500;margin-bottom:14px">Select a Plan to Pay For:</p>
-      <div class="plan-pills">
-        <button class="ppill gold" id="pp-owner"    onclick="selectPlan('owner','₹249','Owner Plan')">⭐ Owner — ₹249/mo</button>
-        <button class="ppill"      id="pp-tenant"   onclick="selectPlan('tenant','₹149','Tenant Plan')">🏠 Tenant — ₹149/mo</button>
-        <button class="ppill"      id="pp-plumber"  onclick="selectPlan('plumber','₹249','Plumber Plan')">🔧 Plumber — ₹249/mo</button>
-        <button class="ppill"      id="pp-electric" onclick="selectPlan('electrician','₹249','Electrician Plan')">⚡ Electrician — ₹249/mo</button>
-        <button class="ppill"      id="pp-painter"  onclick="selectPlan('painter','₹249','Painter Plan')">🎨 Painter — ₹249/mo</button>
-        <button class="ppill"      id="pp-carpenter"onclick="selectPlan('carpenter','₹249','Carpenter Plan')">🪚 Carpenter — ₹249/mo</button>
-        <button class="ppill"      id="pp-movers"   onclick="selectPlan('movers','₹249','Movers Plan')">🚚 Movers — ₹249/mo</button>
-        <button class="ppill"      id="pp-cleaner"  onclick="selectPlan('cleaner','₹249','Cleaner Plan')">🧹 Cleaner — ₹249/mo</button>
-      </div>
-    </div>
-    <div class="pay-amount reveal">
-      <div class="amt-big" id="payAmtDisplay">₹249</div>
-      <div class="amt-sub">Due after 3-month free trial</div>
-      <div><span class="amt-tag">🎁 Your plan is FREE for the first 90 days</span></div>
-    </div>
-    <div class="upi-grid reveal">
-      <div class="upi-card" id="upi-gpay"    onclick="launchUPI('gpay')"><div class="upi-live"></div><div class="upi-logo">🟢</div><div class="upi-name">Google Pay</div><div class="upi-secure">🔒 Secure</div></div>
-      <div class="upi-card" id="upi-phonepe" onclick="launchUPI('phonepe')"><div class="upi-live"></div><div class="upi-logo">🟣</div><div class="upi-name">PhonePe</div><div class="upi-secure">🔒 Secure</div></div>
-      <div class="upi-card" id="upi-paytm"   onclick="launchUPI('paytm')"><div class="upi-live"></div><div class="upi-logo">🔵</div><div class="upi-name">Paytm</div><div class="upi-secure">🔒 Secure</div></div>
-      <div class="upi-card" id="upi-bhim"    onclick="launchUPI('bhim')"><div class="upi-live"></div><div class="upi-logo">🇮🇳</div><div class="upi-name">BHIM UPI</div><div class="upi-secure">🔒 Secure</div></div>
-      <div class="upi-card" id="upi-amazon"  onclick="launchUPI('amazon')"><div class="upi-live"></div><div class="upi-logo">🛒</div><div class="upi-name">Amazon Pay</div><div class="upi-secure">🔒 Secure</div></div>
-    </div>
-    <div style="max-width:540px;margin:0 auto" class="reveal">
-      <div class="upi-id-box">
-        <div class="upi-id-label">Pay to UPI ID</div>
-        <div class="upi-id-val" id="upiIdShow">smartrent@upi</div>
-        <button class="upi-copy-btn" onclick="copyUPIId()">Copy UPI ID</button>
-      </div>
-      <div class="utr-row">
-        <div class="utr-field">
-          <label class="utr-label">UTR / Transaction ID</label>
-          <input id="utrInput" type="text" placeholder="Enter 12-digit UTR or Transaction ID" class="utr-input" oninput="this.value=this.value.toUpperCase()">
+
+    <div class="pay-layout reveal">
+
+      <!-- LEFT: Plan selector + order summary -->
+      <div>
+        <div class="pay-left-card">
+          <div class="pay-left-title">Select Your Plan</div>
+          <div class="pay-left-sub">Choose the plan you want to pay for after your free trial ends.</div>
+          <div class="plan-pills">
+            <button class="ppill gold" id="pp-owner"     onclick="selectPlan('owner','₹249','Owner Plan')">⭐ Owner ₹249/mo</button>
+            <button class="ppill"      id="pp-tenant"    onclick="selectPlan('tenant','₹149','Tenant Plan')">🏠 Tenant ₹149/mo</button>
+            <button class="ppill"      id="pp-plumber"   onclick="selectPlan('plumber','₹249','Plumber Plan')">🔧 Plumber ₹249/mo</button>
+            <button class="ppill"      id="pp-electric"  onclick="selectPlan('electrician','₹249','Electrician Plan')">⚡ Electrician ₹249/mo</button>
+            <button class="ppill"      id="pp-painter"   onclick="selectPlan('painter','₹249','Painter Plan')">🎨 Painter ₹249/mo</button>
+            <button class="ppill"      id="pp-carpenter" onclick="selectPlan('carpenter','₹249','Carpenter Plan')">🪚 Carpenter ₹249/mo</button>
+            <button class="ppill"      id="pp-movers"    onclick="selectPlan('movers','₹249','Movers Plan')">🚚 Movers ₹249/mo</button>
+            <button class="ppill"      id="pp-cleaner"   onclick="selectPlan('cleaner','₹249','Cleaner Plan')">🧹 Cleaner ₹249/mo</button>
+          </div>
+
+          <!-- Amount display -->
+          <div class="pay-amount-box">
+            <div class="pay-plan-name" id="payPlanLabel">Owner Plan</div>
+            <div class="pay-price-big" id="payAmtDisplay">₹249</div>
+            <div class="pay-price-sub">per month — billed after 90-day trial</div>
+            <div><span class="pay-free-tag">🎁 FREE for first 90 days</span></div>
+          </div>
+
+          <!-- Order summary -->
+          <div class="order-summary">
+            <div class="os-row"><span class="os-key">Plan</span><span class="os-val" id="osPlan">Owner Plan</span></div>
+            <div class="os-row"><span class="os-key">Free Trial</span><span class="os-val green">90 Days Included</span></div>
+            <div class="os-row"><span class="os-key">Due Today</span><span class="os-val green">₹0</span></div>
+            <div class="os-row"><span class="os-key">After Trial</span><span class="os-val" id="osAfter">₹249 / month</span></div>
+          </div>
+
+          <p style="font-size:12px;color:var(--t3);text-align:center">Payment now = Subscribe for after-trial billing. Use <strong>Start Free Trial</strong> above for the free 90-day plan.</p>
         </div>
-        <button class="btn btn-blue" style="padding:12px 20px;white-space:nowrap" onclick="confirmAndActivate()">Confirm & Activate</button>
       </div>
-    </div>
-    <div class="sec-badges reveal">
-      <div class="sec-badge"><span class="si">🔒</span>256-Bit SSL</div>
-      <div class="sec-badge"><span class="si">🔒</span>Secure UPI</div>
-      <div class="sec-badge"><span class="si">🔒</span>Protected Data</div>
-      <div class="sec-badge"><span class="si">🔒</span>AI Fraud Prevention</div>
-      <div class="sec-badge"><span class="si">🔒</span>Instant Activation</div>
-      <div class="sec-badge"><span class="si">🔒</span>RBI Compliant</div>
-    </div>
+
+      <!-- RIGHT: UPI payment card -->
+      <div>
+        <div class="pay-card">
+
+          <!-- Header -->
+          <div class="pay-card-header">
+            <div class="pch-icon">🔐</div>
+            <div class="pch-text">
+              <div class="pch-title">Secure UPI Payment</div>
+              <div class="pch-sub">256-bit encrypted · RBI compliant</div>
+            </div>
+            <div class="pch-ssl">🔒 SSL</div>
+          </div>
+
+          <div class="pay-card-body">
+
+            <!-- Merchant info -->
+            <div class="upi-merchant-row">
+              <div class="merchant-logo">🏠</div>
+              <div class="merchant-info">
+                <div class="merchant-name">SmartRent Technologies</div>
+                <div class="merchant-upi">smartrent@upi</div>
+                <div class="merchant-verified">✓ Verified Merchant</div>
+              </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="qr-section">
+              <div class="qr-label"><span class="upi-live-dot"></span>Scan to Pay</div>
+              <div class="qr-frame">
+                <!--
+                  ════════════════════════════════════════════
+                  REPLACE the img src below with your actual
+                  UPI QR code image. Generate one at:
+                  https://upiqr.in  or  https://upilink.in
+                  then host it and paste the URL here.
+
+                  Example UPI QR generation URL (Google Charts):
+                  The src below uses Google Charts API to generate
+                  a QR for the UPI string — replace UPI ID as needed.
+                  ════════════════════════════════════════════
+                -->
+                <img id="qrImg"
+                     src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi%3A%2F%2Fpay%3Fpa%3Dsmartrent%40upi%26pn%3DSmartRent%26cu%3DINR"
+                     alt="UPI QR Code — SmartRent"
+                     onerror="this.parentElement.innerHTML='<div style=\'width:160px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:12px;text-align:center;padding:10px\'>QR unavailable<br>Use UPI ID below</div>'">
+              </div>
+              <div class="qr-sub">Open any UPI app → Scan QR → Enter amount → Pay</div>
+            </div>
+
+            <!-- UPI ID copy -->
+            <div class="upi-copy-row">
+              <span class="upi-id-val" id="upiIdShow">smartrent@upi</span>
+              <button class="upi-copy-btn" onclick="copyUPIId()">📋 Copy</button>
+            </div>
+
+            <!-- UPI app buttons -->
+            <div class="upi-apps-label">Or open directly in your UPI app:</div>
+            <div class="upi-apps-grid">
+
+              <!-- Google Pay -->
+              <a class="upi-app-btn" id="upi-gpay" href="#" onclick="launchUPI('gpay');return false;">
+                <div class="upi-logo-gpay">
+                  <!-- Google Pay wordmark colors: G=blue, o=red, o=yellow, g=blue, l=green, e=red -->
+                  <svg width="30" height="22" viewBox="0 0 120 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="2" y="36" font-family="Arial,sans-serif" font-size="36" font-weight="700">
+                      <tspan fill="#4285F4">G</tspan><tspan fill="#34A853">P</tspan><tspan fill="#EA4335">a</tspan><tspan fill="#FBBC05">y</tspan>
+                    </text>
+                  </svg>
+                </div>
+                <span class="upi-app-name">Google Pay</span>
+              </a>
+
+              <!-- PhonePe -->
+              <a class="upi-app-btn" id="upi-phonepe" href="#" onclick="launchUPI('phonepe');return false;">
+                <div class="upi-logo-phonepe">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="12" fill="#5F259F"/>
+                    <text x="5" y="17" font-family="Arial" font-size="13" font-weight="800" fill="white">Pe</text>
+                  </svg>
+                </div>
+                <span class="upi-app-name">PhonePe</span>
+              </a>
+
+              <!-- Paytm -->
+              <a class="upi-app-btn" id="upi-paytm" href="#" onclick="launchUPI('paytm');return false;">
+                <div class="upi-logo-paytm">
+                  <svg width="30" height="14" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="0" y="22" font-family="Arial" font-size="22" font-weight="900" fill="#00BAF2">Pay</text><text x="44" y="22" font-family="Arial" font-size="22" font-weight="900" fill="white">tm</text>
+                  </svg>
+                </div>
+                <span class="upi-app-name">Paytm</span>
+              </a>
+
+              <!-- BHIM -->
+              <a class="upi-app-btn" id="upi-bhim" href="#" onclick="launchUPI('bhim');return false;">
+                <div class="upi-logo-bhim">
+                  <svg width="36" height="20" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <text x="4" y="30" font-family="Arial" font-size="28" font-weight="900" fill="white">BHIM</text>
+                  </svg>
+                </div>
+                <span class="upi-app-name">BHIM UPI</span>
+              </a>
+
+            </div>
+
+            <!-- UTR confirmation -->
+            <div class="utr-section">
+              <label>After Payment — Enter Transaction ID</label>
+              <div class="utr-hint">Enter the 12-digit UTR or transaction reference from your UPI app after completing payment.</div>
+              <div class="utr-input-row">
+                <input type="text" id="utrInput" class="utr-input" placeholder="e.g. 406812345678" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+                <button class="btn btn-green" style="padding:12px 18px;font-size:14px;white-space:nowrap" onclick="confirmAndActivate()">Activate →</button>
+              </div>
+            </div>
+
+          </div><!-- /pay-card-body -->
+
+          <!-- Footer trust badges -->
+          <div class="pay-card-footer">
+            <div class="trust-badges-mini">
+              <div class="tb"><span class="ti">🔒</span> 256-bit SSL</div>
+              <div class="tb"><span class="ti">🏦</span> RBI Regulated</div>
+              <div class="tb"><span class="ti">⚡</span> Instant Activation</div>
+              <div class="tb"><span class="rbi-badge">RBI</span> Compliant</div>
+              <div class="tb"><span class="ti">🛡️</span> Fraud Protected</div>
+            </div>
+          </div>
+
+        </div><!-- /pay-card -->
+      </div>
+
+    </div><!-- /pay-layout -->
   </div>
 </section>
 
@@ -880,17 +1039,17 @@ ul { list-style: none; }
     <div class="testi-grid">
       <div class="testi-card reveal">
         <div class="stars">★★★★★</div>
-        <div class="testi-text">"Got 18 genuine tenant inquiries in the first week after upgrading to the Owner Plan. No spam, no fake leads. Worth every rupee!"</div>
+        <div class="testi-text">"Got 18 genuine tenant inquiries in the first week. No spam, no fake leads. Worth every rupee!"</div>
         <div class="testi-author"><div class="testi-av">👨‍💼</div><div><div class="testi-name">Vikram Mehta</div><div class="testi-meta">Property Owner · Mumbai</div><div class="testi-plan">⭐ Owner Plan Subscriber</div></div></div>
       </div>
       <div class="testi-card reveal d1">
         <div class="stars">★★★★★</div>
-        <div class="testi-text">"The Tenant Plan is a game-changer. I could call the owner directly, schedule a visit the same day, and moved in within a week. No broker fees!"</div>
+        <div class="testi-text">"Called the owner directly, scheduled a visit the same day, moved in within a week. No broker fees!"</div>
         <div class="testi-author"><div class="testi-av">👩</div><div><div class="testi-name">Priya Iyer</div><div class="testi-meta">Tenant · Bangalore</div><div class="testi-plan">🏠 Tenant Plan Subscriber</div></div></div>
       </div>
       <div class="testi-card reveal d2">
         <div class="stars">★★★★★</div>
-        <div class="testi-text">"My plumbing business bookings tripled after getting the Diamond Badge. Customers trust verified professionals. The analytics helped me grow."</div>
+        <div class="testi-text">"My plumbing bookings tripled after getting the Diamond Badge. The analytics helped me grow."</div>
         <div class="testi-author"><div class="testi-av">🔧</div><div><div class="testi-name">Ramesh Kumar</div><div class="testi-meta">Plumber · Pune</div><div class="testi-plan">💎 Service Provider Subscriber</div></div></div>
       </div>
     </div>
@@ -922,53 +1081,58 @@ ul { list-style: none; }
       <div class="modal-trial-label">Trial Period</div>
       <div class="modal-trial-dates" id="trialDates">—</div>
     </div>
-    <div class="modal-btns" id="modalBtns">
-      <!-- Filled by showSuccess() based on plan type -->
-    </div>
+    <div class="modal-btns" id="modalBtns"></div>
   </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
      JAVASCRIPT
      ─────────────────────────────────────────────────────────────
-     TWO localStorage keys are maintained:
+     ACCOUNT-DEPENDENT TRIALS
+     ─────────────────────────────────────────────────────────────
+     • Free trial eligibility is stored in Firestore: users/{uid}.trialUsed
+     • When a new account signs in, trialUsed is false → trial available
+     • On trial activation, trialUsed is set to true in Firestore
+     • localStorage is used as a fast cache but Firestore is source of truth
+     • If user changes account (logs in with different email), Firestore
+       check for the new UID returns trialUsed:false → trial is available again
 
-       "sr_subscription"        — tenant / service plans
-                                  (read by property-details.html)
-
-       "sr_owner_subscription"  — owner plan ONLY          ← NEW
-                                  (read by post-property.html)
-
-     When the Owner Plan free trial or paid subscription is
-     activated, BOTH are written:
-       • sr_subscription        gets the standard record
-       • sr_owner_subscription  gets a simplified owner record
-         { status, trialType, trialEndDate, activatedAt, uid }
-         post-property.html reads this key to gate submission.
+     localStorage keys (for cross-page gating):
+       "sr_subscription"       — tenant / service plans
+       "sr_owner_subscription" — owner plan only (read by post-property.html)
 ═══════════════════════════════════════════════════════════════ -->
 <script>
-/* ── CONFIG ── */
-const MERCHANT_UPI  = "smartrent@upi";
+/* ─────────────────────────────────────────────────────────
+   CONFIG
+───────────────────────────────────────────────────────── */
+/* ⚠ Replace with your actual UPI ID */
+const MERCHANT_UPI  = "piyushmishra1903@oksbi";
 const MERCHANT_NAME = "SmartRent";
-const LS_KEY        = "sr_subscription";         // tenant / service (existing)
-const LS_OWNER_KEY  = "sr_owner_subscription";   // owner plan gate  ← NEW
 
-/* ── STATE ── */
-let selectedPlan = { id: 'owner', amount: '₹249', name: 'Owner Plan' };
+const LS_KEY       = "sr_subscription";
+const LS_OWNER_KEY = "sr_owner_subscription";
 
-/* ── NAVBAR ── */
+/* ─────────────────────────────────────────────────────────
+   STATE
+───────────────────────────────────────────────────────── */
+let selectedPlan = { id:'owner', amount:'₹249', name:'Owner Plan' };
+
+/* ─────────────────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────────────────── */
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('stuck', scrollY > 40);
 });
 
-/* ── COUNTDOWN ── */
-(function () {
+/* ─────────────────────────────────────────────────────────
+   COUNTDOWN
+───────────────────────────────────────────────────────── */
+(function() {
   const key = 'sr_promo_expiry_lt';
   let exp = sessionStorage.getItem(key);
-  if (!exp) { exp = Date.now() + 7 * 86400000; sessionStorage.setItem(key, exp); }
+  if (!exp) { exp = Date.now() + 7*86400000; sessionStorage.setItem(key, exp); }
   function tick() {
-    const d = +exp - Date.now();
-    if (d <= 0) return;
+    const d = +exp - Date.now(); if (d <= 0) return;
     const pad = n => String(n).padStart(2,'0');
     document.getElementById('cd-d').textContent = pad(Math.floor(d/86400000));
     document.getElementById('cd-h').textContent = pad(Math.floor(d%86400000/3600000));
@@ -978,7 +1142,9 @@ window.addEventListener('scroll', () => {
   tick(); setInterval(tick, 1000);
 })();
 
-/* ── ANIMATED COUNTERS ── */
+/* ─────────────────────────────────────────────────────────
+   ANIMATED COUNTERS
+───────────────────────────────────────────────────────── */
 const cObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
@@ -986,34 +1152,32 @@ const cObs = new IntersectionObserver(entries => {
       const tgt = parseFloat(el.dataset.target);
       const suf = el.dataset.suf || '';
       const dec = parseInt(el.dataset.dec || 0);
-      let cur = 0; const step = tgt / 70;
+      let cur = 0; const step = tgt/70;
       const t = setInterval(() => {
         cur += step;
         if (cur >= tgt) { cur = tgt; clearInterval(t); }
-        el.textContent = dec ? cur.toFixed(dec) + suf : Math.floor(cur).toLocaleString('en-IN') + suf;
+        el.textContent = dec ? cur.toFixed(dec)+suf : Math.floor(cur).toLocaleString('en-IN')+suf;
       }, 20);
     });
     cObs.unobserve(e.target);
   });
-}, { threshold: 0.5 });
+}, { threshold: .5 });
 document.querySelectorAll('.stats-bar').forEach(s => cObs.observe(s));
 
-/* ── SCROLL REVEAL ── */
+/* ─────────────────────────────────────────────────────────
+   SCROLL REVEAL
+───────────────────────────────────────────────────────── */
 const rObs = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 50);
-  });
-}, { threshold: 0.08 });
+  entries.forEach((e,i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i*50); });
+}, { threshold: .08 });
 document.querySelectorAll('.reveal').forEach(el => rObs.observe(el));
 
-/* ═══════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
    SUBSCRIPTION HELPERS
-═══════════════════════════════════════════════════════════ */
-
+───────────────────────────────────────────────────────── */
 function getStoredSubscription() {
   try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
 }
-
 function isSubscriptionActive(sub) {
   if (!sub) return false;
   if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
@@ -1021,154 +1185,201 @@ function isSubscriptionActive(sub) {
   return true;
 }
 
-/* ── NEW: helpers for the owner-specific key ── */
-function getStoredOwnerSubscription() {
-  try { const r = localStorage.getItem(LS_OWNER_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
-}
-
-function isOwnerSubscriptionActive(sub) {
-  if (!sub) return false;
-  if (sub.status !== 'trial_active' && sub.status !== 'active') return false;
-  if (sub.trialEndDate && Date.now() > new Date(sub.trialEndDate).getTime()) return false;
+/* ─────────────────────────────────────────────────────────
+   CHECK TRIAL ELIGIBILITY
+   ─────────────────────────────────────────────────────
+   Returns true if this account has NOT yet used a trial.
+   Checks Firestore first (account-level), then localStorage.
+   If no user logged in, returns false (must sign in first).
+───────────────────────────────────────────────────────── */
+function isTrialEligible() {
+  /* Must be signed in */
+  if (!window.__currentUser) return false;
+  /* Firestore says trial already used for this account */
+  if (window.__accountTrialUsed === true) return false;
   return true;
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* Check if this account already has an active subscription */
+function accountHasActivePlan() {
+  const planId = window.__accountActivePlan;
+  const endDate = window.__accountTrialEnd;
+  if (!planId || !endDate) return false;
+  return new Date(endDate) > new Date();
+}
+
+/* ─────────────────────────────────────────────────────────
    REFRESH TRIAL BUTTONS
-   Shows the correct button state on every card based on what
-   is stored in localStorage.
-═══════════════════════════════════════════════════════════ */
+   Shows the correct state on each plan card:
+   - Not signed in → "Sign in to start free trial"
+   - Signed in, trial already used → show which plan is active / subscribe link
+   - Signed in, trial available → "Start Free Trial"
+───────────────────────────────────────────────────────── */
 function refreshTrialButtons() {
-  const sub   = getStoredSubscription();
-  const active = isSubscriptionActive(sub);
+  const sub    = getStoredSubscription();
+  const lsActive = isSubscriptionActive(sub);
 
   const allPlans = [
-    { id: 'owner',       btnId: 'owner-btns',       color: 'gold', amount: '₹249', name: 'Owner Plan' },
-    { id: 'tenant',      btnId: 'tenant-btns',      color: 'blue', amount: '₹149', name: 'Tenant Plan' },
-    { id: 'plumber',     btnId: 'plumber-btns',     color: 'teal', amount: '₹249', name: 'Plumber Plan' },
-    { id: 'electrician', btnId: 'electrician-btns', color: 'teal', amount: '₹249', name: 'Electrician Plan' },
-    { id: 'carpenter',   btnId: 'carpenter-btns',   color: 'teal', amount: '₹249', name: 'Carpenter Plan' },
-    { id: 'painter',     btnId: 'painter-btns',     color: 'teal', amount: '₹249', name: 'Painter Plan' },
-    { id: 'movers',      btnId: 'movers-btns',      color: 'teal', amount: '₹249', name: 'Movers Plan' },
-    { id: 'cleaner',     btnId: 'cleaner-btns',     color: 'teal', amount: '₹249', name: 'Home Cleaner Plan' },
+    { id:'owner',       btnId:'owner-btns',       color:'gold', amount:'₹249', name:'Owner Plan' },
+    { id:'tenant',      btnId:'tenant-btns',      color:'blue', amount:'₹149', name:'Tenant Plan' },
+    { id:'plumber',     btnId:'plumber-btns',     color:'teal', amount:'₹249', name:'Plumber Plan' },
+    { id:'electrician', btnId:'electrician-btns', color:'teal', amount:'₹249', name:'Electrician Plan' },
+    { id:'carpenter',   btnId:'carpenter-btns',   color:'teal', amount:'₹249', name:'Carpenter Plan' },
+    { id:'painter',     btnId:'painter-btns',     color:'teal', amount:'₹249', name:'Painter Plan' },
+    { id:'movers',      btnId:'movers-btns',      color:'teal', amount:'₹249', name:'Movers Plan' },
+    { id:'cleaner',     btnId:'cleaner-btns',     color:'teal', amount:'₹249', name:'Home Cleaner Plan' },
   ];
 
   allPlans.forEach(plan => {
     const container = document.getElementById(plan.btnId);
     if (!container) return;
+    const primaryClass = plan.color==='gold' ? 'btn-gold' : plan.color==='blue' ? 'btn-blue' : 'btn-teal';
 
-    if (active && sub.planId === plan.id) {
+    /* Case 1: Not signed in */
+    if (!window.__currentUser) {
+      container.innerHTML = `
+        <div style="padding:12px 14px;border-radius:var(--r);background:var(--blue-pale);border:1.5px solid var(--blue-soft);font-size:13px;color:var(--blue);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px">
+          <span>🔐</span><span>Sign in to start your free trial</span>
+        </div>
+        <a class="btn btn-blue btn-lg" href="login.html" style="text-decoration:none">Sign In to Start Trial <span class="arr">→</span></a>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe Now</button>`;
+      return;
+    }
+
+    /* Case 2: Account already used trial on this plan (from Firestore) */
+    if (window.__accountTrialUsed && window.__accountActivePlan === plan.id) {
+      const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+      const endStr = window.__accountTrialEnd ? fmt(window.__accountTrialEnd) : '—';
+      container.innerHTML = `
+        <div class="active-sub-banner">
+          <span style="font-size:18px">✅</span>
+          <div>
+            <div style="font-weight:700;font-size:13px">Trial Active Until ${endStr}</div>
+            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:.8">Full access unlocked${plan.id==='owner'?' · Property posting enabled':''}</div>
+          </div>
+        </div>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe to Continue After Trial</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+      return;
+    }
+
+    /* Case 3: Account used trial on a DIFFERENT plan */
+    if (window.__accountTrialUsed && window.__accountActivePlan !== plan.id) {
+      container.innerHTML = `
+        <div class="trial-used-badge">
+          <span style="font-size:16px">ℹ️</span>
+          <span>Free trial used on <strong>${window.__accountActivePlan || 'another plan'}</strong> for this account</span>
+        </div>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+      return;
+    }
+
+    /* Case 4: localStorage shows an active trial (before Firestore loads) */
+    if (lsActive && sub.planId === plan.id) {
       const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
       container.innerHTML = `
         <div class="active-sub-banner">
           <span style="font-size:18px">✅</span>
           <div>
             <div style="font-weight:700;font-size:13px">Trial Active Until ${fmt(sub.trialEndDate)}</div>
-            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:0.8">Full access unlocked${plan.id === 'owner' ? ' · Property posting enabled' : ''}</div>
+            <div style="font-size:12px;font-weight:400;color:var(--green);opacity:.8">Full access unlocked</div>
           </div>
         </div>
-        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe to Continue After Trial</button>
+        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe to Continue After Trial</button>
         <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
-    } else if (active && sub.planId !== plan.id) {
-      container.innerHTML = `
-        <div class="trial-used-badge">
-          <span class="trial-used-icon">ℹ️</span>
-          <span>Free trial used on <strong>${sub.planName}</strong></span>
-        </div>
-        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
-    } else {
-      const primaryClass = plan.color === 'gold' ? 'btn-gold' : plan.color === 'blue' ? 'btn-blue' : 'btn-teal';
-      container.innerHTML = `
-        <button class="btn ${primaryClass} btn-lg" onclick="activateFreeTrial('${plan.id}','${plan.amount}','${plan.name}'); addRipple(this)">Start Free Trial <span class="arr">→</span></button>
-        <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}'); scrollToPay()">Subscribe Now</button>
-        <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
+      return;
     }
+
+    /* Case 5: Trial available for this account — show the CTA */
+    container.innerHTML = `
+      <button class="btn ${primaryClass} btn-lg" onclick="activateFreeTrial('${plan.id}','${plan.amount}','${plan.name}');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
+      <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe Now</button>
+      <button class="btn btn-ghost btn-sm" onclick="toast('Plan details coming soon…','info')">Learn More</button>`;
   });
 }
 
-/* ═══════════════════════════════════════════════════════════
+/* ─────────────────────────────────────────────────────────
    ACTIVATE FREE TRIAL
-   ─────────────────────────────────────────────────────────
-   KEY CHANGE: when planId === 'owner', also writes to
-   localStorage key "sr_owner_subscription" so that
-   post-property.html can instantly gate property submission.
-═══════════════════════════════════════════════════════════ */
+   ─────────────────────────────────────────────────────
+   One free trial per Firebase account (UID).
+   Writes trialUsed:true to Firestore so it follows the
+   account on any device. localStorage is written too for
+   instant cross-page access (post-property, post-service).
+───────────────────────────────────────────────────────── */
 async function activateFreeTrial(planId, amount, planName) {
-  const existing = getStoredSubscription();
-  if (isSubscriptionActive(existing)) {
-    toast(`You already have an active trial for ${existing.planName}. Subscribe to access more plans.`, 'info');
+  /* Must be signed in */
+  if (!window.__currentUser) {
+    toast('Please sign in first to activate your free trial.', 'info');
+    setTimeout(() => { window.location.href = 'login.html'; }, 1400);
+    return;
+  }
+
+  /* Check if this account already used its trial */
+  if (window.__accountTrialUsed === true) {
+    toast(`Your free trial was already used for this account (${window.__accountActivePlan || 'a plan'}). Subscribe to continue.`, 'info');
     scrollToPay();
     return;
   }
 
   const now   = new Date();
-  const trial = new Date(now);
-  trial.setDate(trial.getDate() + 90); // 90-day free trial
-
-  const uid = window.__currentUser?.uid || ('guest-' + Math.random().toString(36).slice(2, 9));
+  const trial = new Date(now); trial.setDate(trial.getDate() + 90);
+  const uid   = window.__currentUser.uid;
 
   const sub = {
-    planId,
-    planName,
-    planAmount:      amount,
-    status:          'trial_active',
-    trialType:       'free',
-    trialStartDate:  now.toISOString(),
-    trialEndDate:    trial.toISOString(),
-    activatedAt:     Date.now(),
+    planId, planName, planAmount: amount,
+    status:         'trial_active',
+    trialType:      'free',
+    trialStartDate: now.toISOString(),
+    trialEndDate:   trial.toISOString(),
+    activatedAt:    Date.now(),
     uid,
   };
 
-  /* ── Write to sr_subscription (tenant gate / existing key) ── */
+  /* ── Write to localStorage (instant cross-page access) ── */
   localStorage.setItem(LS_KEY, JSON.stringify(sub));
-
-  /* ── NEW: if this is the Owner Plan, also write sr_owner_subscription ──
-     post-property.html reads THIS key to unlock property submission.
-     We write it for both free trial and paid subscription.             */
   if (planId === 'owner') {
-    const ownerSub = {
-      status:         'trial_active',
-      trialType:      'free',
-      planId:         'owner',
-      planName:       planName,
-      trialStartDate: now.toISOString(),
-      trialEndDate:   trial.toISOString(),
-      activatedAt:    Date.now(),
-      uid,
-    };
-    localStorage.setItem(LS_OWNER_KEY, JSON.stringify(ownerSub));
+    localStorage.setItem(LS_OWNER_KEY, JSON.stringify({
+      status:'trial_active', trialType:'free', planId:'owner',
+      planName, trialStartDate: now.toISOString(), trialEndDate: trial.toISOString(),
+      activatedAt: Date.now(), uid,
+    }));
   }
 
-  /* ── Sync to Firebase if user is logged in ── */
+  /* ── Write to Firestore (account-level, device-independent) ── */
   const fb = window.__fb;
-  if (fb && fb.auth.currentUser) {
+  if (fb) {
     try {
-      await fb.setDoc(fb.doc(fb.db, 'subscriptions', uid), {
-        ...sub,
-        updatedAt: fb.serverTimestamp(),
-      });
-      const userUpdate = {
-        subscriptionStatus: 'active',
-        subscriptionPlan:   planId === 'tenant' ? 'tenant_basic' : planId,
+      /* Mark trial as used for this account */
+      await fb.setDoc(fb.doc(fb.db, 'users', uid), {
+        trialUsed:      true,          /* ← account-level flag, checked on login */
         planId,
         planName,
-        trialEndDate:       trial.toISOString(),
-        updatedAt:          fb.serverTimestamp(),
-      };
-      /* ── NEW: also set ownerPlan flag so post-property.html Firebase check passes ── */
-      if (planId === 'owner') {
-        userUpdate.ownerPlan        = true;
-        userUpdate.canPostProperty  = true;
-        userUpdate.ownerSubscription = {
-          plan:      'owner',
-          status:    'active',
-          active:    true,
-          expiresAt: trial.toISOString(),
-        };
-      }
-      await fb.setDoc(fb.doc(fb.db, 'users', uid), userUpdate, { merge: true });
-    } catch(e) { console.warn('Firebase sync (non-critical):', e); }
+        trialEndDate:   trial.toISOString(),
+        subscriptionStatus: 'active',
+        subscriptionPlan:   planId === 'tenant' ? 'tenant_basic' : planId,
+        updatedAt:      fb.serverTimestamp(),
+        ...(planId === 'owner' ? {
+          ownerPlan:       true,
+          canPostProperty: true,
+          ownerSubscription: { plan:'owner', status:'active', active:true, expiresAt: trial.toISOString() },
+        } : {}),
+      }, { merge: true });
+
+      /* Also write a subscriptions document */
+      await fb.setDoc(fb.doc(fb.db, 'subscriptions', uid), {
+        ...sub, updatedAt: fb.serverTimestamp(),
+      });
+
+      /* Update local state immediately */
+      window.__accountTrialUsed  = true;
+      window.__accountActivePlan = planId;
+      window.__accountTrialEnd   = trial.toISOString();
+
+    } catch(e) {
+      console.warn('Firestore write failed (non-critical):', e);
+      /* Trial still works locally via localStorage */
+    }
   }
 
   refreshTrialButtons();
@@ -1176,121 +1387,131 @@ async function activateFreeTrial(planId, amount, planName) {
 }
 
 /* ─────────────────────────────────────────────────────────
-   PLAN SELECTION (UPI payment section)
+   PLAN SELECTION (payment section)
 ───────────────────────────────────────────────────────── */
 function selectPlan(id, amount, name) {
   selectedPlan = { id, amount, name };
+
+  /* Update amount display */
   document.getElementById('payAmtDisplay').textContent = amount;
-  document.querySelectorAll('.ppill').forEach(p => { p.className = 'ppill'; });
-  const map   = { owner:'gold', tenant:'blue', plumber:'teal', electrician:'teal', painter:'teal', carpenter:'teal', movers:'teal', cleaner:'teal' };
-  const idMap = { plumber:'plumber', electrician:'electric', painter:'painter', carpenter:'carpenter', movers:'movers', cleaner:'cleaner', owner:'owner', tenant:'tenant' };
-  const pp = document.getElementById('pp-' + (idMap[id] || id));
-  if (pp) pp.className = 'ppill ' + (map[id] || 'teal');
+  document.getElementById('payPlanLabel').textContent  = name;
+  document.getElementById('osPlan').textContent  = name;
+  document.getElementById('osAfter').textContent = amount + ' / month';
+
+  /* Update QR to reflect selected amount */
+  const amt = amount.replace('₹','');
+  const note = encodeURIComponent(`SmartRent ${name}`);
+  const pa   = encodeURIComponent(MERCHANT_UPI);
+  document.getElementById('qrImg').src =
+    `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi%3A%2F%2Fpay%3Fpa%3D${pa}%26pn%3DSmartRent%26am%3D${amt}%26cu%3DINR%26tn%3D${note}`;
+
+  /* Highlight selected pill */
+  document.querySelectorAll('.ppill').forEach(p => p.className = 'ppill');
+  const colorMap = { owner:'gold', tenant:'blue', plumber:'teal', electrician:'teal', painter:'teal', carpenter:'teal', movers:'teal', cleaner:'teal' };
+  const idMap    = { plumber:'plumber', electrician:'electric', painter:'painter', carpenter:'carpenter', movers:'movers', cleaner:'cleaner', owner:'owner', tenant:'tenant' };
+  const pp = document.getElementById('pp-' + (idMap[id]||id));
+  if (pp) pp.className = 'ppill ' + (colorMap[id]||'teal');
+
   toast(`${name} selected — ₹0 for 3 months, then ${amount}/month`, 'info');
 }
 
 function scrollToPay() {
-  document.getElementById('paySection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('paySection').scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
-/* ── UPI ── */
+/* ─────────────────────────────────────────────────────────
+   UPI LAUNCH
+───────────────────────────────────────────────────────── */
 function upiLink(app) {
   const amt  = selectedPlan.amount.replace('₹','');
   const note = encodeURIComponent(`SmartRent ${selectedPlan.name}`);
   const pa   = encodeURIComponent(MERCHANT_UPI);
   const pn   = encodeURIComponent(MERCHANT_NAME);
-  const links = {
+  const base = `upi://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`;
+  const map  = {
     gpay:    `tez://upi/pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
     phonepe: `phonepe://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
     paytm:   `paytmmp://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
-    bhim:    `upi://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
-    amazon:  `upi://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
+    bhim:    base,
   };
-  return links[app] || links.bhim;
+  return map[app] || base;
 }
 
 function launchUPI(app) {
-  document.querySelectorAll('.upi-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('upi-' + app).classList.add('selected');
+  document.querySelectorAll('.upi-app-btn').forEach(b => b.classList.remove('selected'));
+  const el = document.getElementById('upi-' + app);
+  if (el) el.classList.add('selected');
   window.location.href = upiLink(app);
-  toast(`Opening ${app} — complete payment then enter your UTR below`, 'info');
+  toast(`Opening ${app === 'gpay' ? 'Google Pay' : app === 'phonepe' ? 'PhonePe' : app === 'paytm' ? 'Paytm' : 'BHIM UPI'}…`, 'info');
 }
 
 function copyUPIId() {
-  navigator.clipboard.writeText(MERCHANT_UPI).then(() => toast('UPI ID copied!', 'success'));
+  navigator.clipboard.writeText(MERCHANT_UPI)
+    .then(() => toast('✅ UPI ID copied to clipboard!', 'success'))
+    .catch(() => toast('Copy: ' + MERCHANT_UPI, 'info'));
 }
 
-/* ═══════════════════════════════════════════════════════════
-   CONFIRM & ACTIVATE (UPI paid subscription)
-   ─────────────────────────────────────────────────────────
-   KEY CHANGE: also writes sr_owner_subscription when the
-   Owner Plan is paid, same as the free trial path above.
-═══════════════════════════════════════════════════════════ */
+/* ─────────────────────────────────────────────────────────
+   CONFIRM & ACTIVATE (paid subscription after UPI)
+───────────────────────────────────────────────────────── */
 async function confirmAndActivate() {
+  if (!window.__currentUser) {
+    toast('Please sign in to activate your plan.', 'info'); return;
+  }
   const utr = document.getElementById('utrInput').value.trim();
   if (utr.length < 6) { toast('Please enter a valid UTR / Transaction ID', 'err'); return; }
 
   const now   = new Date();
   const trial = new Date(now); trial.setDate(trial.getDate() + 90);
-  const uid   = window.__currentUser?.uid || 'demo-' + Date.now();
+  const uid   = window.__currentUser.uid;
 
   const sub = {
-    planId:              selectedPlan.id,
-    planName:            selectedPlan.name,
-    planAmount:          selectedPlan.amount,
-    status:              'active',
-    trialType:           'paid',
-    trialStartDate:      now.toISOString(),
-    trialEndDate:        trial.toISOString(),
-    activatedAt:         Date.now(),
-    paymentMethod:       'UPI',
-    utr,
-    uid,
-    badge: selectedPlan.id === 'owner' ? 'gold_star' : 'diamond',
-    permissions: getPerms(selectedPlan.id),
+    planId:         selectedPlan.id,
+    planName:       selectedPlan.name,
+    planAmount:     selectedPlan.amount,
+    status:         'active',
+    trialType:      'paid',
+    trialStartDate: now.toISOString(),
+    trialEndDate:   trial.toISOString(),
+    activatedAt:    Date.now(),
+    paymentMethod:  'UPI', utr, uid,
+    badge:          selectedPlan.id === 'owner' ? 'gold_star' : 'diamond',
+    permissions:    getPerms(selectedPlan.id),
   };
 
   localStorage.setItem(LS_KEY, JSON.stringify(sub));
-
-  /* ── NEW: unlock property posting for paid Owner Plan ── */
   if (selectedPlan.id === 'owner') {
-    const ownerSub = {
-      status:         'active',
-      trialType:      'paid',
-      planId:         'owner',
-      planName:       selectedPlan.name,
-      trialStartDate: now.toISOString(),
-      trialEndDate:   trial.toISOString(),
-      activatedAt:    Date.now(),
-      utr,
-      uid,
-    };
-    localStorage.setItem(LS_OWNER_KEY, JSON.stringify(ownerSub));
+    localStorage.setItem(LS_OWNER_KEY, JSON.stringify({
+      status:'active', trialType:'paid', planId:'owner',
+      planName: selectedPlan.name, trialStartDate: now.toISOString(),
+      trialEndDate: trial.toISOString(), activatedAt: Date.now(), utr, uid,
+    }));
   }
 
   const fb = window.__fb;
-  if (fb && fb.auth.currentUser) {
+  if (fb) {
     try {
       await fb.setDoc(fb.doc(fb.db,'subscriptions',uid), { ...sub, updatedAt: fb.serverTimestamp() });
-      await fb.addDoc(fb.collection(fb.db,'payments'), { uid, planId: selectedPlan.id, amount: selectedPlan.amount, utr, paidAt: fb.serverTimestamp(), status: 'confirmed' });
+      await fb.addDoc(fb.collection(fb.db,'payments'), {
+        uid, planId: selectedPlan.id, amount: selectedPlan.amount,
+        utr, paidAt: fb.serverTimestamp(), status:'confirmed',
+      });
       const userUpdate = {
         subscriptionStatus: 'active',
         subscriptionPlan:   selectedPlan.id === 'tenant' ? 'tenant_basic' : selectedPlan.id,
-        badge:   sub.badge,
-        planId:  selectedPlan.id,
-        updatedAt: fb.serverTimestamp()
+        badge: sub.badge, planId: selectedPlan.id,
+        trialUsed: true,
+        trialEndDate: trial.toISOString(),
+        updatedAt: fb.serverTimestamp(),
+        ...(selectedPlan.id === 'owner' ? {
+          ownerPlan:true, canPostProperty:true,
+          ownerSubscription:{ plan:'owner', status:'active', active:true, expiresAt: trial.toISOString() },
+        } : {}),
       };
-      if (selectedPlan.id === 'owner') {
-        userUpdate.ownerPlan       = true;
-        userUpdate.canPostProperty = true;
-        userUpdate.ownerSubscription = {
-          plan:      'owner',
-          status:    'active',
-          active:    true,
-          expiresAt: trial.toISOString(),
-        };
-      }
-      await fb.setDoc(fb.doc(fb.db,'users',uid), userUpdate, { merge: true });
+      await fb.setDoc(fb.doc(fb.db,'users',uid), userUpdate, { merge:true });
+      window.__accountTrialUsed  = true;
+      window.__accountActivePlan = selectedPlan.id;
+      window.__accountTrialEnd   = trial.toISOString();
     } catch(e) { console.warn('Firestore (demo mode):', e); }
   }
 
@@ -1300,37 +1521,38 @@ async function confirmAndActivate() {
 
 function getPerms(id) {
   const p = {
-    owner:       ['list_properties','analytics','featured_listing','owner_badge','post_property'],
-    tenant:      ['unlock_phone','unlock_whatsapp','schedule_visit','save_properties','compare'],
-    plumber:     ['service_listing','customer_leads','booking_mgmt','pro_badge'],
-    electrician: ['service_listing','customer_leads','booking_mgmt','pro_badge'],
-    painter:     ['service_listing','customer_leads','booking_mgmt','pro_badge'],
-    carpenter:   ['service_listing','customer_leads','booking_mgmt','pro_badge'],
-    movers:      ['service_listing','customer_leads','booking_mgmt','pro_badge'],
-    cleaner:     ['service_listing','customer_leads','booking_mgmt','pro_badge'],
+    owner:['list_properties','analytics','featured_listing','owner_badge','post_property'],
+    tenant:['unlock_phone','unlock_whatsapp','schedule_visit','save_properties','compare'],
   };
-  return p[id] || [];
+  return p[id] || ['service_listing','customer_leads','booking_mgmt','pro_badge'];
 }
 
-/* ── SUCCESS MODAL ── */
+/* ─────────────────────────────────────────────────────────
+   SUCCESS MODAL
+───────────────────────────────────────────────────────── */
 function showSuccess(sub, trialEnd) {
-  const isTrial  = sub.trialType === 'free';
-  const isOwner  = sub.planId === 'owner';
-  document.getElementById('modalTitle').textContent = isTrial ? '🎉 Free Trial Activated!' : '✅ Subscription Activated!';
+  const isTrial = sub.trialType === 'free';
+  const isOwner = sub.planId === 'owner';
+  const isSvc   = ['plumber','electrician','painter','carpenter','movers','cleaner'].includes(sub.planId);
+
+  document.getElementById('modalTitle').textContent    = isTrial ? '🎉 Free Trial Activated!' : '✅ Subscription Activated!';
   document.getElementById('modalPlanName').textContent = sub.planName;
   const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('trialDates').textContent = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)} (FREE)`;
+  document.getElementById('trialDates').textContent    = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)} (FREE)`;
 
-  /* ── Show relevant CTA buttons in modal ── */
   const btnsEl = document.getElementById('modalBtns');
   if (isOwner) {
     btnsEl.innerHTML = `
       <button class="btn btn-gold btn-lg" onclick="window.location.href='post-property.html'">🏘️ Post a Property Now <span class="arr">→</span></button>
-      <button class="btn btn-ghost" onclick="window.location.href='dashboard.html'">Go To Dashboard</button>`;
+      <button class="btn btn-ghost" onclick="closeModal()">Stay on Plans Page</button>`;
+  } else if (isSvc) {
+    btnsEl.innerHTML = `
+      <button class="btn btn-teal btn-lg" onclick="window.location.href='post-service.html'">🔧 Post Your Service Now <span class="arr">→</span></button>
+      <button class="btn btn-ghost" onclick="closeModal()">Stay on Plans Page</button>`;
   } else {
     btnsEl.innerHTML = `
-      <button class="btn btn-blue btn-lg" onclick="window.location.href='dashboard.html'">Go To Dashboard <span class="arr">→</span></button>
-      <button class="btn btn-ghost" onclick="window.location.href='index.html'">Explore Premium Features</button>`;
+      <button class="btn btn-blue btn-lg" onclick="window.location.href='properties.html'">🏠 Browse Properties <span class="arr">→</span></button>
+      <button class="btn btn-ghost" onclick="closeModal()">Stay on Plans Page</button>`;
   }
 
   document.getElementById('successModal').classList.add('open');
@@ -1338,70 +1560,78 @@ function showSuccess(sub, trialEnd) {
 }
 function closeModal() { document.getElementById('successModal').classList.remove('open'); }
 
-/* ── CONFETTI ── */
+/* ─────────────────────────────────────────────────────────
+   CONFETTI
+───────────────────────────────────────────────────────── */
 function confetti() {
   const canvas = document.getElementById('confettiCanvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = canvas.parentElement.offsetWidth || 480;
+  canvas.width  = canvas.parentElement.offsetWidth  || 480;
   canvas.height = canvas.parentElement.offsetHeight || 520;
   const W = canvas.width, H = canvas.height;
   const cols = ['#2563eb','#06b6d4','#d97706','#059669','#dc2626','#7c3aed','#f59e0b'];
-  const pts = Array.from({length:110},() => ({
-    x: W/2+(Math.random()-.5)*60, y: H*0.4,
-    vx: (Math.random()-.5)*14, vy: -(Math.random()*15+5),
-    r: Math.random()*5+3,
-    col: cols[Math.floor(Math.random()*cols.length)],
-    rot: Math.random()*360, rv: (Math.random()-.5)*8,
-    life: 1,
+  const pts  = Array.from({length:110},() => ({
+    x: W/2+(Math.random()-.5)*60, y: H*.4,
+    vx:(Math.random()-.5)*14, vy:-(Math.random()*15+5),
+    r:Math.random()*5+3, col:cols[Math.floor(Math.random()*cols.length)],
+    rot:Math.random()*360, rv:(Math.random()-.5)*8, life:1,
   }));
   (function draw() {
     ctx.clearRect(0,0,W,H);
     pts.forEach(p => {
-      ctx.save(); ctx.globalAlpha = Math.max(0, p.life);
-      ctx.translate(p.x, p.y); ctx.rotate(p.rot*Math.PI/180);
+      ctx.save(); ctx.globalAlpha = Math.max(0,p.life);
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
       ctx.fillStyle = p.col; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r);
       ctx.restore();
-      p.x+=p.vx; p.y+=p.vy; p.vy+=0.38; p.vx*=0.99; p.rot+=p.rv; p.life-=0.011;
+      p.x+=p.vx; p.y+=p.vy; p.vy+=.38; p.vx*=.99; p.rot+=p.rv; p.life-=.011;
     });
     if (pts.some(p=>p.life>0)) requestAnimationFrame(draw);
     else ctx.clearRect(0,0,W,H);
   })();
 }
 
-/* ── RIPPLE ── */
+/* ─────────────────────────────────────────────────────────
+   RIPPLE
+───────────────────────────────────────────────────────── */
 function addRipple(btn) {
   const r = document.createElement('span');
   r.className = 'btn-ripple';
-  const s = Math.max(btn.offsetWidth, btn.offsetHeight)*2;
+  const s = Math.max(btn.offsetWidth,btn.offsetHeight)*2;
   r.style.cssText = `width:${s}px;height:${s}px;top:50%;left:50%;margin:-${s/2}px`;
-  btn.appendChild(r); r.addEventListener('animationend', ()=>r.remove());
+  btn.appendChild(r); r.addEventListener('animationend',()=>r.remove());
 }
 document.querySelectorAll('.btn').forEach(b => {
   b.addEventListener('click', function(e) {
-    const r = document.createElement('span');
-    r.className = 'btn-ripple';
+    const r = document.createElement('span'); r.className = 'btn-ripple';
     const rect = this.getBoundingClientRect();
     const s = Math.max(rect.width,rect.height)*2;
-    r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
+    r.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
     this.appendChild(r); r.addEventListener('animationend',()=>r.remove());
   });
 });
 
-/* ── TOAST ── */
+/* ─────────────────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────────────────── */
 function toast(msg, type='info') {
   const tc = document.getElementById('toasts');
   const t  = document.createElement('div');
   const icons = { info:'ℹ️', success:'✅', err:'⚠️' };
   t.className = `toast ${type}`;
-  t.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  t.innerHTML = `<span>${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
   tc.appendChild(t);
-  setTimeout(()=>{
+  setTimeout(() => {
     t.style.transition='all .3s'; t.style.opacity='0'; t.style.transform='translateY(8px)';
     setTimeout(()=>t.remove(),300);
-  }, 3500);
+  }, 3800);
 }
 
-/* ── INIT ── */
+/* ─────────────────────────────────────────────────────────
+   INIT
+───────────────────────────────────────────────────────── */
+/* refreshTrialButtons() is called from the Firebase module
+   after auth state resolves. This call handles the initial
+   render while Firebase is loading (shows sign-in prompt). */
 refreshTrialButtons();
 </script>
 </body>

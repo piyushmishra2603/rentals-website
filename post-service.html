@@ -57,6 +57,10 @@
   --emerald-d: rgba(5,150,105,0.08);
   --emerald-b: rgba(5,150,105,0.22);
 
+  --wa:        #25d366;
+  --wa-d:      rgba(37,211,102,.08);
+  --wa-b:      rgba(37,211,102,.25);
+
   --t0: #1a1612;
   --t1: #3d3529;
   --t2: #6b5e4e;
@@ -124,7 +128,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .auth-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ── PAGE ── */
-.page { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 40px 24px 96px; }
+.page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 96px; }
 
 /* ── PAGE HEADER ── */
 .page-header { margin-bottom: 36px; animation: fadeUp .5s both; }
@@ -211,6 +215,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   color: var(--t2); display: flex; align-items: center; gap: 6px;
 }
 .opt { font-size: 9.5px; padding: 1px 7px; border-radius: 20px; background: var(--bg4); color: var(--t3); letter-spacing: 0; text-transform: none; font-weight: 400; }
+.req { font-size: 9.5px; padding: 1px 7px; border-radius: 20px; background: var(--rose-d); color: var(--rose); border:1px solid var(--rose-b); letter-spacing: 0; text-transform: none; font-weight: 600; }
 .req-dot { color: var(--rose); }
 
 .field input, .field select, .field textarea {
@@ -228,9 +233,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .field textarea { resize: vertical; min-height: 90px; line-height: 1.65; }
 .field input.err, .field select.err { border-color: rgba(225,29,72,.4) !important; background: rgba(225,29,72,.02) !important; }
 .field-hint { font-size: 11.5px; color: var(--t3); margin-top: 4px; }
-.field-err  { font-size: 11.5px; color: var(--rose); margin-top: 4px; display: none; }
+.field-err  { font-size: 11.5px; color: var(--rose); margin-top: 4px; display: none; font-weight: 600; }
 .field.error .field-err { display: block; }
 .field.error > label { color: var(--rose); }
+.field.error input, .field.error select { border-color: rgba(225,29,72,.45); background: rgba(225,29,72,.03); }
 
 .select-wrap { position: relative; }
 .select-wrap::after { content: '▾'; position: absolute; right: 13px; top: 50%; transform: translateY(-50%); color: var(--t3); pointer-events: none; font-size: 12px; }
@@ -242,20 +248,23 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .input-suf-wrap input { padding-right: 50px; }
 .input-suf { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--t3); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
 
+.wa-toggle { display:flex; align-items:center; gap:8px; padding:9px 13px; border-radius:var(--r2); background:var(--wa-d); border:1.5px solid var(--wa-b); font-size:12.5px; color:var(--t2); font-weight:500; margin-bottom:10px; cursor:pointer; user-select:none; }
+.wa-toggle input { width:15px; height:15px; accent-color: var(--wa); cursor:pointer; }
+
 /* ── DIVIDER ── */
 .divider { display: flex; align-items: center; gap: 12px; margin: 22px 0 18px; }
 .divider span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--t3); font-weight: 600; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
 .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line2); }
 
-/* ── DAY CHIPS ── */
-.day-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
-.day-chip {
+/* ── DAY / TAG CHIPS ── */
+.day-wrap, .tag-wrap { display: flex; flex-wrap: wrap; gap: 7px; }
+.day-chip, .tag-chip {
   padding: 6px 13px; border-radius: 100px; font-size: 12.5px; font-weight: 600;
   border: 1.5px solid var(--line2); cursor: pointer; user-select: none;
   transition: all .18s; color: var(--t2); background: var(--bg3);
 }
-.day-chip:hover { border-color: var(--gold-b); color: var(--t0); }
-.day-chip.on { background: var(--gold-d); border-color: var(--gold-b); color: var(--gold); }
+.day-chip:hover, .tag-chip:hover { border-color: var(--gold-b); color: var(--t0); }
+.day-chip.on, .tag-chip.on { background: var(--gold-d); border-color: var(--gold-b); color: var(--gold); }
 
 /* ── PHOTO ZONE ── */
 .pz {
@@ -340,6 +349,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .s-key { font-size:11px; color:var(--t3); font-family:'JetBrains Mono',monospace; letter-spacing:.04em; flex-shrink:0; min-width:110px; }
 .s-val { font-size:13.5px; font-weight:500; color:var(--t0); text-align:right; }
 .s-val.gold { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; color:var(--gold); }
+.s-val.req-missing { color: var(--rose); font-weight:700; }
 
 /* ── BUTTONS ── */
 .btn {
@@ -370,13 +380,17 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .suc-icon { font-size:72px; margin-bottom:20px; display:block; animation:pop .6s cubic-bezier(.34,1.56,.64,1) both; }
 @keyframes pop { from{opacity:0;transform:scale(.3);}to{opacity:1;transform:scale(1);} }
 .suc-title { font-family:'Cormorant Garamond',serif; font-weight:800; font-size:clamp(26px,4vw,38px); letter-spacing:-.02em; margin-bottom:10px; color:var(--t0); }
-.suc-sub { color:var(--t2); line-height:1.78; font-size:15px; max-width:420px; margin:0 auto 20px; }
-.suc-active-pill { display:inline-block; padding:8px 22px; background:var(--emerald-d); border:1px solid var(--emerald-b); border-radius:100px; font-size:12.5px; font-weight:600; color:var(--emerald); margin-bottom:28px; font-family:'JetBrains Mono',monospace; letter-spacing:.04em; }
+.suc-sub { color:var(--t2); line-height:1.78; font-size:15px; max-width:460px; margin:0 auto 20px; }
+.suc-active-pill { display:inline-block; padding:8px 22px; background:var(--emerald-d); border:1px solid var(--emerald-b); border-radius:100px; font-size:12.5px; font-weight:600; color:var(--emerald); margin-bottom:20px; font-family:'JetBrains Mono',monospace; letter-spacing:.04em; }
+.suc-contact-row { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:28px; }
+.suc-contact { display:flex; align-items:center; gap:8px; padding:9px 18px; border-radius:100px; font-size:13px; font-weight:600; border:1.5px solid var(--line2); background:#fff; box-shadow:var(--sh-xs); }
+.suc-contact.wa { border-color:var(--wa-b); color:#0f7a3f; background:var(--wa-d); }
+.suc-contact.ph { border-color:var(--teal-b); color:var(--teal); background:var(--teal-d); }
 .suc-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
 /* ── TOAST ── */
 .toast-wrap { position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px; }
-.toast { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--r2); background:#fff; border:1.5px solid var(--line2); box-shadow:var(--sh-xl); font-size:13.5px; font-weight:500; color:var(--t0); max-width:300px; animation:fadeUp .28s ease; }
+.toast { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--r2); background:#fff; border:1.5px solid var(--line2); box-shadow:var(--sh-xl); font-size:13.5px; font-weight:500; color:var(--t0); max-width:320px; animation:fadeUp .28s ease; }
 .toast.ok   { border-color:var(--emerald-b); }
 .toast.err  { border-color:var(--rose-b); }
 .toast.info { border-color:var(--teal-b); }
@@ -427,7 +441,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   <div class="page-header">
     <div class="ph-eye">New Service Listing</div>
     <h1 class="ph-title">List Your Service 🔧</h1>
-    <p class="ph-sub">3 quick steps — choose your service type, add your details, and go live in minutes.</p>
+    <p class="ph-sub">3 quick steps. Your <strong>name, phone number and price</strong> are required — everything else is optional. Once published, you'll appear instantly on the matching services page with your phone &amp; WhatsApp visible to customers.</p>
   </div>
 
   <!-- STEPPER -->
@@ -450,7 +464,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="card-header">
         <div class="card-tag">Step 1 of 3</div>
         <div class="card-title">What service do you offer?</div>
-        <div class="card-sub">Select your primary service. Each listing is active for 30 days and is covered by the SmartRent Verified Professional badge.</div>
+        <div class="card-sub">Select your primary service. Each listing is active for 30 days and appears live on the matching services page (Plumbers, Electricians, Painters, Carpenters, Movers, Cleaners).</div>
       </div>
 
       <div class="svc-grid" id="svcGrid"></div>
@@ -475,32 +489,61 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="card-header">
         <div class="card-tag">Step 2 of 3 · ~3 min</div>
         <div class="card-title">Your Professional Profile</div>
-        <div class="card-sub">All fields are optional — fill in what helps customers trust and find you.</div>
+        <div class="card-sub"><strong style="color:var(--rose)">Name, mobile number and price</strong> are required so customers can reach and book you. Everything else is optional but improves your ranking.</div>
       </div>
 
       <!-- Personal -->
-      <div class="divider"><span>Your Information</span></div>
-      <div class="grid-2" style="margin-bottom:14px">
-        <div class="field">
-          <label>Full Name <span class="opt">optional</span></label>
+      <div class="divider"><span>Contact Details</span></div>
+      <div class="grid-2" style="margin-bottom:6px">
+        <div class="field" id="fld-name">
+          <label>Full Name / Business Name <span class="req">required</span></label>
           <div class="input-icon-wrap">
             <span class="ico">👤</span>
             <input type="text" id="f-name" placeholder="Rahul Sharma">
           </div>
+          <div class="field-err">Please enter your name.</div>
         </div>
-        <div class="field">
-          <label>Mobile Number <span class="opt">optional</span></label>
+        <div class="field" id="fld-phone">
+          <label>Mobile Number <span class="req">required</span></label>
           <div class="input-icon-wrap">
             <span class="ico">📞</span>
-            <input type="tel" id="f-phone" placeholder="+91 98765 43210">
+            <input type="tel" id="f-phone" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+          </div>
+          <div class="field-err">Enter a valid 10-digit mobile number.</div>
+        </div>
+      </div>
+
+      <label class="wa-toggle" for="f-wa-same">
+        <input type="checkbox" id="f-wa-same" checked onchange="toggleWaField()">
+        <span>💬 My WhatsApp number is the same as my mobile number above</span>
+      </label>
+      <div class="field" id="fld-wa" style="display:none;margin-bottom:14px">
+        <label>WhatsApp Number <span class="opt">optional</span></label>
+        <div class="input-icon-wrap">
+          <span class="ico">💬</span>
+          <input type="tel" id="f-whatsapp" placeholder="+91 98765 43210" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        </div>
+        <div class="field-hint">Customers can message you directly from your listing.</div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:14px;margin-top:14px">
+        <div class="field">
+          <label>City <span class="opt">optional</span></label>
+          <div class="input-icon-wrap">
+            <span class="ico">📍</span>
+            <input type="text" id="f-city" placeholder="Hyderabad">
           </div>
         </div>
         <div class="field">
-          <label>City / Area <span class="opt">optional</span></label>
+          <label>Locality / Area <span class="opt">optional</span></label>
           <div class="input-icon-wrap">
-            <span class="ico">📍</span>
-            <input type="text" id="f-city" placeholder="Pune, Maharashtra">
+            <span class="ico">🧭</span>
+            <input type="text" id="f-area" placeholder="e.g. Kondapur">
           </div>
+        </div>
+        <div class="field span-2">
+          <label>Also Covers These Areas <span class="opt">optional, comma separated</span></label>
+          <input type="text" id="f-coverage" placeholder="e.g. Gachibowli, Madhapur, Kukatpally">
         </div>
         <div class="field">
           <label>Years of Experience <span class="opt">optional</span></label>
@@ -509,10 +552,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
             <span class="input-suf">yrs</span>
           </div>
         </div>
-        <div class="field span-2">
-          <label>Service Area / Coverage Zone <span class="opt">optional</span></label>
-          <input type="text" id="f-area" placeholder="e.g. Kothrud, Pune — 10 km radius">
-          <div class="field-hint">Helps customers in your area find you faster</div>
+        <div class="field">
+          <label>Jobs Completed <span class="opt">optional</span></label>
+          <input type="number" id="f-jobs" min="0" placeholder="120">
         </div>
       </div>
 
@@ -523,15 +565,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
           <label>Listing Title <span class="opt">optional</span></label>
           <input type="text" id="f-title" placeholder="e.g. Expert Home Plumber">
         </div>
-        <div class="field">
-          <label>Your Rate <span class="opt">optional</span></label>
+        <div class="field" id="fld-price">
+          <label>Starting Price <span class="req">required</span></label>
           <div class="input-icon-wrap">
             <span class="ico">₹</span>
             <div class="input-suf-wrap">
-              <input type="number" id="f-rate" placeholder="350" style="padding-left:36px">
-              <span class="input-suf">/ hr</span>
+              <input type="number" id="f-rate" placeholder="350" style="padding-left:36px" min="1">
+              <span class="input-suf">onwards</span>
             </div>
           </div>
+          <div class="field-err">Please enter a starting price.</div>
+        </div>
+        <div class="field span-2">
+          <label>Specialisations <span class="opt">tap to select — shown as tags on your listing</span></label>
+          <div class="tag-wrap" id="tagWrap"></div>
         </div>
         <div class="field span-2">
           <label>About You / Description <span class="opt">optional</span></label>
@@ -539,13 +586,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         </div>
       </div>
 
+      <!-- Extra flags (shown conditionally per service) -->
+      <div id="extraFlagsWrap" class="grid-2" style="margin-bottom:14px"></div>
+
       <!-- Availability -->
       <div class="divider"><span>Availability</span></div>
       <div class="field" style="margin-bottom:14px">
         <label>Working Days <span class="opt">tap to toggle</span></label>
         <div class="day-wrap" id="dayWrap"></div>
       </div>
-      <div class="grid-2" style="margin-bottom:14px">
+      <div class="grid-3" style="margin-bottom:14px">
         <div class="field">
           <label>Available From</label>
           <input type="time" id="f-from" value="08:00">
@@ -553,6 +603,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
         <div class="field">
           <label>Available Until</label>
           <input type="time" id="f-to" value="20:00">
+        </div>
+        <div class="field">
+          <label>Current Status</label>
+          <div class="select-wrap">
+            <select id="f-status">
+              <option value="available">🟢 Available Now</option>
+              <option value="busy">🟡 Currently Busy</option>
+              <option value="offline">⚪ Offline</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -570,7 +630,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 
       <div class="btn-row">
         <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
-        <button class="btn btn-primary btn-lg" onclick="goStep(3)">Review &amp; Submit →</button>
+        <button class="btn btn-primary btn-lg" onclick="attemptGoStep3()">Review &amp; Submit →</button>
       </div>
     </div>
   </div>
@@ -585,7 +645,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
       <div class="card-header" style="margin-bottom:16px">
         <div class="card-tag">Step 3 of 3 · Review Your Listing</div>
         <div class="card-title">Everything look good?</div>
-        <div class="card-sub">Your listing will be live for 30 days once submitted.</div>
+        <div class="card-sub">Your listing will be live for 30 days once submitted, and will appear immediately on the corresponding services page.</div>
       </div>
       <div class="summary" id="summaryBox">
         <div style="text-align:center;padding:18px;color:var(--t3);font-size:13px">Fill in the previous steps to see your summary.</div>
@@ -608,10 +668,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   <div class="success-screen" id="successScreen" style="display:none">
     <span class="suc-icon">🎉</span>
     <div class="suc-title">You're Live!</div>
-    <div class="suc-sub">Your service listing is active. Customers in your area can now find and contact you directly.</div>
+    <div class="suc-sub">Your service listing is active and visible right now on the matching services page. Customers can call or WhatsApp you directly.</div>
     <div class="suc-active-pill" id="sucPill">Active: — → —</div>
+    <div class="suc-contact-row" id="sucContactRow"></div>
     <div class="suc-btns">
-      <a href="services.html" class="btn btn-primary btn-lg">View My Listing →</a>
+      <a href="#" class="btn btn-primary btn-lg" id="sucViewLink">View My Listing →</a>
       <a href="owner-dashboard.html" class="btn btn-ghost btn-lg">📊 Go to Dashboard</a>
       <button class="btn btn-ghost btn-lg" onclick="location.reload()">+ List Another Service</button>
     </div>
@@ -624,24 +685,37 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 ════════════════════════════════════════════ -->
 <script>
 /* ── CONFIG ── */
-/* localStorage keys — must match plans.html exactly */
 const LS_KEY       = "sr_subscription";         // any plan (planId field tells which)
 const LS_SVC_KEY   = "sr_service_subscription"; // optional: service-specific key
-
-/* ── SERVICE CATALOGUE — prices match plans.html (₹249/mo) ── */
-const SERVICES = [
-  { id:'plumber',     name:'Plumber',          icon:'🔧', planId:'plumber'     },
-  { id:'electrician', name:'Electrician',       icon:'⚡', planId:'electrician' },
-  { id:'painter',     name:'Painter',           icon:'🎨', planId:'painter'     },
-  { id:'movers',      name:'Movers & Packers',  icon:'🚚', planId:'movers'      },
-  { id:'carpenter',   name:'Carpenter',         icon:'🪚', planId:'carpenter'   },
-  { id:'cleaner',     name:'Home Cleaner',      icon:'🧹', planId:'cleaner'     },
-];
 const PRICE = 249; // ₹249/mo after trial — shown in UI
+
+/* ══════════════════════════════════════════════════════════
+   SERVICE CATALOGUE
+   `target` tells the app EXACTLY which Firestore collection
+   and field-shape to write to, matching each listing page's
+   own query so the listing shows up there immediately:
+     - plumber.html / electrician.html  → collection "services"      (category field)
+     - painter/carpenter/movers/cleaner → collection "service_providers" (category field)
+══════════════════════════════════════════════════════════ */
+const SERVICES = [
+  { id:'plumber',     name:'Plumber',          icon:'🔧', page:'plumber.html',     target:{ coll:'services',          category:'plumbing'   },
+    tags:['Leaking tap repair','Pipe fitting','Bathroom fitting','Drain cleaning','Geyser repair','Water tank','New pipe fitting','Toilet repair','Kitchen sink repair','Emergency plumbing'] },
+  { id:'electrician', name:'Electrician',       icon:'⚡', page:'electrician.html', target:{ coll:'services',          category:'electrical' },
+    tags:['Wiring / Rewiring','Fan installation','Light / LED fitting','Switchboard repair','MCB / fuse box','Short circuit repair','Earthing','Inverter / UPS','Power socket fitting','CCTV wiring','Home automation','Emergency fault'] },
+  { id:'painter',     name:'Painter',           icon:'🎨', page:'painter.html',     target:{ coll:'service_providers', category:'painting'   },
+    tags:['Interior Painting','Exterior Painting','Texture / Design','Waterproofing','Wood Polish','Putty Application','Full Home'] },
+  { id:'carpenter',   name:'Carpenter',         icon:'🪚', page:'carpenter.html',   target:{ coll:'service_providers', category:'carpenter'  },
+    tags:['Custom Furniture','Door / Window Repair','Wardrobe Installation','Kitchen Fittings','Wood Polish','False Ceiling','Sofa Repair'] },
+  { id:'movers',      name:'Movers & Packers',  icon:'🚚', page:'movers.html',      target:{ coll:'service_providers', category:'movers'     },
+    tags:['Home Shifting','Office Relocation','Vehicle Transport','Single Item Move'] },
+  { id:'cleaner',     name:'Home Cleaner',      icon:'🧹', page:'cleaner.html',     target:{ coll:'service_providers', category:'cleaner'    },
+    tags:['Deep Cleaning','Regular Housekeeping','Sofa / Carpet Cleaning','Bathroom Cleaning','Kitchen Cleaning','Move-in / Move-out Cleaning'] },
+];
 
 /* ── STATE ── */
 let selSvc       = null;
 let selDays      = new Set(['Mon','Tue','Wed','Thu','Fri']);
+let selTags      = new Set();
 let photoFiles   = [];
 let currentUser  = null;
 let subStatus    = null; // { hasAccess, planName, source }
@@ -657,14 +731,10 @@ function _isLocalSubValid(sub) {
   if (sub.trialEndDate && new Date(sub.trialEndDate) < new Date()) return false;
   return true;
 }
-
 function _getServicePlanIds() {
-  /* Any service planId qualifies for post-service */
-  return new Set(['plumber','electrician','painter','movers','carpenter','cleaner']);
+  return new Set(SERVICES.map(s => s.id));
 }
-
 async function checkServiceSubscription(uid) {
-  /* ── 1. localStorage: sr_subscription ── */
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (raw) {
@@ -675,8 +745,6 @@ async function checkServiceSubscription(uid) {
       }
     }
   } catch(e) {}
-
-  /* ── 2. localStorage: sr_service_subscription (older key) ── */
   try {
     const raw = localStorage.getItem(LS_SVC_KEY);
     if (raw) {
@@ -686,8 +754,6 @@ async function checkServiceSubscription(uid) {
       }
     }
   } catch(e) {}
-
-  /* ── 3. Firestore users/{uid} ── */
   try {
     const fb = window.__fb;
     if (!fb) return { hasAccess:false, planName:null, source:'no-firebase' };
@@ -695,7 +761,6 @@ async function checkServiceSubscription(uid) {
     if (!snap.exists()) return { hasAccess:false, planName:null, source:'firestore:no-doc' };
     const data = snap.data();
 
-    /* nested subscription object */
     const sub = data.subscription || data.serviceSubscription || null;
     if (sub) {
       const svcPlanIds = _getServicePlanIds();
@@ -706,17 +771,13 @@ async function checkServiceSubscription(uid) {
       if (planOk && active && notExp) return { hasAccess:true, planName: sub.plan || 'Service Plan', source:'firestore:sub' };
     }
 
-    /* top-level flags */
     if (data.serviceProvider===true || data.isProvider===true || data.canListService===true) {
       return { hasAccess:true, planName: data.planName || 'Service Plan', source:'firestore:flags' };
     }
-
-    /* role array */
     const roles = Array.isArray(data.roles) ? data.roles : [data.role||''];
     if (roles.some(r=>['provider','professional','service_pro'].includes(String(r).toLowerCase()))) {
       return { hasAccess:true, planName: data.planName || 'Service Plan', source:'firestore:roles' };
     }
-
     return { hasAccess:false, planName:null, source:'firestore:no-match' };
   } catch(err) {
     console.error('Sub check error:', err);
@@ -759,15 +820,15 @@ function renderSubmitArea(hasAccess, planName) {
               <div class="sg-title">Service Plan Required</div>
               <div class="sg-sub">Activate a free trial or subscribe to publish your listing and start getting leads.</div>
             </div>
-            <div class="sg-chip">SERVICE PLAN · ₹249/mo</div>
+            <div class="sg-chip">SERVICE PLAN · ₹${PRICE}/mo</div>
           </div>
         </div>
         <div class="sg-body">
           <div class="sg-perks">
-            <div class="sg-perk"><span class="sg-perk-ic">📋</span><div><div class="sg-perk-title">Your Listing Goes Live</div><div class="sg-perk-desc">Visible to homeowners searching your service type.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">📋</span><div><div class="sg-perk-title">Your Listing Goes Live</div><div class="sg-perk-desc">Visible instantly to homeowners searching your service type.</div></div></div>
             <div class="sg-perk"><span class="sg-perk-ic">💎</span><div><div class="sg-perk-title">Verified Professional Badge</div><div class="sg-perk-desc">Builds trust and increases booking rate.</div></div></div>
-            <div class="sg-perk"><span class="sg-perk-ic">📊</span><div><div class="sg-perk-title">Performance Analytics</div><div class="sg-perk-desc">Track views, leads, and booking conversions.</div></div></div>
-            <div class="sg-perk"><span class="sg-perk-ic">🎁</span><div><div class="sg-perk-title">3 Months FREE Trial</div><div class="sg-perk-desc">No upfront cost — ₹249/mo only after trial ends.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">📞</span><div><div class="sg-perk-title">Call &amp; WhatsApp Visible</div><div class="sg-perk-desc">Customers can reach you directly, no middlemen.</div></div></div>
+            <div class="sg-perk"><span class="sg-perk-ic">🎁</span><div><div class="sg-perk-title">3 Months FREE Trial</div><div class="sg-perk-desc">No upfront cost — ₹${PRICE}/mo only after trial ends.</div></div></div>
           </div>
           <div class="sg-cta">
             <div class="sg-cta-text">
@@ -811,8 +872,11 @@ SERVICES.forEach(s => {
     <div class="svc-price">₹${PRICE}/mo after trial</div>`;
   c.onclick = () => {
     selSvc = s;
+    selTags = new Set();
     document.querySelectorAll('.svc-card').forEach(x => x.classList.remove('sel'));
     c.classList.add('sel');
+    buildTagChips();
+    buildExtraFlags();
   };
   grid.appendChild(c);
 });
@@ -829,6 +893,57 @@ SERVICES.forEach(s => {
 });
 
 /* ══════════════════════════════════════
+   BUILD SPECIALISATION TAG CHIPS (per service)
+══════════════════════════════════════ */
+function buildTagChips() {
+  const wrap = document.getElementById('tagWrap');
+  wrap.innerHTML = '';
+  if (!selSvc) return;
+  selSvc.tags.forEach(tag => {
+    const t = document.createElement('div');
+    t.className = 'tag-chip';
+    t.textContent = tag;
+    t.onclick = () => { selTags.has(tag) ? selTags.delete(tag) : selTags.add(tag); t.classList.toggle('on'); };
+    wrap.appendChild(t);
+  });
+}
+
+/* ══════════════════════════════════════
+   EXTRA FLAGS — service-specific toggles
+   (emergency / licensed) shown only where relevant
+══════════════════════════════════════ */
+function buildExtraFlags() {
+  const wrap = document.getElementById('extraFlagsWrap');
+  wrap.innerHTML = '';
+  if (!selSvc) return;
+  const flags = [];
+  if (selSvc.id === 'plumber' || selSvc.id === 'electrician') {
+    flags.push({ id:'f-emergency', label:'🚨 I offer 24/7 Emergency Service' });
+  }
+  if (selSvc.id === 'electrician') {
+    flags.push({ id:'f-licensed', label:'🎓 I am Licensed / Certified' });
+  }
+  if (!flags.length) return;
+  flags.forEach(fl => {
+    const d = document.createElement('label');
+    d.className = 'wa-toggle';
+    d.style.background = 'var(--gold-d)';
+    d.style.borderColor = 'var(--gold-b)';
+    d.innerHTML = `<input type="checkbox" id="${fl.id}"><span>${fl.label}</span>`;
+    wrap.appendChild(d);
+  });
+}
+
+/* ══════════════════════════════════════
+   WHATSAPP TOGGLE
+══════════════════════════════════════ */
+function toggleWaField() {
+  const same = document.getElementById('f-wa-same').checked;
+  document.getElementById('fld-wa').style.display = same ? 'none' : 'flex';
+}
+window.toggleWaField = toggleWaField;
+
+/* ══════════════════════════════════════
    AUTH
 ══════════════════════════════════════ */
 window.addEventListener('load', async () => {
@@ -843,7 +958,6 @@ window.addEventListener('load', async () => {
       name.textContent = user.displayName || user.email || 'Signed In';
       const nameF = document.getElementById('f-name');
       if (nameF && !nameF.value && user.displayName) nameF.value = user.displayName;
-      /* Pre-fetch subscription so step 3 is instant */
       subStatus = await checkServiceSubscription(user.uid);
     } else {
       dot.className  = 'auth-dot off';
@@ -855,12 +969,49 @@ window.addEventListener('load', async () => {
 });
 
 /* ══════════════════════════════════════
+   FIELD VALIDATION — Name, Phone, Price required
+══════════════════════════════════════ */
+function clearFieldError(id) {
+  const f = document.getElementById(id);
+  if (f) f.classList.remove('error');
+}
+function setFieldError(id) {
+  const f = document.getElementById(id);
+  if (f) f.classList.add('error');
+}
+function validateStep2() {
+  let ok = true;
+  clearFieldError('fld-name'); clearFieldError('fld-phone'); clearFieldError('fld-price');
+
+  const name  = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const price = document.getElementById('f-rate').value.trim();
+
+  if (!name) { setFieldError('fld-name'); ok = false; }
+  if (!phone || phone.length !== 10) { setFieldError('fld-phone'); ok = false; }
+  if (!price || Number(price) <= 0) { setFieldError('fld-price'); ok = false; }
+
+  return ok;
+}
+function attemptGoStep3() {
+  if (!selSvc) { toast('Please choose a service type first.', 'err'); goStep(1); return; }
+  if (!validateStep2()) {
+    toast('Please fill Name, Phone Number and Price to continue.', 'err');
+    document.getElementById('fld-name').scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  goStep(3);
+}
+window.attemptGoStep3 = attemptGoStep3;
+
+/* ══════════════════════════════════════
    STEP NAVIGATION
 ══════════════════════════════════════ */
 let currentStep = 1;
 
 function goStep(n) {
   if (n === 2 && !selSvc) { toast('Please choose a service type first.', 'err'); return; }
+  if (n === 3 && !validateStep2()) { attemptGoStep3(); return; }
   if (n === 3) buildSummary();
 
   currentStep = n;
@@ -881,6 +1032,7 @@ function goStep(n) {
   if (n === 3) resolveSubmitArea();
   window.scrollTo({ top:0, behavior:'smooth' });
 }
+window.goStep = goStep;
 
 async function resolveSubmitArea() {
   if (subStatus && subStatus.source) {
@@ -897,6 +1049,13 @@ async function resolveSubmitArea() {
 /* ══════════════════════════════════════
    BUILD SUMMARY
 ══════════════════════════════════════ */
+function getWhatsapp() {
+  const same = document.getElementById('f-wa-same').checked;
+  const phone = document.getElementById('f-phone').value.trim();
+  const wa = document.getElementById('f-whatsapp').value.trim();
+  return same ? phone : (wa || phone);
+}
+
 function buildSummary() {
   if (!selSvc) return;
   const gv = id => (document.getElementById(id)?.value||'').trim();
@@ -904,20 +1063,21 @@ function buildSummary() {
   const now  = new Date();
   const exp  = new Date(now); exp.setDate(exp.getDate()+30);
   const fmt  = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  const name = gv('f-name'), phone = gv('f-phone'), price = gv('f-rate');
   const rows = [
     ['SERVICE', `${selSvc.icon} ${selSvc.name}`],
     ['LISTING ACTIVE', `${fmt(now)} → ${fmt(exp)}`],
-    ['NAME',    gv('f-name')   || '—'],
-    ['PHONE',   gv('f-phone')  || '—'],
-    ['CITY',    gv('f-city')   || '—'],
-    ['EXP',     gv('f-exp')    ? gv('f-exp')+' yrs' : '—'],
-    ['RATE',    gv('f-rate')   ? '₹'+gv('f-rate')+'/hr' : '—'],
-    ['AREA',    gv('f-area')   || '—'],
-    ['TITLE',   gv('f-title')  || selSvc.name],
-    ['DAYS',    days],
-    ['HOURS',   gv('f-from') + ' – ' + gv('f-to')],
-    ['PHOTOS',  photoFiles.length ? photoFiles.length+' selected' : 'None'],
-    ['PLAN',    `₹${PRICE}/mo after 3-month free trial`],
+    ['NAME *',    name  || '<span class="s-val req-missing">Missing</span>'],
+    ['PHONE *',   phone ? phone : '<span class="s-val req-missing">Missing</span>'],
+    ['WHATSAPP',  getWhatsapp() || '—'],
+    ['PRICE *',   price ? '₹'+price+' onwards' : '<span class="s-val req-missing">Missing</span>'],
+    ['CITY',      [gv('f-area'), gv('f-city')].filter(Boolean).join(', ') || '—'],
+    ['EXP',       gv('f-exp')  ? gv('f-exp')+' yrs' : '—'],
+    ['TAGS',      [...selTags].join(', ') || '—'],
+    ['DAYS',      days],
+    ['HOURS',     gv('f-from') + ' – ' + gv('f-to')],
+    ['PHOTOS',    photoFiles.length ? photoFiles.length+' selected' : 'None'],
+    ['PLAN',      `₹${PRICE}/mo after 3-month free trial`],
   ];
   document.getElementById('summaryBox').innerHTML = rows.map(([k,v]) =>
     `<div class="summary-row"><span class="s-key">${k}</span><span class="s-val">${v}</span></div>`
@@ -936,6 +1096,7 @@ function addPhotos(files) {
   });
   renderThumbs();
 }
+window.addPhotos = addPhotos;
 function renderThumbs() {
   const row = document.getElementById('pthumbRow');
   row.innerHTML = '';
@@ -947,15 +1108,19 @@ function renderThumbs() {
   });
 }
 function rmPhoto(i) { photoFiles.splice(i,1); renderThumbs(); }
+window.rmPhoto = rmPhoto;
 function dOver(e)   { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
 function dLeave(e)  { e.currentTarget.classList.remove('drag-over'); }
 function dDrop(e)   { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); addPhotos(e.dataTransfer.files); }
+window.dOver = dOver; window.dLeave = dLeave; window.dDrop = dDrop;
 
 /* ══════════════════════════════════════
-   SUBMIT
+   SUBMIT — writes to the collection/shape
+   each listing page already queries
 ══════════════════════════════════════ */
 window.submitListing = async () => {
-  /* Final subscription guard */
+  if (!validateStep2()) { toast('Please complete Name, Phone and Price first.', 'err'); goStep(2); return; }
+
   const uid = currentUser?.uid;
   if (!uid) { toast('Please sign in first.', 'err'); return; }
 
@@ -975,41 +1140,105 @@ window.submitListing = async () => {
     const now = new Date();
     const exp = new Date(now); exp.setDate(exp.getDate()+30);
 
-    const listing = {
-      uid,
-      serviceType:  selSvc.id,
-      serviceName:  selSvc.name,
-      serviceIcon:  selSvc.icon,
-      title:        gv('f-title') || selSvc.name,
-      ownerName:    gv('f-name'),
-      phone:        gv('f-phone'),
-      city:         gv('f-city'),
-      serviceArea:  gv('f-area'),
-      experience:   Number(gv('f-exp'))  || 0,
-      hourlyRate:   Number(gv('f-rate')) || 0,
-      description:  gv('f-desc'),
-      availability: { days:[...selDays], timeFrom:gv('f-from'), timeTo:gv('f-to') },
-      photos:       photoUrls,
-      planId:       selSvc.planId,
-      planAmount:   PRICE,
-      listingActiveFrom:  now.toISOString(),
-      listingActiveTo:    exp.toISOString(),
-      active:       true,
-      approved:     true,
-      status:       'active',
-      views:        0, leads: 0,
-      owner: { uid },
-      createdAt: now.toISOString(),
-    };
+    const name       = gv('f-name');
+    const phone      = gv('f-phone');
+    const whatsapp   = getWhatsapp();
+    const price      = Number(gv('f-rate')) || 0;
+    const city       = gv('f-city');
+    const area       = gv('f-area');
+    const coverage   = gv('f-coverage').split(',').map(s=>s.trim()).filter(Boolean);
+    const title      = gv('f-title') || `${selSvc.name} — ${name}`;
+    const tagsArr    = [...selTags];
+    const emergency  = document.getElementById('f-emergency')?.checked || false;
+    const licensed   = document.getElementById('f-licensed')?.checked || false;
+    const status2    = gv('f-status') || 'available';
+    const workHours  = `${gv('f-from')} – ${gv('f-to')}`;
 
     const fb = window.__fb;
-    if (fb) {
-      const propId = `${uid}_${Date.now()}`;
-      await fb.setDoc(fb.doc(fb.db,'service_listings',propId), { ...listing, createdAt: fb.serverTimestamp() });
+    let docRef;
+
+    if (selSvc.target.coll === 'services') {
+      /* ── Matches plumber.html / electrician.html query shape ── */
+      const payload = {
+        category:      selSvc.target.category,
+        status:        'active',
+        approved:      true,
+        businessName:  name,
+        ownerName:     name,
+        phone,
+        whatsapp,
+        city,
+        area,
+        state:         '',
+        servicesAreas: coverage,
+        serviceTypes:  tagsArr.length ? tagsArr : [selSvc.name],
+        yearsExperience: Number(gv('f-exp')) || 0,
+        jobsCompleted: Number(gv('f-jobs')) || 0,
+        priceFrom:     price,
+        startingPrice: price,
+        averageRating: 0,
+        reviewCount:   0,
+        isVerified:    true,
+        isLicensed:    licensed,
+        emergencyService: emergency,
+        availability:  status2,
+        responseTime:  'Within 1 hr',
+        workHours,
+        tagline:       title,
+        description:   gv('f-desc'),
+        photos:        photoUrls,
+        uid,
+        activatedAt:   now.toISOString(),
+        expiresAt:     exp.toISOString(),
+        createdAt:     fb ? fb.serverTimestamp() : now.toISOString(),
+      };
+      if (fb) {
+        docRef = await fb.addDoc(fb.collection(fb.db,'services'), payload);
+      }
+    } else {
+      /* ── Matches painter.html / carpenter.html / movers.html / cleaner.html query shape ── */
+      const payload = {
+        category:      selSvc.target.category,
+        active:        true,
+        verified:      true,
+        name,
+        phone,
+        whatsapp,
+        city,
+        locality:      area,
+        servicesAreas: coverage,
+        priceFrom:     price,
+        rating:        0,
+        reviewCount:   0,
+        experience:    gv('f-exp') ? gv('f-exp')+' yrs exp.' : '',
+        yearsExperience: Number(gv('f-exp')) || 0,
+        jobsCompleted: Number(gv('f-jobs')) || 0,
+        avatarEmoji:   selSvc.icon,
+        services:      tagsArr.length ? tagsArr : [selSvc.name],
+        description:   gv('f-desc'),
+        tagline:       title,
+        availability:  status2,
+        workHours,
+        photos:        photoUrls,
+        uid,
+        activatedAt:   now.toISOString(),
+        expiresAt:     exp.toISOString(),
+        createdAt:     fb ? fb.serverTimestamp() : now.toISOString(),
+      };
+      if (fb) {
+        docRef = await fb.addDoc(fb.collection(fb.db,'service_providers'), payload);
+      }
+    }
+
+    /* Also keep a lightweight reference under the owner's profile */
+    if (fb && docRef) {
+      const propId = docRef.id;
       await fb.setDoc(fb.doc(fb.db,'users',uid,'listings',propId), {
         listingId:   propId,
-        serviceType: selSvc.id,
-        title:       listing.title,
+        collection:  selSvc.target.coll,
+        category:    selSvc.target.category,
+        title,
+        phone, whatsapp,
         active:      true,
         activeTo:    exp.toISOString(),
         createdAt:   fb.serverTimestamp(),
@@ -1024,6 +1253,10 @@ window.submitListing = async () => {
     ss.style.display = 'block';
     const fmt = d => d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
     document.getElementById('sucPill').textContent = `Active: ${fmt(now)} → ${fmt(exp)}`;
+    document.getElementById('sucViewLink').href = selSvc.page;
+    document.getElementById('sucContactRow').innerHTML = `
+      <span class="suc-contact ph">📞 ${esc(phone)}</span>
+      <span class="suc-contact wa">💬 ${esc(whatsapp)}</span>`;
     toast('🎉 Listing published!', 'ok');
 
   } catch(err) {

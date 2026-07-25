@@ -9,27 +9,40 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
+<!-- Razorpay Checkout -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <!-- Firebase SDK -->
 <script type="module">
   import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc, getDoc, collection, addDoc, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { getFunctions, httpsCallable, connectFunctionsEmulator }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-functions.js";
 
   const cfg = {
-    apiKey:        "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
-    authDomain:    "smart-property-portal.firebaseapp.com",
-    projectId:     "smart-property-portal",
+    apiKey: "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+    authDomain: "smart-property-portal.firebaseapp.com",
+    projectId: "smart-property-portal",
     storageBucket: "smart-property-portal.firebasestorage.app",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId:         "YOUR_APP_ID"
+    messagingSenderId: "407241446660",
+    appId: "1:407241446660:web:1259fa8c93bce5fd8aec51"
   };
 
   const app  = initializeApp(cfg);
   const auth = getAuth(app);
   const db   = getFirestore(app);
+  /* Cloud Functions client — region must match the region the
+     functions are deployed to (see functions/index.js). */
+  const functions = getFunctions(app, "asia-south1");
+  // Uncomment the next line only when testing against the local emulator:
+  // connectFunctionsEmulator(functions, "localhost", 5001);
 
-  window.__fb = { auth, db, onAuthStateChanged, doc, setDoc, getDoc, collection, addDoc, serverTimestamp };
+  window.__fb = {
+    auth, db, onAuthStateChanged, doc, setDoc, getDoc, collection, addDoc, serverTimestamp,
+    functions, httpsCallable,
+  };
 
   onAuthStateChanged(auth, async user => {
     window.__currentUser = user || null;
@@ -273,6 +286,7 @@ ul { list-style: none; }
 .btn-ghost:hover { background: var(--surface-3); border-color: var(--line-2); color: var(--t1); transform: translateY(-1px); }
 .btn-sm { padding: 9px 16px; font-size: 13px; }
 .btn-lg { padding: 15px 28px; font-size: 15px; }
+.btn:disabled { opacity: .6; cursor: not-allowed; transform: none !important; }
 
 /* ── COMPARISON TABLE ── */
 .table-outer { border-radius: var(--r-lg); overflow: hidden; border: 1.5px solid var(--line); box-shadow: var(--sh-md); }
@@ -327,7 +341,7 @@ ul { list-style: none; }
 .os-val { font-weight: 600; color: var(--t1); }
 .os-val.green { color: var(--green); }
 
-/* Right: UPI payment card */
+/* Right: Razorpay payment card */
 .pay-card {
   background: var(--white);
   border: 1.5px solid var(--line);
@@ -361,53 +375,27 @@ ul { list-style: none; }
 .merchant-upi  { font-size: 12px; color: var(--t2); font-family: monospace; margin-top: 2px; }
 .merchant-verified { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; color: var(--green); background: var(--green-pale); border: 1px solid var(--green-soft); border-radius: 20px; padding: 2px 8px; margin-top: 3px; }
 
-/* QR code area */
-.qr-section { text-align: center; margin-bottom: 20px; }
-.qr-label { font-size: 11px; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; color: var(--t3); margin-bottom: 12px; }
-.qr-frame { display: inline-block; padding: 12px; background: #fff; border: 1.5px solid var(--line); border-radius: var(--r-md); box-shadow: var(--sh-sm); }
-.qr-frame img { display: block; width: 160px; height: 160px; border-radius: 4px; }
-.qr-sub { font-size: 11.5px; color: var(--t3); margin-top: 10px; }
+/* ── Razorpay pay panel ── */
+.rzp-methods-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.rzp-method-chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 20px; background: var(--surface-2); border: 1px solid var(--line); font-size: 11.5px; font-weight: 600; color: var(--t2); }
 
-/* UPI copy row */
-.upi-copy-row { display: flex; align-items: center; gap: 8px; background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r); padding: 11px 14px; margin-bottom: 20px; }
-.upi-id-val { font-family: monospace; font-size: 14px; font-weight: 700; color: var(--t1); flex: 1; }
-.upi-copy-btn { padding: 5px 12px; border-radius: 6px; background: var(--blue-pale); border: 1px solid var(--blue-soft); color: var(--blue); font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all .15s; white-space: nowrap; }
-.upi-copy-btn:hover { background: var(--blue-soft); }
+.rzp-pay-box { text-align: center; padding: 8px 0 20px; }
+.rzp-pay-btn { width: 100%; padding: 16px; font-size: 16px; }
+.rzp-pay-sub { font-size: 12px; color: var(--t3); margin-top: 10px; }
 
-/* UPI app buttons */
-.upi-apps-label { font-size: 12px; font-weight: 600; color: var(--t2); margin-bottom: 10px; letter-spacing: .3px; }
-.upi-apps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 20px; }
+/* Progress / status states inside the pay card */
+.pay-status { display: none; flex-direction: column; align-items: center; gap: 14px; padding: 28px 10px; text-align: center; }
+.pay-status.show { display: flex; }
+.pay-spinner { width: 46px; height: 46px; border-radius: 50%; border: 4px solid var(--blue-soft); border-top-color: var(--blue); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.pay-status-title { font-size: 15px; font-weight: 700; color: var(--t1); }
+.pay-status-sub { font-size: 13px; color: var(--t2); max-width: 280px; }
+.pay-status-icon { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; font-size: 26px; }
+.pay-status-icon.err { background: #fef2f2; border: 2px solid #fecaca; }
+.pay-status-icon.ok  { background: var(--green-pale); border: 2px solid #6ee7b7; }
+.pay-status-actions { display: flex; gap: 8px; margin-top: 4px; }
 
-.upi-app-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 12px 6px; border-radius: var(--r-md);
-  background: var(--white); border: 1.5px solid var(--line);
-  cursor: pointer; transition: all .2s cubic-bezier(.34,1.56,.64,1);
-  text-decoration: none; color: var(--t1); user-select: none;
-}
-.upi-app-btn:hover { transform: translateY(-3px); box-shadow: var(--sh-md); }
-.upi-app-btn.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
-
-/* UPI logos — branded colors */
-.upi-logo-gpay    { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #e8edf7; }
-.upi-logo-phonepe { width: 38px; height: 38px; border-radius: 10px; background: #5f259f; display: flex; align-items: center; justify-content: center; }
-.upi-logo-paytm   { width: 38px; height: 38px; border-radius: 10px; background: #002970; display: flex; align-items: center; justify-content: center; }
-.upi-logo-bhim    { width: 38px; height: 38px; border-radius: 10px; background: #00509d; display: flex; align-items: center; justify-content: center; }
-.upi-logo-amazon  { width: 38px; height: 38px; border-radius: 10px; background: #ff9900; display: flex; align-items: center; justify-content: center; }
-
-/* SVG logo inner styles */
-.upi-app-name { font-size: 10px; font-weight: 600; color: var(--t2); text-align: center; }
-
-.upi-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: livepulse 2s ease-in-out infinite; display: inline-block; margin-right: 4px; }
-@keyframes livepulse { 0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,.4)} 50%{box-shadow:0 0 0 5px rgba(5,150,105,0)} }
-
-/* UTR row */
 .utr-section label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: var(--t2); margin-bottom: 8px; }
-.utr-hint { font-size: 11.5px; color: var(--t3); margin-bottom: 10px; }
-.utr-input-row { display: flex; gap: 8px; }
-.utr-input { flex: 1; padding: 12px 14px; background: var(--surface-2); border: 1.5px solid var(--line); border-radius: var(--r); color: var(--t1); font-family: var(--font); font-size: 14px; outline: none; transition: border-color .2s, box-shadow .2s; }
-.utr-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
-.utr-input::placeholder { color: var(--t3); }
 
 .pay-card-footer { padding: 16px 24px; border-top: 1px solid var(--line); background: var(--surface-2); }
 .trust-badges-mini { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -415,6 +403,7 @@ ul { list-style: none; }
 .tb .ti { font-size: 12px; }
 /* RBI badge */
 .rbi-badge { background: linear-gradient(135deg,#1e40af,#1d4ed8); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .5px; }
+.rzp-badge { background: linear-gradient(135deg,#0a2540,#072654); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .3px; }
 
 /* ── TESTIMONIALS ── */
 .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
@@ -480,7 +469,6 @@ ul { list-style: none; }
   .modal-box  { padding: 36px 22px; }
   .stats-bar .stat-cell { min-width: 110px; padding: 18px 12px; }
   .pay-price-big { font-size: 40px; }
-  .upi-apps-grid { grid-template-columns: repeat(3,1fr); }
 }
 </style>
 </head>
@@ -844,14 +832,14 @@ ul { list-style: none; }
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     PAYMENT SECTION — REDESIGNED
+     PAYMENT SECTION — RAZORPAY
 ═══════════════════════════════════════════════════ -->
 <section class="sec pay-sec" id="paySection">
   <div class="wrap">
     <div class="sec-head reveal">
       <div class="eyebrow ey-green">🔐 Secure Checkout</div>
       <h2>Pay &amp; Activate <span class="text-blue">Your Plan</span></h2>
-      <p>Secure UPI payment · Instant activation · RBI compliant · Zero hidden fees</p>
+      <p>Secure Razorpay payment · Instant activation · RBI compliant · Zero hidden fees</p>
     </div>
 
     <div class="pay-layout reveal">
@@ -892,7 +880,7 @@ ul { list-style: none; }
         </div>
       </div>
 
-      <!-- RIGHT: UPI payment card -->
+      <!-- RIGHT: Razorpay payment card -->
       <div>
         <div class="pay-card">
 
@@ -900,8 +888,8 @@ ul { list-style: none; }
           <div class="pay-card-header">
             <div class="pch-icon">🔐</div>
             <div class="pch-text">
-              <div class="pch-title">Secure UPI Payment</div>
-              <div class="pch-sub">256-bit encrypted · RBI compliant</div>
+              <div class="pch-title">Secure Razorpay Checkout</div>
+              <div class="pch-sub">256-bit encrypted · PCI-DSS compliant</div>
             </div>
             <div class="pch-ssl">🔒 SSL</div>
           </div>
@@ -913,98 +901,57 @@ ul { list-style: none; }
               <div class="merchant-logo">🏠</div>
               <div class="merchant-info">
                 <div class="merchant-name">SmartRent Technologies</div>
-                <div class="merchant-upi">smartrent@upi</div>
+                <div class="merchant-upi">Payments powered by Razorpay</div>
                 <div class="merchant-verified">✓ Verified Merchant</div>
               </div>
             </div>
 
-            <!-- QR Code -->
-            <div class="qr-section">
-              <div class="qr-label"><span class="upi-live-dot"></span>Scan to Pay</div>
-              <div class="qr-frame">
-                <!--
-                  ════════════════════════════════════════════
-                  REPLACE the img src below with your actual
-                  UPI QR code image. Generate one at:
-                  https://upiqr.in  or  https://upilink.in
-                  then host it and paste the URL here.
-
-                  Example UPI QR generation URL (Google Charts):
-                  The src below uses Google Charts API to generate
-                  a QR for the UPI string — replace UPI ID as needed.
-                  ════════════════════════════════════════════
-                -->
-                <img id="qrImg"
-                     src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi%3A%2F%2Fpay%3Fpa%3Dsmartrent%40upi%26pn%3DSmartRent%26cu%3DINR"
-                     alt="UPI QR Code — SmartRent"
-                     onerror="this.parentElement.innerHTML='<div style=\'width:160px;height:160px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:12px;text-align:center;padding:10px\'>QR unavailable<br>Use UPI ID below</div>'">
-              </div>
-              <div class="qr-sub">Open any UPI app → Scan QR → Enter amount → Pay</div>
+            <!-- Supported methods -->
+            <div class="rzp-methods-row">
+              <span class="rzp-method-chip">📱 UPI</span>
+              <span class="rzp-method-chip">🅶 Google Pay</span>
+              <span class="rzp-method-chip">📲 PhonePe</span>
+              <span class="rzp-method-chip">💰 Paytm</span>
+              <span class="rzp-method-chip">🇮🇳 BHIM</span>
+              <span class="rzp-method-chip">💳 Cards</span>
+              <span class="rzp-method-chip">🏦 Net Banking</span>
+              <span class="rzp-method-chip">👛 Wallets</span>
             </div>
 
-            <!-- UPI ID copy -->
-            <div class="upi-copy-row">
-              <span class="upi-id-val" id="upiIdShow">smartrent@upi</span>
-              <button class="upi-copy-btn" onclick="copyUPIId()">📋 Copy</button>
+            <!-- Default state: Pay button -->
+            <div class="rzp-pay-box" id="rzpPayBox">
+              <button class="btn btn-blue rzp-pay-btn" id="rzpPayBtn" onclick="startRazorpayPayment()">
+                🔐 Pay Securely <span id="rzpPayBtnAmt">₹249</span> <span class="arr">→</span>
+              </button>
+              <div class="rzp-pay-sub" id="rzpPaySub">One tap opens Razorpay Checkout — choose UPI, card, net banking or wallet.</div>
             </div>
 
-            <!-- UPI app buttons -->
-            <div class="upi-apps-label">Or open directly in your UPI app:</div>
-            <div class="upi-apps-grid">
-
-              <!-- Google Pay -->
-              <a class="upi-app-btn" id="upi-gpay" href="#" onclick="launchUPI('gpay');return false;">
-                <div class="upi-logo-gpay">
-                  <!-- Google Pay wordmark colors: G=blue, o=red, o=yellow, g=blue, l=green, e=red -->
-                  <svg width="30" height="22" viewBox="0 0 120 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <text x="2" y="36" font-family="Arial,sans-serif" font-size="36" font-weight="700">
-                      <tspan fill="#4285F4">G</tspan><tspan fill="#34A853">P</tspan><tspan fill="#EA4335">a</tspan><tspan fill="#FBBC05">y</tspan>
-                    </text>
-                  </svg>
-                </div>
-                <span class="upi-app-name">Google Pay</span>
-              </a>
-
-              <!-- PhonePe -->
-              <a class="upi-app-btn" id="upi-phonepe" href="#" onclick="launchUPI('phonepe');return false;">
-                <div class="upi-logo-phonepe">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="12" fill="#5F259F"/>
-                    <text x="5" y="17" font-family="Arial" font-size="13" font-weight="800" fill="white">Pe</text>
-                  </svg>
-                </div>
-                <span class="upi-app-name">PhonePe</span>
-              </a>
-
-              <!-- Paytm -->
-              <a class="upi-app-btn" id="upi-paytm" href="#" onclick="launchUPI('paytm');return false;">
-                <div class="upi-logo-paytm">
-                  <svg width="30" height="14" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <text x="0" y="22" font-family="Arial" font-size="22" font-weight="900" fill="#00BAF2">Pay</text><text x="44" y="22" font-family="Arial" font-size="22" font-weight="900" fill="white">tm</text>
-                  </svg>
-                </div>
-                <span class="upi-app-name">Paytm</span>
-              </a>
-
-              <!-- BHIM -->
-              <a class="upi-app-btn" id="upi-bhim" href="#" onclick="launchUPI('bhim');return false;">
-                <div class="upi-logo-bhim">
-                  <svg width="36" height="20" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <text x="4" y="30" font-family="Arial" font-size="28" font-weight="900" fill="white">BHIM</text>
-                  </svg>
-                </div>
-                <span class="upi-app-name">BHIM UPI</span>
-              </a>
-
+            <!-- In-progress / result states -->
+            <div class="pay-status" id="payStatusCreating">
+              <div class="pay-spinner"></div>
+              <div class="pay-status-title">Preparing your secure order…</div>
+              <div class="pay-status-sub">This takes just a second.</div>
             </div>
 
-            <!-- UTR confirmation -->
-            <div class="utr-section">
-              <label>After Payment — Enter Transaction ID</label>
-              <div class="utr-hint">Enter the 12-digit UTR or transaction reference from your UPI app after completing payment.</div>
-              <div class="utr-input-row">
-                <input type="text" id="utrInput" class="utr-input" placeholder="e.g. 406812345678" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
-                <button class="btn btn-green" style="padding:12px 18px;font-size:14px;white-space:nowrap" onclick="confirmAndActivate()">Activate →</button>
+            <div class="pay-status" id="payStatusVerifying">
+              <div class="pay-spinner"></div>
+              <div class="pay-status-title">Confirming your payment…</div>
+              <div class="pay-status-sub">Please don't close this window while we verify with Razorpay.</div>
+            </div>
+
+            <div class="pay-status" id="payStatusSuccess">
+              <div class="pay-status-icon ok">✅</div>
+              <div class="pay-status-title">Payment successful!</div>
+              <div class="pay-status-sub" id="paySuccessSub">Your plan is now active.</div>
+            </div>
+
+            <div class="pay-status" id="payStatusError">
+              <div class="pay-status-icon err">⚠️</div>
+              <div class="pay-status-title" id="payErrorTitle">Payment didn't go through</div>
+              <div class="pay-status-sub" id="payErrorSub">No amount was charged. You can safely try again.</div>
+              <div class="pay-status-actions">
+                <button class="btn btn-blue btn-sm" onclick="retryPayment()">Retry Payment</button>
+                <button class="btn btn-ghost btn-sm" onclick="cancelPaymentUI()">Cancel</button>
               </div>
             </div>
 
@@ -1016,7 +963,7 @@ ul { list-style: none; }
               <div class="tb"><span class="ti">🔒</span> 256-bit SSL</div>
               <div class="tb"><span class="ti">🏦</span> RBI Regulated</div>
               <div class="tb"><span class="ti">⚡</span> Instant Activation</div>
-              <div class="tb"><span class="rbi-badge">RBI</span> Compliant</div>
+              <div class="tb"><span class="rzp-badge">Razorpay</span> Secured</div>
               <div class="tb"><span class="ti">🛡️</span> Fraud Protected</div>
             </div>
           </div>
@@ -1088,14 +1035,16 @@ ul { list-style: none; }
 <!-- ═══════════════════════════════════════════════════════════════
      JAVASCRIPT
      ─────────────────────────────────────────────────────────────
-     ACCOUNT-DEPENDENT TRIALS
+     ACCOUNT-DEPENDENT TRIALS  (unchanged — free trial still writes
+     directly to Firestore client-side, exactly as before)
      ─────────────────────────────────────────────────────────────
-     • Free trial eligibility is stored in Firestore: users/{uid}.trialUsed
-     • When a new account signs in, trialUsed is false → trial available
-     • On trial activation, trialUsed is set to true in Firestore
-     • localStorage is used as a fast cache but Firestore is source of truth
-     • If user changes account (logs in with different email), Firestore
-       check for the new UID returns trialUsed:false → trial is available again
+     PAID PLANS now go through Razorpay + Cloud Functions:
+       1. startRazorpayPayment()  → calls createRazorpayOrder (CF)
+       2. Razorpay Checkout opens → user pays
+       3. handler callback        → calls verifyRazorpayPayment (CF)
+       4. Backend verifies signature + amount, THEN unlocks features
+     No amount or "payment success" claim from the browser is ever
+     trusted directly — see functions/index.js for the server side.
 
      localStorage keys (for cross-page gating):
        "sr_subscription"       — tenant / service plans
@@ -1105,17 +1054,28 @@ ul { list-style: none; }
 /* ─────────────────────────────────────────────────────────
    CONFIG
 ───────────────────────────────────────────────────────── */
-/* ⚠ Replace with your actual UPI ID */
-const MERCHANT_UPI  = "piyushmishra1903@oksbi";
-const MERCHANT_NAME = "SmartRent";
-
 const LS_KEY       = "sr_subscription";
 const LS_OWNER_KEY = "sr_owner_subscription";
+
+/* Mirrors the server-side PLAN_CATALOG in functions/index.js —
+   used here only for instant UI updates (amount display, order
+   summary). The actual charge amount is always decided server-side. */
+const PLAN_CATALOG_UI = {
+  owner:       { amount: '₹249', name: 'Owner Plan' },
+  tenant:      { amount: '₹149', name: 'Tenant Plan' },
+  plumber:     { amount: '₹249', name: 'Plumber Plan' },
+  electrician: { amount: '₹249', name: 'Electrician Plan' },
+  carpenter:   { amount: '₹249', name: 'Carpenter Plan' },
+  painter:     { amount: '₹249', name: 'Painter Plan' },
+  movers:      { amount: '₹249', name: 'Movers Plan' },
+  cleaner:     { amount: '₹249', name: 'Home Cleaner Plan' },
+};
 
 /* ─────────────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────────────── */
 let selectedPlan = { id:'owner', amount:'₹249', name:'Owner Plan' };
+let rzpBusy = false; // guards against double-submits
 
 /* ─────────────────────────────────────────────────────────
    NAVBAR
@@ -1187,20 +1147,13 @@ function isSubscriptionActive(sub) {
 
 /* ─────────────────────────────────────────────────────────
    CHECK TRIAL ELIGIBILITY
-   ─────────────────────────────────────────────────────
-   Returns true if this account has NOT yet used a trial.
-   Checks Firestore first (account-level), then localStorage.
-   If no user logged in, returns false (must sign in first).
 ───────────────────────────────────────────────────────── */
 function isTrialEligible() {
-  /* Must be signed in */
   if (!window.__currentUser) return false;
-  /* Firestore says trial already used for this account */
   if (window.__accountTrialUsed === true) return false;
   return true;
 }
 
-/* Check if this account already has an active subscription */
 function accountHasActivePlan() {
   const planId = window.__accountActivePlan;
   const endDate = window.__accountTrialEnd;
@@ -1209,11 +1162,7 @@ function accountHasActivePlan() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   REFRESH TRIAL BUTTONS
-   Shows the correct state on each plan card:
-   - Not signed in → "Sign in to start free trial"
-   - Signed in, trial already used → show which plan is active / subscribe link
-   - Signed in, trial available → "Start Free Trial"
+   REFRESH TRIAL BUTTONS  (unchanged from the free-trial flow)
 ───────────────────────────────────────────────────────── */
 function refreshTrialButtons() {
   const sub    = getStoredSubscription();
@@ -1235,7 +1184,6 @@ function refreshTrialButtons() {
     if (!container) return;
     const primaryClass = plan.color==='gold' ? 'btn-gold' : plan.color==='blue' ? 'btn-blue' : 'btn-teal';
 
-    /* Case 1: Not signed in */
     if (!window.__currentUser) {
       container.innerHTML = `
         <div style="padding:12px 14px;border-radius:var(--r);background:var(--blue-pale);border:1.5px solid var(--blue-soft);font-size:13px;color:var(--blue);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px">
@@ -1246,7 +1194,6 @@ function refreshTrialButtons() {
       return;
     }
 
-    /* Case 2: Account already used trial on this plan (from Firestore) */
     if (window.__accountTrialUsed && window.__accountActivePlan === plan.id) {
       const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
       const endStr = window.__accountTrialEnd ? fmt(window.__accountTrialEnd) : '—';
@@ -1263,7 +1210,6 @@ function refreshTrialButtons() {
       return;
     }
 
-    /* Case 3: Account used trial on a DIFFERENT plan */
     if (window.__accountTrialUsed && window.__accountActivePlan !== plan.id) {
       container.innerHTML = `
         <div class="trial-used-badge">
@@ -1275,7 +1221,6 @@ function refreshTrialButtons() {
       return;
     }
 
-    /* Case 4: localStorage shows an active trial (before Firestore loads) */
     if (lsActive && sub.planId === plan.id) {
       const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
       container.innerHTML = `
@@ -1291,7 +1236,6 @@ function refreshTrialButtons() {
       return;
     }
 
-    /* Case 5: Trial available for this account — show the CTA */
     container.innerHTML = `
       <button class="btn ${primaryClass} btn-lg" onclick="activateFreeTrial('${plan.id}','${plan.amount}','${plan.name}');addRipple(this)">Start Free Trial <span class="arr">→</span></button>
       <button class="btn btn-outline-${plan.color}" onclick="selectPlan('${plan.id}','${plan.amount}','${plan.name}');scrollToPay()">Subscribe Now</button>
@@ -1300,22 +1244,15 @@ function refreshTrialButtons() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   ACTIVATE FREE TRIAL
-   ─────────────────────────────────────────────────────
-   One free trial per Firebase account (UID).
-   Writes trialUsed:true to Firestore so it follows the
-   account on any device. localStorage is written too for
-   instant cross-page access (post-property, post-service).
+   ACTIVATE FREE TRIAL  (unchanged — no payment involved)
 ───────────────────────────────────────────────────────── */
 async function activateFreeTrial(planId, amount, planName) {
-  /* Must be signed in */
   if (!window.__currentUser) {
     toast('Please sign in first to activate your free trial.', 'info');
     setTimeout(() => { window.location.href = 'login.html'; }, 1400);
     return;
   }
 
-  /* Check if this account already used its trial */
   if (window.__accountTrialUsed === true) {
     toast(`Your free trial was already used for this account (${window.__accountActivePlan || 'a plan'}). Subscribe to continue.`, 'info');
     scrollToPay();
@@ -1336,7 +1273,6 @@ async function activateFreeTrial(planId, amount, planName) {
     uid,
   };
 
-  /* ── Write to localStorage (instant cross-page access) ── */
   localStorage.setItem(LS_KEY, JSON.stringify(sub));
   if (planId === 'owner') {
     localStorage.setItem(LS_OWNER_KEY, JSON.stringify({
@@ -1346,13 +1282,11 @@ async function activateFreeTrial(planId, amount, planName) {
     }));
   }
 
-  /* ── Write to Firestore (account-level, device-independent) ── */
   const fb = window.__fb;
   if (fb) {
     try {
-      /* Mark trial as used for this account */
       await fb.setDoc(fb.doc(fb.db, 'users', uid), {
-        trialUsed:      true,          /* ← account-level flag, checked on login */
+        trialUsed:      true,
         planId,
         planName,
         trialEndDate:   trial.toISOString(),
@@ -1366,19 +1300,16 @@ async function activateFreeTrial(planId, amount, planName) {
         } : {}),
       }, { merge: true });
 
-      /* Also write a subscriptions document */
       await fb.setDoc(fb.doc(fb.db, 'subscriptions', uid), {
         ...sub, updatedAt: fb.serverTimestamp(),
       });
 
-      /* Update local state immediately */
       window.__accountTrialUsed  = true;
       window.__accountActivePlan = planId;
       window.__accountTrialEnd   = trial.toISOString();
 
     } catch(e) {
       console.warn('Firestore write failed (non-critical):', e);
-      /* Trial still works locally via localStorage */
     }
   }
 
@@ -1392,26 +1323,19 @@ async function activateFreeTrial(planId, amount, planName) {
 function selectPlan(id, amount, name) {
   selectedPlan = { id, amount, name };
 
-  /* Update amount display */
   document.getElementById('payAmtDisplay').textContent = amount;
   document.getElementById('payPlanLabel').textContent  = name;
   document.getElementById('osPlan').textContent  = name;
   document.getElementById('osAfter').textContent = amount + ' / month';
+  document.getElementById('rzpPayBtnAmt').textContent = amount;
 
-  /* Update QR to reflect selected amount */
-  const amt = amount.replace('₹','');
-  const note = encodeURIComponent(`SmartRent ${name}`);
-  const pa   = encodeURIComponent(MERCHANT_UPI);
-  document.getElementById('qrImg').src =
-    `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi%3A%2F%2Fpay%3Fpa%3D${pa}%26pn%3DSmartRent%26am%3D${amt}%26cu%3DINR%26tn%3D${note}`;
-
-  /* Highlight selected pill */
   document.querySelectorAll('.ppill').forEach(p => p.className = 'ppill');
   const colorMap = { owner:'gold', tenant:'blue', plumber:'teal', electrician:'teal', painter:'teal', carpenter:'teal', movers:'teal', cleaner:'teal' };
   const idMap    = { plumber:'plumber', electrician:'electric', painter:'painter', carpenter:'carpenter', movers:'movers', cleaner:'cleaner', owner:'owner', tenant:'tenant' };
   const pp = document.getElementById('pp-' + (idMap[id]||id));
   if (pp) pp.className = 'ppill ' + (colorMap[id]||'teal');
 
+  resetPayCardUI();
   toast(`${name} selected — ₹0 for 3 months, then ${amount}/month`, 'info');
 }
 
@@ -1420,111 +1344,162 @@ function scrollToPay() {
 }
 
 /* ─────────────────────────────────────────────────────────
-   UPI LAUNCH
+   PAY CARD UI STATE HELPERS
 ───────────────────────────────────────────────────────── */
-function upiLink(app) {
-  const amt  = selectedPlan.amount.replace('₹','');
-  const note = encodeURIComponent(`SmartRent ${selectedPlan.name}`);
-  const pa   = encodeURIComponent(MERCHANT_UPI);
-  const pn   = encodeURIComponent(MERCHANT_NAME);
-  const base = `upi://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`;
-  const map  = {
-    gpay:    `tez://upi/pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
-    phonepe: `phonepe://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
-    paytm:   `paytmmp://pay?pa=${pa}&pn=${pn}&am=${amt}&cu=INR&tn=${note}`,
-    bhim:    base,
-  };
-  return map[app] || base;
+function showPayState(stateId) {
+  ['rzpPayBox','payStatusCreating','payStatusVerifying','payStatusSuccess','payStatusError']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'rzpPayBox') { el.style.display = (id === stateId) ? '' : 'none'; }
+      else { el.classList.toggle('show', id === stateId); }
+    });
 }
-
-function launchUPI(app) {
-  document.querySelectorAll('.upi-app-btn').forEach(b => b.classList.remove('selected'));
-  const el = document.getElementById('upi-' + app);
-  if (el) el.classList.add('selected');
-  window.location.href = upiLink(app);
-  toast(`Opening ${app === 'gpay' ? 'Google Pay' : app === 'phonepe' ? 'PhonePe' : app === 'paytm' ? 'Paytm' : 'BHIM UPI'}…`, 'info');
-}
-
-function copyUPIId() {
-  navigator.clipboard.writeText(MERCHANT_UPI)
-    .then(() => toast('✅ UPI ID copied to clipboard!', 'success'))
-    .catch(() => toast('Copy: ' + MERCHANT_UPI, 'info'));
-}
+function resetPayCardUI() { rzpBusy = false; showPayState('rzpPayBox'); }
+function cancelPaymentUI() { resetPayCardUI(); }
+function retryPayment() { resetPayCardUI(); startRazorpayPayment(); }
 
 /* ─────────────────────────────────────────────────────────
-   CONFIRM & ACTIVATE (paid subscription after UPI)
+   RAZORPAY PAYMENT FLOW
+   1. createRazorpayOrder (Cloud Function) — server decides amount
+   2. Razorpay Checkout opens
+   3. verifyRazorpayPayment (Cloud Function) — server verifies + activates
 ───────────────────────────────────────────────────────── */
-async function confirmAndActivate() {
+async function startRazorpayPayment() {
+  if (rzpBusy) return;
+
   if (!window.__currentUser) {
-    toast('Please sign in to activate your plan.', 'info'); return;
+    toast('Please sign in to make a payment.', 'info');
+    setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+    return;
   }
-  const utr = document.getElementById('utrInput').value.trim();
-  if (utr.length < 6) { toast('Please enter a valid UTR / Transaction ID', 'err'); return; }
-
-  const now   = new Date();
-  const trial = new Date(now); trial.setDate(trial.getDate() + 90);
-  const uid   = window.__currentUser.uid;
-
-  const sub = {
-    planId:         selectedPlan.id,
-    planName:       selectedPlan.name,
-    planAmount:     selectedPlan.amount,
-    status:         'active',
-    trialType:      'paid',
-    trialStartDate: now.toISOString(),
-    trialEndDate:   trial.toISOString(),
-    activatedAt:    Date.now(),
-    paymentMethod:  'UPI', utr, uid,
-    badge:          selectedPlan.id === 'owner' ? 'gold_star' : 'diamond',
-    permissions:    getPerms(selectedPlan.id),
-  };
-
-  localStorage.setItem(LS_KEY, JSON.stringify(sub));
-  if (selectedPlan.id === 'owner') {
-    localStorage.setItem(LS_OWNER_KEY, JSON.stringify({
-      status:'active', trialType:'paid', planId:'owner',
-      planName: selectedPlan.name, trialStartDate: now.toISOString(),
-      trialEndDate: trial.toISOString(), activatedAt: Date.now(), utr, uid,
-    }));
+  if (typeof Razorpay === 'undefined') {
+    toast('Payment library failed to load. Check your connection and retry.', 'err');
+    return;
   }
-
   const fb = window.__fb;
-  if (fb) {
-    try {
-      await fb.setDoc(fb.doc(fb.db,'subscriptions',uid), { ...sub, updatedAt: fb.serverTimestamp() });
-      await fb.addDoc(fb.collection(fb.db,'payments'), {
-        uid, planId: selectedPlan.id, amount: selectedPlan.amount,
-        utr, paidAt: fb.serverTimestamp(), status:'confirmed',
-      });
-      const userUpdate = {
-        subscriptionStatus: 'active',
-        subscriptionPlan:   selectedPlan.id === 'tenant' ? 'tenant_basic' : selectedPlan.id,
-        badge: sub.badge, planId: selectedPlan.id,
-        trialUsed: true,
-        trialEndDate: trial.toISOString(),
-        updatedAt: fb.serverTimestamp(),
-        ...(selectedPlan.id === 'owner' ? {
-          ownerPlan:true, canPostProperty:true,
-          ownerSubscription:{ plan:'owner', status:'active', active:true, expiresAt: trial.toISOString() },
-        } : {}),
-      };
-      await fb.setDoc(fb.doc(fb.db,'users',uid), userUpdate, { merge:true });
-      window.__accountTrialUsed  = true;
-      window.__accountActivePlan = selectedPlan.id;
-      window.__accountTrialEnd   = trial.toISOString();
-    } catch(e) { console.warn('Firestore (demo mode):', e); }
+  if (!fb) {
+    toast('Still connecting — please try again in a moment.', 'info');
+    return;
   }
 
-  refreshTrialButtons();
-  showSuccess(sub, trial);
-}
+  rzpBusy = true;
+  showPayState('payStatusCreating');
 
-function getPerms(id) {
-  const p = {
-    owner:['list_properties','analytics','featured_listing','owner_badge','post_property'],
-    tenant:['unlock_phone','unlock_whatsapp','schedule_visit','save_properties','compare'],
+  let orderResult;
+  try {
+    const createOrder = fb.httpsCallable(fb.functions, 'createRazorpayOrder');
+    const res = await createOrder({ planId: selectedPlan.id });
+    orderResult = res.data;
+  } catch (err) {
+    console.error('createRazorpayOrder failed:', err);
+    rzpBusy = false;
+    document.getElementById('payErrorTitle').textContent = 'Could not start payment';
+    document.getElementById('payErrorSub').textContent =
+      (err && err.message) ? err.message : 'Please check your connection and try again.';
+    showPayState('payStatusError');
+    return;
+  }
+
+  const options = {
+    key: orderResult.keyId,
+    amount: orderResult.amount,
+    currency: orderResult.currency,
+    name: 'SmartRent Technologies',
+    description: orderResult.planName,
+    order_id: orderResult.orderId,
+    prefill: {
+      name: window.__currentUser.displayName || '',
+      email: window.__currentUser.email || '',
+    },
+    theme: { color: '#2563eb' },
+    method: {
+      upi: true, card: true, netbanking: true, wallet: true,
+    },
+    handler: async function (response) {
+      showPayState('payStatusVerifying');
+      try {
+        const verifyPayment = fb.httpsCallable(fb.functions, 'verifyRazorpayPayment');
+        const verifyRes = await verifyPayment({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        });
+
+        const data = verifyRes.data;
+        document.getElementById('paySuccessSub').textContent =
+          `${data.planName} is active until ${new Date(data.expiryDate).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}.`;
+        showPayState('payStatusSuccess');
+        rzpBusy = false;
+
+        window.__accountTrialUsed  = true;
+        window.__accountActivePlan = data.planId;
+        window.__accountTrialEnd   = data.expiryDate;
+
+        const sub = {
+          planId: data.planId, planName: data.planName, planAmount: selectedPlan.amount,
+          status: 'active', trialType: 'paid',
+          trialStartDate: data.activationDate, trialEndDate: data.expiryDate,
+          activatedAt: Date.now(), uid: window.__currentUser.uid,
+          paymentMethod: 'razorpay',
+        };
+        localStorage.setItem(LS_KEY, JSON.stringify(sub));
+        if (data.planId === 'owner') {
+          localStorage.setItem(LS_OWNER_KEY, JSON.stringify({
+            status:'active', trialType:'paid', planId:'owner', planName: data.planName,
+            trialStartDate: data.activationDate, trialEndDate: data.expiryDate,
+            activatedAt: Date.now(), uid: window.__currentUser.uid,
+          }));
+        }
+
+        refreshTrialButtons();
+        showSuccess(sub, new Date(data.expiryDate));
+
+        /* Auto-return to dashboard shortly after success, as requested */
+        setTimeout(() => {
+          closeModal();
+          resetPayCardUI();
+        }, 6000);
+
+      } catch (err) {
+        console.error('verifyRazorpayPayment failed:', err);
+        rzpBusy = false;
+        document.getElementById('payErrorTitle').textContent = 'Payment could not be verified';
+        document.getElementById('payErrorSub').textContent =
+          (err && err.message) ? err.message : 'If money was deducted, it will be auto-refunded within 5-7 business days. Please contact support if this persists.';
+        showPayState('payStatusError');
+      }
+    },
+    modal: {
+      /* User closed the Razorpay modal without paying */
+      ondismiss: function () {
+        rzpBusy = false;
+        resetPayCardUI();
+        toast('Payment cancelled — no amount was charged.', 'info');
+      },
+    },
   };
-  return p[id] || ['service_listing','customer_leads','booking_mgmt','pro_badge'];
+
+  try {
+    const rzp = new Razorpay(options);
+    rzp.on('payment.failed', function (resp) {
+      rzpBusy = false;
+      document.getElementById('payErrorTitle').textContent = 'Payment failed';
+      document.getElementById('payErrorSub').textContent =
+        (resp && resp.error && resp.error.description) || 'Your bank or UPI app declined the payment. No amount was charged.';
+      showPayState('payStatusError');
+    });
+    rzp.open();
+    /* Checkout modal is now visible — hide our own "creating" state
+       since Razorpay's own UI takes over from here */
+    showPayState('rzpPayBox');
+  } catch (err) {
+    console.error('Razorpay open() failed:', err);
+    rzpBusy = false;
+    document.getElementById('payErrorTitle').textContent = 'Could not open payment window';
+    document.getElementById('payErrorSub').textContent = 'Please refresh the page and try again.';
+    showPayState('payStatusError');
+  }
 }
 
 /* ─────────────────────────────────────────────────────────
@@ -1538,7 +1513,7 @@ function showSuccess(sub, trialEnd) {
   document.getElementById('modalTitle').textContent    = isTrial ? '🎉 Free Trial Activated!' : '✅ Subscription Activated!';
   document.getElementById('modalPlanName').textContent = sub.planName;
   const fmt = d => new Date(d).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('trialDates').textContent    = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)} (FREE)`;
+  document.getElementById('trialDates').textContent    = `${fmt(sub.trialStartDate)}  →  ${fmt(sub.trialEndDate)}${isTrial ? ' (FREE)' : ''}`;
 
   const btnsEl = document.getElementById('modalBtns');
   if (isOwner) {
@@ -1629,9 +1604,6 @@ function toast(msg, type='info') {
 /* ─────────────────────────────────────────────────────────
    INIT
 ───────────────────────────────────────────────────────── */
-/* refreshTrialButtons() is called from the Firebase module
-   after auth state resolves. This call handles the initial
-   render while Firebase is loading (shows sign-in prompt). */
 refreshTrialButtons();
 </script>
 </body>

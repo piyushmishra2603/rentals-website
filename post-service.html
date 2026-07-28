@@ -757,6 +757,30 @@ async function checkServiceSubscription(uid) {
   try {
     const fb = window.__fb;
     if (!fb) return { hasAccess:false, planName:null, source:'no-firebase' };
+
+    /* ── NEW: check the dedicated `subscriptions/{uid}` document ──
+       This is the collection your Firestore rules define for
+       trial/plan records (see the SUBSCRIPTIONS COLLECTION rule
+       block). Older code here only checked `users/{uid}`, so a
+       trial recorded in `subscriptions` was invisible to this page
+       and the Publish button stayed locked forever. Check it first. */
+    try {
+      const subSnap = await fb.getDoc(fb.doc(fb.db,'subscriptions',uid));
+      if (subSnap.exists()) {
+        const s = subSnap.data();
+        const active = s.status === 'active' || s.status === 'trial_active';
+        let notExpired = true;
+        const expField = s.trialEndDate || s.expiresAt;
+        if (expField) {
+          const e = expField.toDate ? expField.toDate() : new Date(expField);
+          notExpired = e > new Date();
+        }
+        if (active && notExpired) {
+          return { hasAccess:true, planName: s.plan ? (s.plan + ' Plan') : 'Service Plan', source:'firestore:subscriptions' };
+        }
+      }
+    } catch(e) { /* fall through to users doc check below */ }
+
     const snap = await fb.getDoc(fb.doc(fb.db,'users',uid));
     if (!snap.exists()) return { hasAccess:false, planName:null, source:'firestore:no-doc' };
     const data = snap.data();
@@ -837,7 +861,7 @@ function renderSubmitArea(hasAccess, planName) {
             </div>
             <div class="sg-cta-btns">
               <a href="plans.html" class="btn btn-primary btn-lg">View Plans →</a>
-              <a href="plans.html#services" class="btn btn-outline">Start Free Trial</a>
+              <button class="btn btn-outline" onclick="startFreeTrial()">🎁 Start Free Trial Now</button>
             </div>
           </div>
         </div>
@@ -845,6 +869,48 @@ function renderSubmitArea(hasAccess, planName) {
     btnArea.innerHTML = `<button class="btn btn-success btn-lg" disabled style="opacity:.35;cursor:not-allowed;filter:grayscale(.5)">🔒 Publish Listing</button>`;
   }
 }
+
+/* ══════════════════════════════════════
+   START FREE TRIAL — writes directly to
+   subscriptions/{uid} so the gate unlocks
+   right here, without a separate checkout
+   or plans.html step in between
+══════════════════════════════════════ */
+window.startFreeTrial = async () => {
+  if (!currentUser) { toast('Please sign in first.', 'err'); return; }
+  if (!selSvc) { toast('Please choose a service type first.', 'err'); goStep(1); return; }
+  const fb = window.__fb;
+  if (!fb) { toast('Service unavailable, please try again shortly.', 'err'); return; }
+
+  try {
+    const now = new Date();
+    const trialEnd = new Date(now); trialEnd.setDate(trialEnd.getDate() + 90);
+
+    await fb.setDoc(fb.doc(fb.db, 'subscriptions', currentUser.uid), {
+      userId:        currentUser.uid,
+      userEmail:     currentUser.email || '',
+      plan:          selSvc.id,
+      status:        'trial_active',
+      trialStartDate: now.toISOString(),
+      trialEndDate:  trialEnd.toISOString(),
+      createdAt:     fb.serverTimestamp(),
+    });
+
+    /* Mirror to localStorage too, for redundancy / offline fallback */
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      planId:       selSvc.id,
+      planName:     selSvc.name + ' Plan',
+      status:       'trial_active',
+      trialEndDate: trialEnd.toISOString(),
+    }));
+
+    toast('🎉 Free trial activated!', 'ok');
+    await recheckSub();
+  } catch(err) {
+    console.error(err);
+    toast('Could not start trial: ' + err.message, 'err');
+  }
+};
 
 window.recheckSub = async () => {
   if (!currentUser) return;

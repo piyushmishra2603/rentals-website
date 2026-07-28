@@ -3,1570 +3,1710 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartRent AI — List Your Commercial Property</title>
-<meta name="description" content="List your commercial property on SmartRent AI. Office, retail, warehouse, co-working, industrial and showroom spaces. Free listing, zero brokerage, instant visibility.">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-
+<title>List Commercial Property — SmartRent AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════
-   DESIGN SYSTEM — EDITORIAL DARK GOLD
-═══════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — WARM IVORY LUXURY (LIGHT)
+   Matches post-property.html / commercial.html
+═══════════════════════════════════════════════ */
 :root {
-  --void:    #040608;
-  --deep:    #070a12;
-  --surf:    #0b1020;
-  --card:    #0f162a;
-  --card2:   #131e34;
-  --card3:   #17243d;
+  --bg:      #faf7f2;
+  --bg1:     #f5f0e8;
+  --bg2:     #ffffff;
+  --bg3:     #fdf9f4;
+  --bg4:     #ede8df;
+  --bg5:     #e5ddd0;
 
-  --gold:      #c8a44a;
-  --gold-lt:   #e6c870;
-  --gold-dk:   #876a25;
-  --gold-d:    rgba(200,164,74,.1);
-  --gold-b:    rgba(200,164,74,.26);
-  --gold-bb:   rgba(200,164,74,.42);
-  --gold-glow: rgba(200,164,74,.38);
+  --gold:     #b8863c;
+  --gold-lt:  #d4a055;
+  --gold-dk:  #8a611f;
+  --gold-d:   rgba(184,134,60,0.09);
+  --gold-b:   rgba(184,134,60,0.22);
+  --gold-glow:rgba(184,134,60,0.28);
 
-  --steel:   #5ba3d4;
-  --steel-d: rgba(91,163,212,.1);
-  --steel-b: rgba(91,163,212,.22);
+  --teal:     #0e7a70;
+  --teal-lt:  #14a99c;
+  --teal-d:   rgba(14,122,112,0.08);
+  --teal-b:   rgba(14,122,112,0.2);
 
-  --teal:    #12c48e;
-  --teal-d:  rgba(18,196,142,.1);
-  --teal-b:  rgba(18,196,142,.22);
+  --rose:     #c0392b;
+  --rose-d:   rgba(192,57,43,0.08);
+  --rose-b:   rgba(192,57,43,0.22);
 
-  --rose:    #e03d5e;
-  --rose-d:  rgba(224,61,94,.1);
-  --rose-b:  rgba(224,61,94,.22);
+  --emerald:  #1a7a4a;
+  --emerald-d:rgba(26,122,74,0.09);
+  --emerald-b:rgba(26,122,74,0.22);
 
-  --amber:   #e8940c;
-  --amber-d: rgba(232,148,12,.1);
-  --amber-b: rgba(232,148,12,.22);
+  --warn:     #c07c2a;
+  --warn-d:   rgba(192,124,42,0.09);
 
-  --t0: #ecf0ff;  --t1: rgba(218,226,255,.82);
-  --t2: rgba(175,192,238,.54);  --t3: rgba(135,158,212,.3);
+  --steel:    #3d6e9a;
+  --steel-d:  rgba(61,110,154,0.08);
+  --steel-b:  rgba(61,110,154,0.2);
 
-  --div:  rgba(200,164,74,.07);  --div2: rgba(255,255,255,.07);
-  --div3: rgba(255,255,255,.14);
+  --navy:     #1a2540;
 
-  --r1:6px; --r2:13px; --r3:19px; --r4:28px;
+  --t0: #1c1409;
+  --t1: #3a2e1c;
+  --t2: #6b5a42;
+  --t3: #a89880;
+  --t4: #d5c9b8;
+
+  --line:   rgba(184,134,60,0.12);
+  --line2:  rgba(26,20,9,0.08);
+  --line3:  rgba(26,20,9,0.14);
+  --border-f: rgba(14,122,112,0.45);
+
+  --r1: 8px; --r2: 14px; --r3: 20px; --r4: 28px;
+  --sh-xs: 0 1px 4px rgba(26,20,9,0.06);
+  --sh-sm: 0 2px 12px rgba(26,20,9,0.07);
+  --sh-md: 0 6px 28px rgba(26,20,9,0.09);
+  --sh-lg: 0 14px 52px rgba(26,20,9,0.11);
+  --sh-xl: 0 26px 72px rgba(26,20,9,0.13);
 }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Outfit',sans-serif;background:var(--void);color:var(--t0);overflow-x:hidden;min-height:100vh}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--gold-b);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--t0); min-height: 100vh; overflow-x: hidden; }
 
-/* ── AMBIENT ─────────────────────────────────── */
-.amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(105px);animation:ofl 20s ease-in-out infinite alternate}
-.o1{width:680px;height:680px;top:-220px;left:-180px;background:radial-gradient(circle,rgba(200,164,74,.058) 0%,transparent 68%)}
-.o2{width:540px;height:540px;bottom:-200px;right:-150px;background:radial-gradient(circle,rgba(91,163,212,.05) 0%,transparent 68%);animation-delay:-9s}
-.o3{width:380px;height:380px;top:50%;left:45%;background:radial-gradient(circle,rgba(200,164,74,.028) 0%,transparent 68%);animation-delay:-15s}
-@keyframes ofl{0%{transform:translate(0,0) scale(1)}40%{transform:translate(28px,-22px) scale(1.06)}70%{transform:translate(-18px,17px) scale(.97)}100%{transform:translate(13px,-9px) scale(1.03)}}
+::selection { background: rgba(184,134,60,0.18); color: var(--t0); }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg1); }
+::-webkit-scrollbar-thumb { background: var(--gold-b); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
 
-.bg-noise{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.88' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:.36}
-.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(200,164,74,.032) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,74,.032) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 90% 75% at 50% 25%,black 0%,transparent 100%)}
+/* ── AMBIENT ──────────────────────────────── */
+.bg-scene { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(140px); animation: drift 16s ease-in-out infinite alternate; }
+.o1 { width: 620px; height: 620px; background: rgba(184,134,60,.06); top: -200px; left: -200px; }
+.o2 { width: 500px; height: 500px; background: rgba(14,122,112,.05); bottom: -150px; right: -150px; animation-delay: -7s; }
+.o3 { width: 340px; height: 340px; background: rgba(184,134,60,.04); top: 45%; left: 50%; animation-delay: -3s; }
+@keyframes drift { from{transform:translate(0,0) scale(1);} to{transform:translate(28px,22px) scale(1.06);} }
+.dot-grid {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image: radial-gradient(circle, rgba(184,134,60,.14) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 30%, black 0%, transparent 100%);
+  opacity: 0.4;
+}
 
-/* ══════════════════════════════════════════════
-   NAVBAR
-══════════════════════════════════════════════ */
-.nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;display:flex;align-items:center;padding:0 32px;background:rgba(4,6,8,.75);backdrop-filter:blur(28px) saturate(1.5);border-bottom:1px solid var(--div);transition:all .3s}
-.nav.solid{background:rgba(4,6,8,.97);box-shadow:0 1px 0 var(--gold-b),0 8px 40px rgba(0,0,0,.6)}
-.brand{display:flex;align-items:center;gap:11px;text-decoration:none;flex-shrink:0}
-.brand-gem{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dk));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 16px rgba(200,164,74,.32),inset 0 1px 0 rgba(255,255,255,.18);flex-shrink:0}
-.brand-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--t0);letter-spacing:.01em}
-.brand-ai{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:600;letter-spacing:.16em;color:var(--steel);background:var(--steel-d);border:1px solid var(--steel-b);padding:1px 5px;border-radius:3px;margin-left:4px;align-self:flex-end;margin-bottom:2px}
-.nav-links{display:flex;align-items:center;gap:1px;margin:0 auto;padding:0 20px}
-.nl{padding:7px 14px;border-radius:var(--r1);font-size:13px;font-weight:500;color:var(--t2);text-decoration:none;transition:all .2s}.nl:hover{color:var(--t0)}
-.nav-r{display:flex;gap:8px;align-items:center;flex-shrink:0}
-.nbtn{padding:7px 15px;border-radius:var(--r1);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:5px}
-.nbtn-ghost{background:transparent;border:1px solid var(--div2);color:var(--t1)}.nbtn-ghost:hover{border-color:var(--gold-b);color:var(--gold)}
-.nbtn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-weight:700;box-shadow:0 0 16px rgba(200,164,74,.18)}.nbtn-gold:hover{box-shadow:0 0 26px var(--gold-glow);transform:translateY(-1px)}
-.mob-btn{display:none;width:36px;height:36px;border-radius:var(--r1);border:1px solid var(--div2);background:transparent;font-size:18px;color:var(--t1);cursor:pointer;align-items:center;justify-content:center}
-.mob-drawer{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(4,6,8,.99);border-bottom:1px solid var(--gold-b);padding:20px 28px;z-index:800;flex-direction:column;gap:0;backdrop-filter:blur(22px)}
-.mob-drawer.open{display:flex}
-.mob-l{padding:12px 0;font-size:14px;color:var(--t1);text-decoration:none;border-bottom:1px solid rgba(200,164,74,.08);display:flex;align-items:center;gap:8px;transition:color .2s}.mob-l:hover{color:var(--gold)}.mob-l:last-of-type{border-bottom:none}
+/* ── TOPBAR ──────────────────────────────── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 36px; height: 68px;
+  background: rgba(250,247,242,.9); backdrop-filter: blur(28px) saturate(1.8);
+  border-bottom: 1px solid rgba(184,134,60,.12);
+  position: sticky; top: 0; z-index: 200;
+  transition: all .3s;
+}
+.topbar.solid { background: rgba(250,247,242,.98); box-shadow: 0 1px 0 rgba(184,134,60,.12), 0 4px 20px rgba(26,20,9,.06); }
 
-/* ══════════════════════════════════════════════
-   PAGE HEADER
-══════════════════════════════════════════════ */
-.page-header{position:relative;z-index:1;padding:100px 24px 0;text-align:center;overflow:hidden}
-.ph-ring{position:absolute;top:50%;left:50%;border-radius:50%;border:1px solid rgba(200,164,74,.06);pointer-events:none}
-.pr-a{width:800px;height:800px;margin:-400px 0 0 -400px;animation:rpulse 10s ease-in-out infinite}
-.pr-b{width:560px;height:560px;margin:-280px 0 0 -280px;border-style:dashed;animation:rpulse 10s ease-in-out infinite;animation-delay:-3s;opacity:.5}
-@keyframes rpulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.04);opacity:1}}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand-gem { width: 36px; height: 36px; background: linear-gradient(135deg,var(--gold-lt),var(--gold-dk)); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; box-shadow: 0 2px 12px rgba(184,134,60,.3); }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--t0); }
+.brand-tag { font-family: 'JetBrains Mono', monospace; font-size: 8px; font-weight: 600; letter-spacing: .18em; color: var(--teal); background: var(--teal-d); border: 1px solid var(--teal-b); padding: 2px 5px; border-radius: 3px; margin-left: 2px; vertical-align: super; }
 
-.ph-badge{display:inline-flex;align-items:center;gap:8px;background:var(--gold-d);border:1px solid var(--gold-b);border-radius:100px;padding:6px 18px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--gold);letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px;animation:su .7s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
-.ph-title{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:.96;letter-spacing:-.025em;color:var(--t0);margin-bottom:10px;animation:su .8s .08s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
-.ph-title em{font-style:italic;background:linear-gradient(135deg,var(--gold-lt) 0%,var(--gold) 45%,var(--steel) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.ph-sub{font-family:'Playfair Display',serif;font-size:clamp(16px,2.5vw,24px);font-weight:400;font-style:italic;color:var(--t2);margin-bottom:20px;animation:su .8s .16s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
-.ph-desc{font-size:15px;color:var(--t2);line-height:1.82;max-width:560px;margin:0 auto 44px;animation:su .8s .24s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
-@keyframes su{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.nav-links { display: flex; gap: 6px; align-items: center; }
+.nav-link { font-size: 13px; color: var(--t2); padding: 7px 14px; border-radius: var(--r1); text-decoration: none; transition: all .2s; font-weight: 500; }
+.nav-link:hover { color: var(--t0); background: var(--gold-d); }
 
-/* ── TRUST ROW ─────────────────────────────── */
-.trust-row{display:flex;gap:0;justify-content:center;align-items:stretch;flex-wrap:wrap;background:rgba(7,10,18,.78);border:1px solid var(--gold-b);border-radius:var(--r2);backdrop-filter:blur(18px);overflow:hidden;max-width:760px;margin:0 auto 64px;animation:su .8s .32s cubic-bezier(.4,0,.2,1) both;position:relative;z-index:1}
-.trust-item{padding:16px 28px;text-align:center;border-right:1px solid rgba(200,164,74,.1);flex:1}.trust-item:last-child{border-right:none}
-.ti-v{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;margin-bottom:3px}
-.ti-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.fb-pill { display: flex; align-items: center; gap: 5px; padding: 4px 11px; border-radius: 100px; font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: .1em; font-weight: 600; border: 1px solid; transition: all .3s; }
+.fb-pill.connecting { background: var(--warn-d); border-color: rgba(192,124,42,.25); color: var(--warn); }
+.fb-pill.connected  { background: var(--emerald-d); border-color: var(--emerald-b); color: var(--emerald); }
+.fb-pill.error      { background: var(--rose-d); border-color: var(--rose-b); color: var(--rose); }
+.fb-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 1.8s infinite; }
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:.3;} }
 
-/* ══════════════════════════════════════════════
-   STEP INDICATOR
-══════════════════════════════════════════════ */
-.step-bar{position:sticky;top:64px;z-index:200;background:rgba(4,6,8,.96);border-bottom:1px solid var(--gold-b);backdrop-filter:blur(22px);padding:0 32px}
-.step-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;padding:16px 0;gap:0}
+/* ── PAGE LAYOUT ──────────────────────────── */
+.page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 40px 24px 96px; }
 
-.step-node{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0}
-.step-circle{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace;transition:all .3s;border:2px solid rgba(255,255,255,.1);background:var(--card);color:var(--t3)}
-.step-node.done .step-circle{background:var(--teal-d);border-color:var(--teal-b);color:var(--teal)}
-.step-node.active .step-circle{background:var(--gold-d);border-color:var(--gold-bb);color:var(--gold);box-shadow:0 0 14px rgba(200,164,74,.25)}
-.step-label{font-size:12px;font-weight:600;color:var(--t3);letter-spacing:.01em;transition:color .3s;white-space:nowrap}
-.step-node.active .step-label{color:var(--gold)}
-.step-node.done .step-label{color:var(--teal)}
+/* ── PAGE HEADER ──────────────────────────── */
+.page-header { margin-bottom: 36px; animation: fadeUp .5s both; }
+.ph-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: var(--steel); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.ph-eyebrow::before { content: ''; width: 20px; height: 1.5px; background: var(--steel); }
+.ph-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,44px); font-weight: 800; letter-spacing: -.02em; color: var(--t0); margin-bottom: 6px; }
+.ph-sub { font-size: 15px; color: var(--t2); line-height: 1.7; }
 
-.step-connector{flex:1;height:1px;background:rgba(255,255,255,.07);margin:0 10px;position:relative}
-.step-connector::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:1px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.step-connector.filled::after{width:100%}
-.step-connector.half::after{width:50%}
+/* ── AUTH GATE ────────────────────────────── */
+.auth-gate {
+  background: #fff; border: 1.5px solid rgba(192,57,43,.18); border-radius: var(--r4);
+  padding: 52px 40px; text-align: center; box-shadow: var(--sh-lg);
+  animation: fadeUp .5s both;
+}
+.ag-icon { font-size: 58px; margin-bottom: 18px; display: block; }
+.ag-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--t0); margin-bottom: 10px; }
+.ag-sub { font-size: 14.5px; color: var(--t2); line-height: 1.75; margin-bottom: 28px; max-width: 380px; margin-left: auto; margin-right: auto; }
+.ag-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
-/* Step labels on mobile */
-@media(max-width:700px){.step-label{display:none}.step-connector{margin:0 6px}}
+/* ── STEPPER ──────────────────────────────── */
+.stepper { display: flex; align-items: center; margin-bottom: 32px; animation: fadeUp .5s .1s both; }
+.step { display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer; }
+.step-circle {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-weight: 700; font-size: 16px;
+  border: 2px solid var(--line3); background: var(--bg2); color: var(--t3);
+  transition: all .35s cubic-bezier(.34,1.56,.64,1); position: relative; z-index: 1;
+  box-shadow: var(--sh-xs);
+}
+.step.active .step-circle { border-color: var(--steel); background: linear-gradient(135deg,#4d84b0,var(--steel)); color: #fff; box-shadow: 0 4px 18px rgba(61,110,154,.32); }
+.step.done  .step-circle  { border-color: var(--emerald); background: var(--emerald-d); color: var(--emerald); box-shadow: 0 2px 8px rgba(26,122,74,.15); }
+.step-label { font-size: 11px; color: var(--t3); margin-top: 6px; letter-spacing: .04em; font-weight: 500; white-space: nowrap; }
+.step.active .step-label { color: var(--steel); font-weight: 600; }
+.step.done  .step-label  { color: var(--emerald); }
+.step-line { flex: 1; height: 2px; background: var(--line2); margin: 0 -1px; margin-bottom: 26px; transition: background .4s; }
+.step-line.done { background: linear-gradient(90deg,var(--emerald),var(--steel)); }
 
-/* ══════════════════════════════════════════════
-   MAIN LAYOUT
-══════════════════════════════════════════════ */
-.form-layout{display:grid;grid-template-columns:1fr 340px;gap:26px;max-width:1260px;margin:0 auto;padding:40px 28px 100px;position:relative;z-index:1}
-@media(max-width:1100px){.form-layout{grid-template-columns:1fr}}
+/* ── CARD ──────────────────────────────────── */
+.card {
+  background: #fff; border: 1.5px solid rgba(26,20,9,.07);
+  border-radius: var(--r3); padding: 36px;
+  margin-bottom: 20px; box-shadow: var(--sh-sm);
+  transition: border-color .3s;
+}
+.card:focus-within { border-color: rgba(14,122,112,.15); box-shadow: var(--sh-md); }
 
-/* ══════════════════════════════════════════════
-   STEP PANELS
-══════════════════════════════════════════════ */
-.step-panel{display:none;animation:panelIn .4s cubic-bezier(.4,0,.2,1) both}
-.step-panel.active{display:block}
-@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.sec-header { margin-bottom: 28px; }
+.sec-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; font-weight: 600; }
+.sec-title { font-family: 'Playfair Display', serif; font-weight: 800; font-size: 26px; letter-spacing: -.02em; color: var(--t0); margin-bottom: 4px; }
+.sec-sub { color: var(--t2); font-size: 14px; line-height: 1.65; }
 
-.panel-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r4);overflow:hidden;margin-bottom:20px}
-.panel-card-head{padding:24px 28px 20px;border-bottom:1px solid rgba(200,164,74,.07);background:linear-gradient(90deg,rgba(200,164,74,.04),transparent)}
-.pch-step{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.pch-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--t0);margin-bottom:4px;letter-spacing:-.01em}
-.pch-sub{font-size:13px;color:var(--t2)}
-.panel-card-body{padding:28px}
+/* ── FORM FIELDS ──────────────────────────── */
+.field { margin-bottom: 20px; }
+.field label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--t2); margin-bottom: 7px; font-weight: 600;
+}
+.req { color: var(--rose); }
+.hint-tag { margin-left: auto; font-size: 10.5px; letter-spacing: .02em; text-transform: none; color: var(--t3); font-weight: 400; }
+.field input, .field select, .field textarea {
+  width: 100%; padding: 11px 14px;
+  background: var(--bg3); border: 1.5px solid rgba(26,20,9,.08);
+  border-radius: var(--r2); color: var(--t0); font-family: 'Outfit', sans-serif; font-size: 14px;
+  transition: border-color .2s, box-shadow .2s, background .2s;
+  outline: none; -webkit-appearance: none; appearance: none;
+}
+.field input:hover, .field select:hover, .field textarea:hover { border-color: rgba(26,20,9,.14); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--border-f); box-shadow: 0 0 0 3px rgba(14,122,112,.1);
+  background: #fff;
+}
+.field input::placeholder, .field textarea::placeholder { color: var(--t3); font-style: italic; }
+.field textarea { resize: vertical; min-height: 120px; line-height: 1.7; }
 
-/* ══════════════════════════════════════════════
-   FORM ELEMENTS
-══════════════════════════════════════════════ */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.form-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
-.form-grid.cols-1{grid-template-columns:1fr}
-.form-full{grid-column:span 2}
-.form-full3{grid-column:span 3}
+.field input.err, .field select.err, .field textarea.err {
+  border-color: rgba(192,57,43,.45) !important;
+  background: rgba(192,57,43,.02) !important;
+}
+.input-hint { font-size: 12px; color: var(--t3); margin-top: 5px; }
+.input-error { font-size: 12px; color: var(--rose); margin-top: 5px; display: none; }
+.field.error .input-error { display: block; }
+.field.error > label { color: var(--rose); }
 
-.fgroup{display:flex;flex-direction:column;gap:7px}
-.flabel{font-size:12px;font-weight:600;color:var(--t1);letter-spacing:.02em;display:flex;align-items:center;gap:6px}
-.flabel .req{color:var(--rose);font-size:10px}
-.flabel .hint{font-size:10px;color:var(--t3);font-weight:400;font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+.input-wrap { position: relative; }
+.input-wrap .input-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--t3); font-size: 15px; pointer-events: none; }
+.input-wrap input { padding-left: 38px; }
+.input-suf-wrap { position: relative; }
+.input-suf-wrap input { padding-right: 52px; }
+.input-suffix { position: absolute; right: 13px; top: 50%; transform: translateY(-50%); font-size: 12px; color: var(--t3); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
 
-/* Input base */
-.finput,.fselect,.ftextarea{width:100%;background:var(--deep);border:1px solid rgba(255,255,255,.08);border-radius:var(--r2);padding:12px 15px;color:var(--t0);font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:all .22s;line-height:1.5}
-.finput::placeholder,.ftextarea::placeholder{color:var(--t3);font-style:italic}
-.fselect{cursor:pointer;color:var(--t1)}.fselect option{background:var(--card)}
-.ftextarea{resize:vertical;min-height:110px;line-height:1.7}
-.finput:focus,.fselect:focus,.ftextarea:focus{border-color:var(--gold-bb);background:rgba(200,164,74,.025);box-shadow:0 0 0 3px rgba(200,164,74,.07)}
-.finput.err,.fselect.err,.ftextarea.err{border-color:var(--rose-b);background:rgba(224,61,94,.025)}
+.select-wrap { position: relative; }
+.select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--t3); pointer-events: none; font-size: 12px; }
+.select-wrap select option { background: #fff; color: var(--t0); }
 
-/* Input with prefix/suffix */
-.input-wrap{position:relative;display:flex;align-items:stretch}
-.input-prefix,.input-suffix{padding:12px 14px;background:var(--card2);border:1px solid rgba(255,255,255,.08);color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:13px;white-space:nowrap;display:flex;align-items:center;flex-shrink:0}
-.input-prefix{border-right:none;border-radius:var(--r2) 0 0 var(--r2)}
-.input-suffix{border-left:none;border-radius:0 var(--r2) var(--r2) 0}
-.input-wrap .finput{border-radius:0;flex:1}
-.input-wrap.has-prefix .finput{border-radius:0}
-.input-wrap.has-suffix .finput{border-radius:var(--r2) 0 0 var(--r2)}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
-.ferr{font-size:11px;color:var(--rose);display:none;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
-.ferr.show{display:block}
+/* ── TYPE CARDS ─────────────────── */
+.type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.type-card {
+  border: 1.5px solid rgba(26,20,9,.08); border-radius: var(--r2);
+  padding: 18px 12px; text-align: center; cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.4,.64,1);
+  background: var(--bg3); box-shadow: var(--sh-xs);
+}
+.type-card:hover { border-color: rgba(61,110,154,.3); transform: translateY(-3px); box-shadow: var(--sh-md); }
+.type-card.selected { border-color: var(--steel); background: var(--steel-d); box-shadow: 0 4px 20px rgba(61,110,154,.25); }
+.type-icon { font-size: 28px; margin-bottom: 6px; display: block; transition: transform .25s; }
+.type-card:hover .type-icon, .type-card.selected .type-icon { transform: scale(1.15); }
+.type-name { font-size: 12.5px; font-weight: 600; color: var(--t1); }
+.type-card.selected .type-name { color: var(--steel); }
 
-/* ── TYPE SELECTOR CARDS ───────────────────── */
-.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.type-card{background:var(--deep);border:2px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:20px 16px;text-align:center;cursor:pointer;transition:all .25s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden}
-.type-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--tc-glow,rgba(200,164,74,.07)),transparent 60%);opacity:0;transition:opacity .25s}
-.type-card:hover{border-color:var(--gold-b);transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,0,0,.4)}.type-card:hover::before{opacity:1}
-.type-card.selected{border-color:var(--gold);background:var(--gold-d);box-shadow:0 0 0 1px rgba(200,164,74,.15),0 10px 30px rgba(0,0,0,.4)}.type-card.selected::before{opacity:1}
-.type-card-ic{font-size:28px;display:block;margin-bottom:10px;transition:transform .25s}.type-card:hover .type-card-ic{transform:scale(1.15)}.type-card.selected .type-card-ic{filter:drop-shadow(0 0 8px rgba(200,164,74,.4))}
-.type-card-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--t0);margin-bottom:3px}
-.type-card-desc{font-size:11px;color:var(--t3);line-height:1.5}
-.type-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:10px;color:#04060a;font-weight:700}
-.type-card.selected .type-check{display:flex}
+/* ── FURNISHING CARDS ─────────────────────── */
+.furnish-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.furnish-card {
+  border: 1.5px solid rgba(26,20,9,.08); border-radius: var(--r2);
+  padding: 14px 10px; text-align: center; cursor: pointer;
+  transition: all .25s; background: var(--bg3); box-shadow: var(--sh-xs);
+}
+.furnish-card:hover { border-color: rgba(14,122,112,.3); transform: translateY(-2px); box-shadow: var(--sh-sm); }
+.furnish-card.selected { border-color: var(--teal); background: var(--teal-d); box-shadow: 0 3px 14px rgba(14,122,112,.18); }
+.f-icon { font-size: 22px; margin-bottom: 5px; display: block; transition: transform .25s; }
+.furnish-card:hover .f-icon, .furnish-card.selected .f-icon { transform: scale(1.12); }
+.f-name { font-size: 12px; font-weight: 600; color: var(--t1); }
+.furnish-card.selected .f-name { color: var(--teal); }
 
-/* ── AMENITY TOGGLE GRID ───────────────────── */
-.amen-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-top:4px}
-.amen-toggle{display:flex;align-items:center;gap:10px;background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:11px 14px;cursor:pointer;transition:all .22s;user-select:none}
-.amen-toggle:hover{border-color:var(--div2);background:rgba(255,255,255,.03)}
-.amen-toggle.on{background:var(--gold-d);border-color:var(--gold-b)}
-.amen-ic{font-size:18px;flex-shrink:0}
-.amen-lbl{font-size:12px;font-weight:500;color:var(--t2);transition:color .2s}.amen-toggle.on .amen-lbl{color:var(--gold)}
-.amen-box{width:18px;height:18px;border-radius:4px;border:1px solid rgba(255,255,255,.15);background:transparent;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto;transition:all .2s;font-size:11px}
-.amen-toggle.on .amen-box{background:var(--gold);border-color:var(--gold);color:#04060a}
+/* ── CHIPS ────────────────────────────────── */
+.chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 14px; border-radius: 100px; border: 1.5px solid rgba(26,20,9,.09);
+  font-size: 13px; cursor: pointer; transition: all .2s; user-select: none;
+  background: var(--bg3); color: var(--t2); box-shadow: var(--sh-xs);
+}
+.chip:hover { border-color: rgba(184,134,60,.3); color: var(--t0); background: var(--gold-d); }
+.chip.selected { background: var(--gold-d); border-color: rgba(184,134,60,.35); color: var(--gold); font-weight: 600; }
 
-/* ── FLOOR PLAN SELECTOR ───────────────────── */
-.floor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.floor-card{background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:14px 12px;text-align:center;cursor:pointer;transition:all .22s}
-.floor-card:hover{border-color:var(--div2)}.floor-card.on{border-color:var(--gold-b);background:var(--gold-d)}
-.floor-card-n{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--t0);margin-bottom:2px}
-.floor-card-l{font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace}
+/* ── PHOTO DROP ZONE ──────────────────────── */
+.photo-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.photo-count-badge { font-size: 11px; font-family: 'JetBrains Mono', monospace; background: var(--gold-d); border: 1px solid var(--gold-b); color: var(--gold); padding: 3px 12px; border-radius: 100px; font-weight: 600; }
 
-/* ── PHOTO UPLOAD ZONE ─────────────────────── */
-.photo-zone{border:2px dashed rgba(200,164,74,.22);border-radius:var(--r3);padding:40px 24px;text-align:center;cursor:pointer;transition:all .25s;position:relative;background:rgba(200,164,74,.025)}
-.photo-zone:hover,.photo-zone.dragover{border-color:var(--gold-bb);background:rgba(200,164,74,.05)}
-.pz-ic{font-size:44px;margin-bottom:14px;display:block;opacity:.7}
-.pz-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:6px}
-.pz-desc{font-size:13px;color:var(--t2);margin-bottom:14px}
-.pz-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 22px;border-radius:var(--r1);background:var(--gold-d);border:1px solid var(--gold-b);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.pz-btn:hover{background:rgba(200,164,74,.18)}
-.pz-input{display:none}
-.pz-badge{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);margin-top:10px;letter-spacing:.08em}
+.drop-zone {
+  border: 2px dashed rgba(184,134,60,.22); border-radius: var(--r3);
+  padding: 40px 24px; text-align: center; cursor: pointer;
+  transition: all .3s; background: var(--bg3); position: relative;
+}
+.drop-zone:hover, .drop-zone.drag-over {
+  border-color: var(--gold); background: var(--gold-d);
+  box-shadow: 0 0 0 4px rgba(184,134,60,.07);
+}
+.drop-zone.drag-over { transform: scale(1.01); }
+.drop-icon { font-size: 44px; margin-bottom: 12px; display: block; }
+.drop-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px; color: var(--t0); margin-bottom: 5px; }
+.drop-sub { font-size: 13px; color: var(--t2); }
+.drop-limit { display: inline-block; font-size: 11px; margin-top: 10px; padding: 3px 12px; border-radius: 100px; background: #fff; border: 1px solid var(--line2); color: var(--t3); font-family: 'JetBrains Mono', monospace; }
 
-.photo-previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:16px}
-.photo-thumb{position:relative;border-radius:var(--r2);overflow:hidden;aspect-ratio:1;background:var(--card2);border:1px solid var(--div2)}
-.photo-thumb img{width:100%;height:100%;object-fit:cover}
-.photo-del{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(224,61,94,.9);display:flex;align-items:center;justify-content:center;font-size:11px;cursor:pointer;color:#fff;font-weight:700;transition:all .15s}
-.photo-del:hover{background:var(--rose)}
+.img-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-top: 14px; }
+.img-thumb {
+  position: relative; border-radius: var(--r2); overflow: hidden;
+  aspect-ratio: 4/3; background: var(--bg4); border: 2px solid rgba(26,20,9,.08);
+  animation: popIn .35s cubic-bezier(.34,1.56,.64,1) both;
+  transition: border-color .2s; box-shadow: var(--sh-xs);
+}
+@keyframes popIn { from{opacity:0;transform:scale(.78);} to{opacity:1;transform:scale(1);} }
+.img-thumb:hover { border-color: rgba(184,134,60,.3); box-shadow: var(--sh-md); }
+.img-thumb.cover-img { border-color: var(--gold); border-width: 2.5px; box-shadow: 0 0 0 3px rgba(184,134,60,.15), var(--sh-md); }
+.img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,20,9,0); transition: background .2s;
+  display: flex; flex-direction: column;
+  justify-content: space-between; padding: 7px;
+}
+.img-thumb:hover .img-overlay { background: rgba(26,20,9,.45); }
+.img-actions { display: flex; gap: 4px; justify-content: flex-end; opacity: 0; transition: opacity .2s; }
+.img-thumb:hover .img-actions { opacity: 1; }
+.img-action-btn { width: 28px; height: 28px; border-radius: 8px; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all .15s; }
+.img-btn-remove { background: rgba(192,57,43,.88); color: #fff; }
+.img-btn-remove:hover { background: var(--rose); }
+.img-btn-cover  { background: rgba(184,134,60,.88); color: #fff; }
+.img-btn-cover:hover  { background: var(--gold); }
+.img-badge { font-size: 10px; padding: 2px 8px; border-radius: 100px; font-weight: 700; align-self: flex-start; font-family: 'JetBrains Mono', monospace; letter-spacing: .05em; }
+.img-badge-cover { background: rgba(184,134,60,.9); color: #fff; }
+.img-badge-num  { background: rgba(26,20,9,.55); color: rgba(255,255,255,.75); }
 
-/* ── PLAN SELECTOR ─────────────────────────── */
-.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
-.plan-card{background:var(--deep);border:2px solid rgba(255,255,255,.07);border-radius:var(--r3);padding:22px 18px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.plan-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--pc,var(--gold)),transparent);opacity:.4}
-.plan-card:hover{transform:translateY(-3px);box-shadow:0 12px 36px rgba(0,0,0,.4)}
-.plan-card.selected{border-color:var(--gold);box-shadow:0 0 0 1px rgba(200,164,74,.15),0 12px 36px rgba(0,0,0,.4)}
-.plan-tag{font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.12em;padding:2px 8px;border-radius:3px;margin-bottom:12px;display:inline-block}
-.plan-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:4px}
-.plan-price{font-family:'Playfair Display',serif;font-size:24px;font-weight:800;margin-bottom:12px;line-height:1}
-.plan-price .pp-free{color:var(--teal)}
-.plan-price .pp-mo{font-size:14px;font-weight:400;color:var(--t3);font-family:'Outfit',sans-serif}
-.plan-features{display:flex;flex-direction:column;gap:7px}
-.pf{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2)}
-.pf::before{content:'✓';color:var(--teal);font-weight:700;font-size:11px;flex-shrink:0}
-.plan-pop{position:absolute;top:14px;right:14px;font-size:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.1em;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);padding:2px 7px;border-radius:3px}
+.upload-item { display: flex; align-items: center; gap: 10px; padding: 11px 15px; background: var(--bg3); border: 1.5px solid var(--line2); border-radius: var(--r2); margin-bottom: 8px; transition: all .3s; }
+.upload-item.done  { border-color: var(--emerald-b); background: var(--emerald-d); }
+.upload-item.error { border-color: var(--rose-b); background: var(--rose-d); }
+.ui-icon { font-size: 20px; flex-shrink: 0; }
+.ui-name { font-size: 12.5px; font-weight: 500; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--t0); }
+.ui-size { font-size: 11px; color: var(--t3); font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+.ui-status { font-size: 11.5px; font-weight: 700; flex-shrink: 0; min-width: 74px; text-align: right; }
+.ui-prog-wrap { width: 100%; height: 3px; background: rgba(26,20,9,.06); border-radius: 2px; overflow: hidden; margin-top: 5px; }
+.ui-prog-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg,var(--teal),var(--gold-lt)); width: 0%; transition: width .3s; }
 
-/* ── TOGGLE SWITCH ─────────────────────────── */
-.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);transition:all .2s}
-.toggle-row.on{border-color:var(--gold-b);background:var(--gold-d)}
-.toggle-lbl{font-size:13px;font-weight:600;color:var(--t1)}
-.toggle-desc{font-size:11px;color:var(--t3);margin-top:2px}
-.toggle-sw{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.1);position:relative;cursor:pointer;transition:all .25s;flex-shrink:0}
-.toggle-sw::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:all .25s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
-.toggle-row.on .toggle-sw{background:var(--gold)}
-.toggle-row.on .toggle-sw::after{left:22px}
+/* ── SECTION DIVIDER ──────────────────────── */
+.sec-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0 16px; }
+.sec-divider span { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--t3); font-weight: 600; white-space: nowrap; font-family: 'JetBrains Mono', monospace; }
+.sec-divider::before, .sec-divider::after { content: ''; flex: 1; height: 1px; background: var(--line2); }
 
-/* ── RANGE SLIDER ─────────────────────────── */
-.range-wrap{padding:8px 0 4px}
-.frange{width:100%;appearance:none;height:4px;border-radius:2px;background:linear-gradient(to right,var(--gold) var(--range-pct,50%),rgba(255,255,255,.1) var(--range-pct,50%));outline:none;cursor:pointer}
-.frange::-webkit-slider-thumb{appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px rgba(200,164,74,.4);cursor:pointer;transition:transform .15s}
-.frange::-webkit-slider-thumb:hover{transform:scale(1.2)}
-.range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:6px}
+/* ── INFO ROWS ────────────────────────────── */
+.info-row { display: flex; align-items: flex-start; gap: 11px; padding: 13px 15px; border-radius: var(--r2); margin-bottom: 16px; font-size: 13px; color: var(--t2); line-height: 1.6; }
+.info-row .ii { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.info-row.info    { background: var(--teal-d); border: 1px solid var(--teal-b); }
+.info-row.warn    { background: var(--warn-d); border: 1px solid rgba(192,124,42,.25); }
+.info-row.success { background: var(--emerald-d); border: 1px solid var(--emerald-b); }
+.info-row.notice  { background: var(--gold-d); border: 1px solid var(--gold-b); }
 
-/* ── CHAR COUNTER ──────────────────────────── */
-.char-counter{font-size:10px;color:var(--t3);text-align:right;font-family:'JetBrains Mono',monospace;margin-top:4px}
+/* ── SUMMARY ──────────────────────────────── */
+.summary-wrap {
+  background: linear-gradient(135deg,rgba(14,122,112,.04),rgba(61,110,154,.05));
+  border: 1.5px solid rgba(61,110,154,.14); border-radius: var(--r3); overflow: hidden;
+}
+.summary-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px 18px; border-bottom: 1px solid rgba(26,20,9,.05); gap: 14px; }
+.summary-row:last-child { border-bottom: none; }
+.summary-key { font-size: 12px; color: var(--t3); font-family: 'JetBrains Mono', monospace; letter-spacing: .04em; flex-shrink: 0; min-width: 110px; }
+.summary-val { font-size: 13.5px; font-weight: 500; color: var(--t0); text-align: right; }
+.summary-val.price { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--steel); }
+.summary-imgs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.summary-img { width: 46px; height: 46px; border-radius: 9px; object-fit: cover; border: 1.5px solid var(--line2); box-shadow: var(--sh-xs); }
 
-/* ── SECTION DIVIDER ───────────────────────── */
-.sdiv{display:flex;align-items:center;gap:14px;margin:26px 0 20px;color:var(--t3)}
-.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:rgba(200,164,74,.08)}
-.sdiv-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap}
+/* ── CHAR COUNT ───────────────────────────── */
+.char-count { font-size: 11.5px; color: var(--t3); text-align: right; margin-top: 5px; }
+.char-count.warn { color: var(--warn); font-weight: 600; }
 
-/* ══════════════════════════════════════════════
-   NAV BUTTONS
-══════════════════════════════════════════════ */
-.form-nav{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:4px}
-.btn-back{padding:13px 24px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px}.btn-back:hover{border-color:var(--gold-b);color:var(--gold)}
-.btn-next{padding:13px 32px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:8px;letter-spacing:.02em}.btn-next:hover{box-shadow:0 0 28px var(--gold-glow);transform:translateY(-1px)}
-.btn-submit{padding:15px 40px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;letter-spacing:.02em}.btn-submit:hover{box-shadow:0 0 36px var(--gold-glow);transform:translateY(-2px)}
+/* ── PROGRESS BAR (top) ───────────────────── */
+.form-progress-wrap { height: 4px; background: var(--bg4); border-radius: 2px; margin-bottom: 28px; overflow: hidden; }
+.form-progress-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg,var(--teal),var(--steel)); transition: width .5s cubic-bezier(.4,0,.2,1); }
 
-/* ══════════════════════════════════════════════
-   SIDEBAR PREVIEW
-══════════════════════════════════════════════ */
-.sidebar{position:sticky;top:120px;display:flex;flex-direction:column;gap:16px}
+/* ── BUTTONS ──────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 11px 24px; border-radius: var(--r2);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600;
+  border: none; cursor: pointer; transition: all .22s;
+  letter-spacing: .01em; text-decoration: none;
+}
+.btn-primary { background: linear-gradient(135deg,#4d84b0,var(--steel)); color: #fff; box-shadow: 0 3px 14px rgba(61,110,154,.28); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(61,110,154,.38); }
+.btn-teal { background: linear-gradient(135deg,var(--teal-lt),var(--teal)); color: #fff; box-shadow: 0 3px 14px rgba(14,122,112,.25); }
+.btn-teal:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(14,122,112,.35); }
+.btn-ghost { background: transparent; border: 1.5px solid var(--line3); color: var(--t1); }
+.btn-ghost:hover:not(:disabled) { background: var(--gold-d); border-color: var(--gold-b); color: var(--gold); }
+.btn-success { background: linear-gradient(135deg,#1f9e6a,var(--emerald)); color: #fff; box-shadow: 0 3px 14px rgba(26,122,74,.25); }
+.btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 22px rgba(26,122,74,.35); }
+.btn-danger { background: linear-gradient(135deg,#d44, var(--rose)); color: #fff; }
+.btn:disabled { opacity: .52; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+.btn-lg { padding: 13px 28px; font-size: 15px; }
+.btn-row { display: flex; gap: 10px; justify-content: space-between; align-items: center; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line2); }
+.s1-prog { font-size: 12px; color: var(--t3); }
 
-.preview-card{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r3);overflow:hidden}
-.preview-banner{height:130px;background:linear-gradient(135deg,#0a1428,#172035);display:flex;align-items:center;justify-content:center;font-size:52px;position:relative}
-.preview-banner-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(4,6,8,.8))}
-.preview-type-tag{position:absolute;top:12px;left:12px;font-size:9px;font-family:'JetBrains Mono',monospace;background:var(--amber-d);color:var(--amber);border:1px solid var(--amber-b);padding:2px 8px;border-radius:3px;letter-spacing:.1em;z-index:2}
-.preview-body{padding:16px}
-.preview-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--t0);margin-bottom:4px;min-height:24px}
-.preview-loc{font-size:12px;color:var(--t2);margin-bottom:12px;min-height:18px}
-.preview-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold-lt);margin-bottom:12px;min-height:28px}
-.preview-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;min-height:22px}
-.ptag{font-size:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:2px 7px;border-radius:3px;color:var(--t2)}
-.preview-footer{padding-top:12px;border-top:1px solid rgba(200,164,74,.08)}
-.prev-btn{width:100%;padding:10px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;opacity:.55;letter-spacing:.02em}
+/* ── PANELS ───────────────────────────────── */
+.step-panel { display: none; }
+.step-panel.active { display: block; animation: fadeUp .4s cubic-bezier(.22,1,.36,1) both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
 
-.completeness-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:20px}
-.cc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.cc-title{font-size:13px;font-weight:700;color:var(--t0)}
-.cc-pct{font-family:'Playfair Display',serif;font-size:20px;font-weight:800;color:var(--gold)}
-.cc-bar{height:6px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden}
-.cc-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-.cc-items{display:flex;flex-direction:column;gap:7px;margin-top:14px}
-.cci{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
-.cci-ic{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;border:1px solid rgba(255,255,255,.1);color:var(--t3)}
-.cci.done .cci-ic{background:var(--teal-d);border-color:var(--teal-b);color:var(--teal)}
+/* ── TOAST ────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  background: #fff; border: 1.5px solid var(--line2);
+  border-radius: var(--r2); padding: 13px 18px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; font-weight: 500; min-width: 250px; max-width: 380px;
+  box-shadow: var(--sh-xl); color: var(--t0);
+  transform: translateY(20px); opacity: 0; pointer-events: none;
+  transition: all .4s cubic-bezier(.34,1.56,.64,1);
+}
+.toast.show { transform: translateY(0); opacity: 1; pointer-events: all; }
+.toast-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.toast.success .toast-dot { background: var(--emerald); }
+.toast.error   .toast-dot { background: var(--rose); }
+.toast.warn    .toast-dot { background: var(--warn); }
+.toast.info    .toast-dot { background: var(--teal); }
+.toast-close { margin-left: auto; cursor: pointer; font-size: 16px; color: var(--t3); line-height: 1; background: none; border: none; padding: 0; }
 
-.perks-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--r2);padding:20px}
-.perks-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--t0);margin-bottom:14px}
-.perk{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px}.perk:last-child{margin-bottom:0}
-.perk-ic{width:32px;height:32px;border-radius:8px;background:var(--gold-d);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.perk-t{font-size:13px;font-weight:600;color:var(--t0);margin-bottom:2px}
-.perk-d{font-size:11px;color:var(--t2);line-height:1.6}
+/* ── SUCCESS SCREEN ───────────────────────── */
+.success-screen { display: none; text-align: center; padding: 60px 24px; animation: fadeUp .6s both; }
+.success-icon { font-size: 76px; margin-bottom: 22px; display: block; animation: bounceIn .7s cubic-bezier(.34,1.56,.64,1) both; }
+@keyframes bounceIn { from{opacity:0;transform:scale(.35);} to{opacity:1;transform:scale(1);} }
+.success-title { font-family: 'Playfair Display', serif; font-weight: 800; font-size: clamp(28px,4vw,40px); letter-spacing: -.02em; margin-bottom: 10px; color: var(--t0); }
+.success-sub { color: var(--t2); margin-bottom: 12px; line-height: 1.78; font-size: 15px; }
+.success-id { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--gold-d); border: 1px solid var(--gold-b); color: var(--gold); padding: 6px 18px; border-radius: 100px; margin-bottom: 28px; }
+.success-images { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px; }
+.success-img { width: 78px; height: 78px; border-radius: 14px; object-fit: cover; border: 2px solid var(--line2); box-shadow: var(--sh-md); }
+.success-approval-note {
+  background: var(--gold-d); border: 1.5px solid var(--gold-b);
+  border-radius: var(--r2); padding: 14px 20px; margin: 0 auto 28px;
+  max-width: 480px; font-size: 13.5px; color: var(--t1); line-height: 1.7;
+}
+.success-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
-/* ══════════════════════════════════════════════
-   SUCCESS SCREEN
-══════════════════════════════════════════════ */
-.success-screen{display:none;position:fixed;inset:0;z-index:1100;background:rgba(2,4,8,.94);backdrop-filter:blur(18px);align-items:center;justify-content:center;padding:20px}
-.success-screen.show{display:flex;animation:ssIn .5s cubic-bezier(.34,1.2,.64,1)}
-@keyframes ssIn{from{opacity:0}to{opacity:1}}
-.success-box{background:var(--card);border:1px solid var(--gold-b);border-radius:var(--r4);padding:52px 44px;max-width:500px;width:100%;text-align:center;box-shadow:0 40px 100px rgba(0,0,0,.7),inset 0 1px 0 rgba(200,164,74,.1)}
-.success-ic{font-size:72px;margin-bottom:22px;display:block;filter:drop-shadow(0 0 24px rgba(200,164,74,.35));animation:successBounce .6s .2s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes successBounce{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
-.success-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:var(--t0);margin-bottom:10px;letter-spacing:-.02em}
-.success-sub{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--gold);margin-bottom:16px}
-.success-desc{font-size:14px;color:var(--t2);line-height:1.82;margin-bottom:28px}
-.success-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-.sb-main{padding:12px 24px;border-radius:var(--r1);background:linear-gradient(135deg,var(--gold),var(--gold-dk));border:none;color:#04060a;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.sb-main:hover{box-shadow:0 0 24px var(--gold-glow)}
-.sb-sec{padding:11px 20px;border-radius:var(--r1);background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--t1);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .2s}.sb-sec:hover{border-color:var(--gold-b);color:var(--gold)}
+/* ═══════════════════════════════════════════════
+   SUBSCRIPTION GATE — Step 3 paywall UI
+═══════════════════════════════════════════════ */
+.submit-area { position: relative; }
 
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--card2);border:1px solid var(--gold-b);border-left:3px solid var(--gold);border-radius:var(--r1);padding:12px 17px;font-size:13px;display:none;box-shadow:0 8px 34px rgba(0,0,0,.5);min-width:250px;animation:ti .3s ease}
-@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sub-checking {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 20px; border-radius: var(--r2);
+  background: var(--bg3); border: 1.5px solid var(--line2);
+  font-size: 13px; color: var(--t3); font-weight: 500;
+  animation: fadeUp .3s both;
+}
+.sub-checking .spin {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2.5px solid var(--line3); border-top-color: var(--steel);
+  animation: spin .7s linear infinite; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ══════════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════════ */
-@media(max-width:768px){
-  .nav-links{display:none}.mob-btn{display:flex}
-  .form-grid{grid-template-columns:1fr !important}
-  .form-full,.form-full3{grid-column:span 1}
-  .type-grid{grid-template-columns:repeat(2,1fr)}
-  .floor-grid{grid-template-columns:repeat(2,1fr)}
-  .plan-grid{grid-template-columns:1fr}
-  .trust-row{border-radius:0;border-left:none;border-right:none}
-  .trust-item{padding:14px 18px}
-  .success-box{padding:36px 24px}
-  .success-btns{flex-direction:column}
+.sub-active-badge {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  background: var(--emerald-d); border: 1px solid var(--emerald-b);
+  font-size: 12px; font-weight: 600; color: var(--emerald);
+  font-family: 'JetBrains Mono', monospace; letter-spacing: .05em;
+  animation: fadeUp .4s both;
+}
+.sub-active-badge .sub-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--emerald); animation: blink 2s infinite;
+}
+.sub-active-badge .sub-plan-name {
+  background: rgba(26,122,74,.14); padding: 2px 8px; border-radius: 100px;
+  margin-left: 4px; font-size: 10px; letter-spacing: .08em;
+}
+
+/* ── PAYWALL GATE CARD ────────────────────── */
+.sub-gate {
+  border-radius: var(--r3); overflow: hidden;
+  border: 1.5px solid rgba(61,110,154,.25);
+  box-shadow: var(--sh-lg), 0 0 0 4px rgba(61,110,154,.04);
+  animation: fadeUp .45s cubic-bezier(.22,1,.36,1) both;
+}
+
+.sg-banner {
+  background: linear-gradient(120deg, #10161c 0%, #16283a 40%, #0c1a26 100%);
+  padding: 28px 32px 26px;
+  position: relative; overflow: hidden;
+}
+.sg-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(61,110,154,.22), transparent);
+}
+.sg-banner::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(61,110,154,.4), transparent);
+}
+.sg-banner-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
+.sg-lock-circle {
+  width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(61,110,154,.3), rgba(61,110,154,.12));
+  border: 1.5px solid rgba(61,110,154,.35);
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+  box-shadow: 0 0 24px rgba(61,110,154,.25);
+}
+.sg-banner-text { flex: 1; }
+.sg-banner-title {
+  font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+  color: #fff; margin-bottom: 4px; letter-spacing: -.01em;
+}
+.sg-banner-sub { font-size: 13px; color: rgba(255,255,255,.55); line-height: 1.55; }
+.sg-plan-chip {
+  flex-shrink: 0; padding: 6px 14px; border-radius: 100px;
+  background: rgba(61,110,154,.2); border: 1px solid rgba(61,110,154,.35);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: .12em;
+  color: #7fb0dd; font-weight: 700; white-space: nowrap;
+  animation: subtlePulse 3s ease-in-out infinite;
+}
+@keyframes subtlePulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(61,110,154,0); }
+  50%      { box-shadow: 0 0 0 5px rgba(61,110,154,.14); }
+}
+
+.sg-body { background: #fff; padding: 26px 32px 28px; }
+
+.sg-benefits {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px;
+}
+.sg-benefit {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 14px; border-radius: var(--r2);
+  background: var(--bg3); border: 1px solid var(--line2);
+  transition: all .2s;
+}
+.sg-benefit:hover { border-color: rgba(61,110,154,.25); background: var(--steel-d); }
+.sg-benefit-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.sg-benefit-text { flex: 1; }
+.sg-benefit-title { font-size: 12.5px; font-weight: 600; color: var(--t0); margin-bottom: 2px; }
+.sg-benefit-desc  { font-size: 11.5px; color: var(--t3); line-height: 1.5; }
+
+.sg-cta-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; border-radius: var(--r2);
+  background: linear-gradient(120deg, var(--steel-d), rgba(14,122,112,.05));
+  border: 1.5px solid rgba(61,110,154,.2);
+  flex-wrap: wrap;
+}
+.sg-cta-text { flex: 1; min-width: 200px; }
+.sg-cta-title { font-size: 14.5px; font-weight: 700; color: var(--t0); margin-bottom: 3px; }
+.sg-cta-sub { font-size: 12px; color: var(--t2); line-height: 1.55; }
+.sg-cta-btns { display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0; }
+
+.btn-locked {
+  background: var(--bg4) !important;
+  color: var(--t3) !important;
+  border: 1.5px solid var(--line3) !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+  position: relative;
+  gap: 8px;
+}
+.btn-locked::after {
+  content: '🔒';
+  font-size: 14px;
+}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media(max-width:680px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .type-grid { grid-template-columns: repeat(2,1fr); }
+  .furnish-grid { grid-template-columns: repeat(2,1fr); }
+  .img-grid { grid-template-columns: repeat(2,1fr); }
+  .step-label { display: none; }
+  .topbar { padding: 0 18px; }
+  .page { padding: 24px 16px 80px; }
+  .card { padding: 24px 20px; }
+  .btn-row { flex-direction: column-reverse; gap: 8px; }
+  .btn-row .btn { width: 100%; }
+  .s1-prog { text-align: center; }
+  .sg-benefits { grid-template-columns: 1fr; }
+  .sg-banner { padding: 22px 22px 20px; }
+  .sg-body { padding: 20px 22px 24px; }
+  .sg-plan-chip { display: none; }
+  .sg-cta-row { flex-direction: column; align-items: flex-start; gap: 12px; }
 }
 </style>
 </head>
 <body>
 
-<!-- AMBIENT -->
-<div class="amb"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
-<div class="bg-noise"></div>
-<div class="bg-grid"></div>
+<!-- BG -->
+<div class="bg-scene"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div></div>
+<div class="dot-grid"></div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- SUCCESS SCREEN -->
-<div class="success-screen" id="successScreen">
-  <div class="success-box">
-    <span class="success-ic">🏢</span>
-    <div class="success-title">Property Listed!</div>
-    <div class="success-sub">Your commercial space is now live.</div>
-    <div class="success-desc">Congratulations! Your property has been submitted for verification. Our team will review it within 24 hours and it will go live on SmartRent AI. You'll receive confirmation at your registered email.</div>
-    <div class="success-btns">
-      <a class="sb-main" href="commercial.html">🏢 View Commercial Listings</a>
-      <a class="sb-sec" href="booking-dashboard.html">📋 Owner Dashboard</a>
-      <a class="sb-sec" href="index.html">🏠 Home</a>
-    </div>
-  </div>
+<div class="toast" id="toast">
+  <div class="toast-dot"></div>
+  <span id="toastMsg">Message</span>
+  <button class="toast-close" onclick="dismissToast()">×</button>
 </div>
 
-<!-- MOBILE MENU -->
-<div class="mob-drawer" id="mobDrawer">
-  <a class="mob-l" href="index.html">🏠 Home</a>
-  <a class="mob-l" href="pg-hostel-listings.html">🛏 PG &amp; Hostels</a>
-  <a class="mob-l" href="commercial.html">🏢 Commercial Rentals</a>
-  <a class="mob-l" href="post-property.html">📋 List PG / Hostel</a>
-  <a class="mob-l" href="booking-dashboard.html">📊 Dashboard</a>
-  <a class="mob-l" href="admin.html">⚙️ Admin</a>
-  <hr style="border:none;border-top:1px solid rgba(200,164,74,.1);margin:8px 0">
-  <a class="nbtn nbtn-ghost" href="login.html" style="text-decoration:none;justify-content:center">Sign In</a>
-</div>
-
-<!-- ══════════ NAVBAR ══════════ -->
-<nav class="nav" id="navbar">
+<!-- TOPBAR -->
+<nav class="topbar" id="topbar">
   <a href="index.html" class="brand">
     <div class="brand-gem">💎</div>
-    <span class="brand-name">SmartRent<span class="brand-ai">AI</span></span>
+    <span class="brand-name">SmartRent<span class="brand-tag">AI</span></span>
   </a>
   <div class="nav-links">
-    <a class="nl" href="index.html">Home</a>
-    <a class="nl" href="pg-hostel-listings.html">PG &amp; Hostels</a>
-    <a class="nl" href="commercial.html">Commercial</a>
-    <a class="nl" href="post-property.html">List PG / Hostel</a>
-    <a class="nl" href="admin.html">Admin</a>
-  </div>
-  <div class="nav-r">
-    <a class="nbtn nbtn-ghost" href="login.html" style="text-decoration:none">Sign In</a>
-    <a class="nbtn nbtn-gold" href="commercial.html" style="text-decoration:none">← Back to Listings</a>
-    <button class="mob-btn" onclick="toggleDrawer()" id="mobBtn">☰</button>
+    <div class="fb-pill connecting" id="fbPill"><div class="fb-dot"></div><span id="fbPillText">CONNECTING</span></div>
+    <a href="index.html" class="nav-link">🏠 Home</a>
+    <a href="owner-dashboard.html" class="nav-link">📊 Dashboard</a>
+    <a href="commercial.html" class="nav-link">🏢 Browse Commercial</a>
   </div>
 </nav>
 
-<!-- ══════════ PAGE HEADER ══════════ -->
-<div class="page-header">
-  <div class="ph-ring pr-a"></div>
-  <div class="ph-ring pr-b"></div>
+<!-- PAGE -->
+<div class="page">
 
-  <div class="ph-badge">🏢 Commercial Listing Portal</div>
-  <h1 class="ph-title">List Your<br><em>Commercial Property</em></h1>
-  <div class="ph-sub">Free listing. Verified. Instant reach.</div>
-  <p class="ph-desc">Reach <strong style="color:var(--gold-lt)">50,000+ verified business tenants</strong> actively searching for commercial space. Zero brokerage, transparent process, live within 24 hours.</p>
-
-  <div class="trust-row">
-    <div class="trust-item"><div class="ti-v">Free</div><div class="ti-l">Listing Cost</div></div>
-    <div class="trust-item"><div class="ti-v">24hr</div><div class="ti-l">Go Live</div></div>
-    <div class="trust-item"><div class="ti-v">50K+</div><div class="ti-l">Active Tenants</div></div>
-    <div class="trust-item"><div class="ti-v">₹0</div><div class="ti-l">Brokerage</div></div>
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="ph-eyebrow">New Commercial Listing</div>
+    <h1 class="ph-title">List Your Commercial Space 🏢</h1>
+    <p class="ph-sub">Fill in 3 simple steps — reach verified businesses actively searching for office, retail &amp; industrial space.</p>
   </div>
-</div>
 
-<!-- ══════════ STEP BAR ══════════ -->
-<div class="step-bar">
-  <div class="step-inner">
-    <div class="step-node active" id="sn1" onclick="goStep(1)">
-      <div class="step-circle">01</div>
-      <div class="step-label">Property Type</div>
-    </div>
-    <div class="step-connector" id="sc1"></div>
-    <div class="step-node" id="sn2" onclick="goStep(2)">
-      <div class="step-circle">02</div>
-      <div class="step-label">Basic Details</div>
-    </div>
-    <div class="step-connector" id="sc2"></div>
-    <div class="step-node" id="sn3" onclick="goStep(3)">
-      <div class="step-circle">03</div>
-      <div class="step-label">Location</div>
-    </div>
-    <div class="step-connector" id="sc3"></div>
-    <div class="step-node" id="sn4" onclick="goStep(4)">
-      <div class="step-circle">04</div>
-      <div class="step-label">Pricing</div>
-    </div>
-    <div class="step-connector" id="sc4"></div>
-    <div class="step-node" id="sn5" onclick="goStep(5)">
-      <div class="step-circle">05</div>
-      <div class="step-label">Amenities</div>
-    </div>
-    <div class="step-connector" id="sc5"></div>
-    <div class="step-node" id="sn6" onclick="goStep(6)">
-      <div class="step-circle">06</div>
-      <div class="step-label">Media</div>
-    </div>
-    <div class="step-connector" id="sc6"></div>
-    <div class="step-node" id="sn7" onclick="goStep(7)">
-      <div class="step-circle">07</div>
-      <div class="step-label">Plan &amp; Publish</div>
+  <!-- ══ AUTH GATE (shown when logged out) ══ -->
+  <div id="authGate" style="display:none">
+    <div class="auth-gate">
+      <span class="ag-icon">🔐</span>
+      <div class="ag-title">Sign In to List Your Property</div>
+      <div class="ag-sub">You need a SmartRent AI account to post commercial listings. It's free and takes under 60 seconds.</div>
+      <div class="ag-btns">
+        <a class="btn btn-primary btn-lg" href="login.html">Sign In</a>
+        <a class="btn btn-teal btn-lg" href="register.html">Create Free Account →</a>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ══════════ MAIN FORM ══════════ -->
-<div class="form-layout">
+  <!-- ══ MAIN FORM (shown when logged in) ══ -->
+  <div id="mainForm" style="display:none">
 
-  <!-- ───── FORM COLUMN ───── -->
-  <div class="form-col">
+    <!-- Progress bar -->
+    <div class="form-progress-wrap">
+      <div class="form-progress-bar" id="formProgressBar" style="width:0%"></div>
+    </div>
 
-    <!-- ═══ STEP 1: Property Type ═══ -->
-    <div class="step-panel active" id="step1">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 01 of 07</div>
-          <div class="pch-title">What type of commercial space are you listing?</div>
-          <div class="pch-sub">Select the category that best describes your property</div>
+    <!-- STEPPER -->
+    <div class="stepper" id="stepper">
+      <div class="step active" id="s1"><div class="step-circle" id="sc1">1</div><div class="step-label">Basic Info</div></div>
+      <div class="step-line" id="sl1"></div>
+      <div class="step" id="s2"><div class="step-circle" id="sc2">2</div><div class="step-label">Details &amp; Terms</div></div>
+      <div class="step-line" id="sl2"></div>
+      <div class="step" id="s3"><div class="step-circle" id="sc3">3</div><div class="step-label">Photos &amp; Review</div></div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         STEP 1 — BASIC INFO
+    ══════════════════════════════════════ -->
+    <div class="step-panel active" id="panel1">
+      <div class="card">
+        <div class="sec-header">
+          <div class="sec-tag">Step 1 of 3 · ~3 min</div>
+          <div class="sec-title">Basic Information</div>
+          <div class="sec-sub">Start with the essentials. Accurate details attract genuine business enquiries.</div>
         </div>
-        <div class="panel-card-body">
+
+        <!-- Commercial Type -->
+        <div class="field">
+          <label>Property Type <span class="req">*</span></label>
           <div class="type-grid" id="typeGrid">
-            <div class="type-card" onclick="selectType(this,'Office')" style="--tc-glow:rgba(91,163,212,.08)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">🏢</span>
-              <div class="type-card-name">Office Space</div>
-              <div class="type-card-desc">Corporate offices, managed workspaces, business centres</div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'Retail')" style="--tc-glow:rgba(200,164,74,.08)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">🏪</span>
-              <div class="type-card-name">Retail / Shop</div>
-              <div class="type-card-desc">High street shops, malls, standalone retail units</div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'Coworking')" style="--tc-glow:rgba(18,196,142,.07)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">💻</span>
-              <div class="type-card-name">Co-working Space</div>
-              <div class="type-card-desc">Shared desks, private cabins, flex offices, startup hubs</div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'Warehouse')" style="--tc-glow:rgba(232,148,12,.07)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">🏭</span>
-              <div class="type-card-name">Warehouse</div>
-              <div class="type-card-desc">Storage, distribution centres, logistics parks</div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'Industrial')" style="--tc-glow:rgba(91,163,212,.07)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">⚙️</span>
-              <div class="type-card-name">Industrial Unit</div>
-              <div class="type-card-desc">Manufacturing sheds, MIDC plots, factory units</div>
-            </div>
-            <div class="type-card" onclick="selectType(this,'Showroom')" style="--tc-glow:rgba(200,164,74,.08)">
-              <div class="type-check">✓</div>
-              <span class="type-card-ic">🚗</span>
-              <div class="type-card-name">Showroom</div>
-              <div class="type-card-desc">Automotive, luxury, display showrooms with ramp access</div>
-            </div>
-          </div>
-          <div class="ferr" id="typeErr" style="margin-top:12px">Please select a property type to continue</div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Owner Details</span></div>
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Owner / Company Name <span class="req">*</span></label>
-              <input class="finput" id="ownerName" placeholder="Your name or company name">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Owner Type <span class="req">*</span></label>
-              <select class="fselect" id="ownerType">
-                <option value="">Select owner type</option>
-                <option>Individual Owner</option>
-                <option>Company / Corporate</option>
-                <option>Developer / Builder</option>
-                <option>Property Manager</option>
-                <option>REIT / Fund</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Mobile Number <span class="req">*</span></label>
-              <div class="input-wrap has-prefix">
-                <div class="input-prefix">+91</div>
-                <input class="finput" id="ownerPhone" type="tel" placeholder="10-digit number" maxlength="10">
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Email Address <span class="req">*</span></label>
-              <input class="finput" id="ownerEmail" type="email" placeholder="you@company.com">
-            </div>
-            <div class="fgroup form-full">
-              <label class="flabel">WhatsApp Number <span class="hint">(Optional — for tenant direct contact)</span></label>
-              <div class="input-wrap has-prefix">
-                <div class="input-prefix">+91</div>
-                <input class="finput" id="ownerWa" type="tel" placeholder="Same as mobile" maxlength="10">
-              </div>
-            </div>
+            <div class="type-card selected" data-type="Office" onclick="selectType(this)"><span class="type-icon">🖥️</span><div class="type-name">Office Space</div></div>
+            <div class="type-card" data-type="Retail" onclick="selectType(this)"><span class="type-icon">🏪</span><div class="type-name">Retail / Shop</div></div>
+            <div class="type-card" data-type="Coworking" onclick="selectType(this)"><span class="type-icon">💻</span><div class="type-name">Co-working</div></div>
+            <div class="type-card" data-type="Warehouse" onclick="selectType(this)"><span class="type-icon">🏭</span><div class="type-name">Warehouse</div></div>
+            <div class="type-card" data-type="Industrial" onclick="selectType(this)"><span class="type-icon">⚙️</span><div class="type-name">Industrial</div></div>
+            <div class="type-card" data-type="Showroom" onclick="selectType(this)"><span class="type-icon">🚗</span><div class="type-name">Showroom</div></div>
           </div>
         </div>
-      </div>
-      <div class="form-nav">
-        <span></span>
-        <button class="btn-next" onclick="nextStep(1)">Continue to Details ›</button>
-      </div>
-    </div>
 
-    <!-- ═══ STEP 2: Basic Details ═══ -->
-    <div class="step-panel" id="step2">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 02 of 07</div>
-          <div class="pch-title">Property Details</div>
-          <div class="pch-sub">Describe your commercial space to attract the right tenants</div>
+        <!-- Title -->
+        <div class="field" id="f-name">
+          <label>Property Name / Title <span class="req">*</span> <span class="hint-tag">mention type + area + USP</span></label>
+          <input id="name" placeholder="e.g. Grade-A Office Space in HITEC City with Parking" maxlength="90"
+                 oninput="updateCharCount('name','nameCount',90);updateS1Progress()">
+          <div class="char-count" id="nameCount">0 / 90</div>
+          <div class="input-error">Please enter a title (minimum 10 characters).</div>
         </div>
-        <div class="panel-card-body">
-          <div class="form-grid cols-1">
-            <div class="fgroup">
-              <label class="flabel">Property Title <span class="req">*</span> <span class="hint">(How it appears in search)</span></label>
-              <input class="finput" id="propTitle" placeholder="e.g. Prime Office Space in Gachibowli Financial District" oninput="updatePreview()">
-              <div class="char-counter"><span id="titleLen">0</span>/100 characters</div>
-            </div>
-          </div>
 
-          <div class="form-grid" style="margin-top:18px">
-            <div class="fgroup">
-              <label class="flabel">Total Area <span class="req">*</span></label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="propArea" type="number" placeholder="e.g. 2500" oninput="updatePreview()">
-                <div class="input-suffix">Sq.ft</div>
-              </div>
+        <!-- Rent & Size -->
+        <div class="grid-2">
+          <div class="field" id="f-price">
+            <label>Monthly Rent <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">₹</span>
+              <input id="price" type="number" placeholder="150000" min="1000" max="50000000" oninput="updateS1Progress()">
             </div>
-            <div class="fgroup">
-              <label class="flabel">Carpet Area <span class="hint">(Optional)</span></label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="propCarpet" type="number" placeholder="Usable area">
-                <div class="input-suffix">Sq.ft</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Floor Number <span class="req">*</span></label>
-              <select class="fselect" id="propFloor">
-                <option value="">Select floor</option>
-                <option>Basement</option><option>Ground Floor</option><option>Mezzanine</option>
-                <option>1st Floor</option><option>2nd Floor</option><option>3rd Floor</option>
-                <option>4th Floor</option><option>5th Floor</option><option>6th–10th Floor</option>
-                <option>11th–15th Floor</option><option>16th–20th Floor</option><option>Above 20th Floor</option>
-                <option>Multiple Floors</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Total Floors in Building</label>
-              <input class="finput" id="propTotalFloors" type="number" placeholder="e.g. 18">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Ceiling Height</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="propCeiling" type="number" placeholder="e.g. 12">
-                <div class="input-suffix">Feet</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Year Built</label>
-              <input class="finput" id="propYear" type="number" placeholder="e.g. 2020" min="1980" max="2025">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Furnishing Status <span class="req">*</span></label>
-              <select class="fselect" id="propFurnish">
-                <option value="">Select status</option>
-                <option>Bare Shell</option><option>Warm Shell</option>
-                <option>Semi-Furnished</option><option>Fully Furnished</option>
-                <option>Plug &amp; Play</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Seating Capacity <span class="hint">(For Office / Co-working)</span></label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="propSeats" type="number" placeholder="e.g. 50">
-                <div class="input-suffix">Seats</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Parking Slots</label>
-              <input class="finput" id="propParking" type="number" placeholder="e.g. 10">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Grade / Category</label>
-              <select class="fselect" id="propGrade">
-                <option value="">Select grade</option>
-                <option>Grade A+</option><option>Grade A</option><option>Grade B+</option>
-                <option>Grade B</option><option>Standalone Building</option>
-              </select>
-            </div>
+            <div class="input-hint">Expected monthly lease amount</div>
+            <div class="input-error">Enter a valid rent (min ₹1,000).</div>
           </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Property Description</span></div>
-          <div class="fgroup">
-            <label class="flabel">Detailed Description <span class="req">*</span></label>
-            <textarea class="ftextarea" id="propDesc" rows="5" placeholder="Describe your property in detail — highlight key features, nearby landmarks, connectivity, unique selling points, infrastructure and any special benefits for tenants…" oninput="descCounter(this)"></textarea>
-            <div class="char-counter"><span id="descLen">0</span>/1000 — Minimum 80 characters recommended</div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Lease Preferences</span></div>
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Minimum Lease Period <span class="req">*</span></label>
-              <select class="fselect" id="leasePeriod">
-                <option value="">Select period</option>
-                <option>1 Month</option><option>3 Months</option><option>6 Months</option>
-                <option>11 Months</option><option>1 Year</option><option>2 Years</option>
-                <option>3 Years</option><option>5 Years</option>
-              </select>
+          <div class="field" id="f-sqft">
+            <label>Carpet / Built-up Area <span class="req">*</span></label>
+            <div class="input-suf-wrap">
+              <input id="sqft" type="number" placeholder="2500" min="50" oninput="updateS1Progress()">
+              <span class="input-suffix">sq.ft</span>
             </div>
-            <div class="fgroup">
-              <label class="flabel">Lock-in Period</label>
-              <select class="fselect" id="lockIn">
-                <option value="">None / Flexible</option>
-                <option>3 Months</option><option>6 Months</option><option>1 Year</option>
-                <option>2 Years</option><option>3 Years</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Preferred Tenant Type</label>
-              <select class="fselect" id="tenantType">
-                <option value="">Any Business</option>
-                <option>IT / Tech Company</option><option>BPO / KPO</option>
-                <option>Retail / F&B Brand</option><option>E-commerce / Logistics</option>
-                <option>Manufacturing</option><option>Healthcare / Pharma</option>
-                <option>Finance / BFSI</option><option>Startup / SME</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Available From <span class="req">*</span></label>
-              <input class="finput" id="availFrom" type="date">
-            </div>
-          </div>
-
-          <!-- Toggles -->
-          <div class="sdiv"><span class="sdiv-lbl">Property Policies</span></div>
-          <div style="display:flex;flex-direction:column;gap:10px" id="togglesContainer">
-            <div class="toggle-row" id="t-pets" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">Pets Allowed</div><div class="toggle-desc">Tenants may have pets on premises</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-24hr" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">24/7 Access</div><div class="toggle-desc">Tenants have round-the-clock building access</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-food" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">Food Court / Cafeteria</div><div class="toggle-desc">On-premises dining facility available</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-power" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">100% Power Backup</div><div class="toggle-desc">Uninterrupted power supply with DG/UPS</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-green" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">Green / LEED Certified</div><div class="toggle-desc">Certified sustainable / eco-friendly building</div></div>
-              <div class="toggle-sw"></div>
-            </div>
+            <div class="input-error">Please enter the area in sq.ft.</div>
           </div>
         </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(2)">‹ Back</button>
-        <button class="btn-next" onclick="nextStep(2)">Continue to Location ›</button>
-      </div>
-    </div>
 
-    <!-- ═══ STEP 3: Location ═══ -->
-    <div class="step-panel" id="step3">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 03 of 07</div>
-          <div class="pch-title">Location &amp; Address</div>
-          <div class="pch-sub">Help tenants find your property easily</div>
-        </div>
-        <div class="panel-card-body">
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">City <span class="req">*</span></label>
-              <select class="fselect" id="city" onchange="updatePreview()">
-                <option value="">Select city</option>
+        <!-- City & Locality -->
+        <div class="grid-2">
+          <div class="field" id="f-city">
+            <label>City <span class="req">*</span></label>
+            <div class="select-wrap">
+              <select id="city" onchange="updateS1Progress()">
+                <option value="">— Select City —</option>
                 <option>Hyderabad</option><option>Bangalore</option><option>Mumbai</option>
-                <option>Delhi</option><option>Gurgaon</option><option>Noida</option>
-                <option>Chennai</option><option>Pune</option><option>Kolkata</option>
-                <option>Ahmedabad</option><option>Surat</option><option>Jaipur</option>
+                <option>Delhi NCR</option><option>Chennai</option><option>Pune</option>
+                <option>Kolkata</option><option>Ahmedabad</option><option>Noida</option>
+                <option>Gurgaon</option><option>Kochi</option><option>Jaipur</option>
+                <option>Chandigarh</option><option>Indore</option><option>Vizag</option>
               </select>
             </div>
-            <div class="fgroup">
-              <label class="flabel">Locality / Area <span class="req">*</span></label>
-              <input class="finput" id="locality" placeholder="e.g. Gachibowli, Whitefield" oninput="updatePreview()">
-            </div>
-            <div class="fgroup form-full">
-              <label class="flabel">Street Address / Building Name <span class="req">*</span></label>
-              <input class="finput" id="address" placeholder="e.g. Survey No. 12, DLF Cyber City, Gachibowli">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Landmark <span class="hint">(Optional)</span></label>
-              <input class="finput" id="landmark" placeholder="e.g. Near Raheja Mindspace">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">PIN Code <span class="req">*</span></label>
-              <input class="finput" id="pincode" type="text" placeholder="6-digit PIN" maxlength="6">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Business District / Park</label>
-              <select class="fselect" id="bizPark">
-                <option value="">None / Standalone</option>
-                <option>DLF Cyber City</option><option>Raheja Mindspace</option><option>Manyata Tech Park</option>
-                <option>RMZ Infinity</option><option>Prestige Tech Park</option><option>Bagmane Tech Park</option>
-                <option>HITEC City</option><option>BKC (Bandra Kurla Complex)</option><option>Nariman Point</option>
-                <option>Sector 62 Noida</option><option>Golf Course Road</option><option>ORR Bangalore</option>
-                <option>Other Business Park</option>
-              </select>
-            </div>
+            <div class="input-error">Please select a city.</div>
           </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Nearby Connectivity</span></div>
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Metro / Rail Distance</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="metroKm" type="number" step="0.1" placeholder="0.5">
-                <div class="input-suffix">km</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Nearest Metro Station</label>
-              <input class="finput" id="metroName" placeholder="e.g. Raidurg Metro">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Airport Distance</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="airportKm" type="number" placeholder="25">
-                <div class="input-suffix">km</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Highway / Expressway Access</label>
-              <input class="finput" id="highway" placeholder="e.g. NH-65, ORR">
-            </div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Google Maps (Optional)</span></div>
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Latitude</label>
-              <input class="finput" id="lat" type="number" step="0.000001" placeholder="17.428400">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Longitude</label>
-              <input class="finput" id="lng" type="number" step="0.000001" placeholder="78.351234">
-            </div>
-            <div class="fgroup form-full">
-              <label class="flabel">Google Maps Link <span class="hint">(Paste the share link)</span></label>
-              <input class="finput" id="mapsUrl" type="url" placeholder="https://maps.google.com/...">
-            </div>
+          <div class="field" id="f-area">
+            <label>Business Park / Locality <span class="req">*</span></label>
+            <input id="area" placeholder="e.g. HITEC City, Koramangala, BKC" oninput="updateS1Progress()">
+            <div class="input-error">Please enter the locality / business park.</div>
           </div>
         </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(3)">‹ Back</button>
-        <button class="btn-next" onclick="nextStep(3)">Continue to Pricing ›</button>
-      </div>
-    </div>
 
-    <!-- ═══ STEP 4: Pricing ═══ -->
-    <div class="step-panel" id="step4">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 04 of 07</div>
-          <div class="pch-title">Pricing &amp; Financials</div>
-          <div class="pch-sub">Set competitive rates — our market data helps you benchmark</div>
+        <!-- Full Address -->
+        <div class="field">
+          <label>Full Address <span class="hint-tag">Revealed to enquirers only after contact</span></label>
+          <input id="fullAddress" placeholder="Building, Street, Landmark, PIN code">
+          <div class="input-hint">Exact address is only shown to verified enquirers</div>
         </div>
-        <div class="panel-card-body">
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Monthly Rent <span class="req">*</span></label>
-              <div class="input-wrap has-prefix">
-                <div class="input-prefix">₹</div>
-                <input class="finput" id="rentAmt" type="number" placeholder="e.g. 150000" oninput="updatePreview()">
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Rent Type <span class="req">*</span></label>
-              <select class="fselect" id="rentType">
-                <option>Fixed Monthly Rent</option>
-                <option>Per Sq.ft / Month</option>
-                <option>Per Seat / Month</option>
-                <option>Revenue Share</option>
-                <option>Negotiable</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Security Deposit <span class="req">*</span></label>
-              <div class="input-wrap has-prefix">
-                <div class="input-prefix">₹</div>
-                <input class="finput" id="deposit" type="number" placeholder="e.g. 600000">
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Deposit Equivalent (Months)</label>
-              <select class="fselect" id="depositMonths">
-                <option>1 Month</option><option>2 Months</option><option>3 Months</option>
-                <option>6 Months</option><option>12 Months</option>
-              </select>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Annual Escalation</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="escalation" type="number" placeholder="e.g. 5" step="0.5">
-                <div class="input-suffix">% p.a.</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">GST Applicable</label>
-              <select class="fselect" id="gst">
-                <option>GST Inclusive</option>
-                <option>GST Extra (18%)</option>
-                <option>Not Applicable</option>
+
+        <!-- Floor / Total Floors -->
+        <div class="grid-3">
+          <div class="field">
+            <label>Floor</label>
+            <div class="select-wrap">
+              <select id="floor">
+                <option value="">—</option>
+                <option>Ground Floor</option><option>1st Floor</option><option>2nd Floor</option>
+                <option>3rd Floor</option><option>4th Floor</option><option>5th Floor</option>
+                <option>6–10th Floor</option><option>11–20th Floor</option><option>20+ Floor</option>
+                <option>Entire Building</option>
               </select>
             </div>
           </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Market Benchmark</span></div>
-          <div style="background:var(--deep);border:1px solid rgba(200,164,74,.12);border-radius:var(--r2);padding:18px;margin-bottom:18px">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px">
-              <div style="font-size:13px;color:var(--t1);font-weight:600">📊 Benchmark: Office Space · Hyderabad · Gachibowli</div>
-              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold)">Updated Q1 2026</div>
-            </div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-              <div style="text-align:center;padding:12px;background:var(--card);border-radius:var(--r1);border:1px solid rgba(255,255,255,.05)">
-                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold-lt)">₹55</div>
-                <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px">MIN SQFT</div>
-              </div>
-              <div style="text-align:center;padding:12px;background:rgba(200,164,74,.08);border-radius:var(--r1);border:1px solid var(--gold-b)">
-                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold)">₹72</div>
-                <div style="font-size:10px;color:var(--gold);font-family:'JetBrains Mono',monospace;margin-top:2px">AVG SQFT</div>
-              </div>
-              <div style="text-align:center;padding:12px;background:var(--card);border-radius:var(--r1);border:1px solid rgba(255,255,255,.05)">
-                <div style="font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--gold-lt)">₹98</div>
-                <div style="font-size:10px;color:var(--t3);font-family:'JetBrains Mono',monospace;margin-top:2px">MAX SQFT</div>
-              </div>
-            </div>
+          <div class="field">
+            <label>Total Floors in Building</label>
+            <input id="totalFloors" type="number" placeholder="10" min="1">
           </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Additional Charges</span></div>
-          <div class="form-grid">
-            <div class="fgroup">
-              <label class="flabel">Maintenance Charges</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="maintenance" type="number" placeholder="Per sqft / month">
-                <div class="input-suffix">₹/sqft</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Power Charges</label>
-              <select class="fselect" id="powerCharge">
-                <option>Metered (actual consumption)</option>
-                <option>Fixed monthly charge</option>
-                <option>Included in rent</option>
-                <option>N/A</option>
+          <div class="field">
+            <label>Rate <span class="hint-tag">display unit</span></label>
+            <div class="select-wrap">
+              <select id="per">
+                <option value="month">Per Month (total)</option>
+                <option value="sqft/month">Per sq.ft / Month</option>
               </select>
             </div>
-            <div class="fgroup">
-              <label class="flabel">Car Parking Rate</label>
-              <div class="input-wrap has-suffix">
-                <input class="finput" id="parkingRate" type="number" placeholder="Per slot / month">
-                <div class="input-suffix">₹/mo</div>
-              </div>
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Other Charges Notes</label>
-              <input class="finput" id="otherCharges" placeholder="Any other fees or notes">
-            </div>
           </div>
         </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(4)">‹ Back</button>
-        <button class="btn-next" onclick="nextStep(4)">Continue to Amenities ›</button>
-      </div>
-    </div>
 
-    <!-- ═══ STEP 5: Amenities ═══ -->
-    <div class="step-panel" id="step5">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 05 of 07</div>
-          <div class="pch-title">Amenities &amp; Infrastructure</div>
-          <div class="pch-sub">Select everything available at your property — more amenities = more enquiries</div>
-        </div>
-        <div class="panel-card-body">
-          <div class="sdiv"><span class="sdiv-lbl">Connectivity &amp; Power</span></div>
-          <div class="amen-grid" id="amenConnect">
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📶</span><span class="amen-lbl">High-Speed Internet</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌐</span><span class="amen-lbl">Fiber / Leased Line</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔌</span><span class="amen-lbl">3-Phase Power Supply</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">⚡</span><span class="amen-lbl">100% Power Backup</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔋</span><span class="amen-lbl">DG / UPS Set</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">☀️</span><span class="amen-lbl">Solar Power</span><div class="amen-box"></div></div>
+        <!-- Deposit / Available -->
+        <div class="grid-2">
+          <div class="field">
+            <label>Security Deposit <span class="hint-tag">Typical: 6–12 months rent</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">₹</span>
+              <input id="deposit" type="number" placeholder="900000" min="0">
+            </div>
           </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Security &amp; Safety</span></div>
-          <div class="amen-grid">
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔒</span><span class="amen-lbl">24/7 Security Guards</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📹</span><span class="amen-lbl">CCTV Surveillance</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🆔</span><span class="amen-lbl">Biometric Access</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚒</span><span class="amen-lbl">Fire Suppression System</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🧯</span><span class="amen-lbl">Fire NOC Available</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🔐</span><span class="amen-lbl">Smart Access Control</span><div class="amen-box"></div></div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Facilities &amp; Services</span></div>
-          <div class="amen-grid">
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🅿️</span><span class="amen-lbl">Covered Parking</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚗</span><span class="amen-lbl">Open Parking</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🛗</span><span class="amen-lbl">High-Speed Lifts</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚿</span><span class="amen-lbl">Washrooms (Each Floor)</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🍽️</span><span class="amen-lbl">Cafeteria / Food Court</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">☕</span><span class="amen-lbl">Pantry / Break Area</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏋️</span><span class="amen-lbl">Gym / Wellness</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🧹</span><span class="amen-lbl">Daily Housekeeping</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚚</span><span class="amen-lbl">Loading / Dock Bay</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌱</span><span class="amen-lbl">Green Terrace / Garden</span><div class="amen-box"></div></div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Office-Specific</span></div>
-          <div class="amen-grid">
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📅</span><span class="amen-lbl">Meeting Rooms</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🎯</span><span class="amen-lbl">Conference / Board Room</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📺</span><span class="amen-lbl">Video Conf. System</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🖨️</span><span class="amen-lbl">Printing / Copier Room</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📮</span><span class="amen-lbl">Mail Room / Reception</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏆</span><span class="amen-lbl">LEED / Green Certified</span><div class="amen-box"></div></div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Warehouse / Industrial Specific</span></div>
-          <div class="amen-grid">
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">📦</span><span class="amen-lbl">Pallet Racking Ready</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏗️</span><span class="amen-lbl">High Clear Height (10m+)</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚛</span><span class="amen-lbl">Multiple Dock Doors</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🌡️</span><span class="amen-lbl">Temperature Controlled</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🏭</span><span class="amen-lbl">Mezzanine Storage</span><div class="amen-box"></div></div>
-            <div class="amen-toggle" onclick="toggleAmen(this)"><span class="amen-ic">🚤</span><span class="amen-lbl">Water Body / Canal Access</span><div class="amen-box"></div></div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Additional Tags (max 5)</span></div>
-          <div class="fgroup">
-            <input class="finput" id="customTags" placeholder="e.g. SEZ Zone, RERA Approved, Highway Frontage — separate with comma" oninput="updatePreview()">
+          <div class="field">
+            <label>Available From</label>
+            <input id="availableFrom" type="date">
           </div>
         </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(5)">‹ Back</button>
-        <button class="btn-next" onclick="nextStep(5)">Continue to Media ›</button>
-      </div>
-    </div>
 
-    <!-- ═══ STEP 6: Media ═══ -->
-    <div class="step-panel" id="step6">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 06 of 07</div>
-          <div class="pch-title">Photos, Videos &amp; Documents</div>
-          <div class="pch-sub">Properties with 8+ quality photos get 3× more enquiries</div>
-        </div>
-        <div class="panel-card-body">
-          <div class="photo-zone" id="photoZone" onclick="document.getElementById('photoInput').click()" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
-            <span class="pz-ic">📸</span>
-            <div class="pz-title">Drag &amp; drop photos here</div>
-            <div class="pz-desc">JPG, PNG, WEBP — Up to 20 photos, max 5MB each</div>
-            <div class="pz-btn">📁 Browse Photos</div>
-            <input type="file" id="photoInput" class="pz-input" accept="image/*" multiple onchange="handlePhotoSelect(event)">
-            <div class="pz-badge">MINIMUM 3 PHOTOS REQUIRED · MAX 20</div>
-          </div>
-          <div class="photo-previews" id="photoPreviews"></div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Video Tour</span></div>
-          <div class="form-grid cols-1">
-            <div class="fgroup">
-              <label class="flabel">Video Tour URL <span class="hint">(YouTube, Vimeo or Drive link)</span></label>
-              <input class="finput" id="videoUrl" type="url" placeholder="https://www.youtube.com/watch?v=...">
-            </div>
-            <div class="fgroup">
-              <label class="flabel">Virtual Tour / 3D Walk URL <span class="hint">(Matterport, 360° tour etc.)</span></label>
-              <input class="finput" id="virtualUrl" type="url" placeholder="https://my.matterport.com/show/...">
-            </div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Legal Documents</span></div>
-          <div style="background:var(--deep);border:1px solid rgba(255,255,255,.07);border-radius:var(--r2);padding:18px">
-            <div style="font-size:13px;color:var(--t2);line-height:1.78;margin-bottom:14px">
-              Upload property documents for <strong style="color:var(--teal)">Verified Badge</strong> — verified properties receive 4× more enquiries. All documents are encrypted and private.
-            </div>
-            <div class="form-grid">
-              <div class="fgroup">
-                <label class="flabel">Ownership / Title Deed</label>
-                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
-              </div>
-              <div class="fgroup">
-                <label class="flabel">Occupancy Certificate (OC)</label>
-                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
-              </div>
-              <div class="fgroup">
-                <label class="flabel">Building Completion Certificate</label>
-                <input class="finput" type="file" accept=".pdf,.jpg,.png" style="cursor:pointer;color:var(--t2)">
-              </div>
-              <div class="fgroup">
-                <label class="flabel">Floor Plan / Blueprint</label>
-                <input class="finput" type="file" accept=".pdf,.jpg,.png,.dwg" style="cursor:pointer;color:var(--t2)">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(6)">‹ Back</button>
-        <button class="btn-next" onclick="nextStep(6)">Choose Your Plan ›</button>
-      </div>
-    </div>
-
-    <!-- ═══ STEP 7: Plan & Publish ═══ -->
-    <div class="step-panel" id="step7">
-      <div class="panel-card">
-        <div class="panel-card-head">
-          <div class="pch-step">Step 07 of 07 — Final Step</div>
-          <div class="pch-title">Choose Your Listing Plan</div>
-          <div class="pch-sub">Start free — upgrade anytime for premium visibility</div>
-        </div>
-        <div class="panel-card-body">
-          <div class="plan-grid" id="planGrid">
-            <div class="plan-card" style="--pc:var(--teal)" onclick="selectPlan(this,'free')">
-              <div class="plan-tag" style="background:var(--teal-d);color:var(--teal);border:1px solid var(--teal-b)">STARTER</div>
-              <div class="plan-name">Free Listing</div>
-              <div class="plan-price"><span class="pp-free">₹0</span> <span class="pp-mo">forever</span></div>
-              <div class="plan-features">
-                <div class="pf">Basic listing visibility</div>
-                <div class="pf">Up to 8 photos</div>
-                <div class="pf">Standard search placement</div>
-                <div class="pf">Direct enquiry emails</div>
-                <div class="pf">30-day listing</div>
-              </div>
-            </div>
-            <div class="plan-card selected" style="--pc:var(--gold)" onclick="selectPlan(this,'pro')">
-              <div class="plan-pop">POPULAR</div>
-              <div class="plan-tag" style="background:var(--gold-d);color:var(--gold);border:1px solid var(--gold-b)">PRO</div>
-              <div class="plan-name">Premium Listing</div>
-              <div class="plan-price" style="color:var(--gold)">₹2,999 <span class="pp-mo">/3 months</span></div>
-              <div class="plan-features">
-                <div class="pf">Featured in top search results</div>
-                <div class="pf">Up to 20 photos + video tour</div>
-                <div class="pf">✓ Verified badge</div>
-                <div class="pf">90-day listing</div>
-                <div class="pf">WhatsApp enquiry alerts</div>
-                <div class="pf">Analytics dashboard</div>
-              </div>
-            </div>
-            <div class="plan-card" style="--pc:var(--steel)" onclick="selectPlan(this,'enterprise')">
-              <div class="plan-tag" style="background:var(--steel-d);color:var(--steel);border:1px solid var(--steel-b)">ENTERPRISE</div>
-              <div class="plan-name">Enterprise</div>
-              <div class="plan-price" style="color:var(--steel)">₹7,999 <span class="pp-mo">/year</span></div>
-              <div class="plan-features">
-                <div class="pf">Homepage banner placement</div>
-                <div class="pf">Unlimited photos &amp; videos</div>
-                <div class="pf">Priority verified badge</div>
-                <div class="pf">1-year listing</div>
-                <div class="pf">Dedicated relationship manager</div>
-                <div class="pf">Lead analytics &amp; export</div>
-                <div class="pf">Featured in SmartRent emails</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="sdiv"><span class="sdiv-lbl">Review &amp; Confirm</span></div>
-
-          <!-- Review Summary -->
-          <div id="reviewSummary" style="background:var(--deep);border:1px solid rgba(200,164,74,.12);border-radius:var(--r2);padding:20px;margin-bottom:24px">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="reviewGrid">
-              <div style="font-size:13px;color:var(--t2)">Complete the form to see review summary</div>
-            </div>
-          </div>
-
-          <!-- Terms toggles -->
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
-            <div class="toggle-row" id="t-terms" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">I agree to the Terms of Service &amp; Privacy Policy <span style="color:var(--rose)">*</span></div><div class="toggle-desc"><a href="privacy-policy.html" style="color:var(--gold);text-decoration:none">Read our Privacy Policy</a></div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-accurate" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">I certify all information is accurate &amp; truthful <span style="color:var(--rose)">*</span></div><div class="toggle-desc">False listings will be removed and account suspended</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-            <div class="toggle-row" id="t-owner" onclick="toggleRow(this)">
-              <div><div class="toggle-lbl">I am the owner or authorised representative</div><div class="toggle-desc">You have the right to list this property</div></div>
-              <div class="toggle-sw"></div>
-            </div>
-          </div>
-
-          <button class="btn-submit" onclick="submitListing()">
-            🚀 Publish Listing Now
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="form-nav">
-        <button class="btn-back" onclick="prevStep(7)">‹ Back</button>
-        <span></span>
-      </div>
-    </div>
-
-  </div><!-- /form-col -->
-
-  <!-- ───── SIDEBAR ───── -->
-  <aside class="sidebar">
-
-    <!-- Live Preview Card -->
-    <div class="preview-card">
-      <div class="preview-banner" id="previewBanner">
-        <div class="preview-banner-ov"></div>
-        <div class="preview-type-tag" id="previewTypeTag">COMMERCIAL</div>
-        <span style="position:relative;z-index:2;font-size:46px" id="previewEmoji">🏢</span>
-      </div>
-      <div class="preview-body">
-        <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px">LIVE PREVIEW</div>
-        <div class="preview-name" id="previewName">Your Property Title</div>
-        <div class="preview-loc" id="previewLoc">📍 City, Area</div>
-        <div class="preview-price" id="previewPrice">₹ — / month</div>
-        <div class="preview-tags" id="previewTags">
-          <span class="ptag">Awaiting Details</span>
-        </div>
-        <div class="preview-footer">
-          <button class="prev-btn">View Property (Preview)</button>
+        <div class="btn-row">
+          <div class="s1-prog">Step 1 of 3 · <span id="s1prog">0</span>/6 required fields</div>
+          <button class="btn btn-primary btn-lg" onclick="nextStep(1)">Continue →</button>
         </div>
       </div>
     </div>
 
-    <!-- Completeness -->
-    <div class="completeness-card">
-      <div class="cc-head">
-        <div class="cc-title">Listing Score</div>
-        <div class="cc-pct" id="ccPct">0%</div>
-      </div>
-      <div class="cc-bar"><div class="cc-fill" id="ccFill" style="width:0%"></div></div>
-      <div class="cc-items">
-        <div class="cci" id="cci-type"><div class="cci-ic">○</div>Property type selected</div>
-        <div class="cci" id="cci-details"><div class="cci-ic">○</div>Basic details complete</div>
-        <div class="cci" id="cci-location"><div class="cci-ic">○</div>Location added</div>
-        <div class="cci" id="cci-pricing"><div class="cci-ic">○</div>Pricing set</div>
-        <div class="cci" id="cci-amenities"><div class="cci-ic">○</div>Amenities selected</div>
-        <div class="cci" id="cci-photos"><div class="cci-ic">○</div>Photos uploaded</div>
-        <div class="cci" id="cci-plan"><div class="cci-ic">○</div>Plan selected</div>
+    <!-- ══════════════════════════════════════
+         STEP 2 — DETAILS & LEASE TERMS
+    ══════════════════════════════════════ -->
+    <div class="step-panel" id="panel2">
+      <div class="card">
+        <div class="sec-header">
+          <div class="sec-tag">Step 2 of 3 · ~4 min</div>
+          <div class="sec-title">Specifications, Amenities &amp; Terms</div>
+          <div class="sec-sub">More detail = higher ranking = better enquiries. Take 4 minutes here.</div>
+        </div>
+
+        <!-- Furnishing -->
+        <div class="field">
+          <label>Furnishing Status <span class="req">*</span></label>
+          <div class="furnish-grid" id="furnishGrid">
+            <div class="furnish-card selected" data-f="Shell" onclick="selectFurnish(this)"><span class="f-icon">🧱</span><div class="f-name">Bare Shell</div></div>
+            <div class="furnish-card" data-f="Semi-Furnished" onclick="selectFurnish(this)"><span class="f-icon">🪑</span><div class="f-name">Semi-Furnished</div></div>
+            <div class="furnish-card" data-f="Fully Furnished" onclick="selectFurnish(this)"><span class="f-icon">🖥️</span><div class="f-name">Fully Furnished</div></div>
+          </div>
+        </div>
+
+        <div class="sec-divider"><span>Amenities &amp; Infrastructure</span></div>
+
+        <div class="field">
+          <label>Amenities <span class="hint-tag">Select all that apply</span></label>
+          <div class="chips-wrap" id="amenitiesWrap">
+            <div class="chip" onclick="toggleChip(this)">🅿️ Dedicated Parking</div>
+            <div class="chip" onclick="toggleChip(this)">🔒 24/7 Security</div>
+            <div class="chip" onclick="toggleChip(this)">📹 CCTV</div>
+            <div class="chip" onclick="toggleChip(this)">🛗 Lift / Elevator</div>
+            <div class="chip" onclick="toggleChip(this)">⚡ Power Backup</div>
+            <div class="chip" onclick="toggleChip(this)">❄️ Central AC</div>
+            <div class="chip" onclick="toggleChip(this)">📶 Fibre Internet Ready</div>
+            <div class="chip" onclick="toggleChip(this)">🧯 Fire Safety Compliant</div>
+            <div class="chip" onclick="toggleChip(this)">🚻 Attached Washrooms</div>
+            <div class="chip" onclick="toggleChip(this)">🛎️ Reception Area</div>
+            <div class="chip" onclick="toggleChip(this)">🍽️ Cafeteria / Pantry</div>
+            <div class="chip" onclick="toggleChip(this)">🚛 Loading / Dock Access</div>
+            <div class="chip" onclick="toggleChip(this)">🏗️ Freight Elevator</div>
+            <div class="chip" onclick="toggleChip(this)">🌐 IT / ITES Approved</div>
+            <div class="chip" onclick="toggleChip(this)">🏢 Gated Business Park</div>
+            <div class="chip" onclick="toggleChip(this)">💧 Water Storage</div>
+            <div class="chip" onclick="toggleChip(this)">🪟 Glass Frontage</div>
+            <div class="chip" onclick="toggleChip(this)">🅿️ Visitor Parking</div>
+          </div>
+        </div>
+
+        <!-- Preferred Business Type -->
+        <div class="field">
+          <label>Ideal For</label>
+          <div class="chips-wrap" id="idealWrap">
+            <div class="chip selected" onclick="toggleChip(this)">🏢 Corporate / MNC</div>
+            <div class="chip" onclick="toggleChip(this)">🚀 Startup</div>
+            <div class="chip" onclick="toggleChip(this)">🛍️ Retail Brand</div>
+            <div class="chip" onclick="toggleChip(this)">🏭 Manufacturing</div>
+            <div class="chip" onclick="toggleChip(this)">📦 Logistics / 3PL</div>
+            <div class="chip" onclick="toggleChip(this)">💻 IT / ITES</div>
+            <div class="chip" onclick="toggleChip(this)">🍽️ F&amp;B / Restaurant</div>
+          </div>
+        </div>
+
+        <div class="sec-divider"><span>Lease Terms</span></div>
+
+        <div class="grid-3">
+          <div class="field">
+            <label>Lock-in Period</label>
+            <div class="select-wrap"><select id="lockin"><option value="">—</option><option>None</option><option>6 Months</option><option>1 Year</option><option>2 Years</option><option>3 Years</option><option>5+ Years</option></select></div>
+          </div>
+          <div class="field">
+            <label>Lease Term</label>
+            <div class="select-wrap"><select id="leaseTerm"><option value="">—</option><option>Short Term (&lt;1 yr)</option><option>1–3 Years</option><option>3–5 Years</option><option>5+ Years</option><option>Negotiable</option></select></div>
+          </div>
+          <div class="field">
+            <label>Maintenance</label>
+            <div class="select-wrap"><select id="maintenance"><option value="">—</option><option>Included in Rent</option><option>Extra Charge (CAM)</option><option>Owner Pays</option></select></div>
+          </div>
+        </div>
+
+        <div class="sec-divider"><span>Owner &amp; Contact Details</span></div>
+
+        <div class="grid-2">
+          <div class="field" id="f-ownerName">
+            <label>Owner / Contact Name <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input id="ownerName" placeholder="Your full name">
+            </div>
+            <div class="input-error">Please enter your name.</div>
+          </div>
+          <div class="field" id="f-ownerPhone">
+            <label>Mobile Number <span class="req">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">📞</span>
+              <input id="ownerPhone" type="tel" placeholder="+91 98765 43210" maxlength="15"
+                     oninput="this.value=this.value.replace(/[^0-9+\s]/g,'')">
+            </div>
+            <div class="input-error">Please enter a valid 10-digit phone number.</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>WhatsApp Number <span class="hint-tag">Leave blank to use mobile</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">💬</span>
+              <input id="ownerWA" type="tel" placeholder="Same as mobile or alternate">
+            </div>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">📧</span>
+              <input id="ownerEmail" type="email" placeholder="you@email.com">
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-divider"><span>Property Description</span></div>
+
+        <div class="field" id="f-desc">
+          <label>Description <span class="req">*</span> <span class="hint-tag">min 50 characters</span></label>
+          <textarea id="description" maxlength="800"
+            placeholder="Describe the space — layout, access roads, nearby metro/highways, tenant mix in the building, why it suits a business…"
+            oninput="updateCharCount('description','descCount',800)"></textarea>
+          <div class="char-count" id="descCount">0 / 800</div>
+          <div class="input-error">Description must be at least 50 characters.</div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="goStep(1)">← Back</button>
+          <button class="btn btn-primary btn-lg" onclick="nextStep(2)">Continue →</button>
+        </div>
       </div>
     </div>
 
-    <!-- Perks -->
-    <div class="perks-card">
-      <div class="perks-title">Why List on SmartRent?</div>
-      <div class="perk"><div class="perk-ic">👁️</div><div><div class="perk-t">50,000+ Monthly Views</div><div class="perk-d">Verified commercial tenants actively searching</div></div></div>
-      <div class="perk"><div class="perk-ic">⚡</div><div><div class="perk-t">Go Live in 24 Hours</div><div class="perk-d">Our team reviews and approves within one business day</div></div></div>
-      <div class="perk"><div class="perk-ic">🔒</div><div><div class="perk-t">KYC-Verified Tenants</div><div class="perk-d">Only verified businesses can contact you</div></div></div>
-      <div class="perk"><div class="perk-ic">📊</div><div><div class="perk-t">Analytics Dashboard</div><div class="perk-d">Track views, enquiries and conversions in real time</div></div></div>
+    <!-- ══════════════════════════════════════
+         STEP 3 — PHOTOS & REVIEW
+    ══════════════════════════════════════ -->
+    <div class="step-panel" id="panel3">
+
+      <!-- Photos Card -->
+      <div class="card">
+        <div class="sec-header">
+          <div class="sec-tag">Step 3 of 3</div>
+          <div class="sec-title">Photos &amp; Final Review</div>
+          <div class="sec-sub">Great photos get <strong>3× more enquiries.</strong> Upload at least 3. First photo = cover image.</div>
+        </div>
+
+        <div class="info-row info">
+          <span class="ii">☁️</span>
+          <div>Photos upload to <strong>Cloudinary CDN</strong> for fast delivery worldwide. Max <strong>5 MB</strong> per photo · JPG, PNG, WEBP · Up to <strong>15 photos</strong>. Click ⭐ to set your cover photo.</div>
+        </div>
+
+        <div class="photo-bar">
+          <label style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);font-weight:600;">Upload Photos</label>
+          <div class="photo-count-badge" id="photoCountBadge">0 / 15</div>
+        </div>
+
+        <div id="dropZone" class="drop-zone">
+          <span class="drop-icon">📸</span>
+          <div class="drop-title">Drag &amp; Drop photos here</div>
+          <div class="drop-sub">or click to browse from your device</div>
+          <span class="drop-limit">JPG · PNG · WEBP · Max 5 MB each · Up to 15 photos</span>
+          <input type="file" id="imageInput" multiple accept="image/jpeg,image/png,image/webp" hidden>
+        </div>
+
+        <div id="imgGrid" class="img-grid"></div>
+        <div id="uploadItemsList" style="margin-top:14px;"></div>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="card">
+        <div class="sec-header" style="margin-bottom:16px;">
+          <div class="sec-tag">Review Before Publishing</div>
+          <div class="sec-title" style="font-size:22px;">Listing Summary</div>
+          <div class="sec-sub">Verify all details. You can edit anytime from your Owner Dashboard.</div>
+        </div>
+
+        <div class="info-row notice">
+          <span class="ii">⏳</span>
+          <div>Your listing will be <strong>reviewed within 24 hours</strong> and go live after approval. You'll receive an email notification.</div>
+        </div>
+
+        <div class="summary-wrap" id="summaryCard">
+          <div style="text-align:center;padding:20px;color:var(--t3);font-size:13.5px;">Complete the previous steps to see your summary.</div>
+        </div>
+      </div>
+
+      <!-- ══ SUBMIT AREA — subscription-gated ══ -->
+      <div class="btn-row" id="step3BtnRow">
+        <button class="btn btn-ghost" onclick="goStep(2)">← Back</button>
+        <div id="submitArea" class="submit-area">
+          <div class="sub-checking">
+            <div class="spin"></div>
+            Checking your subscription…
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /panel3 -->
+
+    <!-- SUCCESS SCREEN -->
+    <div class="success-screen" id="successScreen">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Commercial Listing Submitted!</div>
+      <div class="success-sub">Your property has been submitted to SmartRent AI.<br>Our team will review it and you'll get notified once it's live.</div>
+      <div class="success-approval-note">
+        ⏳ <strong>Pending Review</strong> — Your listing will be reviewed within 24 hours. Once approved, it becomes visible on our Commercial marketplace to verified businesses across India.
+      </div>
+      <div class="success-id" id="successDocId">Property ID: Generating…</div>
+      <div class="success-images" id="successImageRow"></div>
+      <div class="success-btns">
+        <a href="owner-dashboard.html" class="btn btn-primary btn-lg">📊 Go to Dashboard</a>
+        <a href="commercial.html" class="btn btn-ghost btn-lg">🏢 Browse Commercial</a>
+        <button class="btn btn-ghost btn-lg" onclick="location.reload()">+ Post Another</button>
+      </div>
     </div>
 
-  </aside>
+  </div><!-- /mainForm -->
 
-</div><!-- /form-layout -->
+</div><!-- /page -->
 
-<!-- ══════════ FIREBASE ══════════ -->
+<!-- ════════════════════════════════════════════
+     FIREBASE + CLOUDINARY MODULE
+════════════════════════════════════════════ -->
 <script type="module">
-import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import{getFirestore,collection,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import{getStorage,ref,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-const cfg={apiKey:"AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",authDomain:"smart-property-portal.firebaseapp.com",projectId:"smart-property-portal",storageBucket:"smart-property-portal.appspot.com"};
-const app=initializeApp(cfg);
-const auth=getAuth(app);
-const db=getFirestore(app);
-const storage=getStorage(app);
-window._auth=auth;window._db=db;window._storage=storage;
-window._addDoc=addDoc;window._collection=collection;
-window._ref=ref;window._uploadBytes=uploadBytes;window._getDownloadURL=getDownloadURL;
-window._serverTimestamp=serverTimestamp;
-onAuthStateChanged(auth,u=>{if(u){const a=document.querySelector('.nav-r');if(a){const av=document.createElement('div');av.style.cssText='width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--steel));display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;border:1.5px solid var(--gold-b);font-family:Playfair Display,serif;font-weight:700;color:#04060a;';av.textContent=(u.displayName||u.email||'U')[0].toUpperCase();a.insertBefore(av,a.firstChild);}}});
-</script>
+import { initializeApp }     from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, addDoc, getDoc, doc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<!-- ══════════ APP SCRIPT ══════════ -->
-<script>
-/* ── STATE ────────────────────────────────────────────── */
-let currentStep = 1;
-let selectedType = '';
-let selectedPlan = 'pro';
-let uploadedPhotos = [];
-const completeness = {type:false,details:false,location:false,pricing:false,amenities:false,photos:false,plan:true};
-
-const TYPE_CONFIG = {
-  Office:{emoji:'🏢',bg:'linear-gradient(135deg,#08142a,#122438)',color:'var(--steel)'},
-  Retail:{emoji:'🏪',bg:'linear-gradient(135deg,#1a0f08,#2a1a0e)',color:'var(--amber)'},
-  Coworking:{emoji:'💻',bg:'linear-gradient(135deg,#071525,#0c2232)',color:'var(--teal)'},
-  Warehouse:{emoji:'🏭',bg:'linear-gradient(135deg,#0e0e0e,#181620)',color:'var(--gold)'},
-  Industrial:{emoji:'⚙️',bg:'linear-gradient(135deg,#0a100a,#141c10)',color:'var(--steel)'},
-  Showroom:{emoji:'🚗',bg:'linear-gradient(135deg,#110720,#1c0e2e)',color:'var(--gold)'},
+/* ── Firebase Config ───────────────────────── */
+const firebaseConfig = {
+  apiKey:        "AIzaSyCExyC1UlqWl-tTJWVtoQx6E-rppaYQgcU",
+  authDomain:    "smart-property-portal.firebaseapp.com",
+  projectId:     "smart-property-portal",
+  storageBucket: "smart-property-portal.firebasestorage.app"
 };
 
-/* ── STEP NAVIGATION ─────────────────────────────────── */
-function goStep(n) {
-  if(n > currentStep) return; // can only go back manually
-  currentStep = n;
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('step' + n).classList.add('active');
-  updateStepBar();
-  window.scrollTo({top:140, behavior:'smooth'});
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+/* ── Cloudinary Config ─────────────────────── */
+const CLOUD_NAME     = "dq3hko9hn";
+const UPLOAD_PRESET  = "dl6dnzau";
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+/* ══════════════════════════════════════════════
+   SUBSCRIPTION CHECK — Owner Plan gate
+   Same logic/keys as post-property.html so a
+   single Owner subscription unlocks both
+   residential and commercial listing.
+══════════════════════════════════════════════ */
+const LS_OWNER_KEY = "sr_owner_subscription";
+const LS_ANY_KEY   = "sr_subscription";
+
+async function checkOwnerSubscription(uid) {
+  try {
+    const raw = localStorage.getItem(LS_OWNER_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      if (_isLocalSubValid(sub)) {
+        return { hasAccess: true, planName: sub.planName || "Owner Plan", source: "localStorage:owner" };
+      }
+    }
+  } catch(e) { /* corrupted JSON — ignore */ }
+
+  try {
+    const raw = localStorage.getItem(LS_ANY_KEY);
+    if (raw) {
+      const sub = JSON.parse(raw);
+      if (sub.planId === "owner" && _isLocalSubValid(sub)) {
+        return { hasAccess: true, planName: sub.planName || "Owner Plan", source: "localStorage:generic" };
+      }
+    }
+  } catch(e) { /* corrupted JSON — ignore */ }
+
+  try {
+    const snap = await getDoc(doc(db, "users", uid));
+    if (!snap.exists()) return { hasAccess: false, planName: null, source: "firestore:no-doc" };
+
+    const data = snap.data();
+
+    const sub = data.ownerSubscription || data.subscription || null;
+    if (sub) {
+      const isOwnerPlan = sub.plan && (
+        String(sub.plan).toLowerCase().includes("owner") ||
+        String(sub.plan).toLowerCase().includes("landlord") ||
+        String(sub.plan).toLowerCase().includes("pro")
+      );
+      const isActive = sub.status === "active" || sub.active === true;
+      let notExpired = true;
+      if (sub.expiresAt) {
+        const exp = sub.expiresAt.toDate ? sub.expiresAt.toDate() : new Date(sub.expiresAt);
+        notExpired = exp > new Date();
+      }
+      if (isOwnerPlan && isActive && notExpired) {
+        return { hasAccess: true, planName: sub.plan || "Owner Plan", source: "firestore:sub-object" };
+      }
+    }
+
+    if (data.ownerPlan === true || data.isOwner === true || data.canPostProperty === true) {
+      return { hasAccess: true, planName: data.planName || data.subscriptionPlan || "Owner Plan", source: "firestore:flags" };
+    }
+
+    const roles = data.roles || data.role || [];
+    const roleArr = Array.isArray(roles) ? roles : [roles];
+    if (roleArr.some(r => ["owner","landlord","pro","premium"].includes(String(r).toLowerCase()))) {
+      return { hasAccess: true, planName: data.planName || "Owner Plan", source: "firestore:roles" };
+    }
+
+    return { hasAccess: false, planName: null, source: "firestore:no-match" };
+
+  } catch (err) {
+    console.error("Subscription check error:", err);
+    return { hasAccess: false, planName: null, source: "error", error: err.message };
+  }
 }
 
-function nextStep(from) {
-  if(!validateStep(from)) return;
-  currentStep = from + 1;
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('step' + currentStep).classList.add('active');
-  updateStepBar();
-  updateCompleteness(from);
-  if(currentStep === 7) buildReviewSummary();
-  window.scrollTo({top:140, behavior:'smooth'});
-}
-
-function prevStep(from) {
-  currentStep = from - 1;
-  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('step' + currentStep).classList.add('active');
-  updateStepBar();
-  window.scrollTo({top:140, behavior:'smooth'});
-}
-
-function updateStepBar() {
-  for(let i=1; i<=7; i++) {
-    const n = document.getElementById('sn'+i);
-    n.classList.remove('active','done');
-    if(i < currentStep) n.classList.add('done');
-    else if(i === currentStep) n.classList.add('active');
-  }
-  for(let i=1; i<=6; i++) {
-    const c = document.getElementById('sc'+i);
-    c.classList.remove('filled','half');
-    if(i < currentStep) c.classList.add('filled');
-    else if(i === currentStep - 1) c.classList.add('half');
-  }
-}
-
-/* ── VALIDATION ──────────────────────────────────────── */
-function validateStep(step) {
-  if(step === 1) {
-    if(!selectedType) { showErr('typeErr'); showToast('⚠️ Please select a property type'); return false; }
-    if(!v('ownerName')) { showToast('⚠️ Please enter your name'); return false; }
-    if(!v('ownerType')) { showToast('⚠️ Please select owner type'); return false; }
-    if(!v('ownerPhone') || document.getElementById('ownerPhone').value.length !== 10) { showToast('⚠️ Please enter a valid 10-digit phone number'); return false; }
-    if(!v('ownerEmail') || !document.getElementById('ownerEmail').value.includes('@')) { showToast('⚠️ Please enter a valid email address'); return false; }
-    completeness.type = true;
-  }
-  if(step === 2) {
-    if(!v('propTitle')) { showToast('⚠️ Property title is required'); return false; }
-    if(!v('propArea')) { showToast('⚠️ Property area is required'); return false; }
-    if(!v('propFloor')) { showToast('⚠️ Please select the floor'); return false; }
-    if(!v('propFurnish')) { showToast('⚠️ Please select furnishing status'); return false; }
-    if(!v('propDesc') || document.getElementById('propDesc').value.length < 40) { showToast('⚠️ Please write at least 80 characters for the description'); return false; }
-    if(!v('leasePeriod')) { showToast('⚠️ Please select minimum lease period'); return false; }
-    if(!v('availFrom')) { showToast('⚠️ Please select availability date'); return false; }
-    completeness.details = true;
-  }
-  if(step === 3) {
-    if(!v('city')) { showToast('⚠️ Please select a city'); return false; }
-    if(!v('locality')) { showToast('⚠️ Please enter the locality'); return false; }
-    if(!v('address')) { showToast('⚠️ Please enter the street address'); return false; }
-    if(!v('pincode') || document.getElementById('pincode').value.length !== 6) { showToast('⚠️ Please enter a valid 6-digit PIN code'); return false; }
-    completeness.location = true;
-  }
-  if(step === 4) {
-    if(!v('rentAmt') || parseInt(document.getElementById('rentAmt').value) < 1000) { showToast('⚠️ Please enter a valid monthly rent'); return false; }
-    if(!v('deposit')) { showToast('⚠️ Please enter the security deposit amount'); return false; }
-    completeness.pricing = true;
-  }
-  if(step === 5) {
-    const checked = document.querySelectorAll('.amen-toggle.on').length;
-    if(checked < 2) { showToast('⚠️ Please select at least 2 amenities'); return false; }
-    completeness.amenities = true;
-  }
-  if(step === 6) {
-    completeness.photos = uploadedPhotos.length > 0;
-    if(!completeness.photos) { showToast('ℹ️ Consider adding photos for 3× more enquiries — you can skip this step'); }
-    completeness.photos = true; // allow skip
+function _isLocalSubValid(sub) {
+  if (!sub) return false;
+  if (sub.status !== "trial_active" && sub.status !== "active") return false;
+  if (sub.trialEndDate) {
+    const exp = new Date(sub.trialEndDate);
+    if (isNaN(exp.getTime()) || exp < new Date()) return false;
   }
   return true;
 }
 
-function v(id) { return document.getElementById(id).value.trim() !== ''; }
-function showErr(id) { const el=document.getElementById(id);el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500); }
+/* ══════════════════════════════════════════════
+   RENDER SUBMIT AREA
+══════════════════════════════════════════════ */
+function renderSubmitArea(hasAccess, planName) {
+  const area = document.getElementById("submitArea");
+  if (!area) return;
 
-/* ── TYPE SELECTION ──────────────────────────────────── */
-function selectType(card, type) {
-  document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  selectedType = type;
-  document.getElementById('typeErr').classList.remove('show');
-  const cfg = TYPE_CONFIG[type] || TYPE_CONFIG.Office;
-  document.getElementById('previewEmoji').textContent = cfg.emoji;
-  document.getElementById('previewBanner').style.background = cfg.bg;
-  document.getElementById('previewTypeTag').textContent = type.toUpperCase();
+  if (hasAccess) {
+    area.innerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end;">
+        <div class="sub-active-badge">
+          <div class="sub-dot"></div>
+          OWNER PLAN ACTIVE
+          <span class="sub-plan-name">${escHtml(planName || "Owner")}</span>
+        </div>
+        <button class="btn btn-success btn-lg" id="submitBtn" onclick="submitProperty()">
+          🚀 Upload &amp; Submit for Review
+        </button>
+      </div>`;
+  } else {
+    area.innerHTML = `
+      <div style="width:100%;">
+        <div style="display:flex;justify-content:flex-end;margin-bottom:16px;">
+          <button class="btn btn-success btn-lg btn-locked" disabled title="Owner Subscription required">
+            Upload &amp; Submit for Review
+          </button>
+        </div>
+        <div class="sub-gate">
+          <div class="sg-banner">
+            <div class="sg-banner-inner">
+              <div class="sg-lock-circle">🔒</div>
+              <div class="sg-banner-text">
+                <div class="sg-banner-title">Owner Subscription Required</div>
+                <div class="sg-banner-sub">Unlock commercial listings with an Owner plan — post unlimited properties and reach verified businesses instantly.</div>
+              </div>
+              <div class="sg-plan-chip">OWNER PLAN</div>
+            </div>
+          </div>
+          <div class="sg-body">
+            <div class="sg-benefits">
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">🏢</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Post Unlimited Properties</div>
+                  <div class="sg-benefit-desc">List every commercial space you own — no caps.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">⚡</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Priority Listing Boost</div>
+                  <div class="sg-benefit-desc">Your properties rank higher in search results.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">📊</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Owner Analytics Dashboard</div>
+                  <div class="sg-benefit-desc">Track views, enquiries, and lead conversion.</div>
+                </div>
+              </div>
+              <div class="sg-benefit">
+                <span class="sg-benefit-icon">✅</span>
+                <div class="sg-benefit-text">
+                  <div class="sg-benefit-title">Verified Owner Badge</div>
+                  <div class="sg-benefit-desc">Build trust with a verified checkmark on listings.</div>
+                </div>
+              </div>
+            </div>
+            <div class="sg-cta-row">
+              <div class="sg-cta-text">
+                <div class="sg-cta-title">Get Owner Plan to start listing</div>
+                <div class="sg-cta-sub">Already subscribed? <a href="javascript:void(0)" onclick="recheckSubscription()" style="color:var(--teal);font-weight:600;text-decoration:underline;">Refresh subscription status</a></div>
+              </div>
+              <div class="sg-cta-btns">
+                <a href="plans.html" class="btn btn-primary btn-lg">View Plans →</a>
+                <a href="plans.html" class="btn btn-teal">Get Owner Plan</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
 }
 
-/* ── PLAN SELECTION ──────────────────────────────────── */
-function selectPlan(card, plan) {
-  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-  card.classList.add('selected');
-  selectedPlan = plan;
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-/* ── TOGGLE AMENITY ──────────────────────────────────── */
-function toggleAmen(el) {
-  el.classList.toggle('on');
-  el.querySelector('.amen-box').textContent = el.classList.contains('on') ? '✓' : '';
+window.recheckSubscription = async () => {
+  const user = window._currentUser;
+  if (!user) return;
+  renderSubChecking();
+  const { hasAccess, planName } = await checkOwnerSubscription(user.uid);
+  window._ownerSubStatus = { hasAccess, planName, checked: true };
+  renderSubmitArea(hasAccess, planName);
+  if (hasAccess) {
+    showToast("✅ Subscription confirmed! You can now submit.", "success");
+  } else {
+    showToast("No active Owner subscription found. Activate a free trial on the Plans page.", "warn");
+  }
+};
+
+function renderSubChecking() {
+  const area = document.getElementById("submitArea");
+  if (area) area.innerHTML = `
+    <div class="sub-checking">
+      <div class="spin"></div>
+      Checking your subscription…
+    </div>`;
 }
 
-/* ── TOGGLE ROW ──────────────────────────────────────── */
-function toggleRow(el) {
-  el.classList.toggle('on');
-}
+/* ── Auth State ────────────────────────────── */
+const setFbPill = (state) => {
+  const pill = document.getElementById('fbPill');
+  const txt  = document.getElementById('fbPillText');
+  if (!pill) return;
+  pill.className = 'fb-pill ' + state;
+  txt.textContent = state.toUpperCase();
+};
+setFbPill('connecting');
 
-/* ── LIVE PREVIEW ────────────────────────────────────── */
-function updatePreview() {
-  const title = document.getElementById('propTitle').value.trim();
-  const city = document.getElementById('city') ? document.getElementById('city').value : '';
-  const area = document.getElementById('locality') ? document.getElementById('locality').value.trim() : '';
-  const rent = document.getElementById('rentAmt') ? document.getElementById('rentAmt').value : '';
-  const tags = document.getElementById('customTags') ? document.getElementById('customTags').value : '';
-  const titleLen = document.getElementById('propTitle').value.length;
-  if(document.getElementById('titleLen')) document.getElementById('titleLen').textContent = titleLen;
+onAuthStateChanged(auth, async (user) => {
+  window._currentUser = user;
+  setFbPill('connected');
 
-  document.getElementById('previewName').textContent = title || 'Your Property Title';
-  document.getElementById('previewLoc').textContent = (city || area) ? ('📍 ' + [area,city].filter(Boolean).join(', ')) : '📍 City, Area';
-  document.getElementById('previewPrice').textContent = rent ? '₹' + parseInt(rent).toLocaleString('en-IN') + ' / month' : '₹ — / month';
+  const gate     = document.getElementById('authGate');
+  const mainForm = document.getElementById('mainForm');
 
-  const tagArr = tags.split(',').map(t=>t.trim()).filter(Boolean).slice(0,4);
-  if(selectedType) tagArr.unshift(selectedType);
-  document.getElementById('previewTags').innerHTML = tagArr.slice(0,4).map(t=>`<span class="ptag">${t}</span>`).join('') || '<span class="ptag">Awaiting Details</span>';
-}
+  if (user) {
+    gate.style.display     = 'none';
+    mainForm.style.display = 'block';
 
-function descCounter(el) {
-  document.getElementById('descLen').textContent = el.value.length;
-}
+    const emailEl = document.getElementById('ownerEmail');
+    const nameEl  = document.getElementById('ownerName');
+    if (emailEl && !emailEl.value && user.email)       emailEl.value = user.email;
+    if (nameEl  && !nameEl.value  && user.displayName) nameEl.value  = user.displayName;
 
-/* ── PHOTO HANDLING ──────────────────────────────────── */
-function handlePhotoSelect(e) { addPhotos(Array.from(e.target.files)); }
-function handleDragOver(e) { e.preventDefault(); document.getElementById('photoZone').classList.add('dragover'); }
-function handleDragLeave() { document.getElementById('photoZone').classList.remove('dragover'); }
-function handleDrop(e) {
-  e.preventDefault();
-  document.getElementById('photoZone').classList.remove('dragover');
-  addPhotos(Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/')));
-}
+    const { hasAccess, planName } = await checkOwnerSubscription(user.uid);
+    window._ownerSubStatus = { hasAccess, planName, checked: true };
 
-function addPhotos(files) {
-  files.forEach(file => {
-    if(uploadedPhotos.length >= 20) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      uploadedPhotos.push({file, url:e.target.result});
-      renderPreviews();
-    };
-    reader.readAsDataURL(file);
+    if (currentStep === 3) renderSubmitArea(hasAccess, planName);
+
+  } else {
+    gate.style.display     = 'block';
+    mainForm.style.display = 'none';
+    setFbPill('error');
+    document.getElementById('fbPillText').textContent = 'NOT SIGNED IN';
+  }
+});
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let selectedType    = "Office";
+let selectedFurnish = "Shell";
+let uploadedFiles   = [];
+let coverIdx        = 0;
+let currentStep     = 1;
+
+/* ══════════════════════════════════════════════
+   STEP NAVIGATION
+══════════════════════════════════════════════ */
+window.goStep = (n) => {
+  if (n > currentStep) return;
+  setStep(n);
+};
+
+function setStep(n) {
+  currentStep = n;
+  [1,2,3].forEach(i => {
+    document.getElementById(`panel${i}`).classList.toggle("active", i === n);
+    const sc = document.getElementById(`sc${i}`);
+    const st = document.getElementById(`s${i}`);
+    if (i < n)        { st.className = "step done";   sc.textContent = "✓"; }
+    else if (i === n) { st.className = "step active"; sc.textContent = String(i); }
+    else              { st.className = "step";        sc.textContent = String(i); }
+    if (i < 3) document.getElementById(`sl${i}`).classList.toggle("done", i < n);
   });
-  showToast(`📸 ${files.length} photo(s) added (${uploadedPhotos.length} total)`);
+  document.getElementById('formProgressBar').style.width = (((n - 1) / 2) * 100) + '%';
+
+  if (n === 3) resolveSubmitArea();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function resolveSubmitArea() {
+  const status = window._ownerSubStatus;
+  if (status && status.checked) {
+    renderSubmitArea(status.hasAccess, status.planName);
+  } else if (window._currentUser) {
+    renderSubChecking();
+    const { hasAccess, planName } = await checkOwnerSubscription(window._currentUser.uid);
+    window._ownerSubStatus = { hasAccess, planName, checked: true };
+    renderSubmitArea(hasAccess, planName);
+  } else {
+    renderSubChecking();
+  }
+}
+
+window.nextStep = (from) => {
+  if (from === 1 && !validateStep1()) return;
+  if (from === 2 && !validateStep2()) return;
+  if (from === 2) buildSummary();
+  setStep(from + 1);
+};
+
+/* ══════════════════════════════════════════════
+   VALIDATION
+══════════════════════════════════════════════ */
+function validateStep1() {
+  let ok = true;
+  const errs = [];
+
+  const name = document.getElementById('name');
+  const nameF = document.getElementById('f-name');
+  if (!name.value.trim() || name.value.trim().length < 10) {
+    name.classList.add('err'); nameF.classList.add('error'); ok = false; errs.push(name);
+  } else { name.classList.remove('err'); nameF.classList.remove('error'); }
+
+  const price = document.getElementById('price');
+  const priceF = document.getElementById('f-price');
+  if (!price.value || isNaN(price.value) || Number(price.value) < 1000) {
+    price.classList.add('err'); priceF.classList.add('error'); ok = false; if(!errs.length) errs.push(price);
+  } else { price.classList.remove('err'); priceF.classList.remove('error'); }
+
+  const sqft = document.getElementById('sqft');
+  const sqftF = document.getElementById('f-sqft');
+  if (!sqft.value || isNaN(sqft.value) || Number(sqft.value) < 50) {
+    sqft.classList.add('err'); sqftF.classList.add('error'); ok = false; if(!errs.length) errs.push(sqft);
+  } else { sqft.classList.remove('err'); sqftF.classList.remove('error'); }
+
+  const city = document.getElementById('city');
+  const cityF = document.getElementById('f-city');
+  if (!city.value) {
+    city.classList.add('err'); cityF.classList.add('error'); ok = false; if(!errs.length) errs.push(city);
+  } else { city.classList.remove('err'); cityF.classList.remove('error'); }
+
+  const area = document.getElementById('area');
+  const areaF = document.getElementById('f-area');
+  if (!area.value.trim()) {
+    area.classList.add('err'); areaF.classList.add('error'); ok = false; if(!errs.length) errs.push(area);
+  } else { area.classList.remove('err'); areaF.classList.remove('error'); }
+
+  if (!ok) {
+    showToast("Please fill in all required fields.", "error");
+    errs[0]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  return ok;
+}
+
+function validateStep2() {
+  let ok = true;
+
+  const desc = document.getElementById('description');
+  const descF = document.getElementById('f-desc');
+  if (!desc.value.trim() || desc.value.trim().length < 50) {
+    desc.classList.add('err'); descF.classList.add('error'); ok = false;
+    desc.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else { desc.classList.remove('err'); descF.classList.remove('error'); }
+
+  const ownerName = document.getElementById('ownerName');
+  const ownerNameF = document.getElementById('f-ownerName');
+  if (!ownerName.value.trim()) {
+    ownerName.classList.add('err'); ownerNameF.classList.add('error'); ok = false;
+  } else { ownerName.classList.remove('err'); ownerNameF.classList.remove('error'); }
+
+  const ownerPhone = document.getElementById('ownerPhone');
+  const ownerPhoneF = document.getElementById('f-ownerPhone');
+  const digits = ownerPhone.value.replace(/\D/g,'');
+  if (!digits || digits.length < 10) {
+    ownerPhone.classList.add('err'); ownerPhoneF.classList.add('error'); ok = false;
+  } else { ownerPhone.classList.remove('err'); ownerPhoneF.classList.remove('error'); }
+
+  if (!ok) showToast("Please fill in all required fields in this step.", "error");
+  return ok;
+}
+
+/* ══════════════════════════════════════════════
+   UI SELECTORS
+══════════════════════════════════════════════ */
+window.selectType    = (el) => { document.querySelectorAll(".type-card").forEach(c => c.classList.remove("selected")); el.classList.add("selected"); selectedType = el.dataset.type; };
+window.selectFurnish = (el) => { document.querySelectorAll(".furnish-card").forEach(c => c.classList.remove("selected")); el.classList.add("selected"); selectedFurnish = el.dataset.f; };
+window.toggleChip    = (el) => el.classList.toggle("selected");
+
+/* ══════════════════════════════════════════════
+   STEP 1 PROGRESS COUNTER
+══════════════════════════════════════════════ */
+function updateS1Progress() {
+  let count = 0;
+  if (document.getElementById('name').value.trim().length >= 10) count++;
+  if (Number(document.getElementById('price').value) >= 1000) count++;
+  if (Number(document.getElementById('sqft').value) >= 50) count++;
+  if (document.getElementById('city').value) count++;
+  if (document.getElementById('area').value.trim()) count++;
+  document.getElementById('s1prog').textContent = count;
+}
+window.updateS1Progress = updateS1Progress;
+
+/* ══════════════════════════════════════════════
+   IMAGE UPLOAD — DRAG/DROP + CLOUDINARY
+══════════════════════════════════════════════ */
+const dropZone  = document.getElementById("dropZone");
+const fileInput = document.getElementById("imageInput");
+const imgGrid   = document.getElementById("imgGrid");
+
+dropZone.addEventListener("click", (e) => { if (e.target !== fileInput) fileInput.click(); });
+["dragover","dragenter"].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add("drag-over"); }));
+["dragleave","dragend","drop"].forEach(ev => dropZone.addEventListener(ev, () => { dropZone.classList.remove("drag-over"); }));
+dropZone.addEventListener("drop", e => { e.preventDefault(); addFiles([...e.dataTransfer.files]); });
+fileInput.addEventListener("change", () => { addFiles([...fileInput.files]); fileInput.value = ''; });
+
+function addFiles(newFiles) {
+  const MAX_SIZE    = 5 * 1024 * 1024;
+  const VALID_TYPES = ["image/jpeg","image/png","image/webp"];
+  const tooLarge    = newFiles.filter(f => f.size > MAX_SIZE);
+  const wrongType   = newFiles.filter(f => !VALID_TYPES.includes(f.type));
+  const valid       = newFiles.filter(f => VALID_TYPES.includes(f.type) && f.size <= MAX_SIZE);
+
+  if (tooLarge.length)  showToast(`${tooLarge.length} file(s) skipped — must be under 5 MB.`, "warn");
+  if (wrongType.length) showToast(`${wrongType.length} file(s) skipped — JPG, PNG, WEBP only.`, "warn");
+
+  const remaining = 15 - uploadedFiles.length;
+  if (valid.length > remaining) showToast(`Only ${remaining} more photo(s) allowed (max 15).`, "warn");
+  valid.slice(0, remaining).forEach(file => {
+    uploadedFiles.push({ file, previewUrl: URL.createObjectURL(file), cloudinaryUrl: null, status: "pending" });
+  });
+  renderPreviews();
+  updatePhotoCount();
 }
 
 function renderPreviews() {
-  document.getElementById('photoPreviews').innerHTML = uploadedPhotos.map((p,i) => `
-    <div class="photo-thumb">
-      <img src="${p.url}" alt="Photo ${i+1}">
-      <div class="photo-del" onclick="removePhoto(${i})">✕</div>
-    </div>`).join('');
-}
-
-function removePhoto(i) {
-  uploadedPhotos.splice(i,1);
-  renderPreviews();
-}
-
-/* ── COMPLETENESS ────────────────────────────────────── */
-function updateCompleteness(step) {
-  const keys = ['type','details','location','pricing','amenities','photos','plan'];
-  const map = {1:'type',2:'details',3:'location',4:'pricing',5:'amenities',6:'photos',7:'plan'};
-  if(map[step]) completeness[map[step]] = true;
-
-  const done = Object.values(completeness).filter(Boolean).length;
-  const pct = Math.round((done/7)*100);
-  document.getElementById('ccPct').textContent = pct + '%';
-  document.getElementById('ccFill').style.width = pct + '%';
-
-  keys.forEach(k => {
-    const el = document.getElementById('cci-'+k);
-    if(el) {
-      el.classList.toggle('done', completeness[k]);
-      el.querySelector('.cci-ic').textContent = completeness[k] ? '✓' : '○';
-    }
+  imgGrid.innerHTML = "";
+  uploadedFiles.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "img-thumb" + (i === coverIdx ? " cover-img" : "");
+    div.innerHTML = `
+      <img src="${item.previewUrl}" alt="Photo ${i+1}" loading="lazy">
+      <div class="img-overlay">
+        <div class="img-actions">
+          <button class="img-action-btn img-btn-cover" onclick="setCover(${i})" title="Set as cover">⭐</button>
+          <button class="img-action-btn img-btn-remove" onclick="removeImg(${i})" title="Remove">✕</button>
+        </div>
+        <span class="img-badge ${i===coverIdx?'img-badge-cover':'img-badge-num'}">${i===coverIdx?'Cover':('Photo '+(i+1))}</span>
+      </div>`;
+    imgGrid.appendChild(div);
   });
 }
 
-/* ── REVIEW SUMMARY ──────────────────────────────────── */
-function buildReviewSummary() {
-  const data = [
-    {l:'Property Type', v:selectedType||'—'},
-    {l:'Title', v:g('propTitle')||'—'},
-    {l:'City', v:g('city')||'—'},
-    {l:'Area / Locality', v:g('locality')||'—'},
-    {l:'Floor', v:g('propFloor')||'—'},
-    {l:'Size', v:g('propArea')?(g('propArea')+' sq.ft'):'—'},
-    {l:'Furnishing', v:g('propFurnish')||'—'},
-    {l:'Monthly Rent', v:g('rentAmt')?('₹'+parseInt(g('rentAmt')).toLocaleString('en-IN')):'—'},
-    {l:'Security Deposit', v:g('deposit')?('₹'+parseInt(g('deposit')).toLocaleString('en-IN')):'—'},
-    {l:'Available From', v:g('availFrom')||'—'},
-    {l:'Photos Added', v:uploadedPhotos.length},
-    {l:'Selected Plan', v:selectedPlan.charAt(0).toUpperCase()+selectedPlan.slice(1)},
-  ];
-  document.getElementById('reviewGrid').innerHTML = data.map(d => `
-    <div style="padding:8px 0;border-bottom:1px solid rgba(200,164,74,.06)">
-      <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--t3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">${d.l}</div>
-      <div style="font-size:13px;color:var(--t0);font-weight:500">${d.v}</div>
-    </div>`).join('');
+window.setCover  = (i) => { const cover = uploadedFiles.splice(i, 1)[0]; uploadedFiles.unshift(cover); coverIdx = 0; renderPreviews(); showToast("Cover photo updated!", "success"); };
+window.removeImg = (i) => { URL.revokeObjectURL(uploadedFiles[i].previewUrl); uploadedFiles.splice(i, 1); if (coverIdx >= uploadedFiles.length) coverIdx = 0; renderPreviews(); updatePhotoCount(); };
+
+function updatePhotoCount() {
+  const b = document.getElementById("photoCountBadge");
+  if (b) b.textContent = `${uploadedFiles.length} / 15`;
 }
 
-function g(id) { const el=document.getElementById(id); return el?el.value:''; }
+/* ── Cloudinary Upload ─────────────────────── */
+async function uploadAllToCloudinary() {
+  const listEl = document.getElementById("uploadItemsList");
+  listEl.innerHTML = "";
+  const urls = [];
 
-/* ── SUBMIT ──────────────────────────────────────────── */
-async function submitListing() {
-  if(!document.getElementById('t-terms').classList.contains('on')) { showToast('⚠️ Please accept the Terms of Service'); return; }
-  if(!document.getElementById('t-accurate').classList.contains('on')) { showToast('⚠️ Please certify that your information is accurate'); return; }
+  for (let i = 0; i < uploadedFiles.length; i++) {
+    const item  = uploadedFiles[i];
+    const fname = item.file.name;
+    const fsize = (item.file.size / 1024).toFixed(0) + " KB";
 
-  const btn = document.querySelector('.btn-submit');
-  btn.textContent = '⏳ Submitting…';
-  btn.disabled = true;
+    const row = document.createElement("div");
+    row.className = "upload-item"; row.id = `ui-row-${i}`;
+    row.innerHTML = `
+      <span class="ui-icon">🖼️</span>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px">
+          <span class="ui-name">${fname}</span>
+          <span class="ui-size">${fsize}</span>
+          <span class="ui-status" id="ui-st-${i}" style="color:var(--t3)">Uploading…</span>
+        </div>
+        <div class="ui-prog-wrap"><div class="ui-prog-bar" id="ui-bar-${i}"></div></div>
+      </div>`;
+    listEl.appendChild(row);
 
-  const payload = {
-    type: selectedType,
-    title: g('propTitle'),
-    ownerName: g('ownerName'),
-    ownerType: g('ownerType'),
-    ownerPhone: g('ownerPhone'),
-    ownerEmail: g('ownerEmail'),
-    area: g('propArea'),
-    floor: g('propFloor'),
-    furnish: g('propFurnish'),
-    city: g('city'),
-    locality: g('locality'),
-    address: g('address'),
-    pincode: g('pincode'),
-    rent: g('rentAmt'),
-    deposit: g('deposit'),
-    desc: g('propDesc'),
-    availFrom: g('availFrom'),
-    leasePeriod: g('leasePeriod'),
-    plan: selectedPlan,
-    amenities: Array.from(document.querySelectorAll('.amen-toggle.on .amen-lbl')).map(e=>e.textContent),
-    approved: false,
-    status: 'pending_review',
-  };
-
-  if(window._db && window._addDoc) {
     try {
-      payload.createdAt = window._serverTimestamp();
-      await window._addDoc(window._collection(window._db,'commercial'), payload);
-    } catch(e) { console.log('Firebase write error:', e); }
+      const url = await uploadSingleImage(item.file, i);
+      urls.push(url);
+      uploadedFiles[i].cloudinaryUrl = url; uploadedFiles[i].status = "done";
+      const bar = document.getElementById(`ui-bar-${i}`); const st = document.getElementById(`ui-st-${i}`);
+      if (bar) bar.style.width = "100%";
+      if (st)  { st.textContent = "✓ Done"; st.style.color = "var(--emerald)"; }
+      row.classList.add("done");
+    } catch (err) {
+      uploadedFiles[i].status = "error";
+      const st = document.getElementById(`ui-st-${i}`);
+      if (st) { st.textContent = "✗ Failed"; st.style.color = "var(--rose)"; }
+      row.classList.add("error");
+      console.error(`Upload failed for ${fname}:`, err);
+    }
+  }
+  return urls.filter(Boolean);
+}
+
+function uploadSingleImage(file, idx) {
+  return new Promise((resolve, reject) => {
+    const fd = new FormData();
+    fd.append("file", file); fd.append("upload_preset", UPLOAD_PRESET);
+    fd.append("cloud_name", CLOUD_NAME); fd.append("folder", "smartrent/commercial");
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", CLOUDINARY_URL, true);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 92);
+        const bar = document.getElementById(`ui-bar-${idx}`);
+        if (bar) bar.style.width = pct + "%";
+      }
+    };
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        resolve(data.secure_url.replace('/upload/', '/upload/f_auto,q_auto:good/'));
+      } else { reject(new Error(`Cloudinary HTTP ${xhr.status}`)); }
+    };
+    xhr.onerror = () => reject(new Error("Network error during Cloudinary upload"));
+    xhr.send(fd);
+  });
+}
+
+/* ══════════════════════════════════════════════
+   BUILD SUMMARY
+══════════════════════════════════════════════ */
+function buildSummary() {
+  const gv = (id) => document.getElementById(id)?.value?.trim() || "";
+  const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
+  const ideal     = [...document.querySelectorAll("#idealWrap .chip.selected")].map(c => c.textContent.trim());
+  const price = Number(gv("price")), deposit = Number(gv("deposit")), sqft = Number(gv("sqft"));
+  const perUnit = gv("per") === "sqft/month" ? "/sq.ft/month" : "/month";
+
+  const rows = [
+    ["TYPE", selectedType], ["TITLE", gv("name")],
+    ["RENT", `₹${price.toLocaleString("en-IN")} ${perUnit}`],
+    ["DEPOSIT", deposit ? `₹${deposit.toLocaleString("en-IN")}` : "Not specified"],
+    ["AREA", sqft ? sqft.toLocaleString("en-IN") + " sq.ft" : "—"],
+    ["CITY", gv("city")], ["LOCALITY", gv("area")],
+    ["FLOOR", gv("floor") || "—"], ["TOTAL FLOORS", gv("totalFloors") || "—"],
+    ["FURNISHING", selectedFurnish],
+    ["LOCK-IN", gv("lockin") || "—"], ["LEASE TERM", gv("leaseTerm") || "—"],
+    ["AVAILABLE", gv("availableFrom") || "Immediately"],
+    ["AMENITIES", amenities.length ? amenities.slice(0,7).join(", ") + (amenities.length>7?` +${amenities.length-7} more`:"") : "None selected"],
+    ["IDEAL FOR", ideal.length ? ideal.join(", ") : "Any Business"],
+    ["MAINTENANCE", gv("maintenance") || "—"], ["OWNER", gv("ownerName")], ["PHONE", gv("ownerPhone")],
+    ["PHOTOS", `${uploadedFiles.length} selected (uploaded on submit)`],
+  ];
+
+  let html = rows.map(([k,v]) => `<div class="summary-row"><span class="summary-key">${k}</span><span class="summary-val${k==='RENT'?' price':''}">${v}</span></div>`).join("");
+
+  if (uploadedFiles.length > 0) {
+    html += `<div class="summary-row" style="align-items:flex-start"><span class="summary-key">PHOTOS</span><div class="summary-imgs">`;
+    uploadedFiles.slice(0,6).forEach((item, i) => {
+      html += `<img src="${item.previewUrl}" class="summary-img" alt="Photo ${i+1}">`;
+    });
+    if (uploadedFiles.length > 6) html += `<div style="width:46px;height:46px;border-radius:9px;background:var(--bg4);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--t3)">+${uploadedFiles.length-6}</div>`;
+    html += `</div></div>`;
+  }
+  document.getElementById("summaryCard").innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════
+   SUBMIT
+   Writes to Firestore collection "commercialProperties"
+   using the exact field names commercial.html reads:
+   name, type, price, per, sqft, unit, floor, furnished,
+   city, area, tags, verified, premium, isNew, hot,
+   available, coverPhoto, photos, rating, reviews.
+══════════════════════════════════════════════ */
+window.submitProperty = async () => {
+  const user = window._currentUser;
+  if (!user) { showToast("You must be signed in to post a property.", "error"); return; }
+
+  const { hasAccess } = await checkOwnerSubscription(user.uid);
+  if (!hasAccess) {
+    showToast("Owner Subscription required to post a property.", "error");
+    renderSubmitArea(false, null);
+    return;
   }
 
-  setTimeout(() => {
-    document.getElementById('successScreen').classList.add('show');
-    document.body.style.overflow = 'hidden';
-  }, 600);
+  if (uploadedFiles.length < 1) { showToast("Please upload at least 1 photo before submitting.", "error"); return; }
+
+  const btn = document.getElementById("submitBtn");
+  if (btn) { btn.disabled = true; btn.innerHTML = "⏳ Uploading photos…"; }
+
+  showToast(`Uploading ${uploadedFiles.length} photo(s) to Cloudinary…`, "info");
+
+  try {
+    const imageUrls = await uploadAllToCloudinary();
+    if (imageUrls.length === 0) throw new Error("All photo uploads failed. Please check your connection and try again.");
+    if (imageUrls.length < uploadedFiles.length) showToast(`${uploadedFiles.length - imageUrls.length} photo(s) failed — continuing with ${imageUrls.length}.`, "warn");
+
+    if (btn) btn.innerHTML = "⏳ Saving listing…";
+    showToast("Photos uploaded! Saving to database…", "success");
+
+    const gv = (id) => document.getElementById(id)?.value?.trim() || "";
+    const amenities = [...document.querySelectorAll("#amenitiesWrap .chip.selected")].map(c => c.textContent.trim());
+    const ideal     = [...document.querySelectorAll("#idealWrap .chip.selected")].map(c => c.textContent.trim());
+
+    const docRef = await addDoc(collection(db, "commercialProperties"), {
+      ownerUid: user.uid,
+      owner: {
+        uid:      user.uid,
+        name:     gv("ownerName"),
+        phone:    gv("ownerPhone"),
+        whatsapp: gv("ownerWA") || gv("ownerPhone"),
+        email:    gv("ownerEmail") || user.email || "",
+      },
+
+      /* ── Fields read directly by commercial.html's buildCard() ── */
+      name:        gv("name"),
+      type:        selectedType,
+      price:       Number(gv("price")),
+      per:         gv("per") === "sqft/month" ? "sq.ft/month" : "month",
+      sqft:        gv("sqft") ? Number(gv("sqft")) : null,
+      unit:        "sqft",
+      floor:       gv("floor") || "—",
+      furnished:   selectedFurnish !== "Shell",
+      city:        gv("city"),
+      area:        gv("area"),
+      tags:        amenities.slice(0, 6),
+      verified:    false,
+      premium:     false,
+      isNew:       true,
+      newListing:  true,
+      hot:         false,
+      available:   true,
+      avail:       true,
+      coverPhoto:  imageUrls[0] || null,
+      photos:      imageUrls,
+      rating:      null,
+      reviews:     0,
+
+      /* ── Extra detail fields (shown on details page) ── */
+      furnishing:    selectedFurnish,
+      fullAddress:   gv("fullAddress"),
+      totalFloors:   gv("totalFloors") ? Number(gv("totalFloors")) : null,
+      deposit:       gv("deposit") ? Number(gv("deposit")) : null,
+      availableFrom: gv("availableFrom") || null,
+      lockin:        gv("lockin") || null,
+      leaseTerm:     gv("leaseTerm") || null,
+      maintenance:   gv("maintenance") || null,
+      amenities,
+      idealFor:      ideal,
+      description:   gv("description"),
+      imageCount:    imageUrls.length,
+
+      /* ── Review workflow (admin approval) ── */
+      approved: false, status: "pending",
+      views: 0, enquiries: 0, savedCount: 0,
+
+      createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
+    });
+
+    showSuccess(docRef.id, imageUrls);
+
+  } catch (err) {
+    console.error("Submission error:", err);
+    showToast("Error: " + (err.message || "Unknown error"), "error");
+    const btn2 = document.getElementById("submitBtn");
+    if (btn2) { btn2.disabled = false; btn2.innerHTML = "🚀 Upload &amp; Submit for Review"; }
+  }
+};
+
+function showSuccess(docId, imageUrls) {
+  document.getElementById('stepper').style.display = 'none';
+  document.getElementById('formProgressBar').parentElement.style.display = 'none';
+  document.querySelectorAll('.step-panel').forEach(p => p.style.display = 'none');
+
+  const ss = document.getElementById("successScreen");
+  ss.style.display = "block";
+  document.getElementById("successDocId").textContent = "Property ID: " + docId;
+
+  const imgRow = document.getElementById("successImageRow");
+  imageUrls.slice(0,5).forEach((url, i) => {
+    const img = new Image(); img.src = url; img.className = "success-img"; img.alt = "Photo " + (i+1);
+    imgRow.appendChild(img);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  showToast("🎉 Commercial property submitted! Pending review.", "success");
 }
 
-/* ── MARQUEE ─────────────────────────────────────────── */
-// No marquee on this page — already minimal
+/* ══════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════ */
+window.updateCharCount = (id, countId, max) => {
+  const el = document.getElementById(id); const cc = document.getElementById(countId);
+  if (!el || !cc) return;
+  const len = el.value.length;
+  cc.textContent = `${len} / ${max}`;
+  cc.className = "char-count" + (len > max * 0.88 ? " warn" : "");
+};
 
-/* ── NAVBAR ──────────────────────────────────────────── */
-window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('solid', scrollY > 40); });
-
-/* ── MOBILE MENU ─────────────────────────────────────── */
-function toggleDrawer() {
-  const d=document.getElementById('mobDrawer'); const b=document.getElementById('mobBtn');
-  const open=d.classList.toggle('open'); b.textContent=open?'✕':'☰';
+function showToast(msg, type = "info") {
+  const t = document.getElementById("toast");
+  document.getElementById("toastMsg").textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove("show"), 4800);
 }
-
-/* ── TOAST ───────────────────────────────────────────── */
-let _tT;
-function showToast(msg) { const el=document.getElementById('toast');el.innerHTML=msg;el.style.display='block';clearTimeout(_tT);_tT=setTimeout(()=>{el.style.display='none';},3600); }
-
-/* ── CAT BAR LINKS ───────────────────────────────────── */
-document.querySelectorAll('.ctab').forEach(t=>t.setAttribute('data-type',t.textContent.trim().split(' ')[1]||''));
-
-/* ── EXPOSE GLOBALS ──────────────────────────────────── */
-window.goStep=goStep; window.nextStep=nextStep; window.prevStep=prevStep;
-window.selectType=selectType; window.selectPlan=selectPlan;
-window.toggleAmen=toggleAmen; window.toggleRow=toggleRow;
-window.updatePreview=updatePreview; window.descCounter=descCounter;
-window.handlePhotoSelect=handlePhotoSelect; window.handleDragOver=handleDragOver;
-window.handleDragLeave=handleDragLeave; window.handleDrop=handleDrop;
-window.removePhoto=removePhoto; window.submitListing=submitListing;
-window.showToast=showToast; window.toggleDrawer=toggleDrawer;
+window.showToast    = showToast;
+window.dismissToast = () => document.getElementById("toast").classList.remove("show");
 </script>
+
+<!-- Navbar scroll effect -->
+<script>
+window.addEventListener('scroll', () => {
+  document.getElementById('topbar').classList.toggle('solid', scrollY > 30);
+});
+</script>
+
 </body>
 </html>
